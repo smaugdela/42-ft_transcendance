@@ -63,14 +63,19 @@ body {
 
 #play-screen {
 	background-color: rgb(10, 0, 0);
-	position: relative;
+}
+
+#play-screen > img {
+	display: block;
+ 	margin-left: auto;
+ 	margin-right: auto;
+	height : 65vh;
 }
 
 #play-screen > button {
 	position : relative;
 	left: 50%;
 	transform: translateX(-50%);
-	top : 70%;
 	/* styling button below */
 	box-shadow:inset 0px 0px 15px 3px #23395e;
 	background-color:transparent;

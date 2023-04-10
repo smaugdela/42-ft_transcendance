@@ -34,6 +34,7 @@ function App() {
         </div>
 
         <div id="play-screen">
+          <img src="https://media1.ledevoir.com/images_galerie/nwd_132675_102056/image.jpg" alt="Pong image"/>
           <button>PRESS TO PLAY</button>
         </div>
       
