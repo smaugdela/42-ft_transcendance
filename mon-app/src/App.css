@@ -6,11 +6,11 @@ body {
 
 #navbar {
 	background-color: rgb(45, 15, 63);
-  line-height: 70px;
+  	line-height: 70px;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
-  align-items: center;
+ 	align-items: center;
 }
 
 .nav-elements {
@@ -24,10 +24,11 @@ body {
 }
 
 #main-content {
+	height: 100 vh;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
-	align-items: stretch;
+	/* align-items: stretch; */
 }
 
 #main-content > * {
@@ -35,7 +36,7 @@ body {
 }
 
 #play-screen {
-	background-color: rgb(3, 3, 3);
+	background-color: rgb(195, 132, 132);
 	position: relative;
 	padding-top : 17em;
 }
@@ -53,6 +54,7 @@ body {
 	left: 50%;
 	transform: translateX(-50%);
 	top: -80%;
+	/* styling button below */
 	box-shadow:inset 0px 0px 15px 3px #23395e;
 	background-color:transparent;
 	border-radius:17px;
@@ -68,8 +70,8 @@ body {
 }
 
 aside {
-	background-color: black;
-	color: aliceblue;
+	background-color: rgb(233, 207, 103);
+	color: rgb(21, 58, 91);
 	display: flex;
 	flex-direction : column;
 	justify-content: space-evenly;
@@ -77,10 +79,8 @@ aside {
 
 }
 
-
-
 #chat {
-	background-color: black;
+	background-color: rgb(81, 115, 179);
 	color: aliceblue;
 }
 
@@ -89,7 +89,10 @@ footer {
 	font-family: 'Share Tech', sans-serif;
 	font-size: 100%;
 	text-align: center;
-	color: aliceblue;
+	color: #f0f8ff;
+	height: 8lvh;
+	line-height: 70px;
+	font-size: 150%;
 }
 
 #burger-menu {
