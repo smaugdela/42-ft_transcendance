@@ -2,6 +2,8 @@
 
 body {
 	margin : 0;
+	padding: 0;
+	height: 100%;
 }
 
 #navbar {
@@ -15,7 +17,6 @@ body {
 
 .nav-elements {
 	color: aliceblue;
-	
 }
 
 .nav-title {
@@ -23,37 +24,51 @@ body {
 	font-size: 200%;
 }
 
-#main-content {
-	height: 100 vh;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	/* align-items: stretch; */
+.avatar {
+	background-color: #ffffff;
+	border-radius: 50%;
+	width: 45px;
+	height: 45px;
+	/* position: absolute; /* pour positionner le menu*/
+	/* right: 25px;
+	top:0;  */
+	/* margin-right:8px; */
+	/* position: absolute;
+	top: 13px;
+	right: 25px; */
 }
 
-#main-content > * {
-	flex: 1 100%;
+#main-content {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	height: 85vh;
+}
+
+#main-content > div {
+	flex : 1 1 auto;
+}
+
+
+#menu {
+	background-color: rgb(16, 12, 18);
+	color: rgb(245, 245, 245);
+	display: flex;
+	flex-direction : column;
+	justify-content: space-evenly;
+	align-items: center;
 }
 
 #play-screen {
-	background-color: rgb(195, 132, 132);
+	background-color: rgb(10, 0, 0);
 	position: relative;
-	padding-top : 17em;
-}
-
-#video {
-	position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
 }
 
 #play-screen > button {
 	position : relative;
 	left: 50%;
 	transform: translateX(-50%);
-	top: -80%;
+	top : 70%;
 	/* styling button below */
 	box-shadow:inset 0px 0px 15px 3px #23395e;
 	background-color:transparent;
@@ -69,18 +84,8 @@ body {
 	text-shadow:0px 1px 0px #263666;
 }
 
-aside {
-	background-color: rgb(233, 207, 103);
-	color: rgb(21, 58, 91);
-	display: flex;
-	flex-direction : column;
-	justify-content: space-evenly;
-	align-items: center;
-
-}
-
 #chat {
-	background-color: rgb(81, 115, 179);
+	background-color: rgb(16, 11, 23);
 	color: aliceblue;
 }
 
@@ -93,6 +98,10 @@ footer {
 	height: 8lvh;
 	line-height: 70px;
 	font-size: 150%;
+	position: absolute;
+	bottom: 0; 
+	left: 0;
+	width: 100%;
 }
 
 #burger-menu {
@@ -104,69 +113,45 @@ footer {
   left: 0;
   top:0;
   transform: scale(0.7);
- }
+}
  
- #burger-menu  span{
+#burger-menu span{
    background: rgb(246, 243, 244);
    border-radius:5px;
    height:7px;
    margin: 7px;
    transition: .4s  cubic-bezier(0.68, -0.6, 0.32, 1.6);
- 
- }
- 
- span:nth-of-type(1){
+}
+
+span:nth-of-type(1){
    width:50%;
-   
- }
- 
- span:nth-of-type(2){
+}
+
+span:nth-of-type(2){
    width:100%;
- }
- 
- 
- span:nth-of-type(3){
+}
+
+span:nth-of-type(3){
    width:75%;
-  
- }
+}
  
- 
- input[type="checkbox"]{
+input[type="checkbox"]{
    display:none;
- }
+}
  
- 
- input[type="checkbox"]:checked ~ span:nth-of-type(1){
+input[type="checkbox"]:checked ~ span:nth-of-type(1){
    transform-origin:bottom;
    transform:rotatez(45deg) translate(8px,0px)
- }
- 
- 
- input[type="checkbox"]:checked ~ span:nth-of-type(2){
-   
+}
+
+input[type="checkbox"]:checked ~ span:nth-of-type(2){ 
    transform-origin:top;
    transform:rotatez(-45deg)
- }
+}
  
  
- input[type="checkbox"]:checked ~ span:nth-of-type(3){
-   
+input[type="checkbox"]:checked ~ span:nth-of-type(3){ 
    transform-origin:bottom;
    width:50%;
    transform: translate(30px,-11px) rotatez(45deg);
- 
- }
-
-.avatar {
-  background-color: #ffffff;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  /* position: absolute; /* pour positionner le menu*/
-  /* right: 25px;
-  top:0;  */
-  /* margin-right:8px; */
-  /* position: absolute;
-  top: 13px;
-  right: 25px; */
 }
