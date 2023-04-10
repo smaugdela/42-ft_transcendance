@@ -22,6 +22,8 @@ body {
 .nav-title {
 	font-family: 'Share Tech', sans-serif;
 	font-size: 200%;
+	margin-left: 3vw;
+	padding-left: 4vw;
 }
 
 .avatar {
@@ -29,13 +31,13 @@ body {
 	border-radius: 50%;
 	width: 45px;
 	height: 45px;
-	/* position: absolute; /* pour positionner le menu*/
-	/* right: 25px;
-	top:0;  */
-	/* margin-right:8px; */
-	/* position: absolute;
-	top: 13px;
-	right: 25px; */
+	margin-right: 0.7vw;
+}
+
+.avatar:hover {
+	background-color: rgb(194, 24, 121);
+	border-radius: 20%;
+	transition: all .4s ease;
 }
 
 #main-content {

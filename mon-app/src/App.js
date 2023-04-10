@@ -4,18 +4,18 @@ function App() {
   return (
     <div className="App">
       <header id="navbar"> 
+
         <div class="nav-elements">
-
-        <label id="burger-menu" for="check">
-            <input type="checkbox" id="check"/> 
-            <span></span>
-            <span></span>
-            <span></span>
-        </label>
-
+          <label class="nav-elements" id="burger-menu" for="check">
+              <input type="checkbox" id="check"/> 
+              <span></span>
+              <span></span>
+              <span></span>
+          </label>
         </div>
         <div class="nav-elements nav-title">NOTRE PONG</div>
         <div class="nav-elements avatar"></div>
+      
       </header>
 
     <section id="main-content">
