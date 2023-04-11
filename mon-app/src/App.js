@@ -19,7 +19,9 @@ function App() {
       </header>
 
     <section id="main-content">
+
         <div id="menu">
+            {/* Mettre le nom du componant <Menu/> ici et effacer tout ce qu'il y a jusqu'à la ligne 35 */}
           <div>
             <span>LEADERBOARD</span>
           </div>
@@ -39,6 +41,7 @@ function App() {
         </div>
       
         <div id="chat">
+          {/* Mettre le nom du componant <Chat/> ici et effacer le h5 */}
           <h5>CHAT</h5>
         </div>
 
