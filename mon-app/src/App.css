@@ -1,164 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech&display=swap');
-
-body {
-	margin : 0;
-	padding: 0;
-	height: 100%;
+.App {
+  text-align: center;
 }
 
-#navbar {
-	background-color: rgb(45, 15, 63);
-  	line-height: 70px;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
- 	align-items: center;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
-.nav-elements {
-	color: aliceblue;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
-.nav-title {
-	font-family: 'Share Tech', sans-serif;
-	font-size: 200%;
-	margin-left: 3vw;
-	padding-left: 4vw;
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
-.avatar {
-	background-color: #ffffff;
-	border-radius: 50%;
-	width: 45px;
-	height: 45px;
-	margin-right: 0.7vw;
+.App-link {
+  color: #61dafb;
 }
 
-.avatar:hover {
-	background-color: rgb(194, 24, 121);
-	border-radius: 20%;
-	transition: all .4s ease;
-}
-
-#main-content {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-evenly;
-	height: 85vh;
-}
-
-#main-content > div {
-	flex : 1 1 auto;
-}
-
-
-#menu {
-	background-color: rgb(16, 12, 18);
-	color: rgb(245, 245, 245);
-	display: flex;
-	flex-direction : column;
-	justify-content: space-evenly;
-	align-items: center;
-}
-
-#play-screen {
-	background-color: rgb(10, 0, 0);
-}
-
-#play-screen > img {
-	display: block;
- 	margin-left: auto;
- 	margin-right: auto;
-	height : 65vh;
-}
-
-#play-screen > button {
-	position : relative;
-	left: 50%;
-	transform: translateX(-50%);
-	/* styling button below */
-	box-shadow:inset 0px 0px 15px 3px #23395e;
-	background-color:transparent;
-	border-radius:17px;
-	border:1px solid #1f2f47;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:15px;
-	padding:6px 13px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #263666;
-}
-
-#chat {
-	background-color: rgb(16, 11, 23);
-	color: aliceblue;
-}
-
-footer {
-	background-color: rgb(45, 15, 63);
-	font-family: 'Share Tech', sans-serif;
-	font-size: 100%;
-	text-align: center;
-	color: #f0f8ff;
-	height: 8lvh;
-	line-height: 70px;
-	font-size: 150%;
-	position: absolute;
-	bottom: 0; 
-	left: 0;
-	width: 100%;
-}
-
-#burger-menu {
-  display:flex;
-  flex-direction:column;
-  width:70px;
-  cursor:pointer;
-  position: absolute; /* pour positionner le menu*/
-  left: 0;
-  top:0;
-  transform: scale(0.7);
-}
- 
-#burger-menu span{
-   background: rgb(246, 243, 244);
-   border-radius:5px;
-   height:7px;
-   margin: 7px;
-   transition: .4s  cubic-bezier(0.68, -0.6, 0.32, 1.6);
-}
-
-span:nth-of-type(1){
-   width:50%;
-}
-
-span:nth-of-type(2){
-   width:100%;
-}
-
-span:nth-of-type(3){
-   width:75%;
-}
- 
-input[type="checkbox"]{
-   display:none;
-}
- 
-input[type="checkbox"]:checked ~ span:nth-of-type(1){
-   transform-origin:bottom;
-   transform:rotatez(45deg) translate(8px,0px)
-}
-
-input[type="checkbox"]:checked ~ span:nth-of-type(2){ 
-   transform-origin:top;
-   transform:rotatez(-45deg)
-}
- 
- 
-input[type="checkbox"]:checked ~ span:nth-of-type(3){ 
-   transform-origin:bottom;
-   width:50%;
-   transform: translate(30px,-11px) rotatez(45deg);
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
