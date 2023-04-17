@@ -9,4 +9,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Check Compile Status
-        run: npm install && cd frontend && npm start
+        run: cd frontend && npm install && npm start
