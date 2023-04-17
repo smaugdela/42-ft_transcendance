@@ -26,6 +26,7 @@
 	margin: 0;
 	padding: 0;
 	font-family: 'Lato', sans-serif;
+	
 }
 
 
@@ -53,7 +54,7 @@ body {
 	height: 84.7vh;
 	width: 100%;
 }
-
+/* 
 #menu {
 	background-color: var(--sides-color);
 	color: var(--font-color);
@@ -62,7 +63,7 @@ body {
 	justify-content: space-evenly;
 	align-items: center;
 	flex: 1 1 auto;
-}
+} */
 
 #play-screen {
 	background-color: var(--bg-color);

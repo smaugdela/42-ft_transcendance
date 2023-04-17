@@ -55,10 +55,6 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 				</Link>
 			</div>
 			<div className="nav-elements nav-right-side">
-				<label className="theme-switch" htmlFor="checkbox">
-					<input type="checkbox" id="checkbox" checked={props.theme === 'kawaii'} onChange={props.toggleTheme}/>
-					<div className="slider round"></div>
-				</label>
 				<Avatar />
 			</div>
 
@@ -82,6 +78,10 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
               );
             })}
           </ul>
+		  <label id="test" className="theme-switch" htmlFor="checkbox">
+				<input type="checkbox" id="checkbox" checked={props.theme === 'kawaii'} onChange={props.toggleTheme}/>
+				<div className="slider round"></div>
+		  </label>
         </nav>
       </IconContext.Provider>
     </>
