@@ -4,5 +4,72 @@
 	background-color: var(--bg-color);
 	color: var(--font-color);
 	flex: 2 auto;
+	height : 100%;
+}
+
+#friend-dashboard > h1:first-of-type {
+	text-align: center;
+	margin-top : 2vh;
+}
+
+#friend-dashboard button {
+	border: transparent;
+	margin: auto;
+}
+
+#friend-dashboard input {
+	width: 50vw;
+	margin-left: 25vw;
+	color:rgb(203, 182, 42)
+}
+
+/* **************************** */
+/* DisplayConnections Component */
+/* **************************** */
+
+.all-current {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+
+.profile {
+	background-color: white;
+	border-radius: 20px;
+	margin : 2vw;
+	
+}
+
+.profile:hover {
+	color : black;
+	font-size: large;
+}
+
+.profile > img {
+	height: 15vh;
+	width: auto;
+	border-radius: 50%;
+	border : solid var(--sides-color);
+	margin: 2vw;
+}
+
+.profile > img:hover {
+	border : solid rgb(203, 182, 42);
+	cursor: pointer;
+}
+
+.profile_infos {
+	display: flex;
+	justify-content: center;
+	align-items: first baseline;
+}
+
+.profile_infos > span:first-of-type {
+	color : rgb(243, 64, 64);
+}
+
+.profile_infos > span:last-of-type {
+	color : rgb(29, 123, 216);
 }
 

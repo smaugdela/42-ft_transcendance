@@ -7,18 +7,20 @@ import { IUser, users } from "../data";
 export function DisplayConnections( props: { profilesToDisplay : IUser[] }) {
 	
 	const displayProfiles = props.profilesToDisplay.map(profile => {
-		return <div key={profile.id}>
+		return <div key={profile.id} className="profile">
 					<img 
 						src={profile.avatar}
 						alt={profile.nickname}
 					/>
-					<h5>{profile.nickname}</h5>
-					<h5>🛇</h5>
-					<h5>✉</h5>
+					<div className="profile_infos">
+						<h5>{profile.nickname}</h5>
+						<span>🛇</span>
+						<span>✉</span>
+					</div>
 		</div>
 	})
 	return (
-		<div>
+		<div className="all-current">
 			{displayProfiles}
 		</div>
 	);
@@ -28,15 +30,10 @@ export function FriendsList() {
 
 	const loggedUser: IUser = users.filter( user => user.isLogged === true)[0];
 	
-	const allFriends: IUser[] = loggedUser.friendsList;
-	const activeFriends: IUser[] = allFriends.filter(friend => friend.isActive === true);
-	console.log(activeFriends);
-	
-	const blocked: IUser[] = loggedUser.blockList;
-	console.log(blocked);
-	
-	const pendingRequests: IUser[] = loggedUser.pendingList;
-	console.log(pendingRequests);
+	const allFriends:		IUser[] = loggedUser.friendsList;
+	const activeFriends:	IUser[]	= allFriends.filter(friend => friend.isActive === true);
+	const blocked:			IUser[]	= loggedUser.blockList;
+	const pendingRequests:	IUser[]	= loggedUser.pendingList;
 	
 	return (
 		<div  id="friend-dashboard">
