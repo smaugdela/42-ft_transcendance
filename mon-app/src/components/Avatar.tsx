@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../styles/Avatar.css";
+import {Link} from 'react-router-dom';
 
 export default function Avatar() {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,9 @@ export default function Avatar() {
         />
         <div className={"avatarPannel " + (fadeIn ? "fadeIn" : "")}>
           <h1>Username</h1>
-          <button>Log In</button>
+          <button>
+			  <Link to="/login">Log In</Link>
+		  </button>
         </div>
       </>
     );
