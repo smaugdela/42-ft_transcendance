@@ -8,5 +8,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          node-version: '12.x'
       - name: Check Compile Status
         run: cd frontend && npm install && npm start
