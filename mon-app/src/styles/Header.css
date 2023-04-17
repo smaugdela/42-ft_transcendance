@@ -1,0 +1,144 @@
+@import "../App.css";
+
+#navbar {
+	background-color: var(--heading-color);
+  	line-height: 70px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+ 	align-items: center;
+}
+
+.nav-elements {
+	color: var(--font-color);
+}
+
+.nav-title {
+	font-family: var(--font-type);
+	font-size: 200%;
+	margin-left: 3vw;
+	padding-left: 6vw;
+}
+
+.nav-right-side {
+	display : flex;
+	align-items: center;
+}
+
+.avatar {
+	background-color: var(--font-color);
+	border-radius: 50%;
+	width: 45px;
+	height: 45px;
+	margin-right: 0.7vw;
+}
+
+.avatar:hover {
+	background-color: rgb(194, 24, 121);
+	border-radius: 20%;
+	transition: all .4s ease;
+}
+
+/* Styling du bouton pour  changer de thème */
+.theme-switch {
+display: inline-block;
+height: 34px;
+position: relative;
+width: 60px;
+margin-right: 1.5vw;
+}
+
+.theme-switch input {
+display:none;
+}
+
+.slider {
+background-color: #ccc;
+bottom: 0;
+cursor: pointer;
+left: 0;
+position: absolute;
+right: 0;
+top: 0;
+transition: .4s;
+}
+
+.slider:before {
+background-color: #fff;
+bottom: 4px;
+content: "";
+height: 26px;
+left: 4px;
+position: absolute;
+transition: .4s;
+width: 26px;
+}
+
+input:checked + .slider {
+background-color: #bfded6;
+}
+
+input:checked + .slider:before {
+transform: translateX(26px);
+}
+
+.slider.round {
+border-radius: 34px;
+}
+
+.slider.round:before {
+border-radius: 50%;
+}
+
+
+#burger-menu {
+display:flex;
+flex-direction:column;
+width:70px;
+cursor:pointer;
+position: absolute; /* pour positionner le menu*/
+left: 0;
+top:0;
+transform: scale(0.7);
+}
+
+#burger-menu span{
+	background: var(--font-color);
+	border-radius:5px;
+	height:7px;
+	margin: 7px;
+	transition: .4s  cubic-bezier(0.68, -0.6, 0.32, 1.6);
+}
+
+span:nth-of-type(1){
+	width:50%;
+}
+
+span:nth-of-type(2){
+	width:100%;
+}
+
+span:nth-of-type(3){
+	width:75%;
+}
+
+input[type="checkbox"]{
+	display:none;
+}
+
+input[type="checkbox"]:checked ~ span:nth-of-type(1){
+	transform-origin:bottom;
+	transform:rotatez(45deg) translate(8px,0px)
+}
+
+input[type="checkbox"]:checked ~ span:nth-of-type(2){ 
+	transform-origin:top;
+	transform:rotatez(-45deg)
+}
+
+
+input[type="checkbox"]:checked ~ span:nth-of-type(3){ 
+	transform-origin:bottom;
+	width:50%;
+	transform: translate(30px,-11px) rotatez(45deg);
+}
