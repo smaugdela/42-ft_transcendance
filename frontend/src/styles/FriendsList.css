@@ -1,0 +1,8 @@
+@import "../App.css";
+
+#friend-dashboard {
+	background-color: var(--bg-color);
+	color: var(--font-color);
+	flex: 2 auto;
+}
+
