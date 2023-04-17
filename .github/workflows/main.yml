@@ -11,4 +11,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-      - run: cd frontend && npm install && npm start
+      - working-directory: frontend
+      - run: npm install && npm start
+    
