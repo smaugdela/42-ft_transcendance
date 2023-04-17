@@ -1,11 +1,14 @@
 
 import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import './App.css';
-import Header from './components/Header';
-import Home from './pages/Home'
-import { Leaderboard } from './pages/Leaderboard';
 import { FriendsList } from './pages/FriendsList';
+import { Leaderboard } from './pages/Leaderboard';
+import Login from './pages/Login';
+import './App.css';
+import Home from './pages/Home'
+import Navbar from './components/Navbar';
+import Settings from './pages/Settings';
+// import Header from './components/Header';
 
 function App() {
 
@@ -27,10 +30,12 @@ function App() {
   return (
     <div id='app' className={`App ${theme}`}>
 
-    <Header 
+    {/* <Header 
       theme={theme} 
       toggleTheme={toggleTheme}
-    />
+    /> */}
+
+	<Navbar theme={theme} toggleTheme={toggleTheme}/>
 
     <section id="main-content">
       {/* <div id="menu"></div> */}
@@ -39,6 +44,8 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/leaderboard" element={<Leaderboard />} />
       <Route path="/friends" element={<FriendsList />} />
+	  <Route path='/settings' element={<Settings />} />
+	  <Route path='/login' element={<Login />} />
     </Routes>
    
       {/* <div id="chat">
