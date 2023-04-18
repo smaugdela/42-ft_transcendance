@@ -12,6 +12,12 @@ import Avatar from './Avatar';
 
 const SidebarData = [
   {
+    title: 'About Us',
+    path: '/aboutus',
+    icon: <AiIcons.AiOutlineInfoCircle />,
+    cName: 'nav-text'
+  },
+  {
     title: 'Home',
     path: '/',
     icon: <AiIcons.AiFillHome />,
@@ -35,6 +41,7 @@ const SidebarData = [
     icon: <FiIcons.FiSettings />,
     cName: 'nav-text'
   },
+
 ];
 
 function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {

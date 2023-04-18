@@ -6,7 +6,7 @@
 	--font-color:aliceblue;
 	--bg-color: rgb(16, 12, 18);
 	--sides-color : #3b3735;
-	--heading-color: rgb(45, 15, 63);
+	--heading-color: black;
 	--home-image : url("https://media1.ledevoir.com/images_galerie/nwd_132675_102056/image.jpg");
 
 }
@@ -25,19 +25,21 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-	font-family: 'Lato', sans-serif;
+	font-family: 'Times New Roman', Times, serif;
 	
 }
 
 
-.rank,
-.friends,
+.aboutUs,
 .settings {
+	background-color: white;
 	display: flex;
+	justify-content: center;
 	height: 90vh;
 	align-items: center;
-	justify-content: center;
 	font-size: 3rem;
+	/* padding-left: 500px;
+	padding-right: 500px; */
 }
 
 body {
@@ -45,6 +47,7 @@ body {
 	padding: 0;
 	height: 100%;
   	width: 100%;
+	
 }
 
 #main-content {
@@ -91,12 +94,13 @@ body {
 	  transform: translateY(-20px);
 	}
   }
+
 #play-screen > button {
-	position : relative;
-	left: 50%;
+	 position : relative;
+	/*left: 50%;
 	transform: translateX(-50%);
 	/* styling button below */
-	box-shadow:inset 0px 0px 15px 3px #23395e;
+	/*box-shadow:inset 0px 0px 15px 3px #23395e;
 	background-color:transparent;
 	border-radius:17px;
 	border:1px solid #1f2f47;
@@ -107,8 +111,36 @@ body {
 	font-size:15px;
 	padding:6px 13px;
 	text-decoration:none;
-	text-shadow:0px 1px 0px #263666;
-}
+	text-shadow:0px 1px 0px #263666; */
+
+
+	display: flex;
+	height: 5vh;
+	align-items: center;
+	justify-content: center;
+	background-color: transparent;
+	
+	color: #db3eb1;
+	border: 6px solid #db3eb1;
+	border-radius:15px;
+	padding: 15px 25px;
+	font-size: 30px;
+	font-family: tahoma;
+	letter-spacing:5px;
+	cursor: pointer;
+	font-weight: bold;
+	filter: drop-shadow(0 0 15px #db3eb1) drop-shadow(0 0 50px #db3eb1) contrast(2) brightness(2);
+	transition: .5s;
+  }
+
+  #play-screen > button:hover {
+	color: black;
+	background-color: #db3eb1;
+	filter: drop-shadow(0 0 20px #db3eb1) contrast(2) brightness(2);
+  }
+  
+
+
 
 #chat {
 	background-color: var(--sides-color);
