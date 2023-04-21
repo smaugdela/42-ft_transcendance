@@ -20,7 +20,6 @@
 
 #friend-dashboard input {
 	width: 50vw;
-	margin-left: 25vw;
 	color:rgb(203, 182, 42)
 }
 
@@ -48,6 +47,75 @@
 
 .btn:hover {
 	background-color: var(--font-color);
+}
+
+/* **************************** */
+/*      SearchBar Component     */
+/* **************************** */
+
+.search_bar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+}
+
+#search_input {
+	outline: 0;
+	border: 1px solid rgb(205, 203, 203);
+	background-color: white;
+}
+
+#search_input:hover, #search_input:focus {
+    border: 1.5px solid var(--sides-color);
+    background-color: white;
+  }
+
+.searched_user {
+	background-color: white;
+	margin: 0 2vw;
+	padding: 0 1vw;
+	border-radius: 20px;
+}
+
+.searched_user:hover {
+	background-color: white;
+	margin: 0 2vw;
+	
+}
+
+.search_user_infos {
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#search_user_avatar {
+	height: 6vh;
+	width: auto;
+	border-radius: 50%;
+}
+
+
+#title {
+	color: var(--font-color);
+	font-size: 1em;
+}
+
+#title > a {
+	font-size: 1em;
+	font-style: bold;
+	text-decoration: none;
+	color: white;
+	padding: 0.5em 0.7em;
+	background-color: rgb(224, 209, 209);
+	border-radius: 50%;
+}
+
+#title > a:hover {
+	text-decoration: none;
+	background-color: rgb(163, 189, 163);
+	
 }
 
 /* **************************** */
