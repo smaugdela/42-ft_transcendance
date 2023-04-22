@@ -1,0 +1,17 @@
+version: "3.1"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    env_file:
+      - ../backend/.env
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer:4.8.1
+    restart: always
+    ports:
+      - 8080:8080
