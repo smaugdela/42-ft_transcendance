@@ -125,7 +125,7 @@ export function FriendsList() {
 
 	return (
 		<div  id="friend-dashboard">
-			<h1>FRIENDS LIST</h1>
+			<h1>SOCIAL</h1>
 			<br />
 			<br />
 			<SearchBar />
@@ -135,22 +135,22 @@ export function FriendsList() {
 				<button 
 					onClick={ () => handleClick(allFriends, "allFriends")}
 					className={buttonStates.allFriends ? "clicked-btn" : "btn"}>
-					All
+					All friends
 				</button>
 				<button 
 					onClick={ () => handleClick(activeFriends, "activeFriends")}
 					className={buttonStates.activeFriends ? "clicked-btn" : "btn"}>
-					Active
+					Active friends
 				</button>
 				<button 
 					onClick={ () => handleClick(blocked, "blocked")}
 					className={buttonStates.blocked ? "clicked-btn" : "btn"}>
-					Blocked
+					Blocked users
 				</button>
 				<button 
 					onClick={ () => handleClick(pendingRequests, "pendingRequests")}
 					className={buttonStates.pendingRequests ? "clicked-btn" : "btn"}>
-					Pending
+					Pending requests
 				</button>
 			</div>
 			<DisplayConnections
