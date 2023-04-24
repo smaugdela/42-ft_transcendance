@@ -10,6 +10,8 @@ import Navbar from './components/Navbar';
 import Settings from './pages/Settings';
 import Chat from './components/Chat';
 import AboutUs from './pages/AboutUs';
+import FAQ from './pages/FAQ';
+
 
 // import Header from './components/Header';
 
@@ -46,6 +48,7 @@ function App() {
       <Route path="/leaderboard" element={<Leaderboard />} />
       <Route path="/friends" element={<FriendsList />} />
       <Route path='/settings' element={<Settings />} />
+      <Route path='/faq' element={<FAQ />} />
       <Route path='/login' element={<Login />} />
     </Routes>
     <Chat/>

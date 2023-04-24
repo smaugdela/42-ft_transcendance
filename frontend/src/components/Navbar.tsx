@@ -24,7 +24,7 @@ const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Leaderboard',
+    title: 'Leaderbord',
     path: '/leaderboard',
     icon: <GiIcons.GiRank3 />,
     cName: 'nav-text'
@@ -39,6 +39,12 @@ const SidebarData = [
     title: 'Settings',
     path: '/settings',
     icon: <FiIcons.FiSettings />,
+    cName: 'nav-text'
+  },
+  {
+    title: 'FAQ',
+    path: '/faq',
+    icon: <AiIcons.AiOutlineQuestionCircle />,
     cName: 'nav-text'
   },
 

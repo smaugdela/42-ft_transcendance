@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Licorice&family=Share+Tech&display=swap');
 
+
 .dark {
 	--font-type : 'Share Tech', sans-serif;
 	--font-color:aliceblue;
@@ -29,7 +30,6 @@
 	
 }
 
-
 .aboutUs,
 .settings {
 	background-color: white;
@@ -38,8 +38,8 @@
 	height: 90vh;
 	align-items: center;
 	font-size: 3rem;
-	/* padding-left: 500px;
-	padding-right: 500px; */
+ 	padding-left: 500px;
+	padding-right: 500px; 
 }
 
 body {
