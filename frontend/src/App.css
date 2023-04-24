@@ -3,11 +3,11 @@
 
 .dark {
 	--font-type : 'Share Tech', sans-serif;
-	--font-color:aliceblue;
-	--bg-color: rgb(16, 12, 18);
+	--font-color : pink;
+	--bg-image: url("../public/assets/lightsky.jpg");
 	--sides-color : #3b3735;
-	--heading-color: rgb(45, 15, 63);
-	--home-image : url("https://media1.ledevoir.com/images_galerie/nwd_132675_102056/image.jpg");
+	--heading-color: rgb(188, 124, 124);
+	/* --home-image : url("https://media1.ledevoir.com/images_galerie/nwd_132675_102056/image.jpg"); */
 
 }
 
@@ -45,6 +45,9 @@ body {
 	padding: 0;
 	height: 100%;
   	width: 100%;
+	margin: auto;
+	position: absolute;
+	border-radius: 3px;
 }
 
 #main-content {
@@ -54,22 +57,38 @@ body {
 	height: 84.7vh;
 	width: 100%;
 }
-/* 
-#menu {
-	background-color: var(--sides-color);
-	color: var(--font-color);
-	display: flex;
-	flex-direction : column;
-	justify-content: space-evenly;
-	align-items: center;
-	flex: 1 1 auto;
-} */
 
 #play-screen {
-	background-color: var(--bg-color);
-	flex: 2 auto;
+	background-position: center;
+	flex: 3 auto;
+	background-size:cover;
+	box-sizing: border-box;
+	-webkit-animation: slidein 100s;
+	background: var(--bg-image);
+	animation: slidein 100s;
+
+	-webkit-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+
+	-webkit-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+
+	-webkit-animation-direction: alternate;
+	animation-direction: alternate;  
 }
 
+/* try to moove the bg  */
+/* 
+@-webkit-keyframes slidein {
+	from {background-position: top; background-size:3000px; }
+	to {background-position: -100px 0px;background-size:2750px;}
+	}
+	
+	@keyframes slidein {
+	from {background-position: top;background-size:3000px; }
+	to {background-position: -100px 0px;background-size:2750px;}
+	
+	} */
 
 #play-screen > div {
 	margin-top: 10%;

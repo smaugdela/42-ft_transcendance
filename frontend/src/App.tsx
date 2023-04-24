@@ -36,11 +36,10 @@ function App() {
       toggleTheme={toggleTheme}
     /> */}
 
-	<Navbar theme={theme} toggleTheme={toggleTheme}/>
 
+	<Navbar theme={theme} toggleTheme={toggleTheme}/>
     <section id="main-content">
       {/* <div id="menu"></div> */}
-
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/leaderboard" element={<Leaderboard />} />
