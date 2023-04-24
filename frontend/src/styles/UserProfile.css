@@ -1,0 +1,34 @@
+@import "../App.css";
+
+#whole-profile {
+	display: flex;
+	justify-content: center;
+}
+
+#main-dashboard {
+	display : flex;
+}
+
+
+#hexagon-avatar {
+	height: 10em;
+	width : 8em;
+	background-image: url("../../public/assets/rocket.gif");
+	background-size: cover;
+	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+
+}
+
+#bio {
+	display: flex;
+	align-items: center;
+}
+
+#stats {
+	background-color: aliceblue;
+	border : solid 1px violet;
+}
+
+aside {
+	background-color: cornflowerblue;
+}
