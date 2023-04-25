@@ -1,14 +1,49 @@
 h1{
     background-color: white;
+    text-transform: uppercase;
     margin : 15px;
     padding: 15px;
+    display: flex;
+    justify-content: center;
     
 }
-.faq{
+.faq 
+{
     background-color: white;
     margin : 15px;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+    position: relative;
+    font-size: 20px;
+    padding-right: 80px;
+    transition: all 0.4s ease;
     
+}
+.faq::after{
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    transition: all 0.2s ease;}
+
+.symbol{
+    position: absolute;
+    top: 15%;
+    right: 10px;
+
+}
+
+.background{
+    background-color: white;
+    height : 90vh;
+	width: 100%;
+}
+
+.answer{
+    font-size: smaller;
+    font-weight: lighter;
+    text-align: justify;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    margin-top: 15px;
 }

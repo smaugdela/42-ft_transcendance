@@ -4,20 +4,21 @@ import "../styles/FAQ.css"
 interface FaqItem{
   question :string;
   answer: string;
-  open: boolean;
-}
 
+}
 
 const faqs: FaqItem[] = [
   {
-    question: 'How to ban a friend?',
-    answer: 'kill him/her',
-    open: false,
+    question: 'How to block orremove a friend ?',
+    answer: 'Click the name of the friend you want to remove or block. Select BLOCK or UNFRIEND, and then click to confirm.',
   },
   {
-    question: 'How to play?',
+    question: 'How to play ?',
     answer: 'with your brain',
-    open: false,
+  },
+  {
+    question: 'Blabloubli ?',
+    answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra lorem eu dolor rhoncus, at scelerisque ligula gravida. Sed porta id mi sit amet convallis. Etiam iaculis massa sit amet lacus blandit sodales. Nulla ultrices velit a diam placerat congue. Pellentesque iaculis, ipsum quis eleifend dapibus, est dui eleifend ante, quis fermentum mi ligula quis nisl. Ut et ex dui. Integer id venenatis quam.',
   },
 ];
 
@@ -30,20 +31,23 @@ const FAQ: React.FC = () => {
     else {
       setActiveIndex(index);
     }
+  
   };
     return (
-      <div >
+      <div className='background'>
         <h1>Frequently Asked Questions</h1>
         <div >
           {faqs.map((faq, index) => (
             <div key={index}>
-              <h2 className='faq' onClick={() => toggleActiveIndex(index)}>
-                {faq.question} {activeIndex === index ? '-' : '+'}
-              {activeIndex === index && <p>{faq.answer}</p>} </h2>
+              <h2 className='faq ' onClick={() => toggleActiveIndex(index)}>
+                {faq.question} 
+                <div className='symbol'>{activeIndex === index ? '-' : '+'}</div>
+                {activeIndex == index && <p className='answer'>{faq.answer}</p>} 
+              </h2>
             </div>
-        
-      ))}</div>
-    </div>
+      ))}
+        </div>
+      </div>
     );
   }
   
