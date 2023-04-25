@@ -1,6 +1,6 @@
 import "../styles/UserProfile.css"
-import { IUser, users } from "../data";
-import { Component, useEffect, useState } from 'react';
+// import { IUser, users } from "../data";
+// import { Component, useEffect, useState } from 'react';
 
 export function UserProfile() {
 	return (
