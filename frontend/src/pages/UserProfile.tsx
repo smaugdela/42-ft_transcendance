@@ -1,6 +1,10 @@
 import "../styles/UserProfile.css"
 // import { IUser, users } from "../data";
-// import { Component, useEffect, useState } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faUserPlus, faBan, faComment } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faUserPlus);
 
 export function UserProfile() {
 	return (
@@ -10,22 +14,40 @@ export function UserProfile() {
 					<article id="bio">
 						<div id="hexagon-avatar"></div>
 						<div className="user-infos">
-							<span>Marinozaure</span> 
-							<span>ONLINE</span>
-							<br />
-							<button>+</button>
-							<button>🛇</button>
-							<button>✉</button>
+							<div className="titles">
+								<h2>Marinozaure</h2>
+								<h1 id="status">ONLINE</h1>
+							</div>
+							
+							<button><FontAwesomeIcon icon={faUserPlus} /></button>
+							<button><FontAwesomeIcon icon={faBan} /></button>
+							<button><FontAwesomeIcon icon={faComment} /></button>
+							<h5>Member since April 25, 2023</h5>
 						</div>
 					</article>
-					<div id="separation"></div>
-					<article>Most importants stats</article>
-					<article>Achievements</article>
+					<article>
+						<h1>Bio</h1>
+
+					</article>
+					<hr />
+					<article>
+						<h1>Most importants stats</h1>
+					</article>
+					<hr />
+					<article>
+						<h1>Achievements</h1>
+
+					</article>
 				</div>
-				<div id="stats">Stats column</div>
+				<div id="stats">
+					<h1>Stats column</h1>
+				</div>
 			</section>
 			<aside>
-				Past Matches
+				<h1>Past Matches</h1>
+				<div>1 match</div>
+				<div>1 match</div>
+				<div>1 match</div>
 			</aside>
 
 		</div>

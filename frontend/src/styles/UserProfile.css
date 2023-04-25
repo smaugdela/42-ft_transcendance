@@ -3,20 +3,30 @@
 #whole-profile {
 	display: flex;
 	justify-content: center;
+	flex: 2 auto;
 }
 
 #main-dashboard {
 	display : flex;
+	justify-content: space-between;
+	background-color: rgb(217, 222, 225);
+	padding : 1vw;
+	border-radius: 20px;
+	margin : 2vw;
 }
 
+#main-dashboard > div:first-child {
+	
+	opacity: 80%;
+}
 
 #hexagon-avatar {
-	height: 10em;
+	height: 9em;
 	width : 8em;
-	background-image: url("../../public/assets/rocket.gif");
+	background-image: url("../../public/assets/jinx.png");
 	background-size: cover;
 	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
-
+	margin : 1em;
 }
 
 #bio {
@@ -24,11 +34,52 @@
 	align-items: center;
 }
 
+.titles {
+	display : flex;
+	align-items: center;
+}
+
+.titles > h2:first-child {
+	font-size: 1.75em;
+	margin-right: 0.7vw;
+}
+
+#status {
+	background-color: rgb(27, 102, 27);
+	border-radius: 20px;
+	color: rgb(84, 187, 84);
+	text-align: center;
+	padding: 0.5vw 1vh;
+	width: 5vw;
+	margin-bottom: 1vh;
+}
+
 #stats {
 	background-color: aliceblue;
-	border : solid 1px violet;
+	border-radius : 20px;
+	padding: 1vw;
+}
+
+.user-infos > button {
+	all: unset;
+	cursor: pointer;
+	color: rgb(131, 131, 131);
+	padding-right: 1vw;
+}
+
+.user-infos > button:hover {
+	all: unset;
+	cursor: pointer;
+	color: rgb(30, 28, 30);
+	padding-right: 1vw;
 }
 
 aside {
-	background-color: cornflowerblue;
+	margin : 2vw 4vw;
+}
+aside > div {
+	background-color: rgb(255, 255, 255);
+	border-radius: 20px;
+	width : 100%;
+	margin: 0.5em;
 }
