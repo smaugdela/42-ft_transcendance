@@ -9,7 +9,7 @@ import Home from './pages/Home'
 import Navbar from './components/Navbar';
 import Settings from './pages/Settings';
 import Chat from './components/Chat';
-// import Header from './components/Header';
+import Header from './components/Header';
 
 function App() {
 
@@ -30,14 +30,8 @@ function App() {
 
   return (
     <div id='app' className={`App ${theme}`}>
-
-    {/* <Header 
-      theme={theme} 
-      toggleTheme={toggleTheme}
-    /> */}
-
-
 	<Navbar theme={theme} toggleTheme={toggleTheme}/>
+
     <section id="main-content">
       {/* <div id="menu"></div> */}
     <Routes>

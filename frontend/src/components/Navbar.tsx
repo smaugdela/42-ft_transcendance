@@ -9,6 +9,7 @@ import * as GiIcons from 'react-icons/gi';
 import * as FiIcons from 'react-icons/fi';
 import { ChangeEventHandler } from 'react';
 import Avatar from './Avatar';
+import Header from './Header';
 
 const SidebarData = [
   {
@@ -44,29 +45,31 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 
   return (
     <>
-      <IconContext.Provider value={{ color: '#fff' }}>
-        <div className='navbar'>
-          	<Link to='#' className='menu-bars'>
-            	<CgIcons.CgMenuLeft onClick={showSidebar} />
-          	</Link>
+	        <div className='navbar'>
+			<label className="nav-elements" id="burger-menu" htmlFor="check"  >
+				<input type="checkbox" id="check" onClick={showSidebar}/> 
+				<span></span>
+				<span></span>
+				<span></span>
+			</label>
 			<div className="navbar__center">
 				<Link to="/" className="navbar__title">
 					PONG GAME
 				</Link>
+				{/* {
+					<div className="title">
+						<h2 className="text_shadow"> Pong Game </h2>
+					</div>
+				} */}
 			</div>
 			<div className="nav-elements nav-right-side">
 				<Avatar />
 			</div>
 
-        </div>
-        
+        </div> 
+	
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
-            <li className='navbar-toggle'>
-              <Link to='#' className='menu-bars'>
-                <AiIcons.AiOutlineClose />
-              </Link>
-            </li>
             {SidebarData.map((item, index) => {
               return (
                 <li key={index} className={item.cName}>
@@ -82,8 +85,7 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 				<input type="checkbox" id="checkbox" checked={props.theme === 'kawaii'} onChange={props.toggleTheme}/>
 				<div className="slider round"></div>
 		  </label>
-        </nav>
-      </IconContext.Provider>
+        </nav> 
     </>
   );
 }

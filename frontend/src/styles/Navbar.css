@@ -1,8 +1,8 @@
 @import '../App.css';
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Pacifico&display=swap');
 .navbar {
-    background-color: var(--heading-color);
-	
-    height: 80px;
+    background-color:var(--heading-color);	
+    /* height: 80px; */
     display: flex;
     justify-content:space-between;
     align-items: center;
@@ -10,20 +10,22 @@
   }
 
 .menu-bars {
-  /* margin-left: 1rem; */
+  margin-left: 1rem;
   font-size: 2rem;
-  background: none;
+  background: red;
   transform: scale(1.5);
 }
 
+/* Menu qui apparait quand tu clique sur la croix  */
+
 .nav-menu {
-  background-color: var(--sides-color);
+  background-color: rgb(188, 124, 124,.7);
   width: 250px;
-  height: 100vh;
+  height: 902px;
   display: flex;
   justify-content: center;
   position: fixed;
-  top: 0;
+  top: 20;
   left: -100%;
   transition: 850ms;
   z-index: 100;
@@ -46,7 +48,7 @@
   
   .nav-text a {
     text-decoration: none;
-    color: #cfa6a6;
+    color: #ffffff;
     font-size: 18px;
     width: 95%;
     height: 100%;
@@ -56,14 +58,10 @@
     border-radius: 4px;
   }
   
-  .nav-text a:hover {
-    background-color: #1b59a0;
-  }
-  
 .nav-menu-items {
   width: 100%;
 }
-
+/* 
 .navbar-toggle {
   background-color: #291888;
   width: 100%;
@@ -71,24 +69,38 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-}
+} */
 
 /* span {
   margin-left: 16px;
 } */
 
 .navbar__title{
-  font-size: 1.5rem;
+  align-items: center;
+  font-family: 'Bungee', cursive;
+  font-size: 3rem;
   font-weight: bold;
   color: rgb(244, 192, 218);
   text-decoration: none;
-}
+  display: flex;
+  align-content: center;
+  justify-content: center;
+} 
 
-.navbar__center {
+/* DEBUT  */
+
+
+
+/* FIN  */
+
+
+/* .navbar__center {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+}  */
+
+/* Position du bouton switch mode  */
 
 #test {
 	position: relative;
@@ -147,3 +159,59 @@
 	border-radius: 50%;
 	}
 	
+	/* Burger menu  */
+
+label{
+	display: flex;
+	flex-direction: column;
+	width: 70px;
+	cursor: pointer;
+	position:flex;
+	left: 0;
+	top: 20;
+}
+
+label span{
+	background: white;
+	border-radius: 5px;
+	height: 7px;
+	margin: 7px;
+	transform: .4s cubic-bezier(0.68, -0.6, 0.32,1.6);
+}
+
+/* Les barres du burger menu  */
+
+span:nth-of-type(1){
+	width: 50%;
+}
+
+span:nth-of-type(2){
+	width: 100%;
+}
+
+span:nth-of-type(3){
+	width: 75%;
+}
+
+/* Display et rotation pour former la croix  */
+
+input[type="checkbox"]{
+	display:none;
+}
+
+input[type="checkbox"]:checked ~ span:nth-of-type(1){
+	transform-origin:bottom;
+	transform:rotateZ(45deg) translate(8px,0px)
+}
+
+input[type="checkbox"]:checked ~ span:nth-of-type(2){
+	transform-origin:top;
+	transform:rotateZ(-45deg)
+}
+
+input[type="checkbox"]:checked ~ span:nth-of-type(3){
+	transform-origin:bottom;
+	width:50%;
+	transform:translate(30px,-11px) rotateZ(45deg)
+}
+

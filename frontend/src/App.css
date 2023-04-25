@@ -5,7 +5,7 @@
 	--font-type : 'Share Tech', sans-serif;
 	--font-color : pink;
 	--bg-image: url("../public/assets/lightsky.jpg");
-	--sides-color : #3b3735;
+	--sides-color : #f7f7f7;
 	--heading-color: rgb(188, 124, 124);
 	/* --home-image : url("https://media1.ledevoir.com/images_galerie/nwd_132675_102056/image.jpg"); */
 
@@ -41,12 +41,12 @@
 }
 
 body {
-	margin : 0;
-	padding: 0;
+	/* margin : 0;
+	padding: 0; */
 	height: 100%;
   	width: 100%;
 	margin: auto;
-	position: absolute;
+	position: flex;
 	border-radius: 3px;
 }
 
@@ -59,7 +59,7 @@ body {
 }
 
 #play-screen {
-	background-position: center;
+	/* background-position: center; */
 	flex: 3 auto;
 	background-size:cover;
 	box-sizing: border-box;
@@ -78,7 +78,7 @@ body {
 }
 
 /* try to moove the bg  */
-/* 
+
 @-webkit-keyframes slidein {
 	from {background-position: top; background-size:3000px; }
 	to {background-position: -100px 0px;background-size:2750px;}
@@ -88,7 +88,7 @@ body {
 	from {background-position: top;background-size:3000px; }
 	to {background-position: -100px 0px;background-size:2750px;}
 	
-	} */
+	} 
 
 #play-screen > div {
 	margin-top: 10%;
