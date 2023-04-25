@@ -1,7 +1,7 @@
 import "../styles/FriendsList.css"
 import { IUser, users } from "../data";
 import { useEffect, useState } from 'react';
-import Fuse from 'fuse.js';
+import Fuse from "fuse.js";
 
 export function SearchBar() {
 

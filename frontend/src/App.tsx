@@ -3,13 +3,14 @@ import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FriendsList } from './pages/FriendsList';
 import { Leaderboard } from './pages/Leaderboard';
+import { UserProfile } from './pages/UserProfile';
 import Login from './pages/Login';
 import './App.css';
 import Home from './pages/Home'
 import Navbar from './components/Navbar';
 import Settings from './pages/Settings';
 import Chat from './components/Chat';
-// import Header from './components/Header';
+
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/leaderboard" element={<Leaderboard />} />
       <Route path="/friends" element={<FriendsList />} />
+      <Route path="/user" element={<UserProfile />} />
 	  <Route path='/settings' element={<Settings />} />
 	  <Route path='/login' element={<Login />} />
     </Routes>
