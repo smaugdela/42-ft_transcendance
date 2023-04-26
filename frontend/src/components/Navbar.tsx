@@ -54,13 +54,8 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 			</label>
 			<div className="navbar__center">
 				<Link to="/" className="navbar__title">
-					PONG GAME
+					CYBERPONG
 				</Link>
-				{/* {
-					<div className="title">
-						<h2 className="text_shadow"> Pong Game </h2>
-					</div>
-				} */}
 			</div>
 			<div className="nav-elements nav-right-side">
 				<Avatar />
