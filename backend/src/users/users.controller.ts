@@ -30,7 +30,6 @@ export class UsersController {
 	});
   }
 
-
   @Post()
   async createUser(@Body() newUser: UserDto) {
     console.log(newUser);
@@ -45,7 +44,7 @@ export class UsersController {
     console.log('New User Created!');
   }
 
-//   @Put()
-//   @Delete()
+//	@Put()
+//	@Delete()
 
 }

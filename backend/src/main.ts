@@ -18,12 +18,12 @@ async function pushToDB_User (path: string)
 				nickname: element.nickname,
 				mailAddress: element.mailAddress,
 				coalition: element.coalition,
-		  },}).catch( (error) => console.log(error) );
+		  },});
 	});
 }
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
+	const app = await NestFactory.create(AppModule, {logger: console,});
 
 	pushToDB_User('../database/user_data.json'); // Use this only to load test data
 
