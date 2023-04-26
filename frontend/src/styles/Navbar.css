@@ -4,12 +4,12 @@
     background-color:var(--heading-color);
 	/* background-image: var(--header-image); */
     height: 80px;
-	width: 200%;
-	position:relative;
+	width: 100%;
+	position : fixed;
     display: flex;
     justify-content:space-between;
     align-items: center;
-    /* padding: 0 2rem; */
+	z-index : 150;
   }
 
 /* Menu qui apparait quand tu clique sur la croix  */

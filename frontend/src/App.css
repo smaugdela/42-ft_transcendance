@@ -21,6 +21,8 @@
 	--font-type : 'Licorice', cursive;;
 	--font-color: #6d6875;
 	--bg-color: #f7e7da;
+	--bg-image: url("../public/assets/cute.jpg");
+
 	--sides-color : #edd1df;
 	--heading-color: #daebfa;
 	--home-image : url("../public/assets/cutie.png");
@@ -56,32 +58,34 @@
 } */
 
 #main-content {
-	background: var(--bg-image); 
-	display: flex;
-	flex-direction: row;
-	justify-content: space-evenly;
-	height: 100vh;
-	width: 100%;
+	background: var(--bg-image);
+	width : 100%;
 }
 
-  #play-screen {
-	background-position: center;
-	flex: 3 auto;
-	background-size:cover; 
-	box-sizing: border-box;
+#page-struct {
+	display: flex;
+	justify-content: space-evenly;
+	height: 100vh;
+}
 
-	 -webkit-animation: slidein 100s; 
-	 animation: slidein 100s;
+#play-screen {
+background-position: center;
+flex: 3 auto;
+background-size:cover; 
+box-sizing: border-box;
 
-	-webkit-animation-fill-mode: forwards;
-	animation-fill-mode: forwards;
+	-webkit-animation: slidein 100s; 
+	animation: slidein 100s;
 
-	-webkit-animation-iteration-count: infinite;
-	animation-iteration-count: infinite;
+-webkit-animation-fill-mode: forwards;
+animation-fill-mode: forwards;
 
-	-webkit-animation-direction: alternate;
-	animation-direction: alternate;   
-  }
+-webkit-animation-iteration-count: infinite;
+animation-iteration-count: infinite;
+
+-webkit-animation-direction: alternate;
+animation-direction: alternate;   
+}
 
 /* try to moove the bg  */
 /* 
@@ -151,8 +155,4 @@ footer {
 	/* height: 8lvh; */
 	line-height: 70px;
 	font-size: 150%;
-	position: absolute;
-	bottom: 0; 
-	left: 0;
-	width: 100%;
 }
