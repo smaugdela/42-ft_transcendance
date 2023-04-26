@@ -4,12 +4,13 @@
 	display: flex;
 	justify-content: center;
 	flex: 2 auto;
+	margin : 0 6vw;
 }
 
 #main-dashboard {
 	display : flex;
 	justify-content: space-between;
-	background-color: rgb(217, 222, 225);
+	background-color: rgb(201, 211, 217);
 	padding : 1vw;
 	border-radius: 20px;
 	margin : 2vw;
@@ -75,11 +76,54 @@
 }
 
 aside {
-	margin : 2vw 4vw;
+	margin : 2vw 4vw 2vw 0;
+	width : 18vw;
 }
 aside > div {
 	background-color: rgb(255, 255, 255);
 	border-radius: 20px;
 	width : 100%;
 	margin: 0.5em;
+}
+
+.match-detail {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.match-detail > div {
+	margin : 0.2em;
+}
+
+.match-outcome {
+	text-align: center;
+	margin: 0.5vw 0;
+	width : 100%;
+	color: white;
+}
+
+.victory {
+	background-color: green;
+}
+
+.ace {
+	background-color: gold;
+}
+
+.defeat {
+	background-color: red;
+}
+
+.opponent {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.opponent img {
+	height: 10vh;
+	width : 5vw;
+	border-radius: 50%;
 }

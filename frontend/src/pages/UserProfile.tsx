@@ -26,7 +26,7 @@ export function UserProfile() {
 						</div>
 					</article>
 					<article>
-						<h1>Bio</h1>
+						<h1>Bio</h1> <span> Just a random bio</span>
 
 					</article>
 					<hr />
@@ -44,10 +44,58 @@ export function UserProfile() {
 				</div>
 			</section>
 			<aside>
-				<h1>Past Matches</h1>
-				<div>1 match</div>
-				<div>1 match</div>
-				<div>1 match</div>
+				<h1>Match History (last 3)</h1>
+				<div>
+					<h5>24 avril 2023 22h48 - 6''03</h5>
+					<h4 className="match-outcome defeat"> DEFEAT !</h4>
+					<div className="match-detail">
+						<div className="opponent">
+							<img src="/assets/jinx.png" alt="av" />
+							<h4>Marinozaure</h4>
+						</div>
+						<div>
+							<h2>1 - 2</h2>
+						</div>
+						<div className="opponent">
+							<img src="/assets/temp.png" alt="av2" />
+							<h4>John</h4>
+						</div>
+					</div>
+				</div>
+				<div>
+				<h5>22 avril 2023 19h36 - 3''22</h5>
+				<h4 className="match-outcome victory"> VICTORY !</h4>
+					<div className="match-detail">
+						<div className="opponent">
+							<img src="/assets/jinx.png" alt="av" />
+							<h4>Marinozaure</h4>
+						</div>
+						<div>
+							<h2>3 - 2</h2>
+						</div>
+						<div className="opponent">
+							<img src="/assets/tmp.png" alt="av2" />
+							<h4>Krug</h4>
+						</div>
+					</div>
+				</div>
+				<div>
+				<h5>21 avril 2023 14h26 - 2''14</h5>
+				<h4 className="match-outcome ace"> ACE !</h4>
+					<div className="match-detail">
+						<div className="opponent">
+							<img src="/assets/jinx.png" alt="av" />
+							<h4>Marinozaure</h4>
+						</div>
+						<div>
+							<h2>2 - 0</h2>
+						</div>
+						<div className="opponent">
+							<img src="/assets/avatar3.png" alt="av2" />
+							<h4>Caitlyn</h4>
+						</div>
+					</div>
+				</div>
 			</aside>
 
 		</div>
