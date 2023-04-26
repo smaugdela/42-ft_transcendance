@@ -1,31 +1,28 @@
 @import '../App.css';
 @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Pacifico&display=swap');
 .navbar {
-    background-color:var(--heading-color);	
-    /* height: 80px; */
+    background-color:var(--heading-color);
+	/* background-image: var(--header-image); */
+    height: 80px;
+	width: 200%;
+	position:relative;
     display: flex;
     justify-content:space-between;
     align-items: center;
-    padding: 0 2rem;
+    /* padding: 0 2rem; */
   }
-
-.menu-bars {
-  margin-left: 1rem;
-  font-size: 2rem;
-  background: red;
-  transform: scale(1.5);
-}
 
 /* Menu qui apparait quand tu clique sur la croix  */
 
 .nav-menu {
-  background-color: rgb(188, 124, 124,.7);
+  background-image: var(--sides-color);
+  opacity: 0.70; 
   width: 250px;
   height: 902px;
   display: flex;
   justify-content: center;
   position: fixed;
-  top: 20;
+  top: 9%;
   left: -100%;
   transition: 850ms;
   z-index: 100;
@@ -61,45 +58,82 @@
 .nav-menu-items {
   width: 100%;
 }
-/* 
-.navbar-toggle {
-  background-color: #291888;
-  width: 100%;
-  height: 80px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-} */
+/* START NEON  */
 
-/* span {
-  margin-left: 16px;
-} */
+.navbar__title {
+	font-family: 'Monoton', cursive;
+	font-size:50px;
+	border: none;
+	color: rgba(255,255,255,0.6);
+	text-decoration: none;
+	text-align: center;
+	text-shadow: 
+	   1px 5px 4px rgba(0,0,0,.3), 
+	  0 0 2px rgba(255,255,255,1), 
+	  0 0 10px rgba(255,255,255,1), 
+	  0 0 20px rgba(255,255,255,1), 
+	  0 0 30px rgba(255,255,255,1), 
+	  0 0 40px #ff00de, 
+	  0 0 70px #ff00de, 
+	  0 0 80px #ff00de,
+	  0 0 100px #ff00de;
+	  
+  }
+  
+  
+  .navbar__title span{
+	animation: blink .3s infinite alternate;
+  }
+  
+   .navbar__title span.delay{
+	animation-duration:6s;
+	animation-delay: 2s;
+	animation-direction: alternate;
+	/* cubic-bezier(0.5, 0.2, 0.3, 1.0) */
+  }
+  
+  @keyframes blink {
+	0%   {}
+	50%  {}
+	60%{
+	  text-shadow: 
+		0 0 2px rgba(255, 255, 255, .1), 
+		0 0 10px rgba(255, 255, 255, .4);
+	  
+	  text-stroke: 2px rgba(255,255,255,0.05);
+	}
+	70%{
+	  text-shadow: 
+		0 0 2px rgba(255,255,255,1), 
+		0 0 10px rgba(255,255,255,1), 
+		0 0 20px rgba(255,255,255,1), 
+		0 0 30px rgba(255,255,255,1), 
+		0 0 40px #ff00de, 
+		0 0 70px #ff00de, 
+		0 0 80px #ff00de,
+		0 0 100px #ff00de;
+	}
+	80%{
+	  text-shadow: 
+		0 0 2px rgba(255, 255, 255, .1), 
+		0 0 10px rgba(255, 255, 255, .4);
+	  
+	  text-stroke: 2px rgba(255,255,255,0.05);
+	}
+	100% { 
+	  text-shadow: 
+		0 0 2px rgba(255,255,255,1), 
+		0 0 10px rgba(255,255,255,1), 
+		0 0 20px rgba(255,255,255,1), 
+		0 0 30px rgba(255,255,255,1), 
+		0 0 40px #ff00de, 
+		0 0 70px #ff00de, 
+		0 0 80px #ff00de,
+		0 0 100px #ff00de;
+	}
+  }
 
-.navbar__title{
-  align-items: center;
-  font-family: 'Bungee', cursive;
-  font-size: 3rem;
-  font-weight: bold;
-  color: rgb(244, 192, 218);
-  text-decoration: none;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-} 
-
-/* DEBUT  */
-
-
-
-/* FIN  */
-
-
-/* .navbar__center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}  */
-
+/* END NEON */
 /* Position du bouton switch mode  */
 
 #test {
@@ -166,9 +200,8 @@ label{
 	flex-direction: column;
 	width: 70px;
 	cursor: pointer;
-	position:flex;
-	left: 0;
-	top: 20;
+	position:relative;
+	transform: scale(0.7);
 }
 
 label span{
