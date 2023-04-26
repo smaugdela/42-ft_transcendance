@@ -10,7 +10,7 @@
 #main-dashboard {
 	display : flex;
 	justify-content: space-between;
-	background-color: rgb(201, 211, 217);
+	background-color: rgb(191, 191, 192);
 	padding : 1vw;
 	border-radius: 20px;
 	margin : 2vw;
@@ -28,6 +28,7 @@
 	background-size: cover;
 	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
 	margin : 1em;
+	background-position: top center;
 }
 
 #bio {
@@ -47,11 +48,11 @@
 
 #status {
 	background-color: rgb(27, 102, 27);
-	border-radius: 20px;
 	color: rgb(84, 187, 84);
-	text-align: center;
-	padding: 0.5vw 1vh;
-	width: 5vw;
+	border-radius: 20px;
+	
+	padding: 0.5rem 0.67rem;
+	width: 5rem;
 	margin-bottom: 1vh;
 }
 
@@ -59,6 +60,9 @@
 	background-color: aliceblue;
 	border-radius : 20px;
 	padding: 1vw;
+	width: 40%;
+	height: 60%;
+	margin-top: 2rem;
 }
 
 .user-infos > button {
@@ -77,19 +81,26 @@
 
 aside {
 	margin : 2vw 4vw 2vw 0;
-	width : 18vw;
+	width : 25%;
 }
 aside > div {
 	background-color: rgb(255, 255, 255);
 	border-radius: 20px;
 	width : 100%;
 	margin: 0.5em;
+	padding : 0.5rem;
+}
+
+.match-card h5 {
+	color:rgb(156, 155, 155);
+	font-weight: 400;
 }
 
 .match-detail {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	
 }
 
 .match-detail > div {
@@ -105,14 +116,25 @@ aside > div {
 
 .victory {
 	background-color: green;
+	background: -moz-linear-gradient(left, rgba(35,175,68,0) 0%, rgba(35,175,68,0.8) 15%, rgba(35,175,68,1) 19%, rgba(35,175,68,1) 20%, rgba(37,198,80,1) 50%, rgba(37,188,52,1) 80%, rgba(37,188,52,1) 81%, rgba(37,188,52,0.8) 85%, rgba(37,188,52,0) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, rgba(35,175,68,0) 0%,rgba(35,175,68,0.8) 15%,rgba(35,175,68,1) 19%,rgba(35,175,68,1) 20%,rgba(37,198,80,1) 50%,rgba(37,188,52,1) 80%,rgba(37,188,52,1) 81%,rgba(37,188,52,0.8) 85%,rgba(37,188,52,0) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, rgba(35,175,68,0) 0%,rgba(35,175,68,0.8) 15%,rgba(35,175,68,1) 19%,rgba(35,175,68,1) 20%,rgba(37,198,80,1) 50%,rgba(37,188,52,1) 80%,rgba(37,188,52,1) 81%,rgba(37,188,52,0.8) 85%,rgba(37,188,52,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0023af44', endColorstr='#0025bc34',GradientType=1 ); /* IE6-9 */
 }
 
 .ace {
-	background-color: gold;
+	background: -moz-linear-gradient(left, rgba(232,58,46,0) 0%, gold 15%, gold 19%, gold 20%, gold 50%, gold 80%, gold 81%, gold 85%, rgba(206,79,41,0) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, rgba(232,58,46,0) 0%,gold 15%,gold 19%,gold 20%,gold 50%,gold 80%,gold 81%,gold 85%,rgba(206,79,41,0) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, rgba(232,58,46,0) 0%,gold 15%,gold 19%,gold 20%,gold 50%,gold 80%,gold 81%,gold 85%,rgba(206,79,41,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00e83a2e', endColorstr='#00ce4f29',GradientType=1 ); /* IE6-9 */
 }
 
 .defeat {
-	background-color: red;
+	/* background-color: red; */
+	background: -moz-linear-gradient(left, rgba(232,58,46,0) 0%, rgba(232,58,46,0.8) 15%, rgba(232,58,46,1) 19%, rgba(232,58,46,1) 20%, rgba(216,61,41,1) 50%, rgba(206,79,41,1) 80%, rgba(206,79,41,1) 81%, rgba(206,79,41,0.8) 85%, rgba(206,79,41,0) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, rgba(232,58,46,0) 0%,rgba(232,58,46,0.8) 15%,rgba(232,58,46,1) 19%,rgba(232,58,46,1) 20%,rgba(216,61,41,1) 50%,rgba(206,79,41,1) 80%,rgba(206,79,41,1) 81%,rgba(206,79,41,0.8) 85%,rgba(206,79,41,0) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, rgba(232,58,46,0) 0%,rgba(232,58,46,0.8) 15%,rgba(232,58,46,1) 19%,rgba(232,58,46,1) 20%,rgba(216,61,41,1) 50%,rgba(206,79,41,1) 80%,rgba(206,79,41,1) 81%,rgba(206,79,41,0.8) 85%,rgba(206,79,41,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00e83a2e', endColorstr='#00ce4f29',GradientType=1 ); /* IE6-9 */
 }
 
 .opponent {
@@ -123,7 +145,7 @@ aside > div {
 }
 
 .opponent img {
-	height: 10vh;
-	width : 5vw;
+	height: 5rem;
+	max-width: 5rem;
 	border-radius: 50%;
 }
