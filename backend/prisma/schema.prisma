@@ -7,25 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model	User {
-	id				Int			@id @default(autoincrement())
-	avatar			String
-	nickname		String		@unique
-	mailAddress		String?		@unique
-	coalition		String
-	nbGames			Int			@default(0)
-	score			Int			@default(0)
-	rank			Int			@default(0)
-	isLogged		Boolean		@default(false)
+model User {
+  id          Int     @id @default(autoincrement())
+  avatar      String
+  nickname    String  @unique
+  mailAddress String? @unique
+  coalition   String
+  nbGames     Int     @default(0)
+  score       Int     @default(0)
+  rank        Int     @default(0)
+  isLogged    Boolean @default(false)
 
-	friendsList		User[]		@relation("friends")
-	friendsRelation	User[]		@relation("friends")	// Used to store the many-to-many relation.
-	blockList		User[]		@relation("blocked")
-	blockedFrom		User[]		@relation("blocked")	// Used to store the many-to-many relation.
-	pendingList		User[]		@relation("pendings")
-	pendingFrom		User[]		@relation("pendings")	// Used to store the many-to-many relation.
+  friendsList     User[] @relation("friends")
+  friendsRelation User[] @relation("friends") // Used to store the many-to-many relation.
+  blockList       User[] @relation("blocked")
+  blockedFrom     User[] @relation("blocked") // Used to store the many-to-many relation.
+  pendingList     User[] @relation("pendings")
+  pendingFrom     User[] @relation("pendings") // Used to store the many-to-many relation.
 
-	isActive		Boolean		@default(false)
+  isActive Boolean @default(false)
 
-	@@map("users")
+  @@map("users")
 }

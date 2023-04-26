@@ -18,7 +18,7 @@ async function pushToDB_User (path: string)
 				nickname: element.nickname,
 				mailAddress: element.mailAddress,
 				coalition: element.coalition,
-		  },});
+		  },}).catch( (error) => console.log(error) );
 	});
 }
 
