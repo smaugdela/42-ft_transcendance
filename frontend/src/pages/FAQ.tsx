@@ -9,7 +9,7 @@ interface FaqItem{
 
 const faqs: FaqItem[] = [
   {
-    question: 'How to block orremove a friend ?',
+    question: 'How to block or remove a friend ?',
     answer: 'Click the name of the friend you want to remove or block. Select BLOCK or UNFRIEND, and then click to confirm.',
   },
   {
@@ -34,14 +34,14 @@ const FAQ: React.FC = () => {
   
   };
     return (
-      <div className='background'>
+      <div className='background_faq'>
         <h1>Frequently Asked Questions</h1>
         <div >
           {faqs.map((faq, index) => (
             <div key={index}>
               <h2 className='faq ' onClick={() => toggleActiveIndex(index)}>
                 {faq.question} 
-                <div className='symbol'>{activeIndex === index ? '-' : '+'}</div>
+                <span className='symbol'>{activeIndex === index ? '-' : '+'}</span>
                 {activeIndex == index && <p className='answer'>{faq.answer}</p>} 
               </h2>
             </div>
