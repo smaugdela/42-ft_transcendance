@@ -1,5 +1,5 @@
 .navbar {
-    background-color: #291888;
+    background-color: #fdfdff;
     height: 80px;
     display: flex;
     justify-content:space-between;
@@ -18,7 +18,7 @@
 }
 
 .nav-menu {
-  background-color: #291888;
+  background-color: #ffffff;
   width: 250px;
   height: 100vh;
   display: flex;
@@ -47,7 +47,7 @@
   
   .nav-text a {
     text-decoration: none;
-    color: #f5f5f5;
+    color: #0f0f0f;
     font-size: 18px;
     width: 95%;
     height: 100%;
@@ -81,7 +81,7 @@ span {
 .navbar__title{
   font-size: 1.5rem;
   font-weight: bold;
-  color: white;
+  color: rgb(11, 11, 11);
   text-decoration: none;
 }
 
