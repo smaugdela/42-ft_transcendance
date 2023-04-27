@@ -38,12 +38,12 @@ const teamMembers: Member[] = [
 function AboutUs() {
   return (
     <div className='background_aboutus'>
-    <section className='aboutus'>
-      <h1>Who are we ?</h1>
-      <p>We are the super team that created the best game online ever </p>
-    </section>
-    <section className='container'>
-      {teamMembers.map((member, index) => (
+      <section className='aboutus'>
+        <h1>Who are we ?</h1>
+        <p>We are the super team that created the best game online ever </p>
+      </section>
+      <section className='container'>
+       {teamMembers.map((member, index) => (
       <div key={index}>
         <img src={member.image} alt={member.name} />
         <h2>{member.name}</h2>
