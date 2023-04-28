@@ -10,111 +10,115 @@ export function UserProfile() {
 	return (
 		<div id="whole-profile">
 			<section id="main-dashboard">
-				<div>
-					<article id="bio">
-						<div id="hexagon-avatar"></div>
-						<div className="user-infos">
-							<div className="titles">
-								<h2>marinozaure</h2>
-								<h1 id="status">ONLINE</h1>
+				<div id="top-dashboard">
+					<div>
+						<article id="bio">
+							<div id="hexagon-avatar"></div>
+							<div className="user-infos">
+								<div className="titles">
+									<h2>marinozaure</h2>
+									<h1 id="status">ONLINE</h1>
+								</div>
+								
+								<button><FontAwesomeIcon icon={faUserPlus} /></button>
+								<button><FontAwesomeIcon icon={faBan} /></button>
+								<button><FontAwesomeIcon icon={faComment} /></button>
+								<h5>Member since April 25, 2023</h5>
 							</div>
-							
-							<button><FontAwesomeIcon icon={faUserPlus} /></button>
-							<button><FontAwesomeIcon icon={faBan} /></button>
-							<button><FontAwesomeIcon icon={faComment} /></button>
-							<h5>Member since April 25, 2023</h5>
-						</div>
-					</article>
-					<article>
-						<h1>Bio</h1> <span> Just a random bio</span>
+						</article>
+						<article>
+							<h1>Bio</h1> <span> Just a random bio</span>
 
-					</article>
-					<hr />
-					<article id="main-stats">
-						<div className="one-stat">
-							<div>
-								<FontAwesomeIcon icon={faDice} className="fa-icon"/>
+						</article>
+						<hr />
+						<article id="main-stats">
+							<div className="one-stat">
+								<div>
+									<FontAwesomeIcon icon={faDice} className="fa-icon"/>
+								</div>
+								<div  className="one-stat_txt">
+									<h2>12</h2>
+									<h5>Total Matches</h5>
+								</div>
+								
 							</div>
-							<div  className="one-stat_txt">
-								<h2>12</h2>
-								<h5>Total Matches</h5>
+							<div className="one-stat">
+								<div>
+									<FontAwesomeIcon icon={faTrophy} className="fa-icon"/>
+								</div>
+								<div className="one-stat_txt">
+									<h2>9</h2>
+									<h5>Victories</h5>
+								</div>
+								
 							</div>
-							
-						</div>
-						<div className="one-stat">
-							<div>
-								<FontAwesomeIcon icon={faTrophy} className="fa-icon"/>
+							<div className="one-stat">
+								<div>
+									<FontAwesomeIcon icon={faHeart} className="fa-icon"/>
+								</div>
+								
+								<div  className="one-stat_txt">
+									<h2>3</h2>
+									<h5>Friends</h5>
+								</div>
 							</div>
-							<div className="one-stat_txt">
-								<h2>9</h2>
-								<h5>Victories</h5>
-							</div>
-							
-						</div>
-						<div className="one-stat">
-							<div>
-								<FontAwesomeIcon icon={faHeart} className="fa-icon"/>
-							</div>
-							
-							<div  className="one-stat_txt">
-								<h2>3</h2>
-								<h5>Friends</h5>
-							</div>
-						</div>
-	
-					</article>
-					<hr />
-					<article>
+		
+						</article>
+						<hr />
+					</div>
+					<div id="stats">
+						<h1>Stats</h1>
+					</div>
+				</div>
+				<article>
 						<h1>Achievements</h1>
-						<div>
-							<h3>Baby steps</h3>
-							<h4>Played the game for the first time</h4>
-						</div>
-						<div>
-							<h3>Veteran</h3>
-							<h4>Played 10 games</h4>
-						</div>
-						<div>
-							<h3>Easy peasy lemon squeezy</h3>
-							<h4>Won 3 games in a row</h4>
-						</div>
-						<div>
-							<h3>It's my lil bro playing</h3>
-							<h4>Lost 3 games in a row</h4>
-						</div>
-						<div>
-							<h3>Social butterfly</h3>
-							<h4>Added 3 friends</h4>
-						</div>
-						<div>
-							<h3>Influencer</h3>
-							<h4>Added 10 friends</h4>
-						</div>
-						<div>
-							<h3>Cosmetic change</h3>
-							<h4>Updated their profile picture once</h4>
-						</div>
-						<div>
-							<h3>Existential crisis</h3>
-							<h4>Changed their nickname</h4>
-						</div>
-						<div>
-							<h3>Safety first</h3>
-							<h4>Activated the 2FA authentification</h4>
-						</div>
-						<div>
-							<h3>My safe place</h3>
-							<h4>Created their first channel</h4>
-						</div>
-						<div>
-							<h3>Pay to Win</h3>
-							<h4>Donated to have an in-game advantage</h4>
+						<div className="all-achievements">
+							<div className="one-achievement">
+								<h3>Baby steps</h3>
+								<h4>Played the game for the first time</h4>
+							</div>
+							<div  className="one-achievement">
+								<h3>Veteran</h3>
+								<h4>Played 10 games</h4>
+							</div>
+							<div  className="one-achievement">
+								<h3>Easy peasy lemon squeezy</h3>
+								<h4>Won 3 games in a row</h4>
+							</div>
+							<div  className="one-achievement">
+								<h3>It's my lil bro playing</h3>
+								<h4>Lost 3 games in a row</h4>
+							</div>
+							<div  className="one-achievement">
+								<h3>Social butterfly</h3>
+								<h4>Added 3 friends</h4>
+							</div>
+							<div className="one-achievement">
+								<h3>Influencer</h3>
+								<h4>Added 10 friends</h4>
+							</div>
+							<div  className="one-achievement">
+								<h3>Cosmetic change</h3>
+								<h4>Updated their profile picture once</h4>
+							</div>
+							<div  className="one-achievement">
+								<h3>Existential crisis</h3>
+								<h4>Changed their nickname</h4>
+							</div>
+							<div  className="one-achievement">
+								<h3>Safety first</h3>
+								<h4>Activated the 2FA authentification</h4>
+							</div>
+							<div  className="one-achievement">
+								<h3>My safe place</h3>
+								<h4>Created their first channel</h4>
+							</div>
+							<div  className="one-achievement">
+								<h3>Pay to Win</h3>
+								<h4>Donated to have an in-game advantage</h4>
+							</div>
 						</div>
 					</article>
-				</div>
-				<div id="stats">
-					<h1>Stats</h1>
-				</div>
 			</section>
 			<aside>
 				<h1>Match History (last 3)</h1>
