@@ -15,25 +15,25 @@ const SidebarData = [
   {
     title: 'Home',
     path: '/',
-    icon: <AiIcons.AiFillHome />,
+	image:'/assets/home.png',
     cName: 'nav-text'
   },
   {
-    title: 'Leaderboard',
+    title: ' Leaderboard',
     path: '/leaderboard',
-    icon: <GiIcons.GiRank3 />,
+    // icon: <GiIcons.GiRank3 />,
     cName: 'nav-text'
   },
   {
-    title: 'Friends',
+    title: ' Friends',
     path: '/friends',
     icon: <FaIcons.FaUsers />,
     cName: 'nav-text'
   },
   {
-    title: 'Settings',
+    title: ' Settings',
     path: '/settings',
-    icon: <FiIcons.FiSettings />,
+    // icon: <FiIcons.FiSettings />,
     cName: 'nav-text'
   },
 ];
@@ -66,11 +66,11 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
             {SidebarData.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
+				return (
+					<li key={index} className={item.cName}>
                   <Link to={item.path}>
-                    {item.icon}
-                    <span>{item.title}</span>
+                    <img className='item_image' src={item.image}/>
+                    <span className='item_title'> {item.title}</span>
                   </Link>
                 </li>
               );

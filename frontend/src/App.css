@@ -3,9 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Pacifico&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
 
-
 .dark {
 	--font-type : 'Share Tech', sans-serif;
+	/* --font-type: 'Monoton', cursive; */
 	--font-color : rgb(255, 255, 255);
 	--bg-image: url("../public/assets/cyberpunk.jpg");
 	--sidebar-image: ;
