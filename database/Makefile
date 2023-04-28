@@ -14,4 +14,4 @@ fclean:
 	@docker volume ls
 	@docker network ls
 
-re:	up fclean
+re:	down fclean up

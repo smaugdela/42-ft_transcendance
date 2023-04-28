@@ -2,8 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { PrismaClient } from '@prisma/client';
 import * as fs from 'fs';
+import { ValidationPipe } from '@nestjs/common';
 
 let port = Number(process.env.BACKEND_PORT);
+
 const prisma = new PrismaClient();
 
 async function pushToDB_User (path: string)
@@ -18,6 +20,7 @@ async function pushToDB_User (path: string)
 				nickname: element.nickname,
 				mailAddress: element.mailAddress,
 				coalition: element.coalition,
+				password: "default",
 		  },}).catch( (error) => console.log(error) );
 	});
 }
@@ -32,7 +35,10 @@ async function bootstrap() {
 	if (Number.isNaN(port) == true)
 		port = 3001;
 
+	app.useGlobalPipes(new ValidationPipe({whitelist: true}));
+
 	await app.listen(port);
+
 	console.log(`Backend started on port ${port}`);
 }
 bootstrap();

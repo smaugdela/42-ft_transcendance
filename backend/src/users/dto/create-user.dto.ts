@@ -3,4 +3,5 @@ export class CreateUserDto {
 	nickname:		string;
 	mailAddress?:	string;
 	coalition:		string;
+	password:		string;
 }

@@ -7,14 +7,14 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService {
+
   async create(createUserDto: CreateUserDto) {
-    return await prisma.user.create({
-		data: {
-			avatar: createUserDto.avatar,
-			nickname: createUserDto.nickname,
-			mailAddress: createUserDto.mailAddress,
-			coalition: createUserDto.coalition,
-		},
+
+	console.log("createUserDto After:");
+	console.log(createUserDto);
+
+	return await prisma.user.create({
+		data: createUserDto,
 	});
   }
 
@@ -29,10 +29,18 @@ export class UsersService {
   }
 
   async update(Id: number, updateUserDto: UpdateUserDto) {
-    return await prisma.user.update({
+
+	console.log(`Updated user #${Id}`);
+	console.log("updatedUserDto After: ", updateUserDto);
+
+	const updated = await prisma.user.update({
 		where: { id: Id },
-		data: updateUserDto
+		data: updateUserDto,
 	});
+
+	console.log("updated: ", updated);
+
+    return updated;
   }
 
   async remove(Id: number) {
