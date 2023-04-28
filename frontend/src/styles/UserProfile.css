@@ -241,3 +241,68 @@ aside > div {
 	max-width: 5rem;
 	border-radius: 50%;
 }
+
+/* Radial progress bar for win rate */
+.radial-progress {
+	position: relative;
+	width: 150px;
+	height: 150px;
+  }
+  
+  .circle {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background-color: #e6e6e6;
+	transform: translateZ(0);
+	overflow: hidden;
+  }
+  
+  .mask {
+	position: absolute;
+	width: 50%;
+	height: 100%;
+	overflow: hidden;
+	top: 0;
+  }
+  
+  .full {
+	left: 0;
+  }
+  
+  .half {
+	left: 50%;
+  }
+  
+  .fill {
+	position: absolute;
+  top: 0;
+  right: 50%;
+  bottom: 0;
+  left: 0;
+  border-radius: 50%;
+  background-color: #4CAF50;
+  transform-origin: left;
+  transform: rotate(-135deg);
+}
+  
+  .shadow {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	border-radius: 50%;
+	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .inset {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 24px;
+	font-weight: bold;
+	color: #4CAF50;
+  }

@@ -3,8 +3,36 @@ import "../styles/UserProfile.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUserPlus, faBan, faComment, faDice, faHeart, faTrophy } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import userEvent from "@testing-library/user-event";
 
 library.add(faUserPlus);
+
+export function RadialProgressBar( props : { winRate : number}) {
+	const [progress, setProgress] = useState(0);
+	useEffect(() => {
+		setProgress(props.winRate / 100 * 180);
+	}, [props.winRate]);
+
+	return (
+		<div className="radial-progress">
+			<div className="circle">
+				<div className="mask full">
+					<div className="fill" style={{ transform: `rotate(${progress}deg)` }}></div>
+				</div>
+				<div className="mask half">
+					<div className="fill" style={{ transform: `rotate(${progress > 90 ? 90 : progress}deg)` }}></div>
+					<div className="fill fix" style={{ transform: `rotate(${progress > 90 ? progress - 90 : 0}deg)` }}></div>
+				</div>
+				<div className="shadow"></div>
+			</div>
+			<div className="inset">{props.winRate}%</div>
+    </div>
+	);
+}
+
+
+
 
 export function UserProfile() {
 	return (
@@ -27,7 +55,7 @@ export function UserProfile() {
 							</div>
 						</article>
 						<article>
-							<h1>Bio</h1> <span> Just a random bio</span>
+							<h1>BIO</h1> <span> Just a random bio</span>
 
 						</article>
 						<hr />
@@ -67,11 +95,22 @@ export function UserProfile() {
 						<hr />
 					</div>
 					<div id="stats">
-						<h1>Stats</h1>
+						<h1>COMPETITIVE OVERVIEW</h1>
+						<RadialProgressBar winRate={70}/>
+					
+						<h5>Win ratio : </h5>
+
+						<h5>Wins</h5>
+						<h5>Lose</h5>
+						<h5>Rank</h5>
+						<h5>Number of Aces</h5>
+						
+						<button>Challenge</button>
 					</div>
+				
 				</div>
 				<article>
-						<h1>Achievements</h1>
+						<h1>ACHIEVEMENTS (10/10)</h1>
 						<div className="all-achievements">
 							<div className="one-achievement">
 								<h3>Baby steps</h3>
@@ -121,7 +160,7 @@ export function UserProfile() {
 					</article>
 			</section>
 			<aside>
-				<h1>Match History (last 3)</h1>
+				<h1>MATCH HISTORY (last 3)</h1>
 				<div className="match-card">
 					<h5>24 avril 2023 22h48 - 6''03</h5>
 					<h4 className="match-outcome defeat"> DEFEAT !</h4>
@@ -174,7 +213,6 @@ export function UserProfile() {
 					</div>
 				</div>
 			</aside>
-
 		</div>
 	);
 }
