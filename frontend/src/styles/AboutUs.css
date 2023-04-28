@@ -1,19 +1,32 @@
 .background_aboutus{
-  background-color: white;
+  background-color: rgb(19, 16, 16);
   height : 90vh;
 	width: 100%;
 } 
 
 .aboutus{
   width: auto;
+  /* display :flex;
+  justify-content: space-around; */
+
 }
 
 .aboutus h1{
   padding: 20px;
-  padding: 20px;
-  text-align: center;
-  font-size: 60px;
+  text-align: left;
+  font-size: 50px;
+  color :white;
+  /* text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff, 0 0 70px #fff, 0 0 80px #fff;
+  background-image: linear-gradient(to right, #ffffff, #fff); */
 } 
+
+.aboutus p{
+  padding: 20px;
+  text-align: justify;
+  font-size: 20px;
+  color :white
+
+}
 
 .container{
   margin: auto;
@@ -28,36 +41,22 @@
 .container_staff h2, .container_staff p{
   display: flex;
   margin : 0px;
-  text-align:justify;
+  justify-content: center;
+  text-align: justify;
+  color :white
 }
 
-/* .team-member {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin: 20px;
-  max-width: 300px;
-  text-align: center;
-} */
+.image{
+  width: 80%; 
+  height: auto;
+  border-radius: 10px;
+  transition: 0.3s;
+  z-index: 2;
+	cursor: pointer;
+  
+}
 
-/* .team-member img {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-	align-items: center;
-  border-radius: 50%;
-  height: 150px;
-  width: 150px;
-  margin-bottom: 20px;
-} */
-
-/* .team-member h2 {
-  font-size: 24px;
-  margin-bottom: 5px;
-} */
-
-/* .team-member p {
-  font-size: 18px;
-  line-height: 1.5;
-  margin-bottom: 10px;
-  } */
+.image:hover{
+  border-radius: 15%;
+	transition: 0.3s;
+}

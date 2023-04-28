@@ -9,6 +9,10 @@ interface FaqItem{
 
 const faqs: FaqItem[] = [
   {
+    question: 'What is Transcendence ?',
+    answer: 'Blalalalalalalalalal.',
+  },
+  {
     question: 'How to block or remove a friend ?',
     answer: 'Click the name of the friend you want to remove or block. Select BLOCK or UNFRIEND, and then click to confirm.',
   },

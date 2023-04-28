@@ -13,25 +13,25 @@ const teamMembers: Member[] = [
     name: 'Simon',
     position: 'COO',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    image: 'https://via.placeholder.com/200',
+    image: '/assets/keanu.png',
   },
   {
     name: 'Anna',
     position: 'COO',
     description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    image: 'https://via.placeholder.com/200',
+    image: '/assets/punk.png',
   },
   {
     name: 'Marine',
     position: 'CTO',
     description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
-    image: 'https://via.placeholder.com/200',
+    image: '/assets/punk1.png',
   },
   {
     name: 'Fahima',
     position: 'CTO',
     description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco.',
-    image: 'https://via.placeholder.com/200',
+    image: '/assets/punk2.png',
   },
 ];
 
@@ -40,19 +40,17 @@ function AboutUs() {
     <div className='background_aboutus'>
       <section className='aboutus'>
         <h1>Who are we ?</h1>
+        <p>We are  four students of 42 school. Transcendence is the last project of our training course. It's a Web project whose goal is to recreate the historical Pong Game </p>
       </section>
       <section className='container'>
        {teamMembers.map((member, index) => (
       <div  className='container_staff' key={index}>
-        <img src={member.image} alt={member.name} />
+        <img className='image' src={member.image} alt={member.name} />
         <h2>{member.name}</h2>
         <p>{member.position}</p>
         {/* <p>{member.description}</p> */}
       </div>
     ))}
-    </section>
-      <section>
-        <p>We are the super team that created the best game online called Pong Game </p>
       </section>
   </div>
   );
