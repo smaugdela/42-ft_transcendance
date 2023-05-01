@@ -6,6 +6,9 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+	"db:dev:up": "make -C ../database/ up",
+	"db:dev:down": "make -C ../database/ down",
+	"db:dev:restart": "make -C ../database/ re",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",

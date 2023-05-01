@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export default class CreateUserDto {
+
 	@IsNotEmpty()
 	@IsString()
 	nickname:		string;
@@ -8,6 +9,10 @@ export default class CreateUserDto {
 	@IsString()
 	@IsNotEmpty()
 	password:		string;
+
+	@IsString()
+	@IsNotEmpty()
+	coalition:		string;
 
 	@IsOptional()
 	@IsString()
@@ -19,7 +24,4 @@ export default class CreateUserDto {
 	@IsNotEmpty()
 	mailAddress:	string;
 
-	@IsString()
-	@IsNotEmpty()
-	coalition   :	string;
 }
