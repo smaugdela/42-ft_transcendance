@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import CreateUserDto from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaClient } from '@prisma/client';
 
@@ -8,13 +8,9 @@ const prisma = new PrismaClient();
 @Injectable()
 export class UsersService {
 
-  async create(createUserDto: CreateUserDto) {
-
-	console.log("createUserDto After:");
-	console.log(createUserDto);
-
-	return await prisma.user.create({
-		data: createUserDto,
+  async create(body: CreateUserDto) {
+    return await prisma.user.create({
+		data: body,
 	});
   }
 
@@ -22,30 +18,22 @@ export class UsersService {
     return await prisma.user.findMany();
   }
 
-  async findOne(Id: number) {
+  async findOne(id: number) {
     return await prisma.user.findUnique({
-		where: { id: Id },
+		where: {id}
 	});
   }
 
-  async update(Id: number, updateUserDto: UpdateUserDto) {
-
-	console.log(`Updated user #${Id}`);
-	console.log("updatedUserDto After: ", updateUserDto);
-
-	const updated = await prisma.user.update({
-		where: { id: Id },
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await prisma.user.update({
+		where: {id},
 		data: updateUserDto,
 	});
-
-	console.log("updated: ", updated);
-
-    return updated;
   }
 
-  async remove(Id: number) {
+  async remove(id: number) {
     return await prisma.user.delete({
-		where: { id: Id }
+		where: {id}
 	});
   }
 }

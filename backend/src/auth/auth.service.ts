@@ -7,6 +7,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 @Injectable()
 export class AuthService {
+
 	login(body: AuthDto) {
 		console.log(body);
 		return 'I am login';
