@@ -11,29 +11,35 @@ import { ChangeEventHandler } from 'react';
 import Avatar from './Avatar';
 import Header from './Header';
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeadSideMask, faHandsHoldingChild, faComments, faUsers, faRobot, faOtter} from "@fortawesome/free-solid-svg-icons";
+
 const SidebarData = [
   {
     title: 'Home',
     path: '/',
-	image:'/assets/home.png',
+	image: <FontAwesomeIcon className='item_image' icon={faOtter} />,
     cName: 'nav-text'
   },
   {
     title: ' Leaderboard',
     path: '/leaderboard',
     // icon: <GiIcons.GiRank3 />,
+	image: <FontAwesomeIcon className='item_image' icon={faHandsHoldingChild} />,
     cName: 'nav-text'
   },
   {
     title: ' Friends',
     path: '/friends',
-    icon: <FaIcons.FaUsers />,
+    // image: '/assets/friends2.png',
+	image: <FontAwesomeIcon className='item_image' icon={faHeadSideMask} />,
     cName: 'nav-text'
   },
   {
     title: ' Settings',
     path: '/settings',
     // icon: <FiIcons.FiSettings />,
+	image: <FontAwesomeIcon className='item_image' icon={faRobot} />,
     cName: 'nav-text'
   },
 ];
@@ -69,7 +75,10 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 				return (
 					<li key={index} className={item.cName}>
                   <Link to={item.path}>
-                    <img className='item_image' src={item.image}/>
+					<div>{item.image}
+					</div>
+				  {/* <FontAwesomeIcon icon={item.image} className='item_image'/> */}
+                    {/* <img className='item_image' src={item.image}/> */}
                     <span className='item_title'> {item.title}</span>
                   </Link>
                 </li>

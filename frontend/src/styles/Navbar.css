@@ -35,23 +35,17 @@
   }
   
   .nav-text {
-    /* display: flex; */
-    justify-content: flex-start;
-    align-items: center;
-    padding: 8px 0px 8px 16px;
-    /* list-style: none; */
     height: 60px;
 	font-size:50px;
 	border: none;
 	color: rgba(246, 234, 245, 0.6);
 	text-decoration: none;
-	text-align: center;
 }
 
 .nav-text a {
 	text-decoration: none;
-    color: #fafafa;
-    font-size: 18px;
+    color: #240122;
+    font-size: 30px;
     width: 95%;
     height: 100%;
     display: flex;
@@ -68,11 +62,31 @@
 	0 0 70px #ff00de, 
 	0 0 80px #ff00de,
 	0 0 100px #ff00de;
+
+	-webkit-animation: neon1 1.5s ease-in-out infinite alternate;
+	-moz-animation: neon1 1.5s ease-in-out infinite alternate;
+	animation: neon1 1.5s ease-in-out infinite alternate;
 }
+/* trying something */
+
+.nav-text:hover{
+	background-color: #6c125d;
+}
+
+/* end of try */
+
 
 .nav-menu-items {
 	width: 100%;
 	font-size: 18px;
+	padding-top: 15px;
+}
+
+.item_image{
+	width: 30px;
+	height: 30px;
+	top: 50;
+	color: rgba(254, 247, 255, 0.883);
 	text-shadow: 
 	1px 5px 4px rgba(0,0,0,.3), 
 	0 0 2px rgba(255,255,255,1), 
@@ -85,58 +99,13 @@
 	0 0 100px #ff00de;
 }
 
-.item_image{
-	width: 50px;
-	height: 50px;
-	top: 50;
-}
-
 .item_title{
-	font-family: 'Monoton', cursive;
-
+	font-family: 'Yellowtail', cursive;
+	font-size: xx-large;
+	margin-left: 10px;
 }
-@keyframes blink {
-	0%   {}
-	50%  {}
-	60%{
-	  text-shadow: 
-		0 0 2px rgba(255, 255, 255, .1), 
-		0 0 10px rgba(255, 255, 255, .4);
-	  
-	  text-stroke: 2px rgba(255,255,255,0.05);
-	}
-	70%{
-	  text-shadow: 
-		0 0 2px rgba(255,255,255,1), 
-		0 0 10px rgba(255,255,255,1), 
-		0 0 20px rgba(255,255,255,1), 
-		0 0 30px rgba(255,255,255,1), 
-		0 0 40px #ff00de, 
-		0 0 70px #ff00de, 
-		0 0 80px #ff00de,
-		0 0 100px #ff00de;
-	}
-	80%{
-	  text-shadow: 
-		0 0 2px rgba(255, 255, 255, .1), 
-		0 0 10px rgba(255, 255, 255, .4);
-	  
-	  text-stroke: 2px rgba(255,255,255,0.05);
-	}
-	100% { 
-	  text-shadow: 
-		0 0 2px rgba(255,255,255,1), 
-		0 0 10px rgba(255,255,255,1), 
-		0 0 20px rgba(255,255,255,1), 
-		0 0 30px rgba(255,255,255,1), 
-		0 0 40px #ff00de, 
-		0 0 70px #ff00de, 
-		0 0 80px #ff00de,
-		0 0 100px #ff00de;
-	}
-  }
 
-  .item_title span{
+.item_title span{
 	animation: blink .3s infinite alternate;
   }
   
@@ -147,83 +116,58 @@
 	/* cubic-bezier(0.5, 0.2, 0.3, 1.0) */
   }
 
-/* START NEON  */
-
+/* START NEON titre */
 .navbar__title {
 	font-family: 'Monoton', cursive;
-	/* display: flex; */
-	font-size:50px;
+	display: flex; 
+	font-size:40px;
 	border: none;
 	color: rgba(255,255,255,0.6);
 	text-decoration: none;
+	font-size: 3rem;
 	text-align: center;
-	text-shadow: 
-	   1px 5px 4px rgba(0,0,0,.3), 
-	  0 0 2px rgba(255,255,255,1), 
-	  0 0 10px rgba(255,255,255,1), 
-	  0 0 20px rgba(255,255,255,1), 
-	  0 0 30px rgba(255,255,255,1), 
-	  0 0 40px #ff00de, 
-	  0 0 70px #ff00de, 
-	  0 0 80px #ff00de,
-	  0 0 100px #ff00de;
-	  
-  }
-  
-  
-  .navbar__title span{
-	animation: blink .3s infinite alternate;
-  }
-  
-   .navbar__title span.delay{
-	animation-duration:6s;
-	animation-delay: 2s;
-	animation-direction: alternate;
-	/* cubic-bezier(0.5, 0.2, 0.3, 1.0) */
-  }
-  
-  @keyframes blink {
-	0%   {}
-	50%  {}
-	60%{
-	  text-shadow: 
-		0 0 2px rgba(255, 255, 255, .1), 
-		0 0 10px rgba(255, 255, 255, .4);
-	  
-	  text-stroke: 2px rgba(255,255,255,0.05);
+	color: #fff;
+	text-shadow:
+		0 0 7px #fff,
+		0 0 10px #fff,
+		0 0 42px rgb(230, 18, 124),
+		0 0 77px rgb(230, 18, 124),
+		0 0 100px rgb(230, 18, 124);
+	animation: lumiere 1s infinite linear;
+}
+@keyframes lumiere {
+	0%{
+		text-shadow:
+		0 0 7px #fff,
+		0 0 10px #fff,
+		0 0 42px rgb(130, 11, 70),
+		0 0 77px rgb(230, 18, 124),
+		0 0 100px rgb(230, 18, 124);
 	}
-	70%{
-	  text-shadow: 
-		0 0 2px rgba(255,255,255,1), 
-		0 0 10px rgba(255,255,255,1), 
-		0 0 20px rgba(255,255,255,1), 
-		0 0 30px rgba(255,255,255,1), 
-		0 0 40px #ff00de, 
-		0 0 70px #ff00de, 
-		0 0 80px #ff00de,
-		0 0 100px #ff00de;
+	50%{
+		text-shadow:
+		0 0 7px #fff,
+		0 0 10px #fff,
+		0 0 32px rgb(209, 36, 123),
+		0 0 87px rgb(230, 18, 124),
+		0 0 120px rgb(230, 18, 124);
 	}
-	80%{
-	  text-shadow: 
-		0 0 2px rgba(255, 255, 255, .1), 
-		0 0 10px rgba(255, 255, 255, .4);
-	  
-	  text-stroke: 2px rgba(255,255,255,0.05);
-	}
-	100% { 
-	  text-shadow: 
-		0 0 2px rgba(255,255,255,1), 
-		0 0 10px rgba(255,255,255,1), 
-		0 0 20px rgba(255,255,255,1), 
-		0 0 30px rgba(255,255,255,1), 
-		0 0 40px #ff00de, 
-		0 0 70px #ff00de, 
-		0 0 80px #ff00de,
-		0 0 100px #ff00de;
-	}
-  }
+}
+.effetneon span {
+	font-size: 6rem;
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	min-height: 100vh;
+}
 
 /* END NEON */
+
 /* Position du bouton switch mode  */
 
 #test {
