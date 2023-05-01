@@ -1,38 +1,9 @@
 import "../styles/UserProfile.css"
 // import { IUser, users } from "../data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUserPlus, faBan, faComment, faDice, faHeart, faTrophy } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
-import userEvent from "@testing-library/user-event";
-
-library.add(faUserPlus);
-
-export function RadialProgressBar( props : { winRate : number}) {
-	const [progress, setProgress] = useState(0);
-	useEffect(() => {
-		setProgress(props.winRate / 100 * 180);
-	}, [props.winRate]);
-
-	return (
-		<div className="radial-progress">
-			<div className="circle">
-				<div className="mask full">
-					<div className="fill" style={{ transform: `rotate(${progress}deg)` }}></div>
-				</div>
-				<div className="mask half">
-					<div className="fill" style={{ transform: `rotate(${progress > 90 ? 90 : progress}deg)` }}></div>
-					<div className="fill fix" style={{ transform: `rotate(${progress > 90 ? progress - 90 : 0}deg)` }}></div>
-				</div>
-				<div className="shadow"></div>
-			</div>
-			<div className="inset">{props.winRate}%</div>
-    </div>
-	);
-}
-
-
-
+import WinrateCircularBar from "../components/WinrateCircularBar";
+import StatDisplay from "../components/StatDisplay";
 
 export function UserProfile() {
 	return (
@@ -96,12 +67,9 @@ export function UserProfile() {
 					</div>
 					<div id="stats">
 						<h1>COMPETITIVE OVERVIEW</h1>
-						<RadialProgressBar winRate={70}/>
-					
-						<h5>Win ratio : </h5>
-
-						<h5>Wins</h5>
-						<h5>Lose</h5>
+						<WinrateCircularBar winRate={70} />
+						<StatDisplay title={"wins"} stat={21} />
+						<StatDisplay title={"lose"} stat={7} />
 						<h5>Rank</h5>
 						<h5>Number of Aces</h5>
 						
