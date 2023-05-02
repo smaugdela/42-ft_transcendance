@@ -1,0 +1,74 @@
+.background_faq > h1{
+    background-color: rgb(238, 220, 233);
+    text-transform: uppercase;
+    margin : 0px;
+    padding: 15px;
+    display: flex;
+    justify-content: center; 
+    font-size: 3rem;
+    color: #c97bbe;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px rgb(238, 220, 233), 0 0 40px rgb(238, 220, 233), 0 0 70px rgb(238, 220, 233), 0 0 80px rgb(238, 220, 233);
+    background-image: linear-gradient(to right, white, rgb(238, 220, 233));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: rgba(229, 149, 219, 0.5); 
+    animation: glow 1s ease-in-out infinite alternate; 
+}
+
+.faq {
+    background-color: rgba(228, 167, 215, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgb(255, 192, 247), 0 0 20px rgb(255, 192, 247), 0 0 30px rgb(255, 192, 247), 0 0 40px rgb(255, 192, 247), 0 0 45px rgb(255, 192, 247);
+    animation: glow 1s ease-in-out infinite alternate;
+    margin : 30px;
+    padding: 15px;
+    position: relative;
+    font-size: 20px;
+    padding-right: 80px;
+    transition: all 0.4s ease; 
+
+    font-size: 1.5rem;
+    color: #e9a8e0;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px pink, 0 0 70px pink, 0 0 80px pink;
+    background-image: linear-gradient(to right, #ffffff, pink);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: rgba(207, 98, 193, 0.5); 
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+
+@keyframes glow {
+    from {
+      box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px gb(255, 192, 247), 0 0 40px gb(255, 192, 247), 0 0 70px gb(255, 192, 247);
+    }
+    to {
+      box-shadow: 0 0 20px white, 0 0 30px white, 0 0 40px gb(255, 192, 247), 0 0 50px gb(255, 192, 247);
+    }
+  }
+
+.faq::after{
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    transition: all 0.2s ease;
+}  
+
+.symbol{
+    position: absolute;
+    top: 15%;
+    right: 10px;
+}
+
+.background_faq{
+    background-color: rgb(238, 220, 233);
+    height : 90vh;
+	width: 100%;
+}
+
+.answer{
+    font-size: smaller;
+    font-weight: lighter;
+    text-align: justify;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    margin-top: 15px;
+}

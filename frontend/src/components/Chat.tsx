@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Chat.css'
 
+
 const Chat = () => {
   const [isExpanded, setIsExpanded] = useState(true);
 

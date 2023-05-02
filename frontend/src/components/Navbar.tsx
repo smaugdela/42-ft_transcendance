@@ -16,13 +16,20 @@ import { faHeadSideMask, faHandsHoldingChild, faComments, faUsers, faRobot, faOt
 
 const SidebarData = [
   {
+    title: 'About Us',
+    path: '/aboutus',
+    icon: <AiIcons.AiOutlineInfoCircle />,
+    cName: 'nav-text'
+  },
+  {
     title: 'Home',
     path: '/',
 	image: <FontAwesomeIcon className='item_image' icon={faOtter} />,
     cName: 'nav-text'
   },
   {
-    title: ' Leaderboard',
+
+    title: 'Leaderboard',
     path: '/leaderboard',
     // icon: <GiIcons.GiRank3 />,
 	image: <FontAwesomeIcon className='item_image' icon={faHandsHoldingChild} />,
@@ -42,6 +49,13 @@ const SidebarData = [
 	image: <FontAwesomeIcon className='item_image' icon={faRobot} />,
     cName: 'nav-text'
   },
+  {
+    title: 'FAQ',
+    path: '/faq',
+    icon: <AiIcons.AiOutlineQuestionCircle />,
+    cName: 'nav-text'
+  },
+
 ];
 
 function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
