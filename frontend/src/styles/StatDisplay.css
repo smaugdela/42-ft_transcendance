@@ -1,0 +1,23 @@
+@import "../App.css";
+
+.stat_container  {
+	display: inline-block;
+	height: 2.5vh;
+	width : 8vw;
+	margin-right : 0.5rem;
+}
+
+.stat_container > span {
+	margin : 0.1rem;
+	padding : 0;
+}
+
+.stat_win {
+	border-left: solid 4px rgb(27, 215, 121);
+	background: linear-gradient(90deg, rgba(60,212,123,0.8015581232492998) 0%, rgba(0,212,255,0) 100%);
+}
+
+.stat_lose {
+	border-left: solid 4px rgb(221, 36, 45);
+	background: linear-gradient(90deg, rgb(243, 67, 76) 0%, rgba(0,212,255,0) 100%);
+}

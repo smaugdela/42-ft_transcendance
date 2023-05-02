@@ -9,9 +9,9 @@ export interface IUser {
 	score: number;
 	rank: number;
 	isLogged: boolean;
-	friendsList : string[];
-	blockList : string[];
-	pendingList : string[];
+	friendsList : IUser[];
+	blockList : IUser[];
+	pendingList : IUser[];
 	isActive : boolean;
 }
 
@@ -138,9 +138,117 @@ export const users : IUser[] =  [
 		score: 487,
 		rank: 5,
 		isLogged: true,
-		friendsList : ["Diana", "Lee Sin", "Jinx"],
-		blockList : ["Le Blanc", "Malphite"],
-		pendingList : ["Sion", "Viktor"],
+		friendsList : [
+			{
+				id: 9,
+				avatar: "/assets/avatar3.png",
+				nickname: "Diana",
+				mailAddress: "",
+				coalition: "Alliance",
+				nbGames: 2,
+				score: 28,
+				rank: 10,
+				isLogged:false,
+				friendsList : [],
+				blockList : [],
+				pendingList : [],
+				isActive : true,
+			},
+			{
+				id: 7,
+				avatar: "/assets/avatar2.png",
+				nickname: "Lee Sin",
+				mailAddress: "",
+				coalition: "Alliance",
+				nbGames: 15,
+				score: 450,
+				rank: 6,
+				isLogged:false,
+				friendsList : [],
+				blockList : [],
+				pendingList : [],
+				isActive : true,
+			},
+			{
+				id: 4,
+				avatar: "/assets/avatar1.png",
+				nickname: "Jinx",
+				mailAddress: "",
+				coalition: "Federation",
+				nbGames: 13,
+				score: 963,
+				rank: 2,
+				isLogged:false,
+				friendsList : [],
+				blockList : [],
+				pendingList : [],
+				isActive : false,
+			}
+		],
+		blockList : [
+			{
+				id: 6,
+				avatar: "/assets/avatar3.png",
+				nickname: "Le Blanc",
+				mailAddress: "",
+				coalition: "Alliance",
+				nbGames: 6,
+				score: 123,
+				rank: 7,
+				isLogged:false,
+				friendsList : [],
+				blockList : [],
+				pendingList : [],
+				isActive : false,
+			},
+			{
+				id: 5,
+				avatar: "/assets/avatar2.png",
+				nickname: "Malphite",
+				mailAddress: "",
+				coalition: "Order",
+				nbGames: 2,
+				score: 89,
+				rank: 8,
+				isLogged:false,
+				friendsList : [],
+				blockList : [],
+				pendingList : [],
+				isActive : false,
+			  }
+		],
+		pendingList : [
+			{
+				id: 3,
+				avatar: "/assets/avatar2.png",
+				nickname: "Sion",
+				mailAddress: "",
+				coalition: "Assembly",
+				nbGames: 12,
+				score: 896,
+				rank: 3,
+				isLogged:false,
+				friendsList : [],
+				blockList : [],
+				pendingList : [],
+				isActive : false,
+			},
+			{
+				id: 2,
+				avatar: "/assets/avatar3.png",
+				nickname: "Viktor",
+				mailAddress: "",
+				coalition: "Federation",
+				nbGames: 3,
+				score: 52,
+				rank: 9,
+				isLogged:false,
+				friendsList : [],
+				blockList : [],
+				pendingList : [],
+				isActive : false,
+			}
+		],
 		isActive : true,
 	},{
 		id: 9,

@@ -69,7 +69,7 @@ form h3{
 
 label{
     display: block;
-    margin-top: 30px;
+    /* margin-top: 30px; */
     font-size: 16px;
     font-weight: 500;
 }
@@ -87,7 +87,8 @@ input{
 ::placeholder{
     color: #e5e5e5;
 }
-button{
+
+#login-btn {
     margin-top: 50px;
     width: 100%;
     background-color: #ffffff;

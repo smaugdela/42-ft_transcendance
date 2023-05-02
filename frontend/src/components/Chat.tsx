@@ -10,7 +10,7 @@ const Chat = () => {
   };
 
   return (
-    <div className={`chat ${isExpanded ? 'expanded' : 'collapsed'}`}>
+    <div className={`chat ${isExpanded ?  'collapsed': 'expanded'}`}>
       <div className="toggle-button" onClick={toggleExpand}>
         {/* <image> "https://static-00.iconduck.com/assets.00/left-right-black-arrow-emoji-512x283-7vr1z2oc.png"</image> */}
         {isExpanded ? '⬅' : '➡'} 
