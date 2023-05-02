@@ -9,30 +9,37 @@ import * as GiIcons from 'react-icons/gi';
 import * as FiIcons from 'react-icons/fi';
 import { ChangeEventHandler } from 'react';
 import Avatar from './Avatar';
+import Header from './Header';
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeadSideMask, faHandsHoldingChild, faComments, faUsers, faRobot, faOtter} from "@fortawesome/free-solid-svg-icons";
 
 const SidebarData = [
   {
     title: 'Home',
     path: '/',
-    icon: <AiIcons.AiFillHome />,
+	image: <FontAwesomeIcon className='item_image' icon={faOtter} />,
     cName: 'nav-text'
   },
   {
-    title: 'Leaderboard',
+    title: ' Leaderboard',
     path: '/leaderboard',
-    icon: <GiIcons.GiRank3 />,
+    // icon: <GiIcons.GiRank3 />,
+	image: <FontAwesomeIcon className='item_image' icon={faHandsHoldingChild} />,
     cName: 'nav-text'
   },
   {
-    title: 'Friends',
+    title: ' Friends',
     path: '/friends',
-    icon: <FaIcons.FaUsers />,
+    // image: '/assets/friends2.png',
+	image: <FontAwesomeIcon className='item_image' icon={faHeadSideMask} />,
     cName: 'nav-text'
   },
   {
-    title: 'Settings',
+    title: ' Settings',
     path: '/settings',
-    icon: <FiIcons.FiSettings />,
+    // icon: <FiIcons.FiSettings />,
+	image: <FontAwesomeIcon className='item_image' icon={faRobot} />,
     cName: 'nav-text'
   },
 ];
@@ -44,35 +51,35 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 
   return (
     <>
-      <IconContext.Provider value={{ color: '#fff' }}>
-        <div className='navbar'>
-          	<Link to='#' className='menu-bars'>
-            	<CgIcons.CgMenuLeft onClick={showSidebar} />
-          	</Link>
+	        <div className='navbar'>
+			<label className="nav-elements" id="burger-menu" htmlFor="check"  >
+				<input type="checkbox" id="check" onClick={showSidebar}/> 
+				<span></span>
+				<span></span>
+				<span></span>
+			</label>
 			<div className="navbar__center">
 				<Link to="/" className="navbar__title">
-					PONG GAME
+					CYBERPONG
 				</Link>
 			</div>
 			<div className="nav-elements nav-right-side">
 				<Avatar />
 			</div>
 
-        </div>
-        
+        </div> 
+	
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
-            <li className='navbar-toggle'>
-              <Link to='#' className='menu-bars'>
-                <AiIcons.AiOutlineClose />
-              </Link>
-            </li>
             {SidebarData.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
+				return (
+					<li key={index} className={item.cName}>
                   <Link to={item.path}>
-                    {item.icon}
-                    <span>{item.title}</span>
+					<div>{item.image}
+					</div>
+				  {/* <FontAwesomeIcon icon={item.image} className='item_image'/> */}
+                    {/* <img className='item_image' src={item.image}/> */}
+                    <span className='item_title'> {item.title}</span>
                   </Link>
                 </li>
               );
@@ -82,8 +89,7 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 				<input type="checkbox" id="checkbox" checked={props.theme === 'kawaii'} onChange={props.toggleTheme}/>
 				<div className="slider round"></div>
 		  </label>
-        </nav>
-      </IconContext.Provider>
+        </nav> 
     </>
   );
 }

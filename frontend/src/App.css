@@ -1,13 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Licorice&family=Share+Tech&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Yellowtail&display=swap');
 
 .dark {
 	--font-type : 'Share Tech', sans-serif;
-	--font-color:aliceblue;
-	--bg-color: rgb(16, 12, 18);
-	--sides-color : #3b3735;
-	--heading-color: rgb(45, 15, 63);
-	--home-image : url("https://media1.ledevoir.com/images_galerie/nwd_132675_102056/image.jpg");
+	/* --font-type: 'Monoton', cursive; */
+	--font-color : rgb(255, 255, 255);
+	--bg-image: url("../public/assets/cyberpunk.jpg");
+	--sidebar-image: ;
+	--sides-color : #450e46;
+	--heading-color: rgba(98, 20, 104, 0.7);
+	/* --header-image: url("../public/assets/neonhead.jpg"); */
+	/* --home-image : url("https://media1.ledevoir.com/images_galerie/nwd_132675_102056/image.jpg"); */
 
 }
 
@@ -16,6 +22,8 @@
 	--font-type : 'Licorice', cursive;;
 	--font-color: #6d6875;
 	--bg-color: #f7e7da;
+	--bg-image: url("../public/assets/cute.jpg");
+
 	--sides-color : #edd1df;
 	--heading-color: #ffffff;
 	--home-image : url("../public/assets/cutie.png");
@@ -39,43 +47,64 @@
 	font-size: 3rem;
 }
 
-body {
+/* body {
 	margin : 0;
 	padding: 0;
 	height: 100%;
   	width: 100%;
-	background-color: #eceff2;
-}
-
-#main-content {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-evenly;
-	width: 100%;
-}
-/* 
-#menu {
-	background-color: var(--sides-color);
-	color: var(--font-color);
-	display: flex;
-	flex-direction : column;
-	justify-content: space-evenly;
-	align-items: center;
-	flex: 1 1 auto;
+	margin: auto;
+	position: flex;
+	border-radius: 3px;
 } */
 
-#play-screen {
-	background-color: var(--bg-color);
-	flex: 2 auto;
-	height: 84.7vh;
+#main-content {
+	background: var(--bg-image);
+	width : 100%;
 }
 
+#page-struct {
+	display: flex;
+	justify-content: space-evenly;
+	height: 100vh;
+}
 
+#play-screen {
+background-position: center;
+flex: 3 auto;
+background-size:cover; 
+box-sizing: border-box;
+
+	-webkit-animation: slidein 100s; 
+	animation: slidein 100s;
+
+-webkit-animation-fill-mode: forwards;
+animation-fill-mode: forwards;
+
+-webkit-animation-iteration-count: infinite;
+animation-iteration-count: infinite;
+
+-webkit-animation-direction: alternate;
+animation-direction: alternate;   
+}
+
+/* try to moove the bg  */
+/* 
+@-webkit-keyframes slidein {
+	from {background-position: top; background-size:1000px; }
+	to {background-position: -100px 0px;background-size:2750px;}
+	}
+	
+	@keyframes slidein {
+	from {background-position: top;background-size:1000px; }
+	to {background-position: -100px 0px;background-size:2750px;}
+	
+	}  */
+/* 
 #play-screen > div {
 	margin-top: 10%;
 	margin-left: auto;
 	margin-right: auto;
-	height : 60vh;
+	height : 50vh;
 	background-image: var(--home-image);
 	background-size: contain;
 	background-repeat: no-repeat;
@@ -91,12 +120,13 @@ body {
 	  transform: translateY(-20px);
 	}
   }
+  
 #play-screen > button {
 	position : relative;
 	left: 50%;
 	transform: translateX(-50%);
 	/* styling button below */
-	box-shadow:inset 0px 0px 15px 3px #23395e;
+	/* box-shadow:inset 0px 0px 15px 3px #23395e;
 	background-color:transparent;
 	border-radius:17px;
 	border:1px solid #1f2f47;
@@ -108,12 +138,12 @@ body {
 	padding:6px 13px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #263666;
-}
+} */ */
 
 #chat {
 	background-color: var(--sides-color);
 	color: var(--font-color);
-	flex: 1 1 auto;
+	/* flex: 1 1 auto; */
 }
 
 footer {
@@ -122,11 +152,7 @@ footer {
 	font-size: 100%;
 	text-align: center;
 	color: var(--font-color);
-	height: 8lvh;
+	/* height: 8lvh; */
 	line-height: 70px;
 	font-size: 150%;
-	/* position: absolute;
-	bottom: 0; 
-	left: 0; */
-	width: 100%;
 }
