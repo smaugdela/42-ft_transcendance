@@ -1,51 +1,40 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import UserDto from './user.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { UsersService } from './users.service';
+// import CreateUserDto from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
-const prisma = new PrismaClient();
-
-@Controller('/users')
+@Controller('users')
 export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
+//   @Post()
+//   create(@Body() body: CreateUserDto) {
+
+// 	console.log("body: ", body);
+
+//     return this.usersService.create(body);
+//   }
 
   @Get()
-  async getUsers() {
-    return await prisma.user.findMany();
+  findAll() {
+    return this.usersService.findAll();
   }
 
-  @Get(':userName')
-	async getUserByName(@Param('userName') userName: string) {
-	return await prisma.user.findUnique({
-		where: {
-			nickname: userName,
-		},
-	});
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.usersService.findOne(+id);
   }
 
-  @Get('id/:userId')
-  async getUserById(@Param('userId') userId: number) {
-	return await prisma.user.findUnique({
-		where: {
-			id: Number(userId),
-		},
-	});
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() body: UpdateUserDto) {
+
+	console.log("body: ", body);
+
+    return this.usersService.update(+id, body);
   }
 
-
-  @Post()
-  async createUser(@Body() newUser: UserDto) {
-    console.log(newUser);
-    await prisma.user.create({
-      data: {
-        avatar: newUser.avatar,
-        nickname: newUser.nickname,
-        mailAddress: newUser.mailAddress,
-        coalition: newUser.coalition,
-      },
-    });
-    console.log('New User Created!');
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.usersService.remove(+id);
   }
-
-//   @Put()
-//   @Delete()
-
 }

@@ -2,12 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { PrismaClient } from '@prisma/client';
 import * as fs from 'fs';
+import { ValidationPipe } from '@nestjs/common';
 
-let port = Number(process.env.BACKEND_PORT);
-const prisma = new PrismaClient();
+// curl -X POST localhost:3001/users -H 'Content-Type: application/json' -d '{"nickname": "Zion","password": "test"}'
 
 async function pushToDB_User (path: string)
 {
+	const prisma = new PrismaClient();
 	const jsonString = fs.readFileSync(path, 'utf-8');
 	const Data = JSON.parse(jsonString);
 
@@ -18,21 +19,24 @@ async function pushToDB_User (path: string)
 				nickname: element.nickname,
 				mailAddress: element.mailAddress,
 				coalition: element.coalition,
+				password: "default",
 		  },}).catch( (error) => console.log(error) );
 	});
 }
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
+	const app = await NestFactory.create(AppModule, {logger: console,});
 
 	pushToDB_User('../database/user_data.json'); // Use this only to load test data
 
 	console.log("Data loaded into db");
 
-	if (Number.isNaN(port) == true)
-		port = 3001;
+	const port = Number(process.env.BACKEND_PORT) || 3001;
+
+	app.useGlobalPipes(new ValidationPipe({whitelist: true}));
 
 	await app.listen(port);
+
 	console.log(`Backend started on port ${port}`);
 }
 bootstrap();
