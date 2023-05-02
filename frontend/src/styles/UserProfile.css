@@ -4,7 +4,7 @@
 	display: flex;
 	justify-content: center;
 	flex: 2 auto;
-	margin : 0 6vw;
+	margin: 8vh 10vw 0 10vw;
 	height : 85.8vh;
 }
 
@@ -13,7 +13,9 @@
 }
 
 #main-dashboard {
-	background-color: rgb(191, 191, 192);
+	background-color: var(--heading-color);
+	opacity : 95%;
+	color: white;
 	padding : 1vw;
 	border-radius: 20px;
 	margin : 2vw;
@@ -22,11 +24,6 @@
 #top-dashboard {
 	display : flex;
 	justify-content: space-between;
-}
-
-#main-dashboard > div:first-child {
-	
-	opacity: 80%;
 }
 
 #hexagon-avatar {
@@ -79,12 +76,12 @@
 }
 
 .one-stat:hover .fa-icon {
-	color: rgb(78, 78, 78);
+	color: rgb(21, 224, 163);
 }
 
 .fa-icon {
 	font-size: 2em;
-	color : rgb(131, 131, 131);
+	color : rgb(255, 255, 255);
 }
 
 .one-stat_txt{
@@ -108,7 +105,7 @@
 	padding: 1rem;
 	text-align: center;
 	
-	background-color: rgb(131, 131, 131);
+	background-color: rgb(255, 255, 255);
 	border : solid 1px rgb(251, 251, 251);
 	
 }
@@ -120,18 +117,9 @@
 }
 
 .one-achievement > h3 {
-	color: rgb(250, 252, 253);
+	color: rgb(3, 19, 27);
 	margin-bottom: 0.5vh;
 	font-size: 1.2vw;
-	text-shadow:
-    0 0 7px #fff,
-    0 0 10px #fff,
-    0 0 21px #fff,
-    0 0 42px #0fa,
-    0 0 82px #0fa,
-    0 0 92px #0fa,
-    0 0 102px #0fa,
-    0 0 151px #0fa;
 }
 
 .one-achievement > h4 {
@@ -147,7 +135,7 @@
 }
 
 #stats {
-	background-color: aliceblue;
+	background-color: rgb(252, 252, 252);
 	border-radius : 20px;
 	padding: 1vw;
 	width: 40%;
@@ -157,14 +145,14 @@
 .user-infos > button {
 	all: unset;
 	cursor: pointer;
-	color: rgb(131, 131, 131);
+	color: rgb(255, 255, 255);
 	padding-right: 1vw;
 }
 
 .user-infos > button:hover {
 	all: unset;
 	cursor: pointer;
-	color: rgb(30, 28, 30);
+	color: rgb(21, 224, 163);
 	padding-right: 1vw;
 }
 

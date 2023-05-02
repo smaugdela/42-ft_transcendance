@@ -61,14 +61,16 @@ export function DisplayConnections( props: { profilesToDisplay : IUser[] }) {
 	
 	const displayProfiles = props.profilesToDisplay.map(profile => {
 		return <div key={profile.id} className="profile">
-					<img 
+					<div className="img-container">
+						<img 
 						src={profile.avatar}
 						alt={profile.nickname}
-					/>
+						/>
+					</div>
 					<div className="profile_infos">
 						<h5>{profile.nickname}</h5>
-						<span><FontAwesomeIcon icon={faBan} /></span>
-						<span><FontAwesomeIcon icon={faEnvelope} /></span>
+						<div><FontAwesomeIcon icon={faBan} /></div>
+						<div><FontAwesomeIcon icon={faEnvelope} /></div>
 					</div>
 		</div>
 	})
