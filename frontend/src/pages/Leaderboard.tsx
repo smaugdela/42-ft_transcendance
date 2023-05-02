@@ -29,7 +29,7 @@ export function PerformanceDetail() {
 						   .map(user => {
 		if (user.rank < 4)
 			return (null);
-		return <div key={user.id} className="stats" id={user.isLogged ? "myRank" : "stats"}>
+		return <div key={user.id} className="stats" id={user.isLogged ? "myRank" : "other"}>
 			<img 
 				src={user.avatar}
 				alt={user.nickname}
@@ -83,7 +83,6 @@ export function Leaderboard() {
 		<div id="body-leaderboard">
 			<div id="gradient-bg"></div>
 			<div className="leaderboard">
-				<h1>LEADERBOARD</h1>
 				<section id="top-three"> 
 					<TopThreeDetail user={rank2[0]}/>
 					<TopThreeDetail user={rank1[0]}/>
