@@ -12,49 +12,47 @@ import Avatar from './Avatar';
 import Header from './Header';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeadSideMask, faHandsHoldingChild, faComments, faUsers, faRobot, faOtter} from "@fortawesome/free-solid-svg-icons";
+import { faPersonDrowning, faHeadSideMask, faHandsHoldingChild, faComments, faUsers, faRobot, faOtter, faShieldCat} from "@fortawesome/free-solid-svg-icons";
 
 const SidebarData = [
-  {
-    title: 'About Us',
-    path: '/aboutus',
-    icon: <AiIcons.AiOutlineInfoCircle />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'Home',
-    path: '/',
-	image: <FontAwesomeIcon className='item_image' icon={faOtter} />,
-    cName: 'nav-text'
-  },
-  {
-
-    title: 'Leaderboard',
-    path: '/leaderboard',
-    // icon: <GiIcons.GiRank3 />,
-	image: <FontAwesomeIcon className='item_image' icon={faHandsHoldingChild} />,
-    cName: 'nav-text'
-  },
-  {
-    title: ' Friends',
-    path: '/friends',
-    // image: '/assets/friends2.png',
-	image: <FontAwesomeIcon className='item_image' icon={faHeadSideMask} />,
-    cName: 'nav-text'
-  },
-  {
-    title: ' Settings',
-    path: '/settings',
-    // icon: <FiIcons.FiSettings />,
-	image: <FontAwesomeIcon className='item_image' icon={faRobot} />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'FAQ',
-    path: '/faq',
-    icon: <AiIcons.AiOutlineQuestionCircle />,
-    cName: 'nav-text'
-  },
+	{
+		title: 'Home',
+		path: '/',
+		image: <FontAwesomeIcon className='item_image' icon={faOtter} />,
+		cName: 'nav-text'
+	},
+	{
+		
+		title: 'Leaderboard',
+		path: '/leaderboard',
+		// icon: <GiIcons.GiRank3 />,
+		image: <FontAwesomeIcon className='item_image' icon={faHandsHoldingChild} />,
+		cName: 'nav-text'
+	},
+	{
+		title: 'Friends',
+		path: '/friends',
+		// image: '/assets/friends2.png',
+		image: <FontAwesomeIcon className='item_image' icon={faHeadSideMask} />,
+		cName: 'nav-text'
+	},
+	{
+		title: 'Settings',
+		path: '/settings',
+		// icon: <FiIcons.FiSettings />,
+		image: <FontAwesomeIcon className='item_image' icon={faRobot} />,
+		cName: 'nav-text'
+	},
+	{
+		title: 'FAQ',
+		path: '/faq',
+		image: <FontAwesomeIcon className='item_image' icon={faPersonDrowning} />,		cName: 'nav-text'
+	},
+	{
+	  title: 'About',
+	  path: '/aboutus',
+	  image: <FontAwesomeIcon className='item_image' icon={faShieldCat} />,	  cName: 'nav-text'
+	},
 
 ];
 
