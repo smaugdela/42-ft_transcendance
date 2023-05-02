@@ -1,5 +1,6 @@
 import "../styles/Leaderboard.css"
 import { IUser, users } from "../data"
+import { useEffect } from "react";
 
 export function TopThreeDetail(props: { user: IUser }) {
 	let podium;
@@ -62,6 +63,18 @@ export function PerformanceDetail() {
 };
 
 export function Leaderboard() {
+
+
+	// const res =  fetch(`http://localhost:3001/users/`, {
+	// 	method: "GET",
+	// 	headers: {
+	// 		'content-type': 'application/json;charset=UTF-8',
+	// 		'mode': 'no-cors',
+	// 	  },
+	// 	})
+	// 	.then((response) => response.json()) // on transforme le res en json
+	// 	.then((actualData) => console.log(actualData))
+	// 	.catch((err) => {console.log(err.message)});
 
 	const rank1 = users.filter( user => user.rank === 1);
 	const rank2 = users.filter( user => user.rank === 2);
