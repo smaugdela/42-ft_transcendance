@@ -1,7 +1,7 @@
 
 import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { FriendsList } from './pages/FriendsList';
+import { Social } from './pages/Social';
 import { Leaderboard } from './pages/Leaderboard';
 import { UserProfile } from './pages/UserProfile';
 import Login from './pages/Login';
@@ -40,7 +40,7 @@ function App() {
 		<Route path="/leaderboard" element={<Leaderboard />} />
 		<Route path='/faq' element={<FAQ />} />
     	<Route path="/aboutUs" element={<AboutUs />} />
-		<Route path="/friends" element={<FriendsList />} />
+		<Route path="/social" element={<Social />} />
 		<Route path='/settings' element={<Settings />} />
 		<Route path='/login' element={<Login />} />
 		<Route path='/user' element={<UserProfile />} />

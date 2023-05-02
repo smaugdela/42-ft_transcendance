@@ -17,13 +17,11 @@
 	padding : 1vw;
 	border-radius: 20px;
 	margin : 2vw;
-	/* height : 60%; */
 }
 
 #top-dashboard {
 	display : flex;
 	justify-content: space-between;
-	/* height : 60%; */
 }
 
 #main-dashboard > div:first-child {

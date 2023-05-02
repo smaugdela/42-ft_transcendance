@@ -30,8 +30,8 @@ const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: ' Friends',
-    path: '/friends',
+    title: ' Social',
+    path: '/social',
     // image: '/assets/friends2.png',
 	image: <FontAwesomeIcon className='item_image' icon={faHeadSideMask} />,
     cName: 'nav-text'

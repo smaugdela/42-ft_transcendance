@@ -1,0 +1,200 @@
+@import "../App.css";
+
+/* ********************************/
+/* ***      VARIABLES CSS       ***/
+/* ********************************/
+
+#social-dashboard {
+	--social-primary-bg-color : white;
+	--social-primary-font-color: black;
+
+	/* Buttons to filter groups in social page */ 
+	--filter-btn-main-color : var(--sides-color); /* vient de App.css */
+	--filter-btn-secondary-color : white;
+
+	/* Search bar component */
+	--search-bar-input : rgb(14, 14, 12);
+	--search-bar-main-bg-element : white;
+	--search-bar-font-color : black;
+	--search-bar-add-btn :white;
+
+	/* Elements in DisplayConnections component */
+	--profile-img-border-color : solid 2px rgb(185, 99, 222);
+	--profile-img-border-hover-color : solid 3px rgb(204, 169, 218);
+}
+
+/* ********************************/
+/* ***      Social PAGE         ***/
+/* ********************************/
+
+#social-dashboard {
+	flex: 2 auto;
+	height : 100%;
+	margin-top : 8vh;
+	background-color: var(--bg-color); /* vient de App.css */
+	color: var(--font-color); /* vient de App.css */
+}
+
+#social-dashboard > h1:first-of-type {
+	text-align: center;
+	font-size: 3.5rem;
+	margin : 2vh 0;
+}
+
+#social-dashboard button {
+	border: transparent;
+	margin: auto;
+}
+
+#social-dashboard input {
+	width: 50vw;
+	color: var(--search-bar-input); /* couleur de la border */
+}
+
+#social-dashboard input::placeholder {
+	width: 50vw;
+	color:var(--search-bar-input);
+}
+
+.social-btn {
+	display:flex;
+	justify-content: space-around;
+	align-items: center;
+	flex-wrap: wrap;
+	margin : 0 8vw;
+}
+
+.social-btn > button {
+	padding: 1vw 4vw; 
+	border-radius: 20px;
+	font-weight: 800;
+}
+
+.btn {
+	background-color: var(--filter-btn-main-color);
+}
+
+.clicked-btn, .btn:hover {
+	background-color: var(--filter-btn-secondary-color);
+}
+
+/* **************************** */
+/*      SearchBar Component     */
+/* **************************** */
+
+.search_bar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#search_input {
+	outline: 0;
+	border: 1px solid var(--search-bar-main-bg-element);
+	background-color: var(--search-bar-main-bg-element);
+}
+
+#search_input:hover, #search_input:focus {
+    border: 1.5px solid var(--sides-color);
+    background-color: var(--search-bar-main-bg-element);
+  }
+
+.searched_user {
+	background-color: var(--search-bar-main-bg-element);
+	margin: 0 2vw;
+	padding: 0 1vw;
+	border-radius: 20px;
+}
+
+.searched_user:hover {
+	background-color: var(--search-bar-main-bg-element);
+	margin: 0 2vw;
+	
+}
+
+.search_user_infos {
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#search_user_avatar {
+	height: 6vh;
+	width: auto;
+	border-radius: 50%;
+}
+
+
+#title {
+	color: var(--search-bar-font-color);
+	font-size: 1em;
+}
+
+#title > a {
+	font-size: 1em;
+	font-style: bold;
+	text-decoration: none;
+	color: var(--search-bar-add-btn);
+	padding: 0.5em 0.7em;
+	background-color: rgb(44, 35, 35);
+	border-radius: 50%;
+}
+
+#title > a:hover {
+	text-decoration: none;
+	background-color: rgb(163, 189, 163);
+	
+}
+
+/* **************************** */
+/* DisplayConnections Component */
+/* **************************** */
+
+.all-current {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	margin : 2vh 10vw 0vh 10vw;
+}
+
+.profile {
+	background-color: var(--social-primary-bg-color);
+	border-radius: 20px;
+	margin : 2vw;
+	color: grey;
+}
+
+.profile:hover {
+	color : var(--social-primary-font-color);
+	font-size: large;
+}
+
+.profile > img {
+	height: 15vh;
+	width: auto;
+	border-radius: 50%;
+	border : var(--profile-img-border-color);
+	margin: 2vw;
+}
+
+.profile > img:hover {
+	border : var(--profile-img-border-hover-color);
+	cursor: pointer;
+}
+
+.profile_infos {
+	display: flex;
+	justify-content: center;
+	align-items: first baseline;
+}
+
+.profile_infos > span:first-of-type {
+	color : rgb(243, 64, 64);
+}
+
+.profile_infos > span:last-of-type {
+	color : rgb(29, 123, 216);
+}
+
