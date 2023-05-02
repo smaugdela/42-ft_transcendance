@@ -36,6 +36,7 @@
   justify-content: space-around;
   flex-wrap: wrap;
   align-items: stretch;
+  
 }
 
 .container_staff h2, .container_staff p{
@@ -47,13 +48,20 @@
 }
 
 .image{
-  width: 80%; 
+  width: 100%; 
   height: auto;
   border-radius: 10px;
   transition: 0.3s;
   z-index: 2;
 	cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
   
+}
+
+.text{
+  float: right;
 }
 
 .image:hover{

@@ -46,8 +46,11 @@ function AboutUs() {
        {teamMembers.map((member, index) => (
       <div  className='container_staff' key={index}>
         <img className='image' src={member.image} alt={member.name} />
-        <h2>{member.name}</h2>
-        <p>{member.position}</p>
+        <div className='text'>
+          <h2>{member.name}</h2>
+          <p>{member.position}</p>
+        </div>
+        
         {/* <p>{member.description}</p> */}
       </div>
     ))}
