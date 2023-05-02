@@ -1,6 +1,5 @@
 import "../styles/Leaderboard.css"
 import { IUser, users } from "../data"
-import { useEffect } from "react";
 
 export function TopThreeDetail(props: { user: IUser }) {
 	let podium;
