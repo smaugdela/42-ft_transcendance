@@ -6,13 +6,11 @@ import { Leaderboard } from './pages/Leaderboard';
 import { UserProfile } from './pages/UserProfile';
 import Login from './pages/Login';
 import './App.css';
-import Home from './pages/Home'
 import Navbar from './components/Navbar';
 import Settings from './pages/Settings';
 import Chat from './components/Chat';
 import AboutUs from './pages/AboutUs';
 import FAQ from './pages/FAQ';
-import Header from './components/Header';
 
 function App() {
 
@@ -40,11 +38,12 @@ function App() {
 		<Routes>
 		{/* <Route path="/" element={<Home />} /> */}
 		<Route path="/leaderboard" element={<Leaderboard />} />
-    <Route path='/faq' element={<FAQ />} />
-    <Route path="/aboutUs" element={<AboutUs />} />
+		<Route path='/faq' element={<FAQ />} />
+    	<Route path="/aboutUs" element={<AboutUs />} />
 		<Route path="/friends" element={<FriendsList />} />
 		<Route path='/settings' element={<Settings />} />
 		<Route path='/login' element={<Login />} />
+		<Route path='/user' element={<UserProfile />} />
 		</Routes>
 		<Chat/>
 	 </div>
