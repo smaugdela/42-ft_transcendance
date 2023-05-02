@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FriendsList } from './pages/FriendsList';
 import { Leaderboard } from './pages/Leaderboard';
+import { UserProfile } from './pages/UserProfile';
 import Login from './pages/Login';
 import './App.css';
 import Home from './pages/Home'

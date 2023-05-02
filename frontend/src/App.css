@@ -25,7 +25,7 @@
 	--bg-image: url("../public/assets/cute.jpg");
 
 	--sides-color : #edd1df;
-	--heading-color: #daebfa;
+	--heading-color: #ffffff;
 	--home-image : url("../public/assets/cutie.png");
 }
 
@@ -34,7 +34,6 @@
 	margin: 0;
 	padding: 0;
 	font-family: 'Lato', sans-serif;
-	
 }
 
 

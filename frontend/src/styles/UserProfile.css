@@ -1,0 +1,279 @@
+@import "../App.css";
+
+#whole-profile {
+	display: flex;
+	justify-content: center;
+	flex: 2 auto;
+	margin : 0 6vw;
+	height : 85.8vh;
+}
+
+#whole-profile hr {
+	margin : 1vh;
+}
+
+#main-dashboard {
+	background-color: rgb(191, 191, 192);
+	padding : 1vw;
+	border-radius: 20px;
+	margin : 2vw;
+	/* height : 60%; */
+}
+
+#top-dashboard {
+	display : flex;
+	justify-content: space-between;
+	/* height : 60%; */
+}
+
+#main-dashboard > div:first-child {
+	
+	opacity: 80%;
+}
+
+#hexagon-avatar {
+	height: 9em;
+	width : 8em;
+	background-image: url("../../public/assets/jinx.png");
+	background-size: cover;
+	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+	margin : 1em;
+	background-position: top center;
+}
+
+#bio {
+	display: flex;
+	align-items: center;
+}
+
+.titles {
+	display : flex;
+	align-items: center;
+}
+
+.titles > h2:first-child {
+	font-size: 1.75em;
+	margin-right: 0.7vw;
+}
+
+#status {
+	background-color: rgb(27, 102, 27);
+	color: rgb(84, 187, 84);
+	border-radius: 20px;
+	
+	padding: 0.5rem 0.67rem;
+	width: 5rem;
+	margin-bottom: 1vh;
+}
+
+
+#main-stats {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	gap: 1em;
+}
+
+.one-stat {
+	display: flex;
+	flex-direction: row;
+	gap: 0.5em;
+}
+
+.one-stat:hover .fa-icon {
+	color: rgb(78, 78, 78);
+}
+
+.fa-icon {
+	font-size: 2em;
+	color : rgb(131, 131, 131);
+}
+
+.one-stat_txt{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.all-achievements {
+	display : flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	gap: 2rem;
+}
+
+.one-achievement {
+	width: 18%;
+	height: 7rem;
+	border-radius: 20px;
+	padding: 1rem;
+	text-align: center;
+	
+	background-color: rgb(131, 131, 131);
+	border : solid 1px rgb(251, 251, 251);
+	
+}
+
+.one-achievement:hover {
+	background-color: rgb(105, 104, 104);
+	border : solid 1px rgb(109, 108, 108);
+	
+}
+
+.one-achievement > h3 {
+	color: rgb(250, 252, 253);
+	margin-bottom: 0.5vh;
+	font-size: 1.2vw;
+	text-shadow:
+    0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px #0fa,
+    0 0 82px #0fa,
+    0 0 92px #0fa,
+    0 0 102px #0fa,
+    0 0 151px #0fa;
+}
+
+.one-achievement > h4 {
+	color :rgb(131, 131, 131);
+	font-size: 0.9vw;
+	font-style: italic;
+}
+
+.one-achievement:hover > h4 {
+	color :white;
+	font-size: 0.9vw;
+	font-style: italic;
+}
+
+#stats {
+	background-color: aliceblue;
+	border-radius : 20px;
+	padding: 1vw;
+	width: 40%;
+	margin-top: 2rem;
+}
+
+.user-infos > button {
+	all: unset;
+	cursor: pointer;
+	color: rgb(131, 131, 131);
+	padding-right: 1vw;
+}
+
+.user-infos > button:hover {
+	all: unset;
+	cursor: pointer;
+	color: rgb(30, 28, 30);
+	padding-right: 1vw;
+}
+
+aside {
+	margin : 2vw 4vw 2vw 0;
+	width : 25%;
+	height: 100%;
+}
+
+aside > div {
+	background-color: rgb(255, 255, 255);
+	border-radius: 20px;
+	width : 100%;
+	margin: 0.5em;
+	padding : 0.5rem;
+}
+
+.match-card h5 {
+	color:rgb(156, 155, 155);
+	font-weight: 400;
+}
+
+.match-detail {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.match-detail > div {
+	margin : 0.2em;
+}
+
+.match-outcome {
+	text-align: center;
+	margin: 0.5vw 0;
+	width : 100%;
+	color: white;
+}
+
+.victory {
+	background-color: green;
+	background: -moz-linear-gradient(left, rgba(35,175,68,0) 0%, rgba(35,175,68,0.8) 15%, rgba(35,175,68,1) 19%, rgba(35,175,68,1) 20%, rgba(37,198,80,1) 50%, rgba(37,188,52,1) 80%, rgba(37,188,52,1) 81%, rgba(37,188,52,0.8) 85%, rgba(37,188,52,0) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, rgba(35,175,68,0) 0%,rgba(35,175,68,0.8) 15%,rgba(35,175,68,1) 19%,rgba(35,175,68,1) 20%,rgba(37,198,80,1) 50%,rgba(37,188,52,1) 80%,rgba(37,188,52,1) 81%,rgba(37,188,52,0.8) 85%,rgba(37,188,52,0) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, rgba(35,175,68,0) 0%,rgba(35,175,68,0.8) 15%,rgba(35,175,68,1) 19%,rgba(35,175,68,1) 20%,rgba(37,198,80,1) 50%,rgba(37,188,52,1) 80%,rgba(37,188,52,1) 81%,rgba(37,188,52,0.8) 85%,rgba(37,188,52,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0023af44', endColorstr='#0025bc34',GradientType=1 ); /* IE6-9 */
+}
+
+.ace {
+	background: -moz-linear-gradient(left, rgba(232,58,46,0) 0%, gold 15%, gold 19%, gold 20%, gold 50%, gold 80%, gold 81%, gold 85%, rgba(206,79,41,0) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, rgba(232,58,46,0) 0%,gold 15%,gold 19%,gold 20%,gold 50%,gold 80%,gold 81%,gold 85%,rgba(206,79,41,0) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, rgba(232,58,46,0) 0%,gold 15%,gold 19%,gold 20%,gold 50%,gold 80%,gold 81%,gold 85%,rgba(206,79,41,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00e83a2e', endColorstr='#00ce4f29',GradientType=1 ); /* IE6-9 */
+}
+
+.defeat {
+	/* background-color: red; */
+	background: -moz-linear-gradient(left, rgba(232,58,46,0) 0%, rgba(232,58,46,0.8) 15%, rgba(232,58,46,1) 19%, rgba(232,58,46,1) 20%, rgba(216,61,41,1) 50%, rgba(206,79,41,1) 80%, rgba(206,79,41,1) 81%, rgba(206,79,41,0.8) 85%, rgba(206,79,41,0) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, rgba(232,58,46,0) 0%,rgba(232,58,46,0.8) 15%,rgba(232,58,46,1) 19%,rgba(232,58,46,1) 20%,rgba(216,61,41,1) 50%,rgba(206,79,41,1) 80%,rgba(206,79,41,1) 81%,rgba(206,79,41,0.8) 85%,rgba(206,79,41,0) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, rgba(232,58,46,0) 0%,rgba(232,58,46,0.8) 15%,rgba(232,58,46,1) 19%,rgba(232,58,46,1) 20%,rgba(216,61,41,1) 50%,rgba(206,79,41,1) 80%,rgba(206,79,41,1) 81%,rgba(206,79,41,0.8) 85%,rgba(206,79,41,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00e83a2e', endColorstr='#00ce4f29',GradientType=1 ); /* IE6-9 */
+}
+
+.opponent {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.opponent img {
+	height: 5rem;
+	max-width: 5rem;
+	border-radius: 50%;
+}
+
+/* Radial progress bar for win rate */
+.circular-progress {
+	position: relative;
+	height: 50%;
+	width: 50%;
+	border-radius: 50%;
+	background: conic-gradient(rgb(51, 80, 186) 3.6deg, #ededed 0deg);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.circular-progress::before {
+	content: "";
+	position : absolute;
+	height : 80%;
+	width : 80%;
+	border-radius: 50%;
+	background-color: rgb(255, 255, 255);
+}
+
+.progress-value {
+	font-size: 2em;
+	font-weight: 500;
+	color: rgb(44, 44, 48);
+}
+
+.winrate__content {
+	position: relative;
+}
+.winrate__title {
+	text-align: center;
+	font-size: 0.8rem;
+	font-weight: 500;
+}

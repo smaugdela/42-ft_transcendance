@@ -16,7 +16,7 @@ export default function Login() {
         <label htmlFor="password">Password</label>
         <input type="password" placeholder="Password" id="password" />
 
-        <button>Log In</button>
+        <button id="login-btn">Log In</button>
         <div className="social">
           <div className="go">
             <i className="fab fa-google"></i> Google
