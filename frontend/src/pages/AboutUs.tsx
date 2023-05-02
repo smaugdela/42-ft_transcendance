@@ -38,11 +38,12 @@ const teamMembers: Member[] = [
 function AboutUs() {
   return (
     <div className='background_aboutus'>
-      <section className='aboutus'>
+      <div className='aboutus'>
         <h1>Who are we ?</h1>
         <p>We are  four students of 42 school. Transcendence is the last project of our training course. It's a Web project whose goal is to recreate the historical Pong Game </p>
-      </section>
-      <section className='container'>
+      </div>
+      <div className='div_staff container'>
+      {/* <section className=''> */}
        {teamMembers.map((member, index) => (
       <div  className='container_staff' key={index}>
         <img className='image' src={member.image} alt={member.name} />
@@ -54,8 +55,9 @@ function AboutUs() {
         {/* <p>{member.description}</p> */}
       </div>
     ))}
-      </section>
+      {/* </section> */}
   </div>
+  // </div>
   );
 }
 

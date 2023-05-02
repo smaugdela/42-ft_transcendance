@@ -38,15 +38,14 @@ const FAQ: React.FC = () => {
   
   };
     return (
-      <div className='background_faq'>
-        <h1>Frequently Asked Questions</h1>
-        <div >
+      <div>
+        <div className='faq'>
           {faqs.map((faq, index) => (
             <div key={index}>
-              <h2 className='faq ' onClick={() => toggleActiveIndex(index)}>
+              <h2 className='faq_box' onClick={() => toggleActiveIndex(index)}>
                 {faq.question} 
-                <span className='symbol'>{activeIndex === index ? '-' : '+'}</span>
-                {activeIndex == index && <p className='answer'>{faq.answer}</p>} 
+                  <span className='symbol'>{activeIndex === index ? '-' : '+'}</span>
+                {activeIndex === index && <p className='answer'>{faq.answer}</p>} 
               </h2>
             </div>
       ))}
