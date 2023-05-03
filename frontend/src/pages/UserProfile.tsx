@@ -2,6 +2,7 @@ import "../styles/UserProfile.css"
 // import { IUser, users } from "../data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus, faBan, faComment, faDice, faHeart, faTrophy } from '@fortawesome/free-solid-svg-icons';
+import { faBaby, faJetFighterUp, faLemon, faUserSlash, faViruses, faUserAstronaut, faFrog, faRobot, faShieldDog, faHandSpock, faHandHoldingDollar } from '@fortawesome/free-solid-svg-icons';
 import WinrateCircularBar from "../components/WinrateCircularBar";
 import StatDisplay from "../components/StatDisplay";
 
@@ -25,9 +26,9 @@ export function UserProfile() {
 								<h5>Member since April 25, 2023</h5>
 							</div>
 						</article>
-						<article>
-							<h1>BIO</h1> <span> Just a random bio</span>
-
+						<article className="user_bio">
+							<h1>BIO</h1> 
+							<span> Just a random bio</span>
 						</article>
 						<hr />
 						<article id="main-stats">
@@ -67,60 +68,76 @@ export function UserProfile() {
 					</div>
 					<div id="stats">
 						<h1>COMPETITIVE OVERVIEW</h1>
-						<WinrateCircularBar winRate={70} />
-						<StatDisplay title={"wins"} stat={21} />
-						<StatDisplay title={"lose"} stat={7} />
-						<h5>Rank</h5>
-						<h5>Number of Aces</h5>
-						
-						<button>Challenge</button>
+						<div className="winratio_stats">
+							<WinrateCircularBar winRate={70} />
+							<div className="statdisplay">
+								<StatDisplay title={"Wins"} stat={21} />
+								<StatDisplay title={"Lose"} stat={7} />
+							</div>
+						</div>
+						<div className="statdisplay">
+							<StatDisplay title={"(Rank)"} stat={1} />
+							<StatDisplay title={"Aces"} stat={14} />
+						</div>
+						<button className="challenge-btn">Challenge</button>
 					</div>
 				
 				</div>
-				<article>
-						<h1>ACHIEVEMENTS (10/10)</h1>
+				<article id="achievements">
+						<h1>ACHIEVEMENTS (11/11)</h1>
 						<div className="all-achievements">
 							<div className="one-achievement">
+								<FontAwesomeIcon icon={faBaby} className="fa-icon-achievements"/>
 								<h3>Baby steps</h3>
 								<h4>Played the game for the first time</h4>
 							</div>
 							<div  className="one-achievement">
+								<FontAwesomeIcon icon={faJetFighterUp} className="fa-icon-achievements"/>
 								<h3>Veteran</h3>
 								<h4>Played 10 games</h4>
 							</div>
 							<div  className="one-achievement">
+								<FontAwesomeIcon icon={faLemon} className="fa-icon-achievements"/>
 								<h3>Easy peasy lemon squeezy</h3>
 								<h4>Won 3 games in a row</h4>
 							</div>
 							<div  className="one-achievement">
+								<FontAwesomeIcon icon={faUserSlash} className="fa-icon-achievements"/>
 								<h3>It's my lil bro playing</h3>
 								<h4>Lost 3 games in a row</h4>
 							</div>
 							<div  className="one-achievement">
+								<FontAwesomeIcon icon={faViruses} className="fa-icon-achievements"/>
 								<h3>Social butterfly</h3>
 								<h4>Added 3 friends</h4>
 							</div>
 							<div className="one-achievement">
+								<FontAwesomeIcon icon={faUserAstronaut} className="fa-icon-achievements"/>
 								<h3>Influencer</h3>
 								<h4>Added 10 friends</h4>
 							</div>
 							<div  className="one-achievement">
+								<FontAwesomeIcon icon={faFrog} className="fa-icon-achievements"/>
 								<h3>Cosmetic change</h3>
 								<h4>Updated their profile picture once</h4>
 							</div>
 							<div  className="one-achievement">
+								<FontAwesomeIcon icon={faRobot} className="fa-icon-achievements"/>
 								<h3>Existential crisis</h3>
 								<h4>Changed their nickname</h4>
 							</div>
 							<div  className="one-achievement">
+								<FontAwesomeIcon icon={faShieldDog} className="fa-icon-achievements"/>
 								<h3>Safety first</h3>
 								<h4>Activated the 2FA authentification</h4>
 							</div>
 							<div  className="one-achievement">
+								<FontAwesomeIcon icon={faHandSpock} className="fa-icon-achievements"/>
 								<h3>My safe place</h3>
 								<h4>Created their first channel</h4>
 							</div>
 							<div  className="one-achievement">
+								<FontAwesomeIcon icon={faHandHoldingDollar} className="fa-icon-achievements"/>
 								<h3>Pay to Win</h3>
 								<h4>Donated to have an in-game advantage</h4>
 							</div>
