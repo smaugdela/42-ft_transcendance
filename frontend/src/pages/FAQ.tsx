@@ -21,6 +21,10 @@ const faqs: FaqItem[] = [
     answer: 'with your brain',
   },
   {
+    question: 'Can we save the game progress?',
+    answer: 'srhshshshshshs',
+  },
+  {
     question: 'Blabloubli ?',
     answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra lorem eu dolor rhoncus, at scelerisque ligula gravida. Sed porta id mi sit amet convallis. Etiam iaculis massa sit amet lacus blandit sodales. Nulla ultrices velit a diam placerat congue. Pellentesque iaculis, ipsum quis eleifend dapibus, est dui eleifend ante, quis fermentum mi ligula quis nisl. Ut et ex dui. Integer id venenatis quam.',
   },
@@ -38,7 +42,7 @@ const FAQ: React.FC = () => {
   
   };
     return (
-      <div>
+      <div className='background_faq'>
         <div className='faq'>
           {faqs.map((faq, index) => (
             <div key={index}>
