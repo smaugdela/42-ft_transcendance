@@ -3,7 +3,14 @@ import * as argon from 'argon2';
 import AuthDto from './dto/auth.dto';
 import { PrismaClient } from '@prisma/client';
 
+const crypto = require('crypto');
 const prisma = new PrismaClient();
+const hashingConfig = {
+	parallelism: 1,
+	memoryCost: 64000, // 64 mb
+	timeCost: 3
+};
+
 @Injectable()
 export class AuthService {
 
@@ -18,7 +25,7 @@ export class AuthService {
 
 		// Compare passwords.
 		// If they don't match, throw an exception.
-		const pwMatch = await argon.verify(activeUser.password, body.password);
+		const pwMatch = await argon.verify(activeUser.password, body.password, hashingConfig);
 		if (pwMatch === false)
 			throw new ForbiddenException('Password incorrect');
 
@@ -40,7 +47,11 @@ export class AuthService {
 
 		try {
 			// generate password hash
-			const hash = await argon.hash(body.password);
+			const buf: Buffer = crypto.randomBytes(16);
+			const hash = await argon.hash(body.password, {
+				...hashingConfig,
+				salt: buf
+			});
 
 			// save the new user in the db
 			const newUser = await prisma.user.create({

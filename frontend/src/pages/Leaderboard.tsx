@@ -1,5 +1,7 @@
 import "../styles/Leaderboard.css"
 import { IUser, users } from "../data"
+import { useEffect } from "react";
+import { json } from "stream/consumers";
 
 export function TopThreeDetail(props: { user: IUser }) {
 	let podium;
@@ -63,17 +65,29 @@ export function PerformanceDetail() {
 
 export function Leaderboard() {
 
+	async function getUsers() {
+		
+		const res = await fetch(`http://localhost:3001/users`, {
+			method: "GET",
+			headers: {
+				'content-type': 'application/json;',
+			  },
+			})
+			.then((response) => {
+				// console.log("response.json()", response.json());
+				return (response.json());
+			}) // on transforme le res en json
+			.then((json) => {return JSON.parse(json)})
+			// .catch((err) => {console.log("Error:", err.message)});
+	
+		// const obj = JSON.parse(res);
+	
+		console.log("res: ", res);
 
-	// const res =  fetch(`http://localhost:3001/users/`, {
-	// 	method: "GET",
-	// 	headers: {
-	// 		'content-type': 'application/json;charset=UTF-8',
-	// 		'mode': 'no-cors',
-	// 	  },
-	// 	})
-	// 	.then((response) => response.json()) // on transforme le res en json
-	// 	.then((actualData) => console.log(actualData))
-	// 	.catch((err) => {console.log(err.message)});
+		return res;
+	}
+
+	const test = getUsers();
 
 	const rank1 = users.filter( user => user.rank === 1);
 	const rank2 = users.filter( user => user.rank === 2);
