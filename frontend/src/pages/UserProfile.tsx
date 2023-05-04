@@ -80,7 +80,6 @@ export function MatchHistory(props: { user: IUser, users: IUser[]}) {
 	);
 }
 
-
 export function UserProfile() {
 
 	const loggedUser: IUser = users.filter( user => user.isLogged === true)[0];

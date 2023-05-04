@@ -17,7 +17,7 @@
 	justify-content: center;
 	flex: 2 auto;
 	margin: 8vh 8vw 0 8vw;
-	height : 85.8vh;
+	
 }
 
 #whole-profile hr {
@@ -304,7 +304,6 @@
 aside {
 	margin : 2vw 4vw 2vw 0;
 	width : 25%;
-	height: 100%;
 }
 
 aside > h1:first-child {
