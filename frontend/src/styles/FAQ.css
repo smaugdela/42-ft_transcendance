@@ -9,6 +9,10 @@
     size-adjust: auto;
 }
 
+.faq > div{
+    position: relative;
+}
+
 .faq_box {
     box-sizing: border-box;
     border-radius: 8px; 
@@ -32,9 +36,8 @@
 }  
 
 .symbol{
-    position: right;
-    top: 15%;
-    right: 10px;
+    position: absolute;
+    right: 5%; 
 }
 
 .answer{

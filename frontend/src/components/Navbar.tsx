@@ -68,9 +68,9 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 	        <div className='navbar'>
 			<label className="nav-elements" id="burger-menu" htmlFor="check"  >
 				<input type="checkbox" id="check" onClick={showSidebar}/> 
-				<span></span>
-				<span></span>
-				<span></span>
+				<span className='span1'></span>
+				<span className='span2'></span>
+				<span className='span3'></span>
 			</label>
 			<div className="navbar__center">
 				<Link to="/" className="navbar__title">
