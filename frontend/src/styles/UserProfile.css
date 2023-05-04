@@ -1,5 +1,17 @@
 @import "../App.css";
 
+
+/* ********************************/
+/* ***      VARIABLES CSS       ***/
+/* ********************************/
+
+
+
+
+/* ********************************/
+/* ***    User Profile PAGE     ***/
+/* ********************************/
+
 #whole-profile {
 	display: flex;
 	justify-content: center;
@@ -104,6 +116,24 @@
 	align-items: center;
 }
 
+.user-infos > button {
+	all: unset;
+	cursor: pointer;
+	color: rgb(255, 255, 255);
+	padding-right: 1vw;
+}
+
+.user-infos > button:hover {
+	all: unset;
+	cursor: pointer;
+	color: rgb(21, 224, 163);
+	padding-right: 1vw;
+}
+
+/* ********************************/
+/* ***  Achievement COMPONENT   ***/
+/* ********************************/
+
 #achievements {
 	margin-top : 1vh;
 }
@@ -162,6 +192,14 @@
 	font-size : 1.5rem;
 }
 
+#completed_achievement > h3 {
+	color: var(--heading-color);
+}
+
+/* ********************************/
+/* ***  Competitive overview    ***/
+/* ********************************/
+
 #stats {
 	background-color: rgb(252, 252, 252);
 	border-radius : 20px;
@@ -175,6 +213,47 @@
 	text-align: center;
 }
 
+
+/* Radial progress bar for win rate */
+.circular-progress {
+	position: relative;
+	height: 6rem;
+	width: 6rem;
+	border-radius: 50%;
+	background: conic-gradient(var(--heading-color) 3.6deg, #ededed 0deg);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.circular-progress::before {
+	content: "";
+	position : absolute;
+	height : 80%;
+	width : 80%;
+	border-radius: 50%;
+	background-color: rgb(255, 255, 255);
+}
+
+.progress-value {
+	font-size: 2em;
+	font-weight: 500;
+	color: rgb(44, 44, 48);
+}
+
+.winrate__title {
+	text-align: center;
+	font-size: 0.8rem;
+	font-weight: 500;
+	color: black;
+}
+
+.winrate__content {
+	position: relative;
+}
+
+
+ /* Stats below or beside the circular progress bar */
 .winratio_stats {
 	display: flex;
 	justify-content: space-around;
@@ -190,6 +269,7 @@
 	margin-bottom: 1.5vh;
 }
 
+/* challenge button below */
 .challenge-btn {
 	font-weight: 0;
 	font-size: 14px;
@@ -217,20 +297,9 @@
 	border: solid 2px var(--heading-color);
 }
 
-
-.user-infos > button {
-	all: unset;
-	cursor: pointer;
-	color: rgb(255, 255, 255);
-	padding-right: 1vw;
-}
-
-.user-infos > button:hover {
-	all: unset;
-	cursor: pointer;
-	color: rgb(21, 224, 163);
-	padding-right: 1vw;
-}
+/* ********************************/
+/* *** Match History COMPONENT  ***/
+/* ********************************/
 
 aside {
 	margin : 2vw 4vw 2vw 0;
@@ -302,42 +371,4 @@ aside > div {
 	height: 5rem;
 	max-width: 5rem;
 	border-radius: 50%;
-}
-
-
-/* Radial progress bar for win rate */
-.circular-progress {
-	position: relative;
-	height: 6rem;
-	width: 6rem;
-	border-radius: 50%;
-	background: conic-gradient(var(--heading-color) 3.6deg, #ededed 0deg);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.circular-progress::before {
-	content: "";
-	position : absolute;
-	height : 80%;
-	width : 80%;
-	border-radius: 50%;
-	background-color: rgb(255, 255, 255);
-}
-
-.progress-value {
-	font-size: 2em;
-	font-weight: 500;
-	color: rgb(44, 44, 48);
-}
-
-.winrate__content {
-	position: relative;
-}
-.winrate__title {
-	text-align: center;
-	font-size: 0.8rem;
-	font-weight: 500;
-	color: black;
 }

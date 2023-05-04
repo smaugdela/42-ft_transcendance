@@ -8,11 +8,10 @@ import StatDisplay from "../components/StatDisplay";
 
 
 export function Achievement( props: { userAchievements: IAchievement[] }) {
-	// TODO : css du isAchieved ou pas
-	// TODO : faire filter du nb des isAchieved/All
-	
+	const completedAchievements: number = props.userAchievements.filter(elt => elt.wasAchieved === true).length;
+
 	const displayAchievements = props.userAchievements.map( achievement => {
-		return <div  className="one-achievement">
+		return <div  className="one-achievement" id={achievement.wasAchieved === true ? "completed_achievement" : "one-achievement"}>
 			<FontAwesomeIcon icon={achievement.icon} className="fa-icon-achievements"/>
 			<h3>{achievement.title}</h3>
 			<h4>{achievement.description}</h4>
@@ -20,7 +19,7 @@ export function Achievement( props: { userAchievements: IAchievement[] }) {
 	})
 	return (
 		<article id="achievements">
-			<h1>ACHIEVEMENTS (11/11)</h1>
+			<h1>ACHIEVEMENTS ({completedAchievements}/{props.userAchievements.length})</h1>
 			<div className="all-achievements">
 				{displayAchievements}
 			</div>
