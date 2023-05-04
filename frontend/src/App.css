@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Pacifico&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Yellowtail&display=swap');
-
+@import url('https://fonts.googleapis.com/css?family=Poppins:900i');
 
 .dark {
 	--font-type : 'Share Tech', sans-serif;
@@ -184,3 +184,4 @@ footer {
 	font-size: 150%;
 }
 
+/* BOUTONS TEST  */
