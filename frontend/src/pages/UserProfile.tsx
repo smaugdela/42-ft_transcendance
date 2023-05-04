@@ -1,5 +1,7 @@
 import "../styles/UserProfile.css"
 import { IAchievement, achievements } from "../data";
+import { IMatch, matches } from "../data";
+import { IUser, users } from "../data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus, faBan, faComment, faDice, faHeart, faTrophy } from '@fortawesome/free-solid-svg-icons';
 // import { faBaby, faJetFighterUp, faLemon, faUserSlash, faViruses, faUserAstronaut, faFrog, faRobot, faShieldDog, faHandSpock, faHandHoldingDollar } from '@fortawesome/free-solid-svg-icons';
@@ -27,7 +29,58 @@ export function Achievement( props: { userAchievements: IAchievement[] }) {
 	);
 }
 
+export function MatchHistory(props: { user: IUser}) {
+	
+	
+	const displayMatchHistory = props.user.matchHistory.map(match => {
+
+		let banner: string = "ACE !";
+		let banner_style: string = "ace";
+		let outcome : number = match.score_p1 - match.score_p2;
+		if (outcome < 0) {
+			banner = "DEFEAT!";
+			banner_style = "defeat";
+		}
+		else if (outcome > 0 && match.score_p2 != 0) {
+			banner = "VICTORY !";
+			banner_style = "victory";
+		}	
+		else if (outcome === 0) {
+			banner = "EQUALITY !";
+			banner_style = "equality";
+		}
+			
+		return <div className="match-card">
+					<h5>24 avril 2023 22h48 - 6''03</h5>
+					<h4 className={`match-outcome ${banner_style}`}>{banner}</h4>
+					<div className="match-detail">
+						<div className="opponent">
+							<img src={props.user.avatar} alt={props.user.nickname} />
+							<h4>{props.user.nickname}</h4>
+						</div>
+						<div>
+							<h2>{match.score_p1} - {match.score_p2}</h2>
+						</div>
+						<div className="opponent">
+							<img src="/assets/temp.png" alt="yo" />
+							<h4>John</h4>
+						</div>
+					</div>
+				</div>
+	})
+	return (
+		<aside>
+			<h1>MATCH HISTORY (last 3)</h1>
+			{displayMatchHistory}
+		</aside>
+	);
+}
+
+
 export function UserProfile() {
+
+	const loggedUser: IUser = users.filter( user => user.isLogged === true)[0];
+
 	return (
 		<div id="whole-profile">
 			<section id="main-dashboard">
