@@ -19,7 +19,7 @@ const teamMembers: Member[] = [
     name: 'Anna',
     position: 'COO',
     description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    image: '/assets/punk.png',
+    image: '/assets/punk3.png',
   },
   {
     name: 'Marine',
@@ -37,10 +37,10 @@ const teamMembers: Member[] = [
 
 function AboutUs() {
   return (
-    <div className='background_aboutus'>
+    <div className='container'>
       <div className='aboutus'>
-        <h1>Who are we ?</h1>
-        <p>We are  four students of 42 school. Transcendence is the last project of our training course. It's a Web project whose goal is to recreate the historical Pong Game </p>
+        <h1>Who are we ?<br /></h1>
+        <p>We are four students of 42 school. Transcendence is the last project of our training course. It's a Web project whose goal is to recreate the historical Pong Game. Our team is composed of 4 people who combined their knowledge to build this project. We hope you enjoy our game.</p>
       </div>
       <div className='div_staff container'>
       {/* <section className=''> */}

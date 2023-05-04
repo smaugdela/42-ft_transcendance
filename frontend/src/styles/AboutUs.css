@@ -1,51 +1,44 @@
-/* .background_aboutus{
-  background-color: rgb(19, 16, 16);
-  height : 90vh;
-	width: 100%;
-}  */
-
-.aboutus{
-  width: auto;
-  /* display :flex;
-  justify-content: space-around; */
-
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 60px;
+  padding: 60px;
 }
 
-.aboutus h1{
-  padding: 20px;
-  text-align: left;
-  font-size: 50px;
+.aboutus{
+  font-size: 20px;
   color :white;
-  /* text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff, 0 0 70px #fff, 0 0 80px #fff;
-  background-image: linear-gradient(to right, #ffffff, #fff); */
+  text-shadow:
+    0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px rgb(212, 120, 137),
+    0 0 82px rgb(212, 120, 137),
+    0 0 92px rgb(212, 120, 137),
+    0 0 102px rgb(212, 120, 137),
+    0 0 151px rgb(212, 120, 137);
+} 
+
+.aboutus h1{
+  text-align: center;
+  font-size: 45px;
 } 
 
 .aboutus p{
-  padding: 20px;
   text-align: justify;
-  font-size: 20px;
-  color :white
+  font-size: 25px;
+  padding : 20px;
 }
 
 .div_staff{
   background-color: rgb(250, 191, 201, 0.5);
   border-radius: 30px;
-  padding-top: 5px;
+  /* padding-top: 5px;
   padding-right: 5px;
-  padding-left: 5px;
-  margin-bottom: -50px;
-  border: solid;
-}
-
-.container{
-  margin: auto;
-  margin-top: 100px;
-  margin-bottom: 100px;
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  align-items: stretch;
-  
+  padding-left: 5px; */
+  /* margin-bottom: -50px; */
+  /* border: solid; */
 }
 
 .container_staff h2, .container_staff p{
