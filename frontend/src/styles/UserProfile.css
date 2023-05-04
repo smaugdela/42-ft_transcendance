@@ -307,7 +307,12 @@ aside {
 	height: 100%;
 }
 
-aside > div {
+aside > h1:first-child {
+	color : white;
+	margin-top : 1vh;
+}
+
+.match-card {
 	background-color: rgb(255, 255, 255);
 	border-radius: 20px;
 	width : 100%;

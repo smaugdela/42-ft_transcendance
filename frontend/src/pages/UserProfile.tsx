@@ -1,6 +1,6 @@
 import "../styles/UserProfile.css"
 import { IAchievement, achievements } from "../data";
-import { IMatch, matches } from "../data";
+// import { IMatch, matches } from "../data";
 import { IUser, users } from "../data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus, faBan, faComment, faDice, faHeart, faTrophy } from '@fortawesome/free-solid-svg-icons';
@@ -29,7 +29,7 @@ export function Achievement( props: { userAchievements: IAchievement[] }) {
 	);
 }
 
-export function MatchHistory(props: { user: IUser}) {
+export function MatchHistory(props: { user: IUser, users: IUser[]}) {
 	
 	
 	const displayMatchHistory = props.user.matchHistory.map(match => {
@@ -41,7 +41,7 @@ export function MatchHistory(props: { user: IUser}) {
 			banner = "DEFEAT!";
 			banner_style = "defeat";
 		}
-		else if (outcome > 0 && match.score_p2 != 0) {
+		else if (outcome > 0 && match.score_p2 !== 0) {
 			banner = "VICTORY !";
 			banner_style = "victory";
 		}	
@@ -49,9 +49,13 @@ export function MatchHistory(props: { user: IUser}) {
 			banner = "EQUALITY !";
 			banner_style = "equality";
 		}
-			
+		
+		const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const;
+		const date = match.date.toLocaleDateString('en-US', options);
+		const opponent: IUser = props.users.filter(player => player.id === match.id_p2)[0];
+
 		return <div className="match-card">
-					<h5>24 avril 2023 22h48 - 6''03</h5>
+					<h5>{date}</h5>
 					<h4 className={`match-outcome ${banner_style}`}>{banner}</h4>
 					<div className="match-detail">
 						<div className="opponent">
@@ -62,15 +66,15 @@ export function MatchHistory(props: { user: IUser}) {
 							<h2>{match.score_p1} - {match.score_p2}</h2>
 						</div>
 						<div className="opponent">
-							<img src="/assets/temp.png" alt="yo" />
-							<h4>John</h4>
+							<img src={opponent.avatar} alt={opponent.nickname} />
+							<h4>{opponent.nickname}</h4>
 						</div>
 					</div>
 				</div>
 	})
 	return (
 		<aside>
-			<h1>MATCH HISTORY (last 3)</h1>
+			<h1>MATCH HISTORY</h1>
 			{displayMatchHistory}
 		</aside>
 	);
@@ -161,60 +165,10 @@ export function UserProfile() {
 					userAchievements={achievements}
 				/>
 			</section>
-			<aside>
-				<h1>MATCH HISTORY (last 3)</h1>
-				<div className="match-card">
-					<h5>24 avril 2023 22h48 - 6''03</h5>
-					<h4 className="match-outcome defeat"> DEFEAT !</h4>
-					<div className="match-detail">
-						<div className="opponent">
-							<img src="/assets/jinx.png" alt="av" />
-							<h4>marine</h4>
-						</div>
-						<div>
-							<h2>1 - 2</h2>
-						</div>
-						<div className="opponent">
-							<img src="/assets/temp.png" alt="av2" />
-							<h4>John</h4>
-						</div>
-					</div>
-				</div>
-				<div className="match-card">
-				<h5>22 avril 2023 19h36 - 3''22</h5>
-				<h4 className="match-outcome victory"> VICTORY !</h4>
-					<div className="match-detail">
-						<div className="opponent">
-							<img src="/assets/jinx.png" alt="av" />
-							<h4>marine</h4>
-						</div>
-						<div>
-							<h2>3 - 2</h2>
-						</div>
-						<div className="opponent">
-							<img src="/assets/tmp.png" alt="av2" />
-							<h4>Krug</h4>
-						</div>
-					</div>
-				</div>
-				<div className="match-card">
-				<h5>21 avril 2023 14h26 - 2''14</h5>
-				<h4 className="match-outcome ace"> ACE !</h4>
-					<div className="match-detail">
-						<div className="opponent">
-							<img src="/assets/jinx.png" alt="av" />
-							<h4>marine</h4>
-						</div>
-						<div>
-							<h2>2 - 0</h2>
-						</div>
-						<div className="opponent">
-							<img src="/assets/avatar3.png" alt="av2" />
-							<h4>Caitlyn</h4>
-						</div>
-					</div>
-				</div>
-			</aside>
+			<MatchHistory
+				user={loggedUser} 
+				users={users}
+			/>
 		</div>
 	);
 }
