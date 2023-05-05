@@ -8,7 +8,7 @@ export default class AuthDto {
 
 	@IsString()
 	@IsNotEmpty()
-	password:		string;
+	accessToken:		string;
 	
 	@IsOptional()
 	@IsString()

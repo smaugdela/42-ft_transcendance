@@ -8,17 +8,17 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  avatar      String?  @default("/assets/avatar1.png")
-  nickname    String   @unique
-  mailAddress String?  @unique
-  password    String
-  coalition   String?
-  nbGames     Int?     @default(0)
-  score       Int?     @default(0)
-  rank        Int?     @default(0)
-  isLogged    Boolean? @default(false)
-  isActive    Boolean? @default(false)
+  id          	Int      @id @default(autoincrement())
+  avatar      	String?  @default("/assets/avatar1.png")
+  nickname    	String   @unique
+  mailAddress	String?  @unique
+  accessToken   String
+  coalition  	String?
+  nbGames    	Int?     @default(0)
+  score      	Int?     @default(0)
+  rank      	Int?     @default(0)
+  isLogged  	Boolean? @default(false)
+  isActive  	Boolean? @default(false)
 
   friendsList     User[] @relation("friends")
   friendsRelation User[] @relation("friends") // Used to store the many-to-many relation.

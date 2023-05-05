@@ -20,7 +20,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google-oauth20')
 		  nickname: name.givenName,
 		  avatar: photos[0].value,
 		  accessToken,
-		  refreshToken,
+		  /*refreshToken,*/
 		};
 
 		done(null, user);
