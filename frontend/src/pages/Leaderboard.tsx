@@ -1,6 +1,6 @@
 import "../styles/Leaderboard.css"
 import { IUser, users } from "../data"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { json } from "stream/consumers";
 
 export function TopThreeDetail(props: { user: IUser }) {
@@ -65,29 +65,48 @@ export function PerformanceDetail() {
 
 export function Leaderboard() {
 
-	async function getUsers() {
+	// to store the data when it returns from our data request to the API
+	const [uzers, setUsers] = useState()
+
+	useEffect( () => {
+		fetch('http://localhost:3001/users')
+		.then(response => {
+			// console.log("yo", response.json())
+			return response.json();
+		})
+		.then((data) => setUsers(data))
+		.catch( error => console.error(error));
+	}, []);
+
+
+	console.log(uzers);
+	console.log("1 user", uzers[0]);
+	console.log("user.avatar", uzers[0].avatar);
+	
+	
+	// async function getUsers() {
 		
-		const res = await fetch(`http://localhost:3001/users`, {
-			method: "GET",
-			headers: {
-				'content-type': 'application/json;',
-			  },
-			})
-			.then((response) => {
-				// console.log("response.json()", response.json());
-				return (response.json());
-			}) // on transforme le res en json
-			.then((json) => {return JSON.parse(json)})
-			// .catch((err) => {console.log("Error:", err.message)});
+	// 	const res = await fetch(`http://localhost:3001/users`, {
+	// 		method: "GET",
+	// 		headers: {
+	// 			'content-type': 'application/json;',
+	// 		  },
+	// 		})
+	// 		.then((response) => {
+	// 			// console.log("response.json()", response.json());
+	// 			return (response.json());
+	// 		}) // on transforme le res en json
+	// 		.then((json) => {return JSON.parse(json)})
+	// 		// .catch((err) => {console.log("Error:", err.message)});
 	
-		// const obj = JSON.parse(res);
+	// 	// const obj = JSON.parse(res);
 	
-		console.log("res: ", res);
+	// 	console.log("res: ", res);
 
-		return res;
-	}
+	// 	return res;
+	// }
 
-	const test = getUsers();
+	// const test = getUsers();
 
 	const rank1 = users.filter( user => user.rank === 1);
 	const rank2 = users.filter( user => user.rank === 2);
