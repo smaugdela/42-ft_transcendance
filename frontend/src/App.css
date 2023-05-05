@@ -37,16 +37,6 @@
 	font-family: 'Lato', sans-serif;
 }
 
-.settings {
-	background-color: white;
-	display: flex;
-	justify-content: center;
-	height: 90vh;
-	align-items: center;
-	font-size: 3rem;
- 	padding-left: 500px;
-	padding-right: 500px; 
-}
 
 /* body {
 	margin : 0;
