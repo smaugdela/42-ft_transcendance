@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, Request } from '@nestjs/common';
 import * as argon from 'argon2';
 import AuthDto from './dto/auth.dto';
 import { PrismaClient } from '@prisma/client';
@@ -73,5 +73,33 @@ export class AuthService {
 
 			throw error;
 		}
+	}
+
+	async googleAuth(@Request() req) {
+
+		if (!req.user) {
+			return 'No user from google';
+		}
+
+		console.log("Google returned this user: ", req.user);
+
+		const user = prisma.user.findUnique({
+			where: {
+				nickname: req.user.givenName,
+			}
+		});
+
+		if (!user)
+		{
+			await prisma.user.create({
+				data: req.user,
+			});
+			console.log("User created.");
+		}
+
+		return {
+			message: 'User information from google',
+			user: req.user,
+		};
 	}
 }

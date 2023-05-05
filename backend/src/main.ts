@@ -25,13 +25,18 @@ async function pushToDB_User (path: string)
 }
 
 async function bootstrap() {
+	
+	const port = Number(process.env.BACKEND_PORT);
+	if (isNaN(port))
+	{
+		console.log("Error: backend port undefined.")
+		return ;
+	}
+
 	const app = await NestFactory.create(AppModule, {logger: console,});
 
-	pushToDB_User('../database/user_data.json'); // Use this only to load test data
-
-	console.log("Data loaded into db");
-
-	const port = Number(process.env.BACKEND_PORT) || 3001;
+	// pushToDB_User('../database/user_data.json'); // Use this only to load test data
+	// console.log("Data loaded into db");
 
 	app.useGlobalPipes(new ValidationPipe({whitelist: true}));
 
