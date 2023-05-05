@@ -37,7 +37,9 @@ function App() {
 	<video className='videobg' autoPlay loop muted content="width=device-width, initial-scale=1.0">
 		<source src="./assets/bg-video.mp4" type='video/mp4' />
 	</video>
-
+	<audio controls autoPlay >
+		<source src="./assets/edgerunner.mp3" />
+	</audio>
 		<Routes>
 		{/* <Route path="/" element={<Home />} /> */}
 		<Route path="/leaderboard" element={<Leaderboard />} />
