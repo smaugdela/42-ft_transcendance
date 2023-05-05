@@ -1,4 +1,5 @@
 import "../styles/Login.css";
+import '../App.css';
 
 export default function Login() {
   return (
