@@ -74,6 +74,11 @@ body {
     z-index: -10;
 }
 
+.music-bg{
+	position: fixed;
+	top: 100px;
+}
+
 #main-content {
 	width : 100%;
 }
