@@ -85,10 +85,12 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 	
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
+            
             {SidebarData.map((item, index) => {
 				return (
 					<li key={index} className={item.cName}>
-                  <Link to={item.path}>
+                  <Link to={item.path} >
+
 					<div>{item.image}
 					</div>
 				  {/* <FontAwesomeIcon icon={item.image} className='item_image'/> */}

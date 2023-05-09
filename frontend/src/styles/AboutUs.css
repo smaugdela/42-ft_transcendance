@@ -66,6 +66,7 @@
 
 .image{
   border-radius: 10px;
+  resize: both;
   /* max-width: 100%; 
    height: auto; */
 }
