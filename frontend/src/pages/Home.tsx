@@ -1,10 +1,10 @@
 import '../App.css';
+import'../styles/Home.css';
 
 export default function Home() {
 	return (
         <div id="play-screen">
-          <div></div>
-          <button>PRESS TO PLAY</button>
+          <button className='button1' >PRESS TO PLAY</button>
         </div>
 	);
 }

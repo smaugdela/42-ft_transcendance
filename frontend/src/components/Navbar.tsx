@@ -6,14 +6,19 @@ import { ChangeEventHandler } from 'react';
 import Avatar from './Avatar';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPersonDrowning, faHeadSideMask, faHandsHoldingChild, faComments, faUsers, faRobot, faOtter, faShieldCat} from "@fortawesome/free-solid-svg-icons";
+import { faMapPin, faSpaghettiMonsterFlying, faPeoplePulling, faPersonDrowning, faHeadSideMask, faHandsHoldingChild, faComments, faUsers, faRobot, faOtter, faShieldCat} from "@fortawesome/free-solid-svg-icons";
 
 const SidebarData = [
 	{
 		title: 'Home',
 		path: '/',
-		image: <FontAwesomeIcon className='item_image' icon={faOtter} />,
+		image: <FontAwesomeIcon className='item_image' icon={faMapPin} />,
 		cName: 'nav-text'
+	},
+	{
+		title: 'User',
+		path: '/user',
+		image: <FontAwesomeIcon className='item_image' icon={faSpaghettiMonsterFlying} />,		cName: 'nav-text'
 	},
 	{
 		
@@ -27,7 +32,7 @@ const SidebarData = [
 		title: 'Friends',
 		path: '/friends',
 		// image: '/assets/friends2.png',
-		image: <FontAwesomeIcon className='item_image' icon={faHeadSideMask} />,
+		image: <FontAwesomeIcon className='item_image' icon={faPeoplePulling} />,
 		cName: 'nav-text'
 	},
 	{
@@ -43,9 +48,9 @@ const SidebarData = [
 		image: <FontAwesomeIcon className='item_image' icon={faPersonDrowning} />,		cName: 'nav-text'
 	},
 	{
-	  title: 'About',
-	  path: '/aboutus',
-	  image: <FontAwesomeIcon className='item_image' icon={faShieldCat} />,	  cName: 'nav-text'
+		title: 'About us',
+		path: '/aboutus',
+		image: <FontAwesomeIcon className='item_image' icon={faShieldCat} />,	  cName: 'nav-text'
 	},
 
 ];
@@ -83,7 +88,7 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 					<li key={index} className={item.cName}>
                   <Link to={item.path} >
 
-					<div>{item.image}
+					<div className='item_image' >{item.image}
 					</div>
 				  {/* <FontAwesomeIcon icon={item.image} className='item_image'/> */}
                     {/* <img className='item_image' src={item.image}/> */}

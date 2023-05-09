@@ -15,14 +15,14 @@
 /* Menu qui apparait quand tu clique sur la croix  */
 
 .nav-menu {
-  background-image: var(--sides-color);
-  opacity: 0.70; 
+  background-color: var(--sides-color);
+  /* opacity: 0.70;  */
   width: 250px;
-  height: 902px;
+  height: 100%;
   display: flex;
   justify-content: center;
   position: fixed;
-  top: 9%;
+  top: 79px;
   left: -100%;
   transition: 850ms;
   z-index: 100;
@@ -32,6 +32,7 @@
   .nav-menu.active {
     left: 0;
     transition: 350ms;
+	z-index: 1000;
   }
   
   .nav-text {
@@ -44,7 +45,7 @@
 
 .nav-text a {
 	text-decoration: none;
-    color: #240122;
+    color: #e3eef1;
     font-size: 30px;
     width: 95%;
     height: 100%;
@@ -53,7 +54,12 @@
     padding: 0 16px;
     border-radius: 4px;
 	text-shadow: 
-	1px 5px 4px rgba(0,0,0,.3), 
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	/* 1px 5px 4px rgba(15,29,42,.3), 
 	0 0 2px rgba(255,255,255,1), 
 	0 0 10px rgba(255,255,255,1), 
 	0 0 20px rgba(255,255,255,1), 
@@ -61,7 +67,7 @@
 	0 0 40px #ff00de, 
 	0 0 70px #ff00de, 
 	0 0 80px #ff00de,
-	0 0 100px #ff00de;
+	0 0 100px #ff00de; */
 
 	-webkit-animation: neon1 1.5s ease-in-out infinite alternate;
 	-moz-animation: neon1 1.5s ease-in-out infinite alternate;
@@ -70,7 +76,7 @@
 /* trying something */
 
 .nav-text:hover{
-	background-color: #6c125d;
+	background-color: rgb(15, 29, 42);
 }
 
 /* end of try */
@@ -79,15 +85,23 @@
 .nav-menu-items {
 	width: 100%;
 	font-size: 18px;
+
 }
 
 .item_image{
 	width: 30px;
 	height: 30px;
 	top: 50;
-	color: rgba(254, 247, 255, 0.883);
-	text-shadow: 
-	1px 5px 4px rgba(0,0,0,.3), 
+	color: rgb(216, 237, 239);
+	box-shadow: 
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	/* outline: none; */
+	border-radius: 5px;
+	/* 1px 5px 4px rgba(0,0,0,.3), 
 	0 0 2px rgba(255,255,255,1), 
 	0 0 10px rgba(255,255,255,1), 
 	0 0 20px rgba(255,255,255,1), 
@@ -95,12 +109,12 @@
 	0 0 40px #ff00de, 
 	0 0 70px #ff00de, 
 	0 0 80px #ff00de,
-	0 0 100px #ff00de;
+	0 0 100px #ff00de; */
 }
 
 .item_title{
-	font-family: 'Yellowtail', cursive;
-	font-size: xx-large;
+	font-family: var(--font-type);
+	font-size: large;
 	margin-left: 10px;
 }
 
@@ -125,31 +139,31 @@
 	text-decoration: none;
 	font-size: 3rem;
 	text-align: center;
-	color: #fff;
+	color: #e3eef1;
 	text-shadow:
-		0 0 7px #fff,
-		0 0 10px #fff,
-		0 0 42px rgb(230, 18, 124),
-		0 0 77px rgb(230, 18, 124),
-		0 0 100px rgb(230, 18, 124);
+		0 0 7px #efefef,
+		0 0 10px #90d0f0,
+		0 0 42px rgb(60, 116, 166),
+		0 0 77px rgb(60, 116, 166),
+		0 0 100px rgb(24, 46, 65);
 	animation: lumiere 1s infinite linear;
 }
 @keyframes lumiere {
 	0%{
 		text-shadow:
-		0 0 7px #fff,
-		0 0 10px #fff,
-		0 0 42px rgb(130, 11, 70),
-		0 0 77px rgb(230, 18, 124),
-		0 0 100px rgb(230, 18, 124);
+		0 0 7px #d8e0e1,
+		0 0 10px #90d0f0,
+		0 0 42px rgb(60, 116, 166),
+		0 0 77px rgb(60, 116, 166),
+		0 0 100px rgb(24, 46, 65);
 	}
 	50%{
 		text-shadow:
-		0 0 7px #fff,
-		0 0 10px #fff,
-		0 0 32px rgb(209, 36, 123),
-		0 0 87px rgb(230, 18, 124),
-		0 0 120px rgb(230, 18, 124);
+		0 0 7px #ffffff,
+		0 0 10px #90d0f0,
+		0 0 32px rgb(60, 116, 166),
+		0 0 87px rgb(60, 116, 166),
+		0 0 120px rgb(24, 46, 65);
 	}
 }
 .effetneon span {

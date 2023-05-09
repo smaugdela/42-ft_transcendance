@@ -11,6 +11,8 @@ import Settings from './pages/Settings';
 import Chat from './components/Chat';
 import AboutUs from './pages/AboutUs';
 import FAQ from './pages/FAQ';
+import Home from './pages/Home';
+
 
 function App() {
 
@@ -40,7 +42,7 @@ function App() {
             <source src="./assets/edgerunner.mp3" type="audio/mpeg"/>
           </audio>
           <Routes>
-            {/* <Route path="/" element={<Home />} /> */}
+            <Route path="/" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path='/faq' element={<FAQ />} />
             <Route path="/aboutUs" element={<AboutUs />} />

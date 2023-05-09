@@ -4,14 +4,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Yellowtail&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Poppins:900i');
+@import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap');
 
 .dark {
-	--font-type : 'Share Tech', sans-serif;
+	--font-type : 'Bruno Ace SC', cursive;
 	/* --font-type: 'Monoton', cursive; */
 	--font-color : rgb(255, 255, 255);
 	--bg-image: url("../public/assets/cyberpunk.jpg");
 	--sidebar-image: ;
-	--sides-color : #220e46;
+	--sides-color :rgba(24, 46, 65, 0.7);
 	--heading-color: rgba(24, 46, 65, 0.7);
 	/* --header-image: url("../public/assets/neonhead.jpg"); */
 	/* --home-image : url("https://media1.ledevoir.com/images_galerie/nwd_132675_102056/image.jpg"); */
@@ -67,39 +68,12 @@ body {
 .music-bg{
 	position: fixed;
 	top: 100px;
-	/* z-index: -100; */
+	z-index: -100;
 }
 
 #main-content {
 	width : 100%;
 }
-
-#play-screen > button {
-	position : relative;
-	display: flex;
-	height: 5vh;
-	align-items: center;
-	justify-content: center;
-	background-color: transparent;
-	
-	color: #db3eb1;
-	border: 6px solid #db3eb1;
-	border-radius:15px;
-	padding: 15px 25px;
-	font-size: 30px;
-	font-family: tahoma;
-	letter-spacing:5px;
-	cursor: pointer;
-	font-weight: bold;
-	filter: drop-shadow(0 0 15px #db3eb1) drop-shadow(0 0 50px #db3eb1) contrast(2) brightness(2);
-	transition: .5s;
-}
-
-  #play-screen > button:hover {
-	color: black;
-	background-color: #db3eb1;
-	filter: drop-shadow(0 0 20px #db3eb1) contrast(2) brightness(2);
-  }
 
 #chat {
 	background-color: var(--sides-color);
@@ -108,8 +82,8 @@ body {
 }
 
 footer {
-	position: fixed;
-	bottom:0;
+	/* position: fixed; */
+	/* bottom:0; */
 	width: 100%;
 	background-color: var(--heading-color);
 	font-family: var(--font-type);
