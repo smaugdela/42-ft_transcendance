@@ -1,10 +1,14 @@
-import { Controller, Get, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, UseGuards, Req, Res, ForbiddenException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 // import AuthDto from './dto/auth.dto';
 import { GoogleAuthGuard } from './guards/google.guard';
-import { Request } from 'express';
+import { Request, Response } from 'express';
+import { PrismaClient } from '.prisma/client';
+
+const prisma = new PrismaClient();
 
 @Controller('auth')
+// @UseGuards(GoogleAuthGuard)
 export class AuthController {
 	constructor(private readonly authService: AuthService) {}
 
@@ -20,19 +24,35 @@ export class AuthController {
 
 	@Get('google')
 	@UseGuards(GoogleAuthGuard)
-	async googleLogin (@Req() req: Request) {
-		// console.log("googleLogin req: ", req);
+	googleLogin () {
+		return 'Login';
 	}
 
 	@Get('google/redirect')
 	@UseGuards(GoogleAuthGuard)
-	async googleRedirect (@Req() req: Request) {
-		return this.authService.googleAuth(req);
+	async googleRedirect (@Req() req: Request, @Res({ passthrough: true }) response: Response) {
+		return this.authService.googleAuth(req, response);
 	}
 
 	@Get('protected')
-	@UseGuards(GoogleAuthGuard)
-	protectedEndpoint() {
+	// @UseGuards(GoogleAuthGuard)
+	async protectedEndpoint(@Req() req: Request) {
+
+		const accessToken = req.cookies.accessToken;
+
+		console.log("cookie: ", req.cookies.accessToken);
+
+		const user = await prisma.user.findFirst({
+			where: {
+				accessToken,
+		}
+	});
+
+		console.log("user: ", user);
+
+		if (!user)
+			throw new ForbiddenException('Unauthorized access');
+
 		return "This is a protected route, and you are able to access it!"
 	}
 

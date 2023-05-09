@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { PrismaClient } from '@prisma/client';
 import * as fs from 'fs';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 // curl -X POST localhost:3001/users -H 'Content-Type: application/json' -d '{"nickname": "Zion","password": "test"}'
 
@@ -39,6 +40,8 @@ async function bootstrap() {
 	// console.log("Data loaded into db");
 
 	app.useGlobalPipes(new ValidationPipe({whitelist: true}));
+
+	app.use(cookieParser());
 
 	app.enableCors();
 

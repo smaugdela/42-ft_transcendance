@@ -1,7 +1,8 @@
-import { /*ForbiddenException,*/ Injectable, Request } from '@nestjs/common';
+import { /*ForbiddenException,*/ Injectable, Request, Res } from '@nestjs/common';
 // import * as argon from 'argon2';
 import AuthDto from './dto/auth.dto';
 import { PrismaClient } from '@prisma/client';
+import { Response } from 'express';
 
 // const crypto = require('crypto');
 const prisma = new PrismaClient();
@@ -75,7 +76,7 @@ export class AuthService {
 	// 	}
 	// }
 
-	async googleAuth(@Request() req) {
+	async googleAuth(@Request() req, @Res() response: Response) {
 
 		if (!req.user) {
 			return 'No user from google';
@@ -85,7 +86,7 @@ export class AuthService {
 
 		const logUser: AuthDto = req.user;
 
-		console.log("logUser here: ", logUser);
+		// console.log("logUser here: ", logUser);
 
 		const userDb = await prisma.user.findUnique({
 			where: {
@@ -93,7 +94,7 @@ export class AuthService {
 			}
 		});
 
-		console.log("looking for user in db.");
+		// console.log("looking for user in db.");
 
 		if (!userDb)
 		{
@@ -101,11 +102,16 @@ export class AuthService {
 				data: logUser
 			});
 			console.log("User created.");
+
 		}
 
-		return {
-			message: 'User information from google',
-			user: req.user,
-		};
+		response.cookie('accessToken', req.user.accessToken);
+		
+		// return {
+		// 	message: 'User information from google',
+		// 	user: req.user,
+		// };
+
+		return 'Successfully connected to google!';
 	}
 }
