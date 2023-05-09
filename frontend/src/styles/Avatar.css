@@ -1,8 +1,6 @@
 .avatarPannel {
 	background-color: #09acda;
-	/* position: fixed;
-	top: 3%;
-	right: 2%; */
+
 	border-radius: 7%;
 	z-index: 1;
 	box-shadow: 15px 18px 21px 11px rgb(11, 13, 24);
@@ -38,9 +36,6 @@
 
 .avatarImg {
 	background-color: #09acda;
-	/* position: fixed;
-	top: 3%;
-	right: 2%; */
 	border-radius: 100%;
 	transition: 0.3s;
 	z-index: 2;

@@ -17,7 +17,7 @@ export default function Avatar() {
       <>
         <img
           className="avatarImg"
-          src="/assets/anonym_icon.png"
+          src="/assets/rabbit.png"
           alt="broken png"
           onClick={handleClick}
           onAnimationEnd={() => setFadein(false)}
@@ -37,7 +37,7 @@ export default function Avatar() {
       <div>
         <img
           className="avatarImg"
-          src="/assets/anonym_icon.png"
+          src="/assets/rabbit.png"
           alt="broken png"
           onClick={handleClick}
           onAnimationEnd={() => setFadein(false)}
