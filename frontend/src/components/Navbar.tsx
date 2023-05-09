@@ -62,9 +62,9 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 	        <div className='navbar'>
 			<label className="nav-elements" id="burger-menu" htmlFor="check"  >
 				<input type="checkbox" id="check" onClick={showSidebar}/> 
-				<span></span>
-				<span></span>
-				<span></span>
+				<span className='span1'></span>
+				<span className='span2'></span>
+				<span className='span3'></span>
 			</label>
 			<div className="navbar__center">
 				<Link to="/" className="navbar__title">
@@ -79,10 +79,12 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 	
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
+            
             {SidebarData.map((item, index) => {
 				return (
 					<li key={index} className={item.cName}>
-                  <Link to={item.path}>
+                  <Link to={item.path} >
+
 					<div>{item.image}
 					</div>
 				  {/* <FontAwesomeIcon icon={item.image} className='item_image'/> */}

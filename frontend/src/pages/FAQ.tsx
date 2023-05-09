@@ -21,6 +21,10 @@ const faqs: FaqItem[] = [
     answer: 'with your brain',
   },
   {
+    question: 'Can we save the game progress?',
+    answer: 'srhshshshshshs',
+  },
+  {
     question: 'Blabloubli ?',
     answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra lorem eu dolor rhoncus, at scelerisque ligula gravida. Sed porta id mi sit amet convallis. Etiam iaculis massa sit amet lacus blandit sodales. Nulla ultrices velit a diam placerat congue. Pellentesque iaculis, ipsum quis eleifend dapibus, est dui eleifend ante, quis fermentum mi ligula quis nisl. Ut et ex dui. Integer id venenatis quam.',
   },
@@ -39,13 +43,12 @@ const FAQ: React.FC = () => {
   };
     return (
       <div className='background_faq'>
-        <h1>Frequently Asked Questions</h1>
-        <div >
+        <div className='faq'>
           {faqs.map((faq, index) => (
             <div key={index}>
-              <h2 className='faq ' onClick={() => toggleActiveIndex(index)}>
+              <h2 className='faq_box' onClick={() => toggleActiveIndex(index)}>
                 {faq.question} 
-                <span className='symbol'>{activeIndex === index ? '-' : '+'}</span>
+                  <span className='symbol'>{activeIndex === index ? '-' : '+'}</span>
                 {activeIndex === index && <p className='answer'>{faq.answer}</p>} 
               </h2>
             </div>
