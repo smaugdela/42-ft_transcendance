@@ -1,11 +1,23 @@
 @import "../App.css";
 
+
+/* ********************************/
+/* ***      VARIABLES CSS       ***/
+/* ********************************/
+
+
+
+
+/* ********************************/
+/* ***    User Profile PAGE     ***/
+/* ********************************/
+
 #whole-profile {
 	display: flex;
 	justify-content: center;
 	flex: 2 auto;
-	margin : 0 6vw;
-	height : 85.8vh;
+	margin: 8vh 8vw 0 8vw;
+	
 }
 
 #whole-profile hr {
@@ -13,22 +25,21 @@
 }
 
 #main-dashboard {
-	background-color: rgb(191, 191, 192);
+	background-color: var(--heading-color);
+	opacity : 95%;
+	color: white;
 	padding : 1vw;
 	border-radius: 20px;
 	margin : 2vw;
-	/* height : 60%; */
 }
 
 #top-dashboard {
 	display : flex;
 	justify-content: space-between;
-	/* height : 60%; */
 }
 
-#main-dashboard > div:first-child {
-	
-	opacity: 80%;
+#top-dashboard > div:first-of-type {
+	margin-right: 1vw;
 }
 
 #hexagon-avatar {
@@ -66,6 +77,15 @@
 	margin-bottom: 1vh;
 }
 
+.user_bio {
+	margin-left : 1rem;
+}
+
+.user_bio > span:first-of-type {
+	background-color: rgb(60, 7, 60);
+	border-radius: 10px;
+	
+}
 
 #main-stats {
 	display: flex;
@@ -81,12 +101,12 @@
 }
 
 .one-stat:hover .fa-icon {
-	color: rgb(78, 78, 78);
+	color: rgb(21, 224, 163);
 }
 
 .fa-icon {
 	font-size: 2em;
-	color : rgb(131, 131, 131);
+	color : rgb(255, 255, 255);
 }
 
 .one-stat_txt{
@@ -94,6 +114,33 @@
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
+}
+
+.user-infos > button {
+	all: unset;
+	cursor: pointer;
+	color: rgb(255, 255, 255);
+	padding-right: 1vw;
+}
+
+.user-infos > button:hover {
+	all: unset;
+	cursor: pointer;
+	color: rgb(21, 224, 163);
+	padding-right: 1vw;
+}
+
+/* ********************************/
+/* ***  Achievement COMPONENT   ***/
+/* ********************************/
+
+#achievements {
+	margin-top : 1vh;
+}
+
+#achievements > h1 {
+	margin-bottom: 1vh;
+	margin-left : 1rem;
 }
 
 .all-achievements {
@@ -105,12 +152,12 @@
 
 .one-achievement {
 	width: 18%;
-	height: 7rem;
+	height: 9rem;
 	border-radius: 20px;
 	padding: 1rem;
 	text-align: center;
 	
-	background-color: rgb(131, 131, 131);
+	background-color: rgb(255, 255, 255);
 	border : solid 1px rgb(251, 251, 251);
 	
 }
@@ -122,61 +169,149 @@
 }
 
 .one-achievement > h3 {
-	color: rgb(250, 252, 253);
+	color: rgb(3, 19, 27);
+	margin-top: 0.5rem;
 	margin-bottom: 0.5vh;
-	font-size: 1.2vw;
-	text-shadow:
-    0 0 7px #fff,
-    0 0 10px #fff,
-    0 0 21px #fff,
-    0 0 42px #0fa,
-    0 0 82px #0fa,
-    0 0 92px #0fa,
-    0 0 102px #0fa,
-    0 0 151px #0fa;
+	font-size: 0.9rem;
 }
 
 .one-achievement > h4 {
-	color :rgb(131, 131, 131);
-	font-size: 0.9vw;
+	color :rgb(255, 255, 255);
+	font-size: 0.8rem;
 	font-style: italic;
 }
 
 .one-achievement:hover > h4 {
 	color :white;
-	font-size: 0.9vw;
+	font-size: 0.8rem;
 	font-style: italic;
 }
 
+.fa-icon-achievements {
+	color: black;
+	font-size : 1.5rem;
+}
+
+#completed_achievement > h3 {
+	color: var(--heading-color);
+}
+
+/* ********************************/
+/* ***  Competitive overview    ***/
+/* ********************************/
+
 #stats {
-	background-color: aliceblue;
+	background-color: rgb(252, 252, 252);
 	border-radius : 20px;
 	padding: 1vw;
 	width: 40%;
 	margin-top: 2rem;
 }
 
-.user-infos > button {
-	all: unset;
-	cursor: pointer;
-	color: rgb(131, 131, 131);
-	padding-right: 1vw;
+#stats > h1, h5 {
+	color : black;
+	text-align: center;
 }
 
-.user-infos > button:hover {
-	all: unset;
-	cursor: pointer;
-	color: rgb(30, 28, 30);
-	padding-right: 1vw;
+
+/* Radial progress bar for win rate */
+.circular-progress {
+	position: relative;
+	height: 6rem;
+	width: 6rem;
+	border-radius: 50%;
+	background: conic-gradient(var(--heading-color) 3.6deg, #ededed 0deg);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
+
+.circular-progress::before {
+	content: "";
+	position : absolute;
+	height : 80%;
+	width : 80%;
+	border-radius: 50%;
+	background-color: rgb(255, 255, 255);
+}
+
+.progress-value {
+	font-size: 2em;
+	font-weight: 500;
+	color: rgb(44, 44, 48);
+}
+
+.winrate__title {
+	text-align: center;
+	font-size: 0.8rem;
+	font-weight: 500;
+	color: black;
+}
+
+.winrate__content {
+	position: relative;
+}
+
+
+ /* Stats below or beside the circular progress bar */
+.winratio_stats {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.statdisplay {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-bottom: 1.5vh;
+}
+
+/* challenge button below */
+.challenge-btn {
+	font-weight: 0;
+	font-size: 14px;
+	color: #fff;
+	background-color: var(--heading-color);
+	padding: 10px 30px;
+	border: solid white 2px;
+	box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+	border-radius: 50px;
+	transition : 1000ms;
+	transform: translateY(0);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	cursor: pointer;
+	margin: 0 auto;
+}
+
+.challenge-btn:hover{
+	transition : 1000ms;
+	padding: 10px 50px;
+	transform : translateY(-0px);
+	background-color: #fff;
+	color: var(--heading-color);
+	border: solid 2px var(--heading-color);
+}
+
+/* ********************************/
+/* *** Match History COMPONENT  ***/
+/* ********************************/
 
 aside {
 	margin : 2vw 4vw 2vw 0;
 	width : 25%;
-	height: 100%;
 }
 
-aside > div {
+aside > h1:first-child {
+	color : white;
+	margin-top : 1vh;
+}
+
+.match-card {
 	background-color: rgb(255, 255, 255);
 	border-radius: 20px;
 	width : 100%;
@@ -222,10 +357,16 @@ aside > div {
 }
 
 .defeat {
-	/* background-color: red; */
 	background: -moz-linear-gradient(left, rgba(232,58,46,0) 0%, rgba(232,58,46,0.8) 15%, rgba(232,58,46,1) 19%, rgba(232,58,46,1) 20%, rgba(216,61,41,1) 50%, rgba(206,79,41,1) 80%, rgba(206,79,41,1) 81%, rgba(206,79,41,0.8) 85%, rgba(206,79,41,0) 100%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(left, rgba(232,58,46,0) 0%,rgba(232,58,46,0.8) 15%,rgba(232,58,46,1) 19%,rgba(232,58,46,1) 20%,rgba(216,61,41,1) 50%,rgba(206,79,41,1) 80%,rgba(206,79,41,1) 81%,rgba(206,79,41,0.8) 85%,rgba(206,79,41,0) 100%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(to right, rgba(232,58,46,0) 0%,rgba(232,58,46,0.8) 15%,rgba(232,58,46,1) 19%,rgba(232,58,46,1) 20%,rgba(216,61,41,1) 50%,rgba(206,79,41,1) 80%,rgba(206,79,41,1) 81%,rgba(206,79,41,0.8) 85%,rgba(206,79,41,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00e83a2e', endColorstr='#00ce4f29',GradientType=1 ); /* IE6-9 */
+}
+
+.equality {
+	background: -moz-linear-gradient(left, rgba(232,58,46,0) 0%, rgba(56, 77, 197, 0.8) 15%, rgba(56, 77, 197, 0.8) 19%, rgba(56, 77, 197, 0.8) 20%, rgba(56, 77, 197, 0.8) 50%, rgba(56, 77, 197, 0.8) 80%, rgba(56, 77, 197, 0.8) 81%, rgba(56, 77, 197, 0.8) 85%, rgba(206,79,41,0) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, rgba(232,58,46,0) 0%,rgba(56, 77, 197, 0.8) 15%,rgba(56, 77, 197, 0.8) 19%,rgba(56, 77, 197, 0.8) 20%,rgba(56, 77, 197, 0.8) 50%,rgba(56, 77, 197, 0.8) 80%,rgba(56, 77, 197, 0.8) 81%,rgba(56, 77, 197, 0.8) 85%,rgba(206,79,41,0) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, rgba(232,58,46,0) 0%,rgba(56, 77, 197, 0.8) 15%,rgba(56, 77, 197, 0.8) 19%,rgba(56, 77, 197, 0.8) 20%,rgba(56, 77, 197, 0.8) 50%,rgba(56, 77, 197, 0.8) 80%,rgba(56, 77, 197, 0.8) 81%,rgba(56, 77, 197, 0.8) 85%,rgba(206,79,41,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00e83a2e', endColorstr='#00ce4f29',GradientType=1 ); /* IE6-9 */
 }
 
@@ -240,40 +381,4 @@ aside > div {
 	height: 5rem;
 	max-width: 5rem;
 	border-radius: 50%;
-}
-
-/* Radial progress bar for win rate */
-.circular-progress {
-	position: relative;
-	height: 50%;
-	width: 50%;
-	border-radius: 50%;
-	background: conic-gradient(rgb(51, 80, 186) 3.6deg, #ededed 0deg);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.circular-progress::before {
-	content: "";
-	position : absolute;
-	height : 80%;
-	width : 80%;
-	border-radius: 50%;
-	background-color: rgb(255, 255, 255);
-}
-
-.progress-value {
-	font-size: 2em;
-	font-weight: 500;
-	color: rgb(44, 44, 48);
-}
-
-.winrate__content {
-	position: relative;
-}
-.winrate__title {
-	text-align: center;
-	font-size: 0.8rem;
-	font-weight: 500;
 }

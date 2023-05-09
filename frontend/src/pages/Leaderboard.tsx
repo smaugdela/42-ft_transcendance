@@ -1,6 +1,5 @@
 import "../styles/Leaderboard.css"
 import { IUser, users } from "../data"
-import { useEffect } from "react";
 
 export function TopThreeDetail(props: { user: IUser }) {
 	let podium;
@@ -30,7 +29,7 @@ export function PerformanceDetail() {
 						   .map(user => {
 		if (user.rank < 4)
 			return (null);
-		return <div key={user.id} className="stats" id={user.isLogged ? "myRank" : "stats"}>
+		return <div key={user.id} className="stats" id={user.isLogged ? "myRank" : "other"}>
 			<img 
 				src={user.avatar}
 				alt={user.nickname}
@@ -64,18 +63,6 @@ export function PerformanceDetail() {
 
 export function Leaderboard() {
 
-
-	// const res =  fetch(`http://localhost:3001/users/`, {
-	// 	method: "GET",
-	// 	headers: {
-	// 		'content-type': 'application/json;charset=UTF-8',
-	// 		'mode': 'no-cors',
-	// 	  },
-	// 	})
-	// 	.then((response) => response.json()) // on transforme le res en json
-	// 	.then((actualData) => console.log(actualData))
-	// 	.catch((err) => {console.log(err.message)});
-
 	const rank1 = users.filter( user => user.rank === 1);
 	const rank2 = users.filter( user => user.rank === 2);
 	const rank3 = users.filter( user => user.rank === 3);
@@ -84,7 +71,6 @@ export function Leaderboard() {
 		<div id="body-leaderboard">
 			<div id="gradient-bg"></div>
 			<div className="leaderboard">
-				<h1>LEADERBOARD</h1>
 				<section id="top-three"> 
 					<TopThreeDetail user={rank2[0]}/>
 					<TopThreeDetail user={rank1[0]}/>

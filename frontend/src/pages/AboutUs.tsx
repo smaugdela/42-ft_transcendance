@@ -3,59 +3,52 @@ import "../styles/AboutUs.css";
 
 interface Member {
   name: string;
-  position: string;
-  description: string;
+  github: string;
   image: string;
 }
 
 const teamMembers: Member[] = [
   {
     name: 'Simon',
-    position: 'COO',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    github: 'https://github.com/smaugdela',
     image: '/assets/keanu.png',
   },
   {
     name: 'Anna',
-    position: 'COO',
-    description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    image: '/assets/punk.png',
+    github: 'https://github.com/ajealcat',
+    image: '/assets/punk3.png',
   },
   {
     name: 'Marine',
-    position: 'CTO',
-    description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
+    github: 'https://github.com/marineks',
     image: '/assets/punk1.png',
   },
   {
     name: 'Fahima',
-    position: 'CTO',
-    description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco.',
+    github: 'https://github.com/fahima8897',
     image: '/assets/punk2.png',
   },
 ];
 
 function AboutUs() {
   return (
-    <div className='background_aboutus'>
-      <section className='aboutus'>
-        <h1>Who are we ?</h1>
-        <p>We are  four students of 42 school. Transcendence is the last project of our training course. It's a Web project whose goal is to recreate the historical Pong Game </p>
-      </section>
-      <section className='container'>
+    <div className='container_aboutus'>
+      <div className='intro_aboutus'>
+        <h1>Who are we ?<br /></h1>
+        <p>We are four students of 42 school. Transcendence is the last project of our training course. It's a Web project whose goal is to recreate the historical Pong Game. Our team is composed of 4 people who combined their knowledge to build this project. We hope you enjoy our game.</p>
+      </div>
+      <div className='div_staff'>
        {teamMembers.map((member, index) => (
-      <div  className='container_staff' key={index}>
-        <img className='image' src={member.image} alt={member.name} />
+        <div className='container_staff' key={index}>
+          <img className='image' src={member.image} alt={member.name} />
         <div className='text'>
           <h2>{member.name}</h2>
-          <p>{member.position}</p>
+          <p><a href={member.github} target="_blank">{member.github}</a></p>
         </div>
-        
-        {/* <p>{member.description}</p> */}
       </div>
     ))}
-      </section>
   </div>
+  // </div>
   );
 }
 

@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
-import * as CgIcons from 'react-icons/cg';
 import * as AiIcons from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import '../styles/Navbar.css';
-import { IconContext } from 'react-icons';
-import * as FaIcons from 'react-icons/fa';
-import * as GiIcons from 'react-icons/gi';
-import * as FiIcons from 'react-icons/fi';
 import { ChangeEventHandler } from 'react';
 import Avatar from './Avatar';
-import Header from './Header';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPersonDrowning, faHeadSideMask, faHandsHoldingChild, faComments, faUsers, faRobot, faOtter, faShieldCat} from "@fortawesome/free-solid-svg-icons";
@@ -66,9 +60,9 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 	        <div className='navbar'>
 			<label className="nav-elements" id="burger-menu" htmlFor="check"  >
 				<input type="checkbox" id="check" onClick={showSidebar}/> 
-				<span></span>
-				<span></span>
-				<span></span>
+				<span className='span1'></span>
+				<span className='span2'></span>
+				<span className='span3'></span>
 			</label>
 			<div className="navbar__center">
 				<Link to="/" className="navbar__title">
@@ -83,10 +77,12 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 	
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
+            
             {SidebarData.map((item, index) => {
 				return (
 					<li key={index} className={item.cName}>
-                  <Link to={item.path}>
+                  <Link to={item.path} >
+
 					<div>{item.image}
 					</div>
 				  {/* <FontAwesomeIcon icon={item.image} className='item_image'/> */}
