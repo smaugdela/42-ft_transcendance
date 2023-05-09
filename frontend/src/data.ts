@@ -1,3 +1,5 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { faBaby, faJetFighterUp, faLemon, faUserSlash, faViruses, faUserAstronaut, faFrog, faRobot, faShieldDog, faHandSpock, faHandHoldingDollar } from '@fortawesome/free-solid-svg-icons';
 
 export interface IUser {
 	id: number;
@@ -13,6 +15,23 @@ export interface IUser {
 	blockList : IUser[];
 	pendingList : IUser[];
 	isActive : boolean;
+	matchHistory: IMatch[];
+}
+
+export interface IAchievement {
+	icon : IconProp;
+	title : string;
+	description : string;
+	wasAchieved: boolean;
+}
+
+export interface IMatch {
+	date: Date,
+	score_p1: number,
+	score_p2: number,
+	id_p1: number,
+	id_p2: number,
+	mode: string,
 }
 
 export const users : IUser[] =  [
@@ -30,6 +49,7 @@ export const users : IUser[] =  [
 		blockList : [],
 		pendingList : [],
 		isActive : false,
+		matchHistory: []
 	},{
 		id: 1,
 		avatar: "/assets/avatar3.png",
@@ -44,6 +64,7 @@ export const users : IUser[] =  [
 		blockList : [],
 		pendingList : [],
 		isActive : false,
+		matchHistory: []
 	},{
 		id: 2,
 		avatar: "/assets/avatar3.png",
@@ -58,6 +79,7 @@ export const users : IUser[] =  [
 		blockList : [],
 		pendingList : [],
 		isActive : false,
+		matchHistory: []
 	},{
 		id: 3,
 		avatar: "/assets/avatar2.png",
@@ -72,6 +94,7 @@ export const users : IUser[] =  [
 		blockList : [],
 		pendingList : [],
 		isActive : false,
+		matchHistory: []
 	},{
 		id: 4,
 		avatar: "/assets/avatar1.png",
@@ -86,6 +109,7 @@ export const users : IUser[] =  [
 		blockList : [],
 		pendingList : [],
 		isActive : false,
+		matchHistory: []
   	},{
 		id: 5,
 		avatar: "/assets/avatar2.png",
@@ -100,6 +124,7 @@ export const users : IUser[] =  [
 		blockList : [],
 		pendingList : [],
 		isActive : false,
+		matchHistory: []
   	},{
 		id: 6,
 		avatar: "/assets/avatar3.png",
@@ -114,6 +139,7 @@ export const users : IUser[] =  [
 		blockList : [],
 		pendingList : [],
 		isActive : false,
+		matchHistory: []
 	},{
 		id: 7,
 		avatar: "/assets/avatar2.png",
@@ -128,6 +154,7 @@ export const users : IUser[] =  [
 		blockList : [],
 		pendingList : [],
 		isActive : true,
+		matchHistory: []	
 	},{
 		id: 8,
 		avatar: "/assets/avatar1.png",
@@ -153,6 +180,7 @@ export const users : IUser[] =  [
 				blockList : [],
 				pendingList : [],
 				isActive : true,
+				matchHistory: []			
 			},
 			{
 				id: 7,
@@ -168,6 +196,7 @@ export const users : IUser[] =  [
 				blockList : [],
 				pendingList : [],
 				isActive : true,
+				matchHistory: []			
 			},
 			{
 				id: 4,
@@ -183,6 +212,7 @@ export const users : IUser[] =  [
 				blockList : [],
 				pendingList : [],
 				isActive : false,
+				matchHistory: []
 			}
 		],
 		blockList : [
@@ -200,6 +230,7 @@ export const users : IUser[] =  [
 				blockList : [],
 				pendingList : [],
 				isActive : false,
+				matchHistory: []
 			},
 			{
 				id: 5,
@@ -215,6 +246,7 @@ export const users : IUser[] =  [
 				blockList : [],
 				pendingList : [],
 				isActive : false,
+				matchHistory: []
 			  }
 		],
 		pendingList : [
@@ -232,6 +264,7 @@ export const users : IUser[] =  [
 				blockList : [],
 				pendingList : [],
 				isActive : false,
+				matchHistory: []
 			},
 			{
 				id: 2,
@@ -247,9 +280,44 @@ export const users : IUser[] =  [
 				blockList : [],
 				pendingList : [],
 				isActive : false,
+				matchHistory: []
 			}
 		],
 		isActive : true,
+		matchHistory: [
+		{
+			date: new Date(2023, 5, 3, 12, 30, 6, 8),
+			score_p1: 1,
+			score_p2: 1,
+			id_p1: 8,
+			id_p2: 1,
+			mode: "classic",
+		},
+		{
+			date: new Date(2023, 5, 2, 18, 30, 24, 2),
+			score_p1: 2,
+			score_p2: 1,
+			id_p1: 8,
+			id_p2: 9,
+			mode: "classic",
+		},
+		{
+			date: new Date(2023, 4, 30, 20, 30, 5, 8),
+			score_p1: 0,
+			score_p2: 2,
+			id_p1: 8,
+			id_p2: 3,
+			mode: "classic",
+		},
+		{
+			date: new Date(2023, 4, 28, 4, 30, 16, 1),
+			score_p1: 4,
+			score_p2: 0,
+			id_p1: 8,
+			id_p2: 5,
+			mode: "classic",
+		}
+	]
 	},{
 		id: 9,
 		avatar: "/assets/avatar3.png",
@@ -264,4 +332,118 @@ export const users : IUser[] =  [
 		blockList : [],
 		pendingList : [],
 		isActive : true,
+		matchHistory: []	
 	}];
+
+
+export const achievements: IAchievement[] = [
+	{
+		icon : faBaby,
+		title : "Baby steps",
+		description: "Played the game for the first time",
+		wasAchieved: false,
+	},
+	{
+		icon : faJetFighterUp,
+		title : "Veteran",
+		description: "Played 10 games",
+		wasAchieved: false,
+	},
+	{
+		icon : faLemon,
+		title : "Easy peasy lemon squeezy",
+		description: "Won 3 games in a row",
+		wasAchieved: false,
+	},
+	{
+		icon : faUserSlash,
+		title : "It's my lil bro playing",
+		description: "Lost 3 games in a row",
+		wasAchieved: false,
+	},
+	{
+		icon : faViruses,
+		title : "Social butterfly",
+		description: "Added 3 friends",
+		wasAchieved: false,
+	},
+	{
+		icon : faUserAstronaut,
+		title : "Influencer",
+		description: "Added 10 friends",
+		wasAchieved: false,
+	},
+	{
+		icon : faFrog,
+		title : "Cosmetic change",
+		description: "Updated their profile picture once",
+		wasAchieved: false,
+	},
+	{
+		icon : faRobot,
+		title : "Existential crisis",
+		description: "Changed their nickname",
+		wasAchieved: false,
+	},
+	{
+		icon : faShieldDog,
+		title : "Safety first",
+		description: "Activated the 2FA authentification",
+		wasAchieved: false,
+	},
+	{
+		icon : faHandSpock,
+		title : "My safe place",
+		description: "Created their first channel",
+		wasAchieved: false,
+	},
+	{
+		icon : faHandHoldingDollar,
+		title : "Pay to Win",
+		description: "Donated to have an in-game advantage",
+		wasAchieved: false,
+	},
+];
+
+export const matches: IMatch[] = [
+	{
+		date: new Date(2023, 5, 3, 12, 30, 6, 8),
+		score_p1: 1,
+		score_p2: 1,
+		id_p1: 8,
+		id_p2: 1,
+		mode: "classic",
+	},
+	{
+		date: new Date(2023, 5, 2, 18, 30, 24, 2),
+		score_p1: 2,
+		score_p2: 1,
+		id_p1: 8,
+		id_p2: 9,
+		mode: "classic",
+	},
+	{
+		date: new Date(2023, 4, 30, 20, 30, 5, 8),
+		score_p1: 0,
+		score_p2: 2,
+		id_p1: 8,
+		id_p2: 3,
+		mode: "classic",
+	},
+	{
+		date: new Date(2023, 4, 28, 4, 30, 16, 1),
+		score_p1: 4,
+		score_p2: 0,
+		id_p1: 8,
+		id_p2: 5,
+		mode: "classic",
+	},
+	{
+		date: new Date(2023, 4, 28, 4, 30, 16, 1),
+		score_p1: 4,
+		score_p2: 0,
+		id_p1: 7,
+		id_p2: 5,
+		mode: "classic",
+	}
+];

@@ -1,6 +1,8 @@
-import "../styles/FriendsList.css"
+import "../styles/Social.css"
 import { IUser, users } from "../data";
 import { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserPlus, faBan, faEnvelope} from '@fortawesome/free-solid-svg-icons';
 import Fuse from "fuse.js";
 
 export function SearchBar() {
@@ -31,17 +33,21 @@ export function SearchBar() {
 			<p>Looking for someone to add ? Try this search bar! </p>
 			<div className="search_bar">
 				<input 
-				type="text" 
-				id="search_input"
-				name="search"
-				onChange={handleChange}
-				placeholder="Type the nickname of the person you want to find..."/>
+					type="text" 
+					id="search_input"
+					name="search"
+					onChange={handleChange}
+					placeholder="Type the nickname of the person you want to find..."
+				/>
 				<>
 					{ searchedUser && (<div key={searchedUser.id} className="searched_user">
 						<div className="search_user_infos">
 							<img id="search_user_avatar" src={searchedUser.avatar} alt={searchedUser.nickname} />
-							<h5 id="title" >{searchedUser.nickname} <a href="http://localhost:3000/friends">+</a></h5>
-							
+							<h5 id="title" >{searchedUser.nickname} 
+								<a href="http://localhost:3000/social">
+									<FontAwesomeIcon icon={faUserPlus} />
+								</a>
+							</h5>
 						</div>
 					</div>)
 					}
@@ -55,14 +61,16 @@ export function DisplayConnections( props: { profilesToDisplay : IUser[] }) {
 	
 	const displayProfiles = props.profilesToDisplay.map(profile => {
 		return <div key={profile.id} className="profile">
-					<img 
+					<div className="img-container">
+						<img 
 						src={profile.avatar}
 						alt={profile.nickname}
-					/>
+						/>
+					</div>
 					<div className="profile_infos">
 						<h5>{profile.nickname}</h5>
-						<span>🛇</span>
-						<span>✉</span>
+						<div><FontAwesomeIcon icon={faBan} /></div>
+						<div><FontAwesomeIcon icon={faEnvelope} /></div>
 					</div>
 		</div>
 	})
@@ -73,7 +81,7 @@ export function DisplayConnections( props: { profilesToDisplay : IUser[] }) {
 	);
 };
  
-export function FriendsList() {
+export function Social() {
 
 	const loggedUser: IUser = users.filter( user => user.isLogged === true)[0];
 	
@@ -124,14 +132,10 @@ export function FriendsList() {
 	}
 
 	return (
-		<div  id="friend-dashboard">
+		<div  id="social-dashboard">
 			<h1>SOCIAL</h1>
-			<br />
-			<br />
 			<SearchBar />
-			<br />
-			<br />
-			<div className="friends-btn">
+			<div className="social-btn">
 				<button 
 					onClick={ () => handleClick(allFriends, "allFriends")}
 					className={buttonStates.allFriends ? "clicked-btn" : "btn"}>

@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
-import * as CgIcons from 'react-icons/cg';
 import * as AiIcons from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import '../styles/Navbar.css';
-import { IconContext } from 'react-icons';
-import * as FaIcons from 'react-icons/fa';
-import * as GiIcons from 'react-icons/gi';
-import * as FiIcons from 'react-icons/fi';
 import { ChangeEventHandler } from 'react';
 import Avatar from './Avatar';
-import Header from './Header';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeadSideMask, faHandsHoldingChild, faComments, faUsers, faRobot, faOtter} from "@fortawesome/free-solid-svg-icons";
+import { faHeadSideMask, faHandsHoldingChild, faRobot, faOtter} from "@fortawesome/free-solid-svg-icons";
 
 const SidebarData = [
   {
@@ -36,8 +30,8 @@ const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: ' Friends',
-    path: '/friends',
+    title: ' Social',
+    path: '/social',
     // image: '/assets/friends2.png',
 	image: <FontAwesomeIcon className='item_image' icon={faHeadSideMask} />,
     cName: 'nav-text'

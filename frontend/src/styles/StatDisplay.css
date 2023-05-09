@@ -3,13 +3,15 @@
 .stat_container  {
 	display: inline-block;
 	height: 2.5vh;
-	width : 8vw;
+	width : 6vw;
 	margin-right : 0.5rem;
 }
 
 .stat_container > span {
-	margin : 0.1rem;
 	padding : 0;
+	line-height: 2.5vh; 
+	vertical-align: middle;
+	margin-left: 0.2rem;
 }
 
 .stat_win {
@@ -20,4 +22,9 @@
 .stat_lose {
 	border-left: solid 4px rgb(221, 36, 45);
 	background: linear-gradient(90deg, rgb(243, 67, 76) 0%, rgba(0,212,255,0) 100%);
+}
+
+.stat_default {
+	border-left: solid 4px rgb(76, 142, 192);
+	background: linear-gradient(90deg, rgb(76, 132, 192) 0%, rgba(0,212,255,0) 100%);
 }

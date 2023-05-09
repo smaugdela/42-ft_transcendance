@@ -46,7 +46,7 @@ const FAQ: React.FC = () => {
               <h2 className='faq ' onClick={() => toggleActiveIndex(index)}>
                 {faq.question} 
                 <span className='symbol'>{activeIndex === index ? '-' : '+'}</span>
-                {activeIndex == index && <p className='answer'>{faq.answer}</p>} 
+                {activeIndex === index && <p className='answer'>{faq.answer}</p>} 
               </h2>
             </div>
       ))}
