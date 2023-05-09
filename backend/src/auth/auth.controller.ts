@@ -21,14 +21,24 @@ export class AuthController {
 	@Get('google')
 	@UseGuards(GoogleAuthGuard)
 	async googleLogin (@Req() req: Request) {
-		console.log("googleLogin req: ", req);
+		// console.log("googleLogin req: ", req);
 	}
 
 	@Get('google/redirect')
 	@UseGuards(GoogleAuthGuard)
 	async googleRedirect (@Req() req: Request) {
-		// console.log("googleRedirect req: ", req);
 		return this.authService.googleAuth(req);
+	}
+
+	@Get('protected')
+	@UseGuards(GoogleAuthGuard)
+	protectedEndpoint() {
+		return "This is a protected route, and you are able to access it!"
+	}
+
+	@Get('unprotected')
+	unprotectedEndpoint() {
+		return "This is a unprotected route."
 	}
 
 }
