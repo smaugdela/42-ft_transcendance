@@ -40,15 +40,11 @@ export class AuthController {
 
 		const accessToken = req.cookies.accessToken;
 
-		console.log("cookie: ", req.cookies.accessToken);
-
-		const user = await prisma.user.findFirst({
+		const user = await prisma.user.findUnique({
 			where: {
 				accessToken,
-		}
-	});
-
-		console.log("user: ", user);
+			}
+		});
 
 		if (!user)
 			throw new ForbiddenException('Unauthorized access');
