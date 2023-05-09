@@ -42,6 +42,7 @@ function App() {
 	</audio>
 		<Routes>
 		{/* <Route path="/" element={<Home />} /> */}
+		
 		<Route path="/leaderboard" element={<Leaderboard />} />
 		<Route path='/faq' element={<FAQ />} />
     	<Route path="/aboutUs" element={<AboutUs />} />

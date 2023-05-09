@@ -91,7 +91,7 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 					</div>
 				  {/* <FontAwesomeIcon icon={item.image} className='item_image'/> */}
                     {/* <img className='item_image' src={item.image}/> */}
-                    <span className='item_title'> {item.title}</span>
+                    <span className='item_title'> {item.title}</span>	
                   </Link>
                 </li>
               );
