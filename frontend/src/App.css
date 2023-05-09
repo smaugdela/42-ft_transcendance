@@ -56,7 +56,7 @@
 #page-struct {
 	display: flex;
 	justify-content: space-evenly;
-	height: 100vh;
+	min-height: 100vh;
 }
 
 #play-screen {
