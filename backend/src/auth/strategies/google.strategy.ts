@@ -9,7 +9,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google-oauth20')
 			clientID: process.env.GOOGLE_ID,
 			clientSecret: process.env.GOOGLE_SECRET,
 			callbackURL: process.env.GOOGLE_CALLBACK_URL,
-			scope: ['profile'],
+			scope: ['email', 'profile'],
 		  });
 	}
 
@@ -20,7 +20,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google-oauth20')
 		  nickname: name.givenName,
 		  avatar: photos[0].value,
 		  accessToken,
-		  /*refreshToken,*/
+		  refreshToken,
 		};
 
 		done(null, user);

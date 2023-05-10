@@ -1,17 +1,17 @@
-import { /*ForbiddenException,*/ Injectable, Request, Res } from '@nestjs/common';
-// import * as argon from 'argon2';
+import { Injectable, Request, Res } from '@nestjs/common';
 import AuthDto from './dto/auth.dto';
 import { PrismaClient } from '@prisma/client';
 import { Response } from 'express';
 
+// import * as argon from 'argon2';
 // const crypto = require('crypto');
-const prisma = new PrismaClient();
 // const hashingConfig = {
-// 	parallelism: 1,
-// 	memoryCost: 64000, // 64 mb
-// 	timeCost: 3
-// };
+	// 	parallelism: 1,
+	// 	memoryCost: 64000, // 64 mb
+	// 	timeCost: 3
+	// };
 
+const prisma = new PrismaClient();
 @Injectable()
 export class AuthService {
 
@@ -85,33 +85,36 @@ export class AuthService {
 		console.log("Google returned this user: ", req.user);
 
 		const logUser: AuthDto = req.user;
+		console.log("User: ", logUser);
 
-		// console.log("logUser here: ", logUser);
-
-		const userDb = await prisma.user.findUnique({
+		let userDb = await prisma.user.findUnique({
 			where: {
 				nickname: logUser.nickname,
 			}
 		});
 
-		// console.log("looking for user in db.");
-
 		if (!userDb)
 		{
-			await prisma.user.create({
+			userDb = await prisma.user.create({
 				data: logUser
 			});
 			console.log("User created.");
-
+		}
+		else
+		{
+			await prisma.user.update({
+				where: {
+					id: userDb.id,
+				},
+				data: {
+					accessToken: req.user.accessToken,
+				}
+			});
 		}
 
 		response.cookie('accessToken', req.user.accessToken);
-		
-		// return {
-		// 	message: 'User information from google',
-		// 	user: req.user,
-		// };
+		response.cookie('id', userDb.id);
 
-		return 'Successfully connected to google!';
+		return 'Successfully connected to google.';
 	}
 }

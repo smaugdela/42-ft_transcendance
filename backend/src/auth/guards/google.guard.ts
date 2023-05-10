@@ -6,7 +6,7 @@ import { AuthGuard } from "@nestjs/passport";
 export class GoogleAuthGuard extends AuthGuard('google-oauth20') implements CanActivate {
 	constructor() {
 		super({
-			/*accesstype: 'offline',*/
+			accesstype: 'offline',
 		});
 	}
 
@@ -15,14 +15,4 @@ export class GoogleAuthGuard extends AuthGuard('google-oauth20') implements CanA
 		console.log('I am canActivate.');
 		return super.canActivate(context);
 	}
-
-	// async canActivate(context: ExecutionContext) {
-	// 	const canActivate = await super.canActivate(context);
-	// 	if (!canActivate) {
-	// 		return false;
-	// 	}
-	
-	// 	const request = context.switchToHttp().getRequest();
-	// 	return request.user ? true : false;
-	// }
 }

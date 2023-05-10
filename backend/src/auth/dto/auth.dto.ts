@@ -9,6 +9,10 @@ export default class AuthDto {
 	@IsString()
 	@IsNotEmpty()
 	accessToken:		string;
+
+	@IsString()
+	@IsNotEmpty()
+	refreshToken:		string;
 	
 	@IsOptional()
 	@IsString()
