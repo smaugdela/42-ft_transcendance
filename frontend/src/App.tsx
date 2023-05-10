@@ -11,6 +11,8 @@ import Settings from './pages/Settings';
 import Chat from './components/Chat';
 import AboutUs from './pages/AboutUs';
 import FAQ from './pages/FAQ';
+import Home from './pages/Home';
+
 
 function App() {
 
@@ -36,11 +38,11 @@ function App() {
           <video className='videobg' autoPlay loop muted content="width=device-width, initial-scale=1.0">
             <source src="./assets/bg-video.mp4" type='video/mp4' />
           </video>
-          <audio className="music-bg" controls autoPlay loop >
+          {/* <audio className="music-bg" controls autoPlay loop >
             <source src="./assets/edgerunner.mp3" type="audio/mpeg"/>
-          </audio>
+          </audio> */}
           <Routes>
-            {/* <Route path="/" element={<Home />} /> */}
+            <Route path="/" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path='/faq' element={<FAQ />} />
             <Route path="/aboutUs" element={<AboutUs />} />
