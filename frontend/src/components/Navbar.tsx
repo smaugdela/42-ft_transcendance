@@ -74,7 +74,7 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 					CYBERPONG
 				</Link>
 			</div>
-			<div className="nav-elements nav-right-side">
+			<div className="nav-avatar">
 				<Avatar />
 			</div>
 

@@ -1,5 +1,4 @@
 
-
 *,
 *:before,
 *:after{
@@ -10,10 +9,12 @@
 body{
     background-color: #080710;
 }
+
+
 .background{
     width: 430px;
-    height: 520px;
-    position: absolute;
+	position: flex;
+    height: 1010px;
     transform: translate(-50%,-50%);
     left: 50%;
     top: 50%;
@@ -56,7 +57,7 @@ form{
     padding: 50px 35px;
 }
 form *{
-    font-family: 'Lato', sans-serif;
+    font-family: var(--font-type);
     color: #ffffff;
     letter-spacing: 0.5px;
     outline: none;
@@ -71,7 +72,6 @@ form h3{
 
 label{
     display: block;
-    /* margin-top: 30px; */
     font-size: 16px;
     font-weight: 500;
 }
