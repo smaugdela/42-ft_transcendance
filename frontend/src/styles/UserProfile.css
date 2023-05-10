@@ -15,9 +15,8 @@
 #whole-profile {
 	display: flex;
 	justify-content: center;
-	flex: 2 auto;
-	margin: 8vh 8vw 0 8vw;
-	
+	margin: 0vh 8vw 0 8vw;
+	padding-top: 8vh;
 }
 
 #whole-profile hr {
