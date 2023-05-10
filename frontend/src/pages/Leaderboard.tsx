@@ -1,5 +1,8 @@
 import "../styles/Leaderboard.css"
-import { IUser, users } from "../data"
+import { IUser, users } from "../data";
+import { useEffect, useState } from "react";
+import { getOneUser, getUsers } from "../APIHandler";
+
 
 export function TopThreeDetail(props: { user: IUser }) {
 	let podium;
@@ -62,6 +65,24 @@ export function PerformanceDetail() {
 };
 
 export function Leaderboard() {
+
+		const ysers = getUsers().then((result) => console.log("result", result));
+		const oneuser = getOneUser(8).then((result) => console.log("result one", result));
+	// const [test, setUsers] = useState()
+
+	// useEffect( () => {
+	// 	fetch('http://localhost:3001/users')
+	// 	.then(response => {
+	// 		// console.log(response.json())
+	// 		return response.json();
+	// 	})
+	// 	.then((data) => setUsers(data))
+	// 	.catch( error => console.error(error));
+	// }, []);
+	
+	
+	// console.log(test);
+
 
 	const rank1 = users.filter( user => user.rank === 1);
 	const rank2 = users.filter( user => user.rank === 2);
