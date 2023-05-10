@@ -5,10 +5,14 @@
 	align-items: center;
 	justify-content: center;
 	background-color: transparent;
-	
 	color: #e3eef1;
-
-	/* animation: lumiere 1s infinite linear; */
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	animation: lumiere 1s infinite linear;
 	border: 3px solid rgb(35, 71, 103);
 	box-shadow:
 		0 0 7px #efefef,
