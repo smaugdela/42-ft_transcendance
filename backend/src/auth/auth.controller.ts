@@ -1,8 +1,7 @@
-import { Controller, Get, UseGuards, Req, Res } from '@nestjs/common';
+import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { GoogleAuthGuard } from './guards/google.guard';
 import { AuthGuard } from './guards/auth.guard';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 
 @Controller('auth')
 // @UseGuards(GoogleAuthGuard)
@@ -19,17 +18,9 @@ export class AuthController {
 	// 	return this.authService.signup(body);
 	// }
 
-	@Get('google')
-	@UseGuards(GoogleAuthGuard)
-	googleLogin () {
-		return 'Login';
-	}
-
-	@Get('google/redirect')
-	@UseGuards(GoogleAuthGuard)
-	async googleRedirect (@Req() req: Request, @Res({ passthrough: true }) response: Response) {
-		// return this.authService.googleAuth(req, response);
-		return "Successfully logged to google."
+	@Get('42/redirect')
+	async redirect42(@Query() query) {
+		return this.authService.redirect42(query);
 	}
 
 	@Get('protected')

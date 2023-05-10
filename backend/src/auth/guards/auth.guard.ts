@@ -1,6 +1,5 @@
 import { CanActivate, Injectable, ExecutionContext, ForbiddenException } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
-// import { Observable } from "rxjs";
 
 const prisma = new PrismaClient();
 

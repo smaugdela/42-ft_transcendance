@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 // import CreateUserDto from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaClient } from '@prisma/client';
-import { GoogleAuthGuard } from 'src/auth/guards/google.guard';
 
 const prisma = new PrismaClient();
 

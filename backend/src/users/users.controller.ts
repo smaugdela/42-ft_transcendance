@@ -1,8 +1,7 @@
-import { Controller, Get, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 // import CreateUserDto from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { GoogleAuthGuard } from 'src/auth/guards/google.guard';
 
 @Controller('users')
 export class UsersController {
@@ -17,7 +16,6 @@ export class UsersController {
 //   }
 
   @Get()
-  @UseGuards(GoogleAuthGuard)
   findAll() {
     return this.usersService.findAll();
   }
@@ -29,9 +27,6 @@ export class UsersController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() body: UpdateUserDto) {
-
-	console.log("body: ", body);
-
     return this.usersService.update(+id, body);
   }
 
