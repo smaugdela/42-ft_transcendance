@@ -188,7 +188,7 @@
 
 .img-container > img:hover {
 	border : var(--profile-img-border-hover-color);
-	cursor: pointer;
+	/* cursor: pointer; */
 }
 
 .profile_infos {
