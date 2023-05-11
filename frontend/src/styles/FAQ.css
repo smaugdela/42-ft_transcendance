@@ -29,12 +29,12 @@
     backdrop-filter: blur(10px);
 
     color: #e3eef1;
-	/* text-shadow:
+	text-shadow:
 	0 0 7px #efefef,
 	0 0 10px #90d0f0,
 	0 0 42px rgb(60, 116, 166),
 	0 0 77px rgb(60, 116, 166),
-	0 0 100px rgb(24, 46, 65); */
+	0 0 100px rgb(24, 46, 65);
 	animation: lumiere 1s infinite linear;
 	border: 3px solid rgb(35, 71, 103);
 	box-shadow:
@@ -55,7 +55,8 @@
 
 .symbol{
     position: absolute;
-    right: 5%; 
+    right: 2.5%; 
+    text-shadow: none;
 }
 
 .answer{
@@ -67,4 +68,5 @@
     overflow: hidden;
     transition: all 0.2s ease;
     margin-top: 15px;
+    text-shadow: none;
 }
