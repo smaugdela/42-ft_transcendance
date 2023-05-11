@@ -64,7 +64,6 @@ section {
 	z-index: 100;
 	width : 70%;
 	min-width: 400px;
-	
 }
 
 
@@ -82,6 +81,7 @@ section {
 	margin :  2vh 0;
 	z-index : 100;
 
+	font-family: var(--font-type);	
 	color: #e3eef1;
 	text-shadow:
 	0 0 7px #efefef,
@@ -121,6 +121,7 @@ section {
 }
 
 .podium > h1,  .podium > p {
+	font-family: var(--font-type);
 	color: #e3eef1;
 	text-shadow:
 	0 0 7px #efefef,
@@ -129,6 +130,7 @@ section {
 	0 0 77px rgb(60, 116, 166),
 	0 0 100px rgb(24, 46, 65);
 	animation: lumiere 1s infinite linear;
+	font-size: 1em;
 }
 
 #first img {
@@ -157,7 +159,7 @@ section {
 }
 
 .podium > h1 {
-	font-size: 2.3em;
+	font-size: 1.9em;
 }
 
 #first h3 {
@@ -179,8 +181,19 @@ section {
 .stats {
 	border-radius: 20px;
 	border: solid var(--main-element-border-color);
-	background-color: var(--main-element-bg-color);
+	/* background-color: var(--main-element-bg-color); */
 	margin-bottom: 8px;
+
+	background-color: rgba(255,255,255,0.13);
+    backdrop-filter: blur(10px);
+	color: #e3eef1;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	animation: lumiere 1s infinite linear;
 }
 
 .stats:hover, #myRank:hover {

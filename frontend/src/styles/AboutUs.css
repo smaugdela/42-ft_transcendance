@@ -42,6 +42,7 @@
   align-items: center;
   position : relative;
   height: 50%;
+  width: auto;
   flex-wrap: wrap;
   justify-content: space-around;
   margin-left: 40px;
@@ -61,19 +62,13 @@
   /* color :white */
 } 
 
-/* .container_staff h2 .container_staff p{
- display: flex;
- justify-content: space-around;
-
-} */
-
 
 .image{
   border-radius: 10px;
-  resize: both;
-  /* max-width: 100%; 
-   height: auto; */
+  width: 60%; 
+    /* height: auto; */
 }
+
 
 .text {
   color: #e3eef1;
