@@ -93,11 +93,27 @@ text-decoration: none;
 	border-radius: 5px;
 }
 
+
 .item_title{
 	font-family: var(--font-type);
 	font-size: large;
 	margin-left: 10px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .item_title span{
 	animation: blink .3s infinite alternate;
