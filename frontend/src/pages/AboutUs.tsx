@@ -43,12 +43,12 @@ function AboutUs() {
           <img className='image' src={member.image} alt={member.name} />
         <div className='text'>
           <h2>{member.name}</h2>
-          <p><a href={member.github} target="_blank">{member.github}</a></p>
+          <p><a href={member.github} >{member.github}</a></p>
         </div>
       </div>
     ))}
   </div>
-  // </div>
+  </div>
   );
 }
 
