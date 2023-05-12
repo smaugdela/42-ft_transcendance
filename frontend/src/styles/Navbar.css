@@ -93,11 +93,15 @@ text-decoration: none;
 	border-radius: 5px;
 }
 
+
 .item_title{
 	font-family: var(--font-type);
 	font-size: large;
 	margin-left: 10px;
+
 }
+
+
 
 .item_title span{
 	animation: blink .3s infinite alternate;
@@ -186,7 +190,7 @@ text-decoration: none;
 .slider {
 	background-color: #ccc;
 	bottom: 0;
-	cursor: pointer;
+	/* cursor: pointer; */
 	left: 0;
 	position: absolute;
 	right: 0;
@@ -227,7 +231,7 @@ label{
 	display: flex;
 	flex-direction: column;
 	width: 70px;
-	cursor: pointer;
+	/* cursor: pointer; */
 	position:relative;
 	transform: scale(0.7);
 }

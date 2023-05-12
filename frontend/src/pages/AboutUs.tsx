@@ -35,7 +35,7 @@ function AboutUs() {
     <div className='container_aboutus'>
       <div className='intro_aboutus'>
         <h1>Who are we ?<br /></h1>
-        <p>We are four students of 42 school. Transcendence is the last project of our training course. It's a Web project whose goal is to recreate the historical Pong Game. Our team is composed of 4 people who combined their knowledge to build this project. We hope you enjoy our game.</p>
+        <p>We are four students of 42 school. Transcendence is the last project of our training course. It's a Web project whose goal is to recreate the historical Pong Game. Our team is composed of 4 people who combined their knowledge to build this project.</p>
       </div>
       <div className='div_staff'>
        {teamMembers.map((member, index) => (

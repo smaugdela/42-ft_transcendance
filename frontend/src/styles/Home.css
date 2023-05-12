@@ -26,7 +26,6 @@
 	font-size: 30px;
 	font-family: var(--font-type);
 	letter-spacing:5px;
-	cursor: pointer;
 	font-weight: bold;
 	transition: .5s;
 } 
@@ -99,7 +98,7 @@
 
 #play-screen {
 	padding-top: 500px;
-	padding-bottom: 500px;
+	padding-bottom: 700px;
 	display: flex;
 	justify-content: center;
 }
