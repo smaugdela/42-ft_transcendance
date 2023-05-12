@@ -50,7 +50,7 @@ label{
 	0 0 42px rgb(60, 116, 166),
 	0 0 77px rgb(60, 116, 166),
 	0 0 100px rgb(24, 46, 65);
-	animation: lumiere 1s infinite linear;
+	/* animation: lumiere 1s infinite linear; */
 	padding-top: 10px;
     display: block;
     font-size: 25px;
@@ -97,6 +97,7 @@ input{
 .social{
   margin-top: 30px;
   display: flex;
+  font-size: 17px;
 }
 .social div{
   background: red;
@@ -111,7 +112,7 @@ input{
   background-color: rgba(255,255,255,0.47);
 }
 .social .fb{
-  margin-left: 25px;
+  margin-left: 30px;
   color: #e3eef1;
   text-shadow:
   0 0 7px #efefef,

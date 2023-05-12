@@ -18,7 +18,7 @@
 	0 0 42px rgb(60, 116, 166),
 	0 0 77px rgb(60, 116, 166),
 	0 0 100px rgb(24, 46, 65);
-	animation: lumiere 1s infinite linear;
+	/* animation: lumiere 1s infinite linear; */
 } 
 
 .intro_aboutus h1{
@@ -65,7 +65,7 @@
 
 .image{
   border-radius: 10px;
-  width: 60%; 
+  /* width: 60%;  */
     /* height: auto; */
 }
 
@@ -78,7 +78,7 @@
 	0 0 42px rgb(60, 116, 166),
 	0 0 77px rgb(60, 116, 166),
 	0 0 100px rgb(24, 46, 65);
-	animation: lumiere 1s infinite linear;
+	/* animation: lumiere 1s infinite linear; */
 
 }
 

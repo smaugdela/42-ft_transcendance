@@ -30,7 +30,7 @@ export function SearchBar() {
 
 	return (
 		<div>
-			<p>Looking for someone to add ? Try this search bar! </p>
+			<p className="text_serachBar">Looking for someone to add ? Try this search bar! </p>
 			<div className="search_bar">
 				<input 
 					type="text" 
@@ -133,7 +133,7 @@ export function Social() {
 
 	return (
 		<div  id="social-dashboard">
-			<h1>SOCIAL</h1>
+			{/* <h1>SOCIAL</h1> */}
 			<SearchBar />
 			<div className="social-btn">
 				<button 

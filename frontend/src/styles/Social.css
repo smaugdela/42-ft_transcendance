@@ -11,7 +11,7 @@
 
 	/* Buttons to filter groups in social page */ 
 	--filter-btn-main-color : var(--sides-color); /* vient de App.css */
-	--filter-btn-secondary-color : white;
+	--filter-btn-secondary-color : rgba(255, 255, 255, 0.678);
 
 	/* Search bar component */
 	--search-bar-input : rgb(14, 14, 12);
@@ -31,7 +31,7 @@
 #social-dashboard {
 	flex: 2 auto;
 	height : 100%;
-	margin-top : 8vh;
+	/* margin-top : 8vh; */
 	background-color: var(--bg-color); /* vient de App.css */
 	color: var(--font-color); /* vient de App.css */
 }
@@ -44,7 +44,15 @@
 
 #social-dashboard button {
 	border: transparent;
+	font-family: var(--font-type);
 	margin: auto;
+	color:  rgb(24, 46, 65);
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 80px rgb(24, 46, 65);
 }
 
 #social-dashboard input {
@@ -83,7 +91,13 @@
 /*      SearchBar Component     */
 /* **************************** */
 
+.text_serachBar{
+	padding-top: 200px;
+	font-family: var(--font-type);
+}
+
 .search_bar {
+	/* margin-top: 100px; */
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -127,7 +141,8 @@
 
 
 #title {
-	color: var(--search-bar-font-color);
+	text-shadow: none;
+	color:  rgb(24, 46, 65);
 	font-size: 1em;
 }
 
@@ -155,6 +170,7 @@
 	align-items: flex-start;
 	flex-wrap: wrap;
 	margin : 2vh 10vw 0vh 10vw;
+	padding-bottom: 700px;
 }
 
 .profile {
@@ -168,6 +184,9 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
+
+	background-color: rgba(255,255,255,0.13);
+    backdrop-filter: blur(10px);
 }
 
 .profile:hover {
