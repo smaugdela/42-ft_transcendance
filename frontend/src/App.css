@@ -3,16 +3,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Pacifico&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Yellowtail&display=swap');
-
+@import url('https://fonts.googleapis.com/css?family=Poppins:900i');
+@import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap');
 
 .dark {
-	--font-type : 'Share Tech', sans-serif;
+	--font-type : 'Bruno Ace SC', cursive;
 	/* --font-type: 'Monoton', cursive; */
 	--font-color : rgb(255, 255, 255);
 	--bg-image: url("../public/assets/cyberpunk.jpg");
 	--sidebar-image: ;
-	--sides-color : #450e46;
-	--heading-color: rgba(98, 20, 104, 0.7);
+	--sides-color :rgba(24, 46, 65, 0.7);
+	--heading-color: rgba(24, 46, 65, 0.7);
 	/* --header-image: url("../public/assets/neonhead.jpg"); */
 	/* --home-image : url("https://media1.ledevoir.com/images_galerie/nwd_132675_102056/image.jpg"); */
 
@@ -24,7 +25,7 @@
 	--font-color: #6d6875;
 	--bg-color: #f7e7da;
 	--bg-image: url("../public/assets/cute.jpg");
-
+	
 	--sides-color : #edd1df;
 	--heading-color: #ffffff;
 	--home-image : url("../public/assets/cutie.png");
@@ -37,18 +38,8 @@
 	font-family: 'Lato', sans-serif;
 }
 
-.settings {
-	background-color: white;
-	display: flex;
-	justify-content: center;
-	height: 90vh;
-	align-items: center;
-	font-size: 3rem;
- 	padding-left: 500px;
-	padding-right: 500px; 
-}
 
-/* body {
+body {
 	margin : 0;
 	padding: 0;
 	height: 100%;
@@ -56,116 +47,33 @@
 	margin: auto;
 	position: flex;
 	border-radius: 3px;
+}
+
+.videobg{
+	/* position: absolute;
+	display: flex;
+	z-index : -200; */
+	position: fixed;
+    overflow: hidden;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: -10;
+}
+
+/* .music-bg{
+	position: fixed;
+	top: 100px;
+	z-index: -100;
 } */
 
 #main-content {
-	background: var(--bg-image);
 	width : 100%;
 }
-
-#page-struct {
-	display: flex;
-	justify-content: space-evenly;
-	height: 100vh;
-}
-
-#play-screen {
-background-position: center;
-flex: 3 auto;
-background-size:cover; 
-box-sizing: border-box;
-
-	-webkit-animation: slidein 100s; 
-	animation: slidein 100s;
-
--webkit-animation-fill-mode: forwards;
-animation-fill-mode: forwards;
-
--webkit-animation-iteration-count: infinite;
-animation-iteration-count: infinite;
-
--webkit-animation-direction: alternate;
-animation-direction: alternate;   
-}
-
-/* try to moove the bg  */
-/* 
-@-webkit-keyframes slidein {
-	from {background-position: top; background-size:1000px; }
-	to {background-position: -100px 0px;background-size:2750px;}
-	}
-	
-	@keyframes slidein {
-	from {background-position: top;background-size:1000px; }
-	to {background-position: -100px 0px;background-size:2750px;}
-	
-	}  */
-/* 
-#play-screen > div {
-	margin-top: 10%;
-	margin-left: auto;
-	margin-right: auto;
-	height : 50vh;
-	background-image: var(--home-image);
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
-	animation: MoveUpDown 3s linear infinite;
-}
-
-@keyframes MoveUpDown {
-	0%, 100% {
-	  transform: translateY(0);
-	}
-	50% {
-	  transform: translateY(-20px);
-	}
- }
- */
-
-#play-screen > button {
-	 position : relative;
-	/*left: 50%;
-	transform: translateX(-50%);
-	/* styling button below */
-	/*box-shadow:inset 0px 0px 15px 3px #23395e;
-	background-color:transparent;
-	border-radius:17px;
-	border:1px solid #1f2f47;
-	display:inline-block;
-	cursor:pointer;
-	color:var(--font-color);
-	font-family:Arial;
-	font-size:15px;
-	padding:6px 13px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #263666; */
-
-
-	display: flex;
-	height: 5vh;
-	align-items: center;
-	justify-content: center;
-	background-color: transparent;
-	
-	color: #db3eb1;
-	border: 6px solid #db3eb1;
-	border-radius:15px;
-	padding: 15px 25px;
-	font-size: 30px;
-	font-family: tahoma;
-	letter-spacing:5px;
-	cursor: pointer;
-	font-weight: bold;
-	filter: drop-shadow(0 0 15px #db3eb1) drop-shadow(0 0 50px #db3eb1) contrast(2) brightness(2);
-	transition: .5s;
-}
-
-  #play-screen > button:hover {
-	color: black;
-	background-color: #db3eb1;
-	filter: drop-shadow(0 0 20px #db3eb1) contrast(2) brightness(2);
-  }
 
 #chat {
 	background-color: var(--sides-color);
@@ -174,6 +82,9 @@ animation-direction: alternate;
 }
 
 footer {
+	/* position: fixed; */
+	/* bottom:0; */
+	width: 100%;
 	background-color: var(--heading-color);
 	font-family: var(--font-type);
 	font-size: 100%;
@@ -183,3 +94,4 @@ footer {
 	line-height: 70px;
 	font-size: 150%;
 }
+

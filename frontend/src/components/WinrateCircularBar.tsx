@@ -1,5 +1,6 @@
 import "../styles/UserProfile.css"
 
+
 export default function WinrateCircularBar(props : { winRate : number}) {
 
 	let circularProgress = document.querySelector<HTMLElement>(".circular-progress");
@@ -14,10 +15,13 @@ export default function WinrateCircularBar(props : { winRate : number}) {
 		if (progressValue)
 			progressValue.innerHTML = `${progressStartValue}%`;
 		if (circularProgress)
-			circularProgress.style.background = `conic-gradient(rgb(51, 80, 186) ${progressStartValue * 3.6}deg, #ededed 0deg)`;
-
+			circularProgress.style.background = `conic-gradient(rgba(98, 20, 104, 0.7) ${progressStartValue * 3.6}deg, #ededed 0deg)`;
+		
+		
 		if (progressStartValue === props.winRate)
+		{
 			clearInterval(progress);
+		}
 	}, speed);
 
 	return (

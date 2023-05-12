@@ -1,7 +1,8 @@
 import "../styles/Leaderboard.css"
-import { IUser, users } from "../data"
-import { useEffect } from "react";
-import { json } from "stream/consumers";
+import { IUser, users } from "../data";
+import { useEffect, useState } from "react";
+import { getOneUser, getUsers } from "../APIHandler";
+
 
 export function TopThreeDetail(props: { user: IUser }) {
 	let podium;
@@ -31,7 +32,7 @@ export function PerformanceDetail() {
 						   .map(user => {
 		if (user.rank < 4)
 			return (null);
-		return <div key={user.id} className="stats" id={user.isLogged ? "myRank" : "stats"}>
+		return <div key={user.id} className="stats" id={user.isLogged ? "myRank" : "other"}>
 			<img 
 				src={user.avatar}
 				alt={user.nickname}
@@ -65,29 +66,23 @@ export function PerformanceDetail() {
 
 export function Leaderboard() {
 
-	async function getUsers() {
-		
-		const res = await fetch(`http://localhost:3001/users`, {
-			method: "GET",
-			headers: {
-				'content-type': 'application/json;',
-			  },
-			})
-			.then((response) => {
-				// console.log("response.json()", response.json());
-				return (response.json());
-			}) // on transforme le res en json
-			.then((json) => {return JSON.parse(json)})
-			// .catch((err) => {console.log("Error:", err.message)});
-	
-		// const obj = JSON.parse(res);
-	
-		console.log("res: ", res);
+		const ysers = getUsers().then((result) => console.log("result", result));
+		const oneuser = getOneUser(8).then((result) => console.log("result one", result));
+	// const [test, setUsers] = useState()
 
-		return res;
-	}
+	// useEffect( () => {
+	// 	fetch('http://localhost:3001/users')
+	// 	.then(response => {
+	// 		// console.log(response.json())
+	// 		return response.json();
+	// 	})
+	// 	.then((data) => setUsers(data))
+	// 	.catch( error => console.error(error));
+	// }, []);
+	
+	
+	// console.log(test);
 
-	const test = getUsers();
 
 	const rank1 = users.filter( user => user.rank === 1);
 	const rank2 = users.filter( user => user.rank === 2);
@@ -97,7 +92,6 @@ export function Leaderboard() {
 		<div id="body-leaderboard">
 			<div id="gradient-bg"></div>
 			<div className="leaderboard">
-				<h1>LEADERBOARD</h1>
 				<section id="top-three"> 
 					<TopThreeDetail user={rank2[0]}/>
 					<TopThreeDetail user={rank1[0]}/>

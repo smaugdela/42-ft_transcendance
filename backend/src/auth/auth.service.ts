@@ -84,6 +84,7 @@ export class AuthService {
 	// 			data: {
 	// 				nickname: body.nickname,
 	// 				password: hash,
+            coalition: "Invite",
 	// 			},
 	// 		});
 

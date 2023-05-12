@@ -1,11 +1,89 @@
 import "../styles/UserProfile.css"
-// import { IUser, users } from "../data";
+import { IAchievement, achievements } from "../data";
+// import { IMatch, matches } from "../data";
+import { IUser, users } from "../data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus, faBan, faComment, faDice, faHeart, faTrophy } from '@fortawesome/free-solid-svg-icons';
+// import { faBaby, faJetFighterUp, faLemon, faUserSlash, faViruses, faUserAstronaut, faFrog, faRobot, faShieldDog, faHandSpock, faHandHoldingDollar } from '@fortawesome/free-solid-svg-icons';
 import WinrateCircularBar from "../components/WinrateCircularBar";
 import StatDisplay from "../components/StatDisplay";
 
+
+export function Achievement( props: { userAchievements: IAchievement[] }) {
+	const completedAchievements: number = props.userAchievements.filter(elt => elt.wasAchieved === true).length;
+
+	const displayAchievements = props.userAchievements.map( achievement => {
+		return <div  className="one-achievement" id={achievement.wasAchieved === true ? "completed_achievement" : "one-achievement"}>
+			<FontAwesomeIcon icon={achievement.icon} className="fa-icon-achievements"/>
+			<h3>{achievement.title}</h3>
+			<h4>{achievement.description}</h4>
+		</div>
+	})
+	return (
+		<article id="achievements">
+			<h1>ACHIEVEMENTS ({completedAchievements}/{props.userAchievements.length})</h1>
+			<div className="all-achievements">
+				{displayAchievements}
+			</div>
+		</article>
+	);
+}
+
+export function MatchHistory(props: { user: IUser, users: IUser[]}) {
+	
+	
+	const displayMatchHistory = props.user.matchHistory.map(match => {
+
+		let banner: string = "ACE !";
+		let banner_style: string = "ace";
+		let outcome : number = match.score_p1 - match.score_p2;
+		if (outcome < 0) {
+			banner = "DEFEAT!";
+			banner_style = "defeat";
+		}
+		else if (outcome > 0 && match.score_p2 !== 0) {
+			banner = "VICTORY !";
+			banner_style = "victory";
+		}	
+		else if (outcome === 0) {
+			banner = "EQUALITY !";
+			banner_style = "equality";
+		}
+		
+		const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const;
+		const date = match.date.toLocaleDateString('en-US', options);
+		const opponent: IUser = props.users.filter(player => player.id === match.id_p2)[0];
+
+		return <div className="match-card">
+					<h5>{date}</h5>
+					<h4 className={`match-outcome ${banner_style}`}>{banner}</h4>
+					<div className="match-detail">
+						<div className="opponent">
+							<img src={props.user.avatar} alt={props.user.nickname} />
+							<h4>{props.user.nickname}</h4>
+						</div>
+						<div>
+							<h2>{match.score_p1} - {match.score_p2}</h2>
+						</div>
+						<div className="opponent">
+							<img src={opponent.avatar} alt={opponent.nickname} />
+							<h4>{opponent.nickname}</h4>
+						</div>
+					</div>
+				</div>
+	})
+	return (
+		<aside>
+			<h1>MATCH HISTORY</h1>
+			{displayMatchHistory}
+		</aside>
+	);
+}
+
 export function UserProfile() {
+
+	const loggedUser: IUser = users.filter( user => user.isLogged === true)[0];
+
 	return (
 		<div id="whole-profile">
 			<section id="main-dashboard">
@@ -25,9 +103,9 @@ export function UserProfile() {
 								<h5>Member since April 25, 2023</h5>
 							</div>
 						</article>
-						<article>
-							<h1>BIO</h1> <span> Just a random bio</span>
-
+						<article className="user_bio">
+							<h1>BIO</h1> 
+							<span> Just a random bio</span>
 						</article>
 						<hr />
 						<article id="main-stats">
@@ -67,120 +145,29 @@ export function UserProfile() {
 					</div>
 					<div id="stats">
 						<h1>COMPETITIVE OVERVIEW</h1>
-						<WinrateCircularBar winRate={70} />
-						<StatDisplay title={"wins"} stat={21} />
-						<StatDisplay title={"lose"} stat={7} />
-						<h5>Rank</h5>
-						<h5>Number of Aces</h5>
-						
-						<button>Challenge</button>
+						<div className="winratio_stats">
+							<WinrateCircularBar winRate={70} />
+							<div className="statdisplay">
+								<StatDisplay title={"Wins"} stat={21} />
+								<StatDisplay title={"Lose"} stat={7} />
+							</div>
+						</div>
+						<div className="statdisplay">
+							<StatDisplay title={"(Rank)"} stat={1} />
+							<StatDisplay title={"Aces"} stat={14} />
+						</div>
+						<button className="challenge-btn">Challenge</button>
 					</div>
 				
 				</div>
-				<article>
-						<h1>ACHIEVEMENTS (10/10)</h1>
-						<div className="all-achievements">
-							<div className="one-achievement">
-								<h3>Baby steps</h3>
-								<h4>Played the game for the first time</h4>
-							</div>
-							<div  className="one-achievement">
-								<h3>Veteran</h3>
-								<h4>Played 10 games</h4>
-							</div>
-							<div  className="one-achievement">
-								<h3>Easy peasy lemon squeezy</h3>
-								<h4>Won 3 games in a row</h4>
-							</div>
-							<div  className="one-achievement">
-								<h3>It's my lil bro playing</h3>
-								<h4>Lost 3 games in a row</h4>
-							</div>
-							<div  className="one-achievement">
-								<h3>Social butterfly</h3>
-								<h4>Added 3 friends</h4>
-							</div>
-							<div className="one-achievement">
-								<h3>Influencer</h3>
-								<h4>Added 10 friends</h4>
-							</div>
-							<div  className="one-achievement">
-								<h3>Cosmetic change</h3>
-								<h4>Updated their profile picture once</h4>
-							</div>
-							<div  className="one-achievement">
-								<h3>Existential crisis</h3>
-								<h4>Changed their nickname</h4>
-							</div>
-							<div  className="one-achievement">
-								<h3>Safety first</h3>
-								<h4>Activated the 2FA authentification</h4>
-							</div>
-							<div  className="one-achievement">
-								<h3>My safe place</h3>
-								<h4>Created their first channel</h4>
-							</div>
-							<div  className="one-achievement">
-								<h3>Pay to Win</h3>
-								<h4>Donated to have an in-game advantage</h4>
-							</div>
-						</div>
-					</article>
+				<Achievement 
+					userAchievements={achievements}
+				/>
 			</section>
-			<aside>
-				<h1>MATCH HISTORY (last 3)</h1>
-				<div className="match-card">
-					<h5>24 avril 2023 22h48 - 6''03</h5>
-					<h4 className="match-outcome defeat"> DEFEAT !</h4>
-					<div className="match-detail">
-						<div className="opponent">
-							<img src="/assets/jinx.png" alt="av" />
-							<h4>marine</h4>
-						</div>
-						<div>
-							<h2>1 - 2</h2>
-						</div>
-						<div className="opponent">
-							<img src="/assets/temp.png" alt="av2" />
-							<h4>John</h4>
-						</div>
-					</div>
-				</div>
-				<div className="match-card">
-				<h5>22 avril 2023 19h36 - 3''22</h5>
-				<h4 className="match-outcome victory"> VICTORY !</h4>
-					<div className="match-detail">
-						<div className="opponent">
-							<img src="/assets/jinx.png" alt="av" />
-							<h4>marine</h4>
-						</div>
-						<div>
-							<h2>3 - 2</h2>
-						</div>
-						<div className="opponent">
-							<img src="/assets/tmp.png" alt="av2" />
-							<h4>Krug</h4>
-						</div>
-					</div>
-				</div>
-				<div className="match-card">
-				<h5>21 avril 2023 14h26 - 2''14</h5>
-				<h4 className="match-outcome ace"> ACE !</h4>
-					<div className="match-detail">
-						<div className="opponent">
-							<img src="/assets/jinx.png" alt="av" />
-							<h4>marine</h4>
-						</div>
-						<div>
-							<h2>2 - 0</h2>
-						</div>
-						<div className="opponent">
-							<img src="/assets/avatar3.png" alt="av2" />
-							<h4>Caitlyn</h4>
-						</div>
-					</div>
-				</div>
-			</aside>
+			<MatchHistory
+				user={loggedUser} 
+				users={users}
+			/>
 		</div>
 	);
 }

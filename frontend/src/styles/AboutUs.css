@@ -1,70 +1,84 @@
-.background_aboutus{
-  background-color: rgb(19, 16, 16);
-  height : 90vh;
-	width: 100%;
-} 
-
-.aboutus{
-  width: auto;
-  /* display :flex;
-  justify-content: space-around; */
-
-}
-
-.aboutus h1{
-  padding: 20px;
-  text-align: left;
-  font-size: 50px;
-  color :white;
-  /* text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff, 0 0 70px #fff, 0 0 80px #fff;
-  background-image: linear-gradient(to right, #ffffff, #fff); */
-} 
-
-.aboutus p{
-  padding: 20px;
-  text-align: justify;
-  font-size: 20px;
-  color :white
-
-}
-
-.container{
-  margin: auto;
-  margin-top: 100px;
-  margin-bottom: 100px;
+.container_aboutus{
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
-  flex-wrap: wrap;
-  align-items: stretch;
-  
+  padding-bottom: 100px;
+  padding-top: 150px;
+  height: 1235px;
 }
 
-.container_staff h2, .container_staff p{
-  display: flex;
-  margin : 0px;
-  justify-content: center;
-  text-align: justify;
-  color :white
+.intro_aboutus{
+  margin-left: 40px;
+  margin-right: 40px;
+  font-size: 20px;
+  color: #e3eef1;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	animation: lumiere 1s infinite linear;
+} 
+
+.intro_aboutus h1{
+  text-align: center;
+  font-size: 45px;
+  
+} 
+
+.intro_aboutus p{
+  text-align: start;
+  font-size: 25px;
+  padding : 20px;
 }
+
+.div_staff{
+  background-color: rgba(255,255,255,0.13);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position : relative;
+  height: 50%;
+  width: auto;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-left: 40px;
+  margin-right: 40px;
+
+}
+
+.container_staff {
+  /* display: flex;
+  flex-direction: row; */
+  /* justify-content: space-around; */
+ 
+  text-align: center;
+  /* margin : 0px; */
+  /* justify-content: center; */
+  /* text-align: justify; */
+  /* color :white */
+} 
+
 
 .image{
-  width: 100%; 
-  height: auto;
   border-radius: 10px;
-  transition: 0.3s;
-  z-index: 2;
-	cursor: pointer;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 20px;
-  
+  width: 60%; 
+    /* height: auto; */
 }
 
-.text{
-  float: right;
+
+.text {
+  color: #e3eef1;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	animation: lumiere 1s infinite linear;
+
 }
 
-.image:hover{
-  border-radius: 15%;
-	transition: 0.3s;
-}

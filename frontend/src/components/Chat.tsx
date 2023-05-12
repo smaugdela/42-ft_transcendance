@@ -8,7 +8,6 @@ const Chat = () => {
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
-
   return (
     <div className={`chat ${isExpanded ?  'collapsed': 'expanded'}`}>
       <div className="toggle-button" onClick={toggleExpand}>
