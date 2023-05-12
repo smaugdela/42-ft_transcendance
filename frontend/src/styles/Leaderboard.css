@@ -211,7 +211,7 @@ section {
 #myRank {
 	background-color: var(--user-element-bg-color);
 	border: solid var(--user-element-bg-color);
-	/* color: var(--font-color); */
+	color: var(--font-color);
 }
 
 .user-ids {
