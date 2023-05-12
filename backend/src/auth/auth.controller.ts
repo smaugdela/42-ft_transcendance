@@ -1,7 +1,6 @@
-import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './guards/auth.guard';
-import { Request } from 'express';
 
 @Controller('auth')
 // @UseGuards(GoogleAuthGuard)

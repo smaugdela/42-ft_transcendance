@@ -10,9 +10,9 @@ export default class AuthDto {
 	@IsNotEmpty()
 	accessToken:		string;
 
-	@IsString()
-	@IsNotEmpty()
-	refreshToken:		string;
+	// @IsString()
+	// @IsNotEmpty()
+	// refreshToken:		string;
 	
 	@IsOptional()
 	@IsString()
@@ -27,6 +27,6 @@ export default class AuthDto {
 	@IsOptional()
 	@IsString()
 	@IsNotEmpty()
-	mailAddress:	string;
+	email:	string;
 
 }

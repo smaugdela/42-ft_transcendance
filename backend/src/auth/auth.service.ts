@@ -1,7 +1,7 @@
-import { Injectable, Query, Req } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Injectable, Query } from '@nestjs/common';
 import axios from 'axios';
-import { Request } from 'express';
+import { PrismaClient } from '@prisma/client';
+import { access } from 'fs';
 
 // import * as argon from 'argon2';
 // const crypto = require('crypto');
@@ -18,27 +18,78 @@ export class AuthService {
 	async redirect42(@Query() query) {
 		// console.log('query.code: ', query.code);
 
-		const url = 'https://api.intra.42.fr/oauth/token';
-		const data = {
-			grant_type: 'authorization_code',
-			client_id: process.env.ID,
-			client_secret: process.env.SECRET,
-			code: query.code,
-			redirect_uri: process.env.CALLBACK_URL,
+		try {
+
+			// Getting the users's token from the 42API.
+			const url = 'https://api.intra.42.fr/oauth/token';
+			const data = {
+				grant_type: 'authorization_code',
+				client_id: process.env.ID_42,
+				client_secret: process.env.SECRET_42,
+				code: query.code,
+				redirect_uri: process.env.CALLBACK_URL_42,
+			}
+
+			let response = await axios.post(url, data);
+			const accessToken = response.data.access_token;
+
+			// Getting user's information using its token.
+			const config = {
+				headers: {
+				Authorization: 'Bearer ' + accessToken,
+				},
+			};
+			response = await axios.get('https://api.intra.42.fr/v2/me', config);
+
+			// Storing user in database.
+			const user = response.data;
+			const userDb = await prisma.user.findUnique({
+				where: {
+					id42: user.id,
+				}
+			});
+
+			delete user.achievements;
+			delete user.projects_users;
+			console.log("user: ", user);
+
+			if (!userDb)
+			{
+				console.log("Creating user.")
+				await prisma.user.create({
+					data: {
+						nickname: user.login,
+						id42: user.id,
+						accessToken: accessToken,
+						coalition: user.coalition,
+						avatar: user.image.small,
+						email: user.email,
+					}
+				});
+			}
+
+			delete user.achievements;
+			delete user.projects_users;
+			console.log("user: ", user);
+
+			return 'You are logged in via 42!';
+
+		} catch (error) {
+			if (error.response) {
+				// The client was given an error response (5xx, 4xx)
+				console.log(error.response.data);
+				console.log(error.response.status);
+				console.log(error.response.headers);
+			} else if (error.request) {
+				// The client never received a response, and the request was never left
+				console.log(error.request);
+			} else {
+				// Anything else
+				console.log("error: ", error.message);
+			}
+
+			return 'An error occured while logging with 42.';
 		}
-
-		const response = await axios.post(url, data);
-
-		const config = {
-			headers: {
-			  Authorization: 'Bearer ' + response.data.access_token,
-			},
-		  };
-		const userData = await axios.get('https://api.intra.42.fr/v2/me', config);
-
-		console.log("userData: ", userData.data);
-
-		return 'You are logged in via 42!';
 	}
 
 	// async login(body: AuthDto) {
@@ -84,7 +135,7 @@ export class AuthService {
 	// 			data: {
 	// 				nickname: body.nickname,
 	// 				password: hash,
-            coalition: "Invite",
+	//				coalition: "Invite",
 	// 			},
 	// 		});
 
