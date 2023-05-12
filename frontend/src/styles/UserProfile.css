@@ -127,7 +127,7 @@
 }
 
 .one-stat:hover .fa-icon {
-	color: rgb(21, 224, 163);
+	color: rgb(60, 116, 166);
 }
 
 .fa-icon {
@@ -194,7 +194,7 @@
 	padding-top: 1rem;
 	text-align: center;
 	
-	background-color: rgb(255, 255, 255);
+	background-color: #e8f5fca6;
 	border : solid 1px rgb(251, 251, 251);
 	
 	
@@ -215,7 +215,7 @@
 }
 
 .one-achievement > h4 {
-	/* color :rgb(255, 255, 255); */
+	color :rgb(40, 61, 71);
 	font-size: 0.8rem;
 	font-style: italic;
 }
@@ -227,7 +227,7 @@
 }
 
 .fa-icon-achievements {
-	color: black;
+	color: rgb(24, 46, 65);
 	font-size : 1.5rem;
 }
 
@@ -410,7 +410,7 @@ aside > h1:first-child {
 
 .victory {
 	font-family: var(--font-type);
-	background-color: green;
+	background-color: rgb(0, 128, 0);
 	background: -moz-linear-gradient(left, rgba(35,175,68,0) 0%, rgba(35,175,68,0.8) 15%, rgba(35,175,68,1) 19%, rgba(35,175,68,1) 20%, rgba(37,198,80,1) 50%, rgba(37,188,52,1) 80%, rgba(37,188,52,1) 81%, rgba(37,188,52,0.8) 85%, rgba(37,188,52,0) 100%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(left, rgba(35,175,68,0) 0%,rgba(35,175,68,0.8) 15%,rgba(35,175,68,1) 19%,rgba(35,175,68,1) 20%,rgba(37,198,80,1) 50%,rgba(37,188,52,1) 80%,rgba(37,188,52,1) 81%,rgba(37,188,52,0.8) 85%,rgba(37,188,52,0) 100%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(to right, rgba(35,175,68,0) 0%,rgba(35,175,68,0.8) 15%,rgba(35,175,68,1) 19%,rgba(35,175,68,1) 20%,rgba(37,198,80,1) 50%,rgba(37,188,52,1) 80%,rgba(37,188,52,1) 81%,rgba(37,188,52,0.8) 85%,rgba(37,188,52,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
