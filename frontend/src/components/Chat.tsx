@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import '../styles/Chat.css'
+import '../styles/Chat.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCat, faComment, faAnglesLeft, faAnglesRight} from "@fortawesome/free-solid-svg-icons";
+
+
 
 
 const Chat = () => {
@@ -8,11 +12,17 @@ const Chat = () => {
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
+
+  // const SidebarData = [
+  //   {
+  //     image: <FontAwesomeIcon className='item_image' icon={faCat} />,
+  //   }
+  // ];
   return (
     <div className={`chat ${isExpanded ?  'collapsed': 'expanded'}`}>
       <div className="toggle-button" onClick={toggleExpand}>
-        {/* <image> "https://static-00.iconduck.com/assets.00/left-right-black-arrow-emoji-512x283-7vr1z2oc.png"</image> */}
-        {isExpanded ? '⬅' : '➡'} 
+      {/* <div> </div> */}
+        {isExpanded ? <FontAwesomeIcon icon={faAnglesLeft}/> : <FontAwesomeIcon icon={faAnglesRight}/>} 
       </div>
       <input type="text" className="text-input" placeholder="Envoyer un message" />
       <div className="content">

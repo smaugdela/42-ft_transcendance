@@ -42,7 +42,7 @@
   align-items: center;
   position : relative;
   height: 50%;
-  width: auto;
+  min-width: 400px;
   flex-wrap: wrap;
   justify-content: space-around;
   margin-left: 40px;
