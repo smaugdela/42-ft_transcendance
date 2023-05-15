@@ -89,7 +89,7 @@ section {
 	0 0 42px rgb(60, 116, 166),
 	0 0 77px rgb(60, 116, 166),
 	0 0 100px rgb(24, 46, 65);
-	animation: lumiere 1s infinite linear;
+	/* animation: lumiere 1s infinite linear; */
 }
 
 #top-three {
@@ -129,7 +129,7 @@ section {
 	0 0 42px rgb(60, 116, 166),
 	0 0 77px rgb(60, 116, 166),
 	0 0 100px rgb(24, 46, 65);
-	animation: lumiere 1s infinite linear;
+	/* animation: lumiere 1s infinite linear; */
 	font-size: 1em;
 }
 
@@ -193,7 +193,7 @@ section {
 	0 0 42px rgb(60, 116, 166),
 	0 0 77px rgb(60, 116, 166),
 	0 0 100px rgb(24, 46, 65);
-	animation: lumiere 1s infinite linear;
+	/* animation: lumiere 1s infinite linear; */
 }
 
 .stats:hover, #myRank:hover {

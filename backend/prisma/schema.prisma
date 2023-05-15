@@ -9,23 +9,62 @@ datasource db {
 
 model User {
   id          Int      @id @default(autoincrement())
-  avatar      String?  @default("/assets/avatar1.png")
+  avatar      String   @default("/assets/avatar1.png")
   nickname    String   @unique
   mailAddress String?  @unique
+  bio         String?
   password    String
-  coalition   String?
-  nbGames     Int?     @default(0)
+  coalition   String
+  wins        Int?     @default(0)
+  loses       Int?     @default(0)
+  aces        Int?     @default(0)
+  accessToken String   @unique
+
   score       Int?     @default(0)
   rank        Int?     @default(0)
-  isLogged    Boolean? @default(false)
   isActive    Boolean? @default(false)
 
   friendsList     User[] @relation("friends")
   friendsRelation User[] @relation("friends") // Used to store the many-to-many relation.
-  blockList       User[] @relation("blocked")
-  blockedFrom     User[] @relation("blocked") // Used to store the many-to-many relation.
-  pendingList     User[] @relation("pendings")
-  pendingFrom     User[] @relation("pendings") // Used to store the many-to-many relation.
+
+  blockList   User[] @relation("blocked")
+  blockedFrom User[] @relation("blocked") // Used to store the many-to-many relation.
+
+  pendingList User[] @relation("pendings")
+  pendingFrom User[] @relation("pendings") // Used to store the many-to-many relation.
+
+  achievements Achievement[]
+
+  matchAsP1 Match[] @relation("winner")
+  matchAsP2 Match[] @relation("loser")
 
   @@map("users")
+}
+
+model Achievement {
+  id          Int       @id @default(autoincrement())
+  title       String
+  icon        String
+  description String
+  date        DateTime?
+  fullfilled  Boolean   @default(false)
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+
+  @@map("achievements")
+}
+
+model Match {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @default(now())
+  mode        String
+  duration    Int
+  winner      User     @relation(fields: [winnerId], references: [id], name: "winner")
+  winnerId    Int
+  scoreWinner Int
+  loser       User     @relation(fields: [loserId], references: [id], name: "loser")
+  loserId     Int
+  scoreLoser  Int
+
+  @@map("matches")
 }
