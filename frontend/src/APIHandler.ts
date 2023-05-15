@@ -1,16 +1,24 @@
-const URL = 'http://localhost:3001'
+import axios from "axios";
+
+const URL = 'http://localhost:3001';
 
 export async function getUsers() {
-	
-	const response = await fetch(`${URL}/users`);
-	const data = await response.json()
-							   .then( (data) => { return data;})
-							   .catch((error) => { console.error(error)});
-	const users = data;
-	
-	console.log("users, ", users);
-	return users;
+	const response = await axios.get(`${URL}/users`);
+	return response.data;
 }
+
+
+// export async function getUsers() {
+	
+// 	const response = await fetch(`${URL}/users`);
+// 	const data = await response.json()
+// 							   .then( (data) => { return data;})
+// 							   .catch((error) => { console.error(error)});
+// 	const users = data;
+	
+// 	console.log("users, ", users);
+// 	return users;
+// }
 
 export async function getOneUser( id : number ) {
 

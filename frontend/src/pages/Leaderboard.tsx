@@ -2,8 +2,34 @@ import "../styles/Leaderboard.css"
 import { IUser, users } from "../data";
 import { useEffect } from "react";
 import { deleteOneUser, getOneUser, getUsers } from "../APIHandler";
+import {
+	useQuery,
+	// useMutation,
+	// useQueryClient
+  } from 'react-query'
 
+// interface IUser {
+// 	id: number;
+// 	avatar: string;
+// 	nickname: string;
+// 	mailAddress: string;
+// 	bio: string;
+// 	password: string;
+// 	coalition: string;
+// 	wins: number;
+// 	loses: number;
+// 	aces: number;
+// 	accessToken: number;
 
+// 	score: number;
+// 	rank: number;
+// 	isActive : boolean;
+// 	isLogged: boolean;
+
+// 	friendsList : IUser[];
+// 	blockList : IUser[];
+// 	pendingList : IUser[];
+// }
 export function TopThreeDetail(props: { user: IUser }) {
 	let podium;
 	if (props.user.rank === 1)
@@ -26,9 +52,9 @@ export function TopThreeDetail(props: { user: IUser }) {
 		);
 }
 
-export function PerformanceDetail() {
+export function PerformanceDetail(props: {users: IUser[]}) {
 	
-	const listRanks = users.sort((a, b) => a.rank > b.rank ? 1 : -1)
+	const listRanks = props.users.sort((a, b) => a.rank > b.rank ? 1 : -1)
 						   .map(user => {
 		if (user.rank < 4)
 			return (null);
@@ -66,16 +92,25 @@ export function PerformanceDetail() {
 
 export function Leaderboard() {
 
-		const testusers = getUsers().then((result) => console.log("result", result));
-		const oneuser = getOneUser(8).then((result) => console.log("result one", result));
+	const { data, error, isError, isLoading } = useQuery('users', getUsers);
+	
+	if (isLoading){
+		console.log("Ca loade");
+	}
 
-		useEffect( () => {
-			const abortController = new AbortController();
+	if (isError){
+		console.log("erreur ", (error as Error).message);
+	}
+	// const testusers = getUsers().then((result) => console.log("result", result));
+	// const oneuser = getOneUser(8).then((result) => console.log("result one", result));
 
-			deleteOneUser(13, abortController);
-			
-			return () => abortController.abort();
-		}, []);
+	// useEffect( () => {
+	// 	const abortController = new AbortController();
+
+	// 	deleteOneUser(13, abortController);
+		
+	// 	return () => abortController.abort();
+	// }, []);
 
 
 	// VERSION OU LE FETCH EST DANS LE COMPONENT :
@@ -92,8 +127,8 @@ export function Leaderboard() {
 	// }, []);
 	
 	
-	// console.log(test);
-
+	console.log("yoooo", data);
+	const tusers: IUser[] = data|| [];
 
 	const rank1 = users.filter( user => user.rank === 1);
 	const rank2 = users.filter( user => user.rank === 2);
@@ -110,7 +145,7 @@ export function Leaderboard() {
 				</section>
 				<h1>Other performances</h1>
 				<section> 
-					<PerformanceDetail />
+					<PerformanceDetail users={users}/>
 				</section>
 			</div>
 		</div>
