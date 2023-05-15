@@ -1,7 +1,7 @@
 import "../styles/Leaderboard.css"
 import { IUser, users } from "../data";
-import { useEffect, useState } from "react";
-import { getOneUser, getUsers } from "../APIHandler";
+import { useEffect } from "react";
+import { deleteOneUser, getOneUser, getUsers } from "../APIHandler";
 
 
 export function TopThreeDetail(props: { user: IUser }) {
@@ -66,10 +66,21 @@ export function PerformanceDetail() {
 
 export function Leaderboard() {
 
-		const ysers = getUsers().then((result) => console.log("result", result));
+		const testusers = getUsers().then((result) => console.log("result", result));
 		const oneuser = getOneUser(8).then((result) => console.log("result one", result));
-	// const [test, setUsers] = useState()
 
+		useEffect( () => {
+			const abortController = new AbortController();
+
+			deleteOneUser(13, abortController);
+			
+			return () => abortController.abort();
+		}, []);
+
+
+	// VERSION OU LE FETCH EST DANS LE COMPONENT :
+	// const [test, setUsers] = useState()
+	// // to store the data when it returns from our data request to the API
 	// useEffect( () => {
 	// 	fetch('http://localhost:3001/users')
 	// 	.then(response => {
