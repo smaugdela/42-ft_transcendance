@@ -8,19 +8,19 @@ datasource db {
 }
 
 model User {
-  id          Int     @id @default(autoincrement())
-  id42        Int?    @unique
-  avatar      String  @default("/assets/avatar1.png")
-  nickname    String  @unique
-  email       String? @unique
+  id          Int      @id @default(autoincrement())
+  id42        Int?     @unique
+  avatar      String   @default("/assets/avatar1.png")
+  nickname    String   @unique
+  email       String?  @unique
   bio         String?
-  password    String?
-  accessToken String  @unique
-  coalition   String
-  wins        Int?    @default(0)
-  loses       Int?    @default(0)
-  aces        Int?    @default(0)
+  authtype    AuthType
+  accessToken String   @unique // Is either the hashed password for invite or the 42 oauth token for 42 students.
+  coalition   String?  @default("Invite")
 
+  wins     Int?     @default(0)
+  loses    Int?     @default(0)
+  aces     Int?     @default(0)
   score    Int?     @default(0)
   rank     Int?     @default(0)
   isActive Boolean? @default(false)
@@ -68,4 +68,9 @@ model Match {
   scoreLoser  Int
 
   @@map("matches")
+}
+
+enum AuthType {
+  FORTYTWO
+  LOGNPWD
 }

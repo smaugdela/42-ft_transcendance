@@ -1,7 +1,6 @@
 import { Injectable, Query } from '@nestjs/common';
 import axios from 'axios';
-import { PrismaClient } from '@prisma/client';
-import { access } from 'fs';
+import { PrismaClient, AuthType } from '@prisma/client';
 
 // import * as argon from 'argon2';
 // const crypto = require('crypto');
@@ -60,9 +59,9 @@ export class AuthService {
 					data: {
 						nickname: user.login,
 						id42: user.id,
+						authtype: AuthType.FORTYTWO,
 						accessToken: accessToken,
-						coalition: user.coalition,
-						avatar: user.image.small,
+						avatar: user.image.link,
 						email: user.email,
 					}
 				});
