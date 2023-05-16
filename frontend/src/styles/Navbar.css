@@ -62,7 +62,7 @@ text-decoration: none;
 	0 0 100px rgb(24, 46, 65);
 	-webkit-animation: neon1 1.5s ease-in-out infinite alternate;
 	-moz-animation: neon1 1.5s ease-in-out infinite alternate;
-	animation: neon1 1.5s ease-in-out infinite alternate;
+	/* animation: neon1 1.5s ease-in-out infinite alternate; */
 }
 /* trying something */
 
