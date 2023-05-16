@@ -1,9 +1,9 @@
 import "../styles/Leaderboard.css"
-// import { useEffect } from "react";
+import { useEffect } from "react";
 import { 
 	// deleteOneUser, 
 	// getOneUser, 
-	getUsers } from "../APIHandler";
+	fetchUsers } from "../APIHandler";
 import { useQuery } from 'react-query'
 
 interface IUser {
@@ -91,45 +91,38 @@ export function PerformanceDetail(props: {users: IUser[]}) {
 
 export function Leaderboard() {
 
-	const { data, error, isError, isLoading } = useQuery<IUser[]>('users', getUsers);
-	
-	if (isError){
-		console.log("erreur ", (error as Error).message);
+	const query = useQuery<IUser[]>({ queryKey: ['users'], queryFn: fetchUsers });
+
+	if (query.error instanceof Error){
+		return <div>Error: {query.error.message}</div>
 	}
-	if (isLoading || data === undefined){
-		console.log("Ca loade");
+	if (query.isLoading || query.data === undefined){
 		return <div>Loading</div>
 	}
-	else
-	{
-
-		console.log("yoooo", data);
-		const users: IUser[] = data;
-
-		const rank1 = users.filter( user => user.rank === 1);
-		const rank2 = users.filter( user => user.rank === 2);
-		const rank3 = users.filter( user => user.rank === 3);
-		
-		return (
-			<div id="body-leaderboard">
-				<div id="gradient-bg"></div>
-				<div className="leaderboard">
-					<section id="top-three"> 
-						<TopThreeDetail user={rank2[0]}/>
-						<TopThreeDetail user={rank1[0]}/>
-						<TopThreeDetail user={rank3[0]}/>
-					</section>
-					<h1>Other performances</h1>
-					<section> 
-						<PerformanceDetail users={users}/>
-					</section>
-				</div>
+	
+	const rank1 = query.data.filter( user => user.rank === 1);
+	const rank2 = query.data.filter( user => user.rank === 2);
+	const rank3 = query.data.filter( user => user.rank === 3);
+	
+	return (
+		<div id="body-leaderboard">
+			<div id="gradient-bg"></div>
+			<div className="leaderboard">
+				<section id="top-three"> 
+					<TopThreeDetail user={rank2[0]}/>
+					<TopThreeDetail user={rank1[0]}/>
+					<TopThreeDetail user={rank3[0]}/>
+				</section>
+				<h1>Other performances</h1>
+				<section> 
+					<PerformanceDetail users={query.data}/>
+				</section>
 			</div>
-		);
-	}
+		</div>
+	);
 };
 
-	// const testusers = getUsers().then((result) => console.log("result", result));
+	
 	// const oneuser = getOneUser(8).then((result) => console.log("result one", result));
 
 	// useEffect( () => {

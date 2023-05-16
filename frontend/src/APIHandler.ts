@@ -2,12 +2,15 @@ import axios from "axios";
 
 const URL = 'http://localhost:3001';
 
-export async function getUsers() {
+export async function fetchUsers() {
 	const response = await axios.get(`${URL}/users`);
 	return response.data;
 }
 
-
+export async function fetchOneUser(id : number) {
+	const response = await axios.get(`${URL}/users/${id}`);
+	return response.data;
+}
 // export async function getUsers() {
 	
 // 	const response = await fetch(`${URL}/users`);
