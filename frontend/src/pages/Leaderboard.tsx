@@ -1,35 +1,34 @@
 import "../styles/Leaderboard.css"
-import { IUser, users } from "../data";
-import { useEffect } from "react";
-import { deleteOneUser, getOneUser, getUsers } from "../APIHandler";
-import {
-	useQuery,
-	// useMutation,
-	// useQueryClient
-  } from 'react-query'
+// import { useEffect } from "react";
+import { 
+	// deleteOneUser, 
+	// getOneUser, 
+	getUsers } from "../APIHandler";
+import { useQuery } from 'react-query'
 
-// interface IUser {
-// 	id: number;
-// 	avatar: string;
-// 	nickname: string;
-// 	mailAddress: string;
-// 	bio: string;
-// 	password: string;
-// 	coalition: string;
-// 	wins: number;
-// 	loses: number;
-// 	aces: number;
-// 	accessToken: number;
+interface IUser {
+	id: number;
+	avatar: string;
+	nickname: string;
+	mailAddress: string;
+	bio: string;
+	password: string;
+	coalition: string;
+	wins: number;
+	loses: number;
+	aces: number;
+	accessToken: number;
 
-// 	score: number;
-// 	rank: number;
-// 	isActive : boolean;
-// 	isLogged: boolean;
+	score: number;
+	rank: number;
+	isActive : boolean;
+	isLogged: boolean;
 
-// 	friendsList : IUser[];
-// 	blockList : IUser[];
-// 	pendingList : IUser[];
-// }
+	friendsList : IUser[];
+	blockList : IUser[];
+	pendingList : IUser[];
+}
+
 export function TopThreeDetail(props: { user: IUser }) {
 	let podium;
 	if (props.user.rank === 1)
@@ -78,7 +77,7 @@ export function PerformanceDetail(props: {users: IUser[]}) {
 			</div>
 			<div className="one-stat">
 				<h4>Games Played</h4>
-				<p>{user.nbGames}</p>
+				<p>{user.wins + user.loses}</p>
 			</div>
 		</div>
 		});
@@ -92,15 +91,44 @@ export function PerformanceDetail(props: {users: IUser[]}) {
 
 export function Leaderboard() {
 
-	const { data, error, isError, isLoading } = useQuery('users', getUsers);
+	const { data, error, isError, isLoading } = useQuery<IUser[]>('users', getUsers);
 	
-	if (isLoading){
-		console.log("Ca loade");
-	}
-
 	if (isError){
 		console.log("erreur ", (error as Error).message);
 	}
+	if (isLoading || data === undefined){
+		console.log("Ca loade");
+		return <div>Loading</div>
+	}
+	else
+	{
+
+		console.log("yoooo", data);
+		const users: IUser[] = data;
+
+		const rank1 = users.filter( user => user.rank === 1);
+		const rank2 = users.filter( user => user.rank === 2);
+		const rank3 = users.filter( user => user.rank === 3);
+		
+		return (
+			<div id="body-leaderboard">
+				<div id="gradient-bg"></div>
+				<div className="leaderboard">
+					<section id="top-three"> 
+						<TopThreeDetail user={rank2[0]}/>
+						<TopThreeDetail user={rank1[0]}/>
+						<TopThreeDetail user={rank3[0]}/>
+					</section>
+					<h1>Other performances</h1>
+					<section> 
+						<PerformanceDetail users={users}/>
+					</section>
+				</div>
+			</div>
+		);
+	}
+};
+
 	// const testusers = getUsers().then((result) => console.log("result", result));
 	// const oneuser = getOneUser(8).then((result) => console.log("result one", result));
 
@@ -125,29 +153,3 @@ export function Leaderboard() {
 	// 	.then((data) => setUsers(data))
 	// 	.catch( error => console.error(error));
 	// }, []);
-	
-	
-	console.log("yoooo", data);
-	const tusers: IUser[] = data|| [];
-
-	const rank1 = users.filter( user => user.rank === 1);
-	const rank2 = users.filter( user => user.rank === 2);
-	const rank3 = users.filter( user => user.rank === 3);
-
-	return (
-		<div id="body-leaderboard">
-			<div id="gradient-bg"></div>
-			<div className="leaderboard">
-				<section id="top-three"> 
-					<TopThreeDetail user={rank2[0]}/>
-					<TopThreeDetail user={rank1[0]}/>
-					<TopThreeDetail user={rank3[0]}/>
-				</section>
-				<h1>Other performances</h1>
-				<section> 
-					<PerformanceDetail users={users}/>
-				</section>
-			</div>
-		</div>
-	);
-};
