@@ -96,7 +96,7 @@ export function Leaderboard() {
 	if (query.error instanceof Error){
 		return <div>Error: {query.error.message}</div>
 	}
-	if (query.isLoading || query.data === undefined){
+	if (query.isLoading || !query.isSuccess){
 		return <div>Loading</div>
 	}
 	
