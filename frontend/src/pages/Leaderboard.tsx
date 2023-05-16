@@ -1,6 +1,7 @@
 import "../styles/Leaderboard.css"
 import { useEffect } from "react";
 import { 
+	fetchUserById,
 	// deleteOneUser, 
 	// getOneUser, 
 	fetchUsers } from "../APIHandler";
@@ -52,7 +53,7 @@ export function TopThreeDetail(props: { user: IUser }) {
 }
 
 export function PerformanceDetail(props: {users: IUser[]}) {
-	
+
 	const listRanks = props.users.sort((a, b) => a.rank > b.rank ? 1 : -1)
 						   .map(user => {
 		if (user.rank < 4)
@@ -91,18 +92,21 @@ export function PerformanceDetail(props: {users: IUser[]}) {
 
 export function Leaderboard() {
 
-	const query = useQuery<IUser[]>({ queryKey: ['users'], queryFn: fetchUsers });
+	const usersQuery = useQuery<IUser[]>({ queryKey: ['users'], queryFn: fetchUsers });	
 
-	if (query.error instanceof Error){
-		return <div>Error: {query.error.message}</div>
+	const userQuery = useQuery({ queryKey: ['user', 8], queryFn: fetchUserById});
+	console.log(userQuery.data);
+	
+	if (usersQuery.error instanceof Error){
+		return <div>Error: {usersQuery.error.message}</div>
 	}
-	if (query.isLoading || !query.isSuccess){
+	if (usersQuery.isLoading || !usersQuery.isSuccess){
 		return <div>Loading</div>
 	}
 	
-	const rank1 = query.data.filter( user => user.rank === 1);
-	const rank2 = query.data.filter( user => user.rank === 2);
-	const rank3 = query.data.filter( user => user.rank === 3);
+	const rank1 = usersQuery.data.filter( user => user.rank === 1);
+	const rank2 = usersQuery.data.filter( user => user.rank === 2);
+	const rank3 = usersQuery.data.filter( user => user.rank === 3);
 	
 	return (
 		<div id="body-leaderboard">
@@ -115,7 +119,7 @@ export function Leaderboard() {
 				</section>
 				<h1>Other performances</h1>
 				<section> 
-					<PerformanceDetail users={query.data}/>
+					<PerformanceDetail users={usersQuery.data}/>
 				</section>
 			</div>
 		</div>
