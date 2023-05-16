@@ -1,14 +1,15 @@
-import { Injectable, Query } from '@nestjs/common';
+import { ForbiddenException, Injectable, Query } from '@nestjs/common';
 import axios from 'axios';
 import { PrismaClient, AuthType } from '@prisma/client';
 
-// import * as argon from 'argon2';
-// const crypto = require('crypto');
-// const hashingConfig = {
-	// 	parallelism: 1,
-	// 	memoryCost: 64000, // 64 mb
-	// 	timeCost: 3
-	// };
+import * as argon from 'argon2';
+import AuthDto from './dto/auth.dto';
+const crypto = require('crypto');
+const hashingConfig = {
+	parallelism: 1,
+	memoryCost: 64000, // 64 mb
+	timeCost: 3
+};
 
 const prisma = new PrismaClient();
 @Injectable()
@@ -35,7 +36,7 @@ export class AuthService {
 			// Getting user's information using its token.
 			const config = {
 				headers: {
-				Authorization: 'Bearer ' + accessToken,
+					Authorization: 'Bearer ' + accessToken,
 				},
 			};
 			response = await axios.get('https://api.intra.42.fr/v2/me', config);
@@ -52,8 +53,7 @@ export class AuthService {
 			delete user.projects_users;
 			console.log("user: ", user);
 
-			if (!userDb)
-			{
+			if (!userDb) {
 				console.log("Creating user.")
 				await prisma.user.create({
 					data: {
@@ -91,66 +91,67 @@ export class AuthService {
 		}
 	}
 
-	// async login(body: AuthDto) {
-	// 	// Find the user by nickname.
-	// 	// If the user doesn't exists, throw an error.
-	// 	try {
-	// 		const activeUser = await prisma.user.findUniqueOrThrow({
-	// 			where: { nickname: body.nickname },
-	// 		})
+	async login(body: AuthDto) {
+		// Find the user by nickname.
+		// If the user doesn't exists, throw an error.
+		try {
+			const activeUser = await prisma.user.findUniqueOrThrow({
+				where: { nickname: body.nickname },
+			})
 
-	// 	// Compare passwords.
-	// 	// If they don't match, throw an exception.
-	// 	const pwMatch = await argon.verify(activeUser.password, body.password, hashingConfig);
-	// 	if (pwMatch === false)
-	// 		throw new ForbiddenException('Password incorrect');
+			// Compare passwords.
+			// If they don't match, throw an exception.
+			const pwMatch = await argon.verify(activeUser.accessToken, body.password, hashingConfig);
+			if (pwMatch === false)
+				throw new ForbiddenException('Password incorrect');
 
-	// 	// Send back the user.
+			// Send back the user.
 
-	// 	delete activeUser.password;	// Temporary solution, should not be used later.
+			delete activeUser.accessToken;	// Temporary solution, should not be used later.
 
-	// 	return activeUser;
+			return activeUser;
 
-	// 	} catch (error) {
-	// 		if (error.code === 'P2025')
-	// 			throw new ForbiddenException('No such nickname');
-	// 		else
-	// 			throw error;
-	// 	}
-	// }
+		} catch (error) {
+			if (error.code === 'P2025')
+				throw new ForbiddenException('No such nickname');
+			else
+				throw error;
+		}
+	}
 
-	// async signup(body: AuthDto) {
+	async signup(body: AuthDto) {
 
-	// 	try {
-	// 		// generate password hash
-	// 		const buf: Buffer = crypto.randomBytes(16);
-	// 		const hash = await argon.hash(body.password, {
-	// 			...hashingConfig,
-	// 			salt: buf
-	// 		});
+		try {
+			// generate password hash
+			const buf: Buffer = crypto.randomBytes(16);
+			const hash = await argon.hash(body.password, {
+				...hashingConfig,
+				salt: buf
+			});
 
-	// 		// save the new user in the db
-	// 		const newUser = await prisma.user.create({
-	// 			data: {
-	// 				nickname: body.nickname,
-	// 				password: hash,
-	//				coalition: "Invite",
-	// 			},
-	// 		});
+			// save the new user in the db
+			const newUser = await prisma.user.create({
+				data: {
+					nickname: body.nickname,
+					accessToken: hash,
+					AuthType: LOGNPWD,
+					coalition: "Invite",
+				},
+			});
 
-	// 		delete newUser.password;	// Temporary solution, should not be used permanently.
+			delete newUser.accessToken;	// Temporary solution, should not be used permanently.
 
-	// 		// return the created user
-	// 		console.log(`New user created: ${newUser}`);
-	// 		return newUser;
-	// 	} catch (error) {
+			// return the created user
+			console.log(`New user created: ${newUser}`);
+			return newUser;
+		} catch (error) {
 
-	// 		if (error.code === "P2002")
-	// 			throw new ForbiddenException('Credentials taken');
+			if (error.code === "P2002")
+				throw new ForbiddenException('Credentials taken');
 
-	// 		throw error;
-	// 	}
-	// }
+			throw error;
+		}
+	}
 
 	// async googleAuth(@Request() req, @Res() response: Response) {
 
