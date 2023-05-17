@@ -1,34 +1,7 @@
 import "../styles/Leaderboard.css"
-import { useEffect } from "react";
-import { 
-	fetchUserById,
-	// deleteOneUser, 
-	// getOneUser, 
-	fetchUsers } from "../APIHandler";
-import { useQuery } from 'react-query'
-
-interface IUser {
-	id: number;
-	avatar: string;
-	nickname: string;
-	mailAddress: string;
-	bio: string;
-	password: string;
-	coalition: string;
-	wins: number;
-	loses: number;
-	aces: number;
-	accessToken: number;
-
-	score: number;
-	rank: number;
-	isActive : boolean;
-	isLogged: boolean;
-
-	friendsList : IUser[];
-	blockList : IUser[];
-	pendingList : IUser[];
-}
+import { IUser } from "../api/types";
+import { fetchUsers } from "../api/APIHandler";
+import { useQuery } from "@tanstack/react-query";
 
 export function TopThreeDetail(props: { user: IUser }) {
 	let podium;
@@ -94,9 +67,6 @@ export function Leaderboard() {
 
 	const usersQuery = useQuery<IUser[]>({ queryKey: ['users'], queryFn: fetchUsers });	
 
-	const userQuery = useQuery({ queryKey: ['user', 8], queryFn: fetchUserById});
-	console.log(userQuery.data);
-	
 	if (usersQuery.error instanceof Error){
 		return <div>Error: {usersQuery.error.message}</div>
 	}
@@ -125,28 +95,3 @@ export function Leaderboard() {
 		</div>
 	);
 };
-
-	
-	// const oneuser = getOneUser(8).then((result) => console.log("result one", result));
-
-	// useEffect( () => {
-	// 	const abortController = new AbortController();
-
-	// 	deleteOneUser(13, abortController);
-		
-	// 	return () => abortController.abort();
-	// }, []);
-
-
-	// VERSION OU LE FETCH EST DANS LE COMPONENT :
-	// const [test, setUsers] = useState()
-	// // to store the data when it returns from our data request to the API
-	// useEffect( () => {
-	// 	fetch('http://localhost:3001/users')
-	// 	.then(response => {
-	// 		// console.log(response.json())
-	// 		return response.json();
-	// 	})
-	// 	.then((data) => setUsers(data))
-	// 	.catch( error => console.error(error));
-	// }, []);
