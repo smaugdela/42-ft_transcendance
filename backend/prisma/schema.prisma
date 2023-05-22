@@ -15,7 +15,8 @@ model User {
   email       String?  @unique
   bio         String?
   authtype    AuthType
-  accessToken String   @unique // Is either the hashed password for invite or the 42 oauth token for 42 students.
+  accessToken String?  @unique // Is the 42 oauth token for 42 students.
+  password    String? // Is the password for non 42 students.
   coalition   String?  @default("Invite")
 
   wins     Int?     @default(0)

@@ -4,7 +4,8 @@ import { PrismaClient, AuthType } from '@prisma/client';
 
 import * as argon from 'argon2';
 import AuthDto from './dto/auth.dto';
-const crypto = require('crypto');
+import { JwtService } from '@nestjs/jwt';
+import crypto from 'crypto';
 const hashingConfig = {
 	parallelism: 1,
 	memoryCost: 64000, // 64 mb
@@ -14,6 +15,9 @@ const hashingConfig = {
 const prisma = new PrismaClient();
 @Injectable()
 export class AuthService {
+	constructor(
+		private readonly jwtService: JwtService,
+	) { }
 
 	async redirect42(@Query() query) {
 		// console.log('query.code: ', query.code);
@@ -55,10 +59,12 @@ export class AuthService {
 
 			if (!userDb) {
 				console.log("Creating user.")
+				response = await axios.get('https://api.intra.42.fr/v2/users/' + user.id + '/coalitions', config);
 				await prisma.user.create({
 					data: {
 						nickname: user.login,
 						id42: user.id,
+						coalition: response.data[0].name,
 						authtype: AuthType.FORTYTWO,
 						accessToken: accessToken,
 						avatar: user.image.link,
@@ -101,13 +107,13 @@ export class AuthService {
 
 			// Compare passwords.
 			// If they don't match, throw an exception.
-			const pwMatch = await argon.verify(activeUser.accessToken, body.password, hashingConfig);
+			const pwMatch = await argon.verify(activeUser.password, body.password, hashingConfig);
 			if (pwMatch === false)
 				throw new ForbiddenException('Password incorrect');
 
 			// Send back the user.
 
-			delete activeUser.accessToken;	// Temporary solution, should not be used later.
+			delete activeUser.password;	// Temporary solution, should not be used later.
 
 			return activeUser;
 
@@ -133,17 +139,23 @@ export class AuthService {
 			const newUser = await prisma.user.create({
 				data: {
 					nickname: body.nickname,
-					accessToken: hash,
-					AuthType: LOGNPWD,
+					password: hash,
+					authtype: AuthType.LOGNPWD,
 					coalition: "Invite",
 				},
 			});
 
-			delete newUser.accessToken;	// Temporary solution, should not be used permanently.
+			// delete newUser.password;	// Temporary solution, should not be used permanently.
 
-			// return the created user
+			// log the created user
 			console.log(`New user created: ${newUser}`);
-			return newUser;
+
+			// generate a JWT and return it.
+			const payload = { sub: newUser.id, username: newUser.nickname };
+			return {
+				jwt: await this.jwtService.signAsync(payload),
+			};
+
 		} catch (error) {
 
 			if (error.code === "P2002")

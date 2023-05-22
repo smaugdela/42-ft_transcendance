@@ -51,6 +51,10 @@ describe('App e2e', () => {
 			nickname: 'test',
 			password: 'test',
 		};
+		const badUser = {
+			nickname: 'test',
+			password: 'bad',
+		};
 		describe('login', () => {
 			// Should be able to login using nickname and password
 			it('should login using nickname and password', () => {
@@ -62,11 +66,19 @@ describe('App e2e', () => {
 			it('should signup using nickname and password', () => {
 				return pactum.spec().post('/auth/signup').withJson(user).expectStatus(200);
 			});
+			// Should not be able to signup using a non existing nickname
+			it('should not be able to signup using a non existing nickname', () => {
+				return pactum.spec().post('/auth/signup').withJson(badUser).expectStatus(400);
+			});
 		});
 		describe('protected', () => {
 			// Should be able to access protected routes
 			it('should be able to access protected routes', () => {
 				return pactum.spec().get('/auth/protected').expectStatus(200);
+			});
+			// Should not be able to access protected routes without a valid token
+			it('should not be able to access protected routes without a valid token', () => {
+				return pactum.spec().get('/auth/protected').expectStatus(403);
 			});
 		});
 		describe('unprotected', () => {

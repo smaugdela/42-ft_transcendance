@@ -31,6 +31,6 @@ export class AuthController {
 
 	@Get('unprotected')
 	unprotectedEndpoint() {
-		return "This is a unprotected route."
+		return "This is an unprotected route."
 	}
 }
