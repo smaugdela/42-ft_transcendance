@@ -1,11 +1,10 @@
 import { ForbiddenException, Injectable, Query } from '@nestjs/common';
 import axios from 'axios';
 import { PrismaClient, AuthType } from '@prisma/client';
-
 import * as argon from 'argon2';
 import AuthDto from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
-import crypto from 'crypto';
+
 const hashingConfig = {
 	parallelism: 1,
 	memoryCost: 64000, // 64 mb
@@ -64,7 +63,7 @@ export class AuthService {
 					data: {
 						nickname: user.login,
 						id42: user.id,
-						coalition: response.data[0].name,
+						coalition: response.data[1].name,
 						authtype: AuthType.FORTYTWO,
 						accessToken: accessToken,
 						avatar: user.image.link,
@@ -129,7 +128,8 @@ export class AuthService {
 
 		try {
 			// generate password hash
-			const buf: Buffer = crypto.randomBytes(16);
+			const { randomBytes } = await import('crypto');
+			const buf = randomBytes(16);
 			const hash = await argon.hash(body.password, {
 				...hashingConfig,
 				salt: buf
@@ -148,7 +148,7 @@ export class AuthService {
 			// delete newUser.password;	// Temporary solution, should not be used permanently.
 
 			// log the created user
-			console.log(`New user created: ${newUser}`);
+			console.log('New user created: ', newUser);
 
 			// generate a JWT and return it.
 			const payload = { sub: newUser.id, username: newUser.nickname };

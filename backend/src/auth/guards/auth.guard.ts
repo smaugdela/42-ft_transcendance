@@ -1,26 +1,22 @@
-import { CanActivate, Injectable, ExecutionContext, UnauthorizedException } from "@nestjs/common";
+import { CanActivate, Injectable, ExecutionContext, UnauthorizedException, Headers } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { PrismaClient } from "@prisma/client";
-import { Observable } from "rxjs";
 import { jwtConstants } from "../constants";
-import { JwtService } from "@nestjs/jwt";
-
-const prisma = new PrismaClient();
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-	constructor(private jwtService: JwtService);
+	constructor(private jwtService: JwtService) {}
 
-	async canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const request = context.switchToHttp().getRequest();
-		const jwt = this.extractTokenFromHeader(request);
+		const jwt = this.extractTokenFromHeader(request.headers);
 
 		if (!jwt)
 		{
 			throw new UnauthorizedException('No access token.');
 		}
 		try {
+			console.log('received jwt from header: ', jwt);
 			const payload = await this.jwtService.verifyAsync(jwt, {
 				secret: jwtConstants.secret,
 			});
@@ -31,8 +27,8 @@ export class AuthGuard implements CanActivate {
 		return true;
 	}
 
-	private extractTokenFromHeader(request: Request): string | undefined {
-		const [type, token] = request.headers.authorization?.split(' ') ?? [];
+	private extractTokenFromHeader(@Headers() headers): string | undefined {
+		const [type, token] = headers.authorization?.split(' ') ?? [];
 		return type === 'Bearer' ? token : undefined;
 	}
 
