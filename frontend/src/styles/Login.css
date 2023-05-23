@@ -101,6 +101,16 @@ input{
     border-radius: 5px;
     cursor: pointer;
 }
+
+#login-btn:hover{
+	color: rgb(243, 249, 255);
+	filter: drop-shadow(0 0 20px #90d0f09e) contrast(2) brightness(1);
+	background: linear-gradient(rgba(5, 5, 5, 0.6), rgba(0, 0, 0, 0)), repeating-linear-gradient(0, transparent, transparent 2px, black 3px, black 3px);
+	text-shadow: -3px -3px 0px #90d0f09e, 3px 3px 9px rgb(35, 71, 103);
+	animation: 5s glitch;
+	animation-timing-function: steps(2, end);
+}
+
 .social{
   margin-top: 30px;
   display: flex;

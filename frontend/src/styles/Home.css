@@ -20,17 +20,24 @@
 		0 0 20px rgb(60, 116, 166),
 		0 0 42px rgb(60, 116, 166),
 		0 0 77px rgb(60, 116, 166);
-
 	border-radius:15px;
 	padding: 15px 25px;
-	font-size: 30px;
-	font-family: var(--font-type);
 	letter-spacing:5px;
 	cursor: pointer;
-	font-weight: bold;
 	transition: .5s;
 } 
+.link-login2{
+	font-weight: bold;
+	color: #e3eef1;
+	font-size: 30px;
+	font-family: var(--font-type);
+	text-decoration: none;
 
+}
+
+#play-screen > .goto {
+	text-decoration: none;
+}
 
 #play-screen > button:hover {
 	color: rgb(243, 249, 255);
