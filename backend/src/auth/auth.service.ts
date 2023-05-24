@@ -63,7 +63,7 @@ export class AuthService {
 					data: {
 						nickname: user.login,
 						id42: user.id,
-						coalition: response.data[1].name,
+						coalition: response.data[response.data.length - 1].name,
 						authtype: AuthType.FORTYTWO,
 						accessToken: accessToken,
 						avatar: user.image.link,

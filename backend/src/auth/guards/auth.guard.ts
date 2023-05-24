@@ -1,22 +1,35 @@
 import { CanActivate, Injectable, ExecutionContext, UnauthorizedException, Headers } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { jwtConstants } from "../constants";
+import { Reflector } from "@nestjs/core";
+import { IS_PUBLIC_KEY } from "./public.decorator";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-	constructor(private jwtService: JwtService) {}
+	constructor(private jwtService: JwtService, private reflector: Reflector) {}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
+
+		// We first check if it's a public endpoint.
+		const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+			context.getHandler(),
+			context.getClass(),
+		  ]);
+		  if (isPublic) {
+			return true;
+		  }
+
+		// We extract the jwt from the request.
 		const request = context.switchToHttp().getRequest();
 		const jwt = this.extractTokenFromHeader(request.headers);
 
+		// Check if the jwt exists and is valid.
 		if (!jwt)
 		{
 			throw new UnauthorizedException('No access token.');
 		}
 		try {
-			console.log('received jwt from header: ', jwt);
 			const payload = await this.jwtService.verifyAsync(jwt, {
 				secret: jwtConstants.secret,
 			});
