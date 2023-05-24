@@ -10,16 +10,13 @@ const hashingConfig = {
 	memoryCost: 64000, // 64 mb
 	timeCost: 3
 };
-
 const prisma = new PrismaClient();
+
 @Injectable()
 export class AuthService {
-	constructor(
-		private readonly jwtService: JwtService,
-	) { }
+	constructor(private readonly jwtService: JwtService) {}
 
 	async redirect42(@Query() query) {
-		// console.log('query.code: ', query.code);
 
 		try {
 
@@ -46,37 +43,36 @@ export class AuthService {
 
 			// Storing user in database.
 			const user = response.data;
-			const userDb = await prisma.user.findUnique({
+			let userDb = await prisma.user.findUnique({
 				where: {
 					id42: user.id,
 				}
 			});
 
-			delete user.achievements;
-			delete user.projects_users;
-			console.log("user: ", user);
+			// delete user.achievements;
+			// delete user.projects_users;
+			// console.log("user: ", user);
 
 			if (!userDb) {
 				console.log("Creating user.")
 				response = await axios.get('https://api.intra.42.fr/v2/users/' + user.id + '/coalitions', config);
-				await prisma.user.create({
+				userDb = await prisma.user.create({
 					data: {
 						nickname: user.login,
 						id42: user.id,
 						coalition: response.data[response.data.length - 1].name,
 						authtype: AuthType.FORTYTWO,
-						accessToken: accessToken,
+						token42: accessToken,
 						avatar: user.image.link,
 						email: user.email,
+						refreshToken: null
 					}
 				});
 			}
 
-			delete user.achievements;
-			delete user.projects_users;
-			console.log("user: ", user);
+			console.log("user: ", userDb);
 
-			return 'You are logged in via 42!';
+			return this.generateTokens(userDb.id, userDb.nickname);
 
 		} catch (error) {
 			if (error.response) {
@@ -110,11 +106,7 @@ export class AuthService {
 			if (pwMatch === false)
 				throw new ForbiddenException('Password incorrect');
 
-			// Send back the user.
-
-			delete activeUser.password;	// Temporary solution, should not be used later.
-
-			return activeUser;
+			return this.generateTokens(activeUser.id, activeUser.nickname);
 
 		} catch (error) {
 			if (error.code === 'P2025')
@@ -142,6 +134,7 @@ export class AuthService {
 					password: hash,
 					authtype: AuthType.LOGNPWD,
 					coalition: "Invite",
+					refreshToken: null,
 				},
 			});
 
@@ -150,11 +143,7 @@ export class AuthService {
 			// log the created user
 			console.log('New user created: ', newUser);
 
-			// generate a JWT and return it.
-			const payload = { sub: newUser.id, username: newUser.nickname };
-			return {
-				jwt: await this.jwtService.signAsync(payload),
-			};
+			return this.generateTokens(newUser.id, newUser.nickname);
 
 		} catch (error) {
 
@@ -164,6 +153,55 @@ export class AuthService {
 			throw error;
 		}
 	}
+
+	async logout(userId: number)
+	{
+		return await prisma.user.update({
+			where: {
+				id: userId,
+			},
+			data: {
+				refreshToken: null,
+			},
+		});
+	}
+
+	async generateTokens(userId: number, username: string) {
+
+		// generate refresh JWT.
+		const payload = { sub: userId, username: username };
+		const refreshToken = await this.jwtService.signAsync(payload, {
+			secret: process.env.JWT_SECRET,
+			expiresIn: '7d',
+		});
+
+		// generate refreshToken hash and store it in DB
+		const { randomBytes } = await import('crypto');
+		const buf = randomBytes(16);
+		const hash = await argon.hash(refreshToken, {
+			...hashingConfig,
+			salt: buf
+		});
+		await prisma.user.update({
+			where: {
+				nickname: username,
+			},
+			data: {
+				refreshToken: hash,
+			}
+		});
+
+		// return refresh and access JWTs.
+		return {
+			jwt: await this.jwtService.signAsync(payload, {
+				secret: process.env.JWT_SECRET,
+				expiresIn: '60s',
+			}),
+			refreshToken: refreshToken,
+		};
+	}
+
+
 
 	// async googleAuth(@Request() req, @Res() response: Response) {
 

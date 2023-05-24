@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  id42        Int?     @unique
-  avatar      String   @default("/assets/avatar1.png")
-  nickname    String   @unique
-  email       String?  @unique
-  bio         String?
-  authtype    AuthType
-  accessToken String?  @unique // Is the 42 oauth token for 42 students.
-  password    String? // Is the password for non 42 students.
-  coalition   String?  @default("Invite")
+  id           Int      @id @default(autoincrement())
+  avatar       String   @default("/assets/avatar1.png")
+  nickname     String   @unique
+  email        String?  @unique
+  bio          String?
+  authtype     AuthType
+  id42         Int?     @unique
+  token42      String?  @unique // Is the 42 oauth token for 42 students.
+  password     String? // Is the password for non 42 students.
+  refreshToken String
+  coalition    String?  @default("Invite")
 
   wins     Int?     @default(0)
   loses    Int?     @default(0)
