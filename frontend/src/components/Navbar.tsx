@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import * as AiIcons from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import '../styles/Navbar.css';
 import { ChangeEventHandler } from 'react';
 import Avatar from './Avatar';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapPin, faSpaghettiMonsterFlying, faPeoplePulling, faPersonDrowning, faHeadSideMask, faHandsHoldingChild, faComments, faUsers, faRobot, faOtter, faShieldCat} from "@fortawesome/free-solid-svg-icons";
+import { faMapPin, faSpaghettiMonsterFlying, faPeoplePulling, faPersonDrowning, faHandsHoldingChild, faRobot, faShieldCat} from "@fortawesome/free-solid-svg-icons";
 
 const SidebarData = [
 	{

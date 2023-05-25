@@ -1,7 +1,6 @@
-import { Injectable, Query, Req } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
-import { Request } from 'express';
 
 // import * as argon from 'argon2';
 // const crypto = require('crypto');
@@ -84,7 +83,7 @@ export class AuthService {
 	// 			data: {
 	// 				nickname: body.nickname,
 	// 				password: hash,
-            coalition: "Invite",
+            // coalition: "Invite",
 	// 			},
 	// 		});
 

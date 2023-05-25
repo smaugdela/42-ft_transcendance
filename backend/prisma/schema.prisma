@@ -18,7 +18,7 @@ model User {
   wins        Int?     @default(0)
   loses       Int?     @default(0)
   aces        Int?     @default(0)
-  accessToken String   @unique
+  accessToken String   //@unique
 
   score       Int?     @default(0)
   rank        Int?     @default(0)

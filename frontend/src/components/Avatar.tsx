@@ -55,12 +55,14 @@ import {Link} from 'react-router-dom';
 // }
 
 const Avatar: React.FC = () => {
-	  const [open, setOpen] = useState(false);
-  const [fadeIn, setFadein] = useState(false);
-  let elem;
-	  function handleClick() {
-    setOpen(!open);
-    setFadein(true);
+	const [open, setOpen] = useState(false);
+  	const [fadeIn, setFadein] = useState(false);
+	console.log(fadeIn);
+	
+//   let elem;
+	function handleClick() {
+		setOpen(!open);
+		setFadein(true);
   }
 	return (
 	  <button className="login-button" onClick={handleClick}>

@@ -21,6 +21,7 @@ async function pushToDB_User (path: string)
 				mailAddress: element.mailAddress,
 				coalition: element.coalition,
 				accessToken: "default",
+				password: "default",
 		  },}).catch( (error) => console.log(error) );
 	});
 }
@@ -36,8 +37,8 @@ async function bootstrap() {
 
 	const app = await NestFactory.create(AppModule, {logger: console,});
 
-	// pushToDB_User('../database/user_data.json'); // Use this only to load test data
-	// console.log("Data loaded into db");
+	pushToDB_User('../database/user_data.json'); // Use this only to load test data
+	console.log("Data loaded into db");
 
 	app.useGlobalPipes(new ValidationPipe({whitelist: true}));
 

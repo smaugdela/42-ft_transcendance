@@ -1,8 +1,7 @@
 import "../styles/Leaderboard.css"
-import { IUser, users } from "../data";
-import { useEffect } from "react";
-import { deleteOneUser, getOneUser, getUsers } from "../APIHandler";
-
+import { IUser } from "../api/types";
+import { fetchUsers } from "../api/APIHandler";
+import { useQuery } from "@tanstack/react-query";
 
 export function TopThreeDetail(props: { user: IUser }) {
 	let podium;
@@ -26,9 +25,9 @@ export function TopThreeDetail(props: { user: IUser }) {
 		);
 }
 
-export function PerformanceDetail() {
-	
-	const listRanks = users.sort((a, b) => a.rank > b.rank ? 1 : -1)
+export function PerformanceDetail(props: {users: IUser[]}) {
+
+	const listRanks = props.users.sort((a, b) => a.rank > b.rank ? 1 : -1)
 						   .map(user => {
 		if (user.rank < 4)
 			return (null);
@@ -52,7 +51,7 @@ export function PerformanceDetail() {
 			</div>
 			<div className="one-stat">
 				<h4>Games Played</h4>
-				<p>{user.nbGames}</p>
+				<p>{user.wins + user.loses}</p>
 			</div>
 		</div>
 		});
@@ -66,39 +65,19 @@ export function PerformanceDetail() {
 
 export function Leaderboard() {
 
-		const testusers = getUsers().then((result) => console.log("result", result));
-		const oneuser = getOneUser(8).then((result) => console.log("result one", result));
+	const usersQuery = useQuery<IUser[]>({ queryKey: ['users'], queryFn: fetchUsers });	
 
-		useEffect( () => {
-			const abortController = new AbortController();
-
-			deleteOneUser(13, abortController);
-			
-			return () => abortController.abort();
-		}, []);
-
-
-	// VERSION OU LE FETCH EST DANS LE COMPONENT :
-	// const [test, setUsers] = useState()
-	// // to store the data when it returns from our data request to the API
-	// useEffect( () => {
-	// 	fetch('http://localhost:3001/users')
-	// 	.then(response => {
-	// 		// console.log(response.json())
-	// 		return response.json();
-	// 	})
-	// 	.then((data) => setUsers(data))
-	// 	.catch( error => console.error(error));
-	// }, []);
+	if (usersQuery.error instanceof Error){
+		return <div>Error: {usersQuery.error.message}</div>
+	}
+	if (usersQuery.isLoading || !usersQuery.isSuccess){
+		return <div>Loading</div>
+	}
 	
+	const rank1 = usersQuery.data.filter( user => user.rank === 1);
+	const rank2 = usersQuery.data.filter( user => user.rank === 2);
+	const rank3 = usersQuery.data.filter( user => user.rank === 3);
 	
-	// console.log(test);
-
-
-	const rank1 = users.filter( user => user.rank === 1);
-	const rank2 = users.filter( user => user.rank === 2);
-	const rank3 = users.filter( user => user.rank === 3);
-
 	return (
 		<div id="body-leaderboard">
 			<div id="gradient-bg"></div>
@@ -110,7 +89,7 @@ export function Leaderboard() {
 				</section>
 				<h1>Other performances</h1>
 				<section> 
-					<PerformanceDetail />
+					<PerformanceDetail users={usersQuery.data}/>
 				</section>
 			</div>
 		</div>
