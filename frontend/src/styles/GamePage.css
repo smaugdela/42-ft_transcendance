@@ -1,37 +1,77 @@
 
+#play-screen2 > .button1 {
+	display: flex;
+	height: 5vh;
+	justify-content: left;
+	background-color: transparent;
+	color: #e3eef1;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	animation: lumiere 1s infinite linear;
+	border: 3px solid rgb(35, 71, 103);
+	box-shadow:
+		0 0 7px #efefef,
+		0 0 10px #efefef,
+		0 0 20px rgb(60, 116, 166),
+		0 0 42px rgb(60, 116, 166),
+		0 0 77px rgb(60, 116, 166);
+	border-radius:15px;
+	padding: 15px 25px;
+	letter-spacing:5px;
+	cursor: pointer;
+	transition: .5s;
+} 
 
-.glitch2 {
-	font-size: 10rem;
-	font-weight: 700;
-	text-transform: uppercase;
+#play-screen2 > .button2 {
+	display: flex;
+	height: 5vh;
+	margin-left: 100px;
+	background-color: transparent;
+	color: #e3eef1;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	animation: lumiere 1s infinite linear;
+	border: 3px solid rgb(35, 71, 103);
+	box-shadow:
+		0 0 7px #efefef,
+		0 0 10px #efefef,
+		0 0 20px rgb(60, 116, 166),
+		0 0 42px rgb(60, 116, 166),
+		0 0 77px rgb(60, 116, 166);
+	border-radius:15px;
+	padding: 15px 25px;
+	letter-spacing:5px;
+	cursor: pointer;
+	transition: .5s;
+} 
 
+#play-screen2 {
+	padding-top: 500px;
+	padding-bottom: 500px;
+	display: flex;
+	justify-content: center;
+}
+
+#play-screen2 > .button1:hover {
 	text-shadow:
 	0.05em 0 0 #efefef,
 	-0.025em -0.025em 0 #90d0f0,
 	-0.025em 0.05em 0 rgb(60, 116, 166);
-
-	animation: glitch 2000ms infinite;
+	/* text-shadow: -3px -3px 0px #90d0f09e, 3px 3px 9px rgb(35, 71, 103); */
+	animation: glitch 200ms infinite;
+	animation-timing-function: steps(2, end);
 }
-
 @keyframes glitch2 {
-	0% {
-		text-shadow: 0.05em 0 0 #efefef,
-		-0.025em -0.025em 0 #90d0f0,
-		-0.025em 0.05em 0 rgb(60, 116, 166);
-	}
-	15% {
-		text-shadow: 0.05em -0.025em 0 #efefef,
-		-0.025em -0.025em 0 #90d0f0,
-		-0.025em 0.05em 0 rgb(60, 116, 166);
-	}
-	50% {
-		text-shadow: 0.05em 0 0 #efefef,
-		-0.025em -0.025em 0 #90d0f0,
-		-0.025em 0.05em 0 rgb(60, 116, 166);
-	}
-	100% {
-		text-shadow: 0.05em 0 0 #efefef,
-		-0.025em -0.025em 0 #90d0f0,
-		-0.025em 0.05em 0 rgb(60, 116, 166);
+	0%{
+		clip-path: var(--slice-1);
+		transform: translate(-20px, -10px);
 	}
 }
