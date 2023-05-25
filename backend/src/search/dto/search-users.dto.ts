@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, Length } from "class-validator";
 
-export class SearchMovieDto {
+export class SearchUsersDto {
 
 	@ApiProperty({
 		description: 'Search for a user to add',

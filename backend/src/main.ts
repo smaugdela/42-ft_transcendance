@@ -8,24 +8,24 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 // curl -X POST localhost:3001/users -H 'Content-Type: application/json' -d '{"nickname": "Zion","password": "test"}'
 
-// async function pushToDB_User (path: string)
-// {
-// 	const prisma = new PrismaClient();
-// 	const jsonString = fs.readFileSync(path, 'utf-8');
-// 	const Data = JSON.parse(jsonString);
+async function pushToDB_User (path: string)
+{
+	const prisma = new PrismaClient();
+	const jsonString = fs.readFileSync(path, 'utf-8');
+	const Data = JSON.parse(jsonString);
 
-// 	Data.forEach(async element => {
-// 		await prisma.user.create({
-// 			data: {
-// 				avatar: element.avatar,
-// 				nickname: element.nickname,
-// 				mailAddress: element.mailAddress,
-// 				coalition: element.coalition,
-// 				accessToken: "default",
-// 				password: "default",
-// 		  },}).catch( (error) => console.log(error) );
-// 	});
-// }
+	Data.forEach(async element => {
+		await prisma.user.create({
+			data: {
+				avatar: element.avatar,
+				nickname: element.nickname,
+				mailAddress: element.mailAddress,
+				coalition: element.coalition,
+				accessToken: "default",
+				password: "default",
+		  },}).catch( (error) => console.log(error) );
+	});
+}
 
 async function bootstrap() {
 	
@@ -49,8 +49,8 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('swagger', app, document);
 
-	// pushToDB_User('../database/user_data.json'); // Use this only to load test data
-	// console.log("Data loaded into db");
+	pushToDB_User('../database/user_data.json'); // Use this only to load test data
+	console.log("Data loaded into db");
 
 	app.useGlobalPipes(new ValidationPipe({whitelist: true}));
 

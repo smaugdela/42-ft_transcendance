@@ -9,8 +9,8 @@ export class SearchService {
 	
 	constructor() {
 		this._client = new MeiliSearch({
-			host: 'http://localhost:7700/',
-			apiKey: 'BeA0IBhWWjN1XqqEyMAxhgWIUf-3FcRtcvcvZ8_17jk'
+			host: process.env.MEILISEARCH_HOST,
+			apiKey: process.env.MEILISEARCH_APIKEY,
 		});
 
 	}
@@ -18,17 +18,17 @@ export class SearchService {
 	// Returns a newly-created index.
 	// Index : aka a group of documents with associated settings
 	// Documents: containers for organizing data 
-	private getMovieIndex(): Index {
-		return (this._client.index('movies'));
+	private getUserIndex(): Index {
+		return (this._client.index('users'));
 	}
 
 	public async addDocuments(documents) {
-		const index = this.getMovieIndex();
+		const index = this.getUserIndex();
 		return await index.addDocuments(documents);
 	}
 
 	public async search(text: string, searchParams?: SearchParams) {
-		const index = this.getMovieIndex();
+		const index = this.getUserIndex();
 		return await index.search(text, searchParams);
 	}
 
