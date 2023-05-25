@@ -44,16 +44,19 @@ export class AuthGuard implements CanActivate {
 				secret: jwtConstants.secret,
 			});
 			request['user'] = payload;
+			console.log("Access token is valid.")
 		} catch (error) {
 
 			// Access token invalid, fallback to checking the refresh token
+			console.log("Access token is invalid.");
 			const user = await this.jwtService.decode(jwt);
-			if (this.checkRefreshToken(user.indexOf, request.refreshToken))
+			if (this.checkRefreshToken(+user['sub'], request.refreshToken))
 			{
-				this.authService.generateTokens(user['sub'], user['username']);
+				console.log("Refresh token is valid.");
+				this.authService.generateTokens(+user['sub'], user['username']);
 				return true;
 			}
-
+			console.log("Refresh token is invalid.");
 			throw new UnauthorizedException('Bad token.');
 		}
 		return true;
@@ -65,6 +68,9 @@ export class AuthGuard implements CanActivate {
 		const user = await prisma.user.findUnique({
 			where: {id: userId},
 		});
+		console.log("user.refreshToken:", user.refreshToken);
+		if (user.refreshToken == null)
+			return false;
 		const tokMatch = await argon.verify(user.refreshToken, refreshToken, hashingConfig);
 		if (tokMatch === false)
 			throw new UnauthorizedException('You are not logged in, please log in.');

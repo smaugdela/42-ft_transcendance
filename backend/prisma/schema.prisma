@@ -17,7 +17,7 @@ model User {
   id42         Int?     @unique
   token42      String?  @unique // Is the 42 oauth token for 42 students.
   password     String? // Is the password for non 42 students.
-  refreshToken String
+  refreshToken String?
   coalition    String?  @default("Invite")
 
   wins     Int?     @default(0)

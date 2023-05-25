@@ -70,7 +70,7 @@ export class AuthService {
 				});
 			}
 
-			console.log("user: ", userDb);
+			console.log("User 42 logged in: ", userDb);
 
 			return this.generateTokens(userDb.id, userDb.nickname);
 
@@ -105,6 +105,8 @@ export class AuthService {
 			const pwMatch = await argon.verify(activeUser.password, body.password, hashingConfig);
 			if (pwMatch === false)
 				throw new ForbiddenException('Password incorrect');
+			
+			console.log("User", body.nickname, "logged in.");
 
 			return this.generateTokens(activeUser.id, activeUser.nickname);
 
@@ -134,7 +136,6 @@ export class AuthService {
 					password: hash,
 					authtype: AuthType.LOGNPWD,
 					coalition: "Invite",
-					refreshToken: null,
 				},
 			});
 
@@ -156,6 +157,8 @@ export class AuthService {
 
 	async logout(userId: number)
 	{
+		console.log("Logging out user", userId);
+
 		return await prisma.user.update({
 			where: {
 				id: userId,
@@ -184,12 +187,14 @@ export class AuthService {
 		});
 		await prisma.user.update({
 			where: {
-				nickname: username,
+				id: userId,
 			},
 			data: {
 				refreshToken: hash,
 			}
 		});
+
+		console.log("Generating tokens for user", username);
 
 		// return refresh and access JWTs.
 		return {
