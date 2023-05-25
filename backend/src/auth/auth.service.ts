@@ -1,9 +1,10 @@
-import { ForbiddenException, Injectable, Query } from '@nestjs/common';
+import { ForbiddenException, Injectable, Query, Res } from '@nestjs/common';
 import axios from 'axios';
 import { PrismaClient, AuthType } from '@prisma/client';
 import * as argon from 'argon2';
 import AuthDto from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { Response } from 'express';
 
 const hashingConfig = {
 	parallelism: 1,
@@ -16,7 +17,7 @@ const prisma = new PrismaClient();
 export class AuthService {
 	constructor(private readonly jwtService: JwtService) {}
 
-	async redirect42(@Query() query) {
+	async redirect42(@Query() query, @Res() res: Response) {
 
 		try {
 
@@ -72,7 +73,10 @@ export class AuthService {
 
 			console.log("User 42 logged in: ", userDb);
 
-			return this.generateTokens(userDb.id, userDb.nickname);
+			await this.generateTokens(userDb.id, userDb.nickname, res);
+
+			res.send("Successfully logged with 42.");
+			// return "Successfully logged with 42.";
 
 		} catch (error) {
 			if (error.response) {
@@ -92,7 +96,7 @@ export class AuthService {
 		}
 	}
 
-	async login(body: AuthDto) {
+	async login(body: AuthDto, @Res() res: Response) {
 		// Find the user by nickname.
 		// If the user doesn't exists, throw an error.
 		try {
@@ -105,10 +109,13 @@ export class AuthService {
 			const pwMatch = await argon.verify(activeUser.password, body.password, hashingConfig);
 			if (pwMatch === false)
 				throw new ForbiddenException('Password incorrect');
-			
+
 			console.log("User", body.nickname, "logged in.");
 
-			return this.generateTokens(activeUser.id, activeUser.nickname);
+			await this.generateTokens(activeUser.id, activeUser.nickname, res);
+
+			res.send("Successfully logged!");
+			// return "Successfully logged!";
 
 		} catch (error) {
 			if (error.code === 'P2025')
@@ -118,7 +125,7 @@ export class AuthService {
 		}
 	}
 
-	async signup(body: AuthDto) {
+	async signup(body: AuthDto, @Res() res: Response) {
 
 		try {
 			// generate password hash
@@ -144,7 +151,10 @@ export class AuthService {
 			// log the created user
 			console.log('New user created: ', newUser);
 
-			return this.generateTokens(newUser.id, newUser.nickname);
+			await this.generateTokens(newUser.id, newUser.nickname, res);
+
+			res.send("Successfully signed up!");
+			// return "Successfully signed up!";
 
 		} catch (error) {
 
@@ -169,7 +179,7 @@ export class AuthService {
 		});
 	}
 
-	async generateTokens(userId: number, username: string) {
+	async generateTokens(userId: number, username: string, @Res() response: Response) {
 
 		// generate refresh JWT.
 		const payload = { sub: userId, username: username };
@@ -178,7 +188,7 @@ export class AuthService {
 			expiresIn: '7d',
 		});
 
-		// generate refreshToken hash and store it in DB
+		// generate the refreshToken's hash and store it in DB
 		const { randomBytes } = await import('crypto');
 		const buf = randomBytes(16);
 		const hash = await argon.hash(refreshToken, {
@@ -196,14 +206,34 @@ export class AuthService {
 
 		console.log("Generating tokens for user", username);
 
+		// Generate access JWT.
+		const jwt = await this.jwtService.signAsync(payload, {
+					secret: process.env.JWT_SECRET,
+					expiresIn: '60s',
+				});
+
+		// Store both the tokens in client's cookies.
+		response.cookie('jwt', jwt, {
+			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
+			// secure: true, // Only send the cookie over HTTPS
+			// Additional cookie options if needed
+		  });
+
+		response.cookie('refreshToken', refreshToken, {
+			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
+			// secure: true, // Only send the cookie over HTTPS
+			// Additional cookie options if needed
+		  });
+
+		  return true;
 		// return refresh and access JWTs.
-		return {
-			jwt: await this.jwtService.signAsync(payload, {
-				secret: process.env.JWT_SECRET,
-				expiresIn: '60s',
-			}),
-			refreshToken: refreshToken,
-		};
+		// return {
+		// 	jwt: await this.jwtService.signAsync(payload, {
+		// 		secret: process.env.JWT_SECRET,
+		// 		expiresIn: '60s',
+		// 	}),
+		// 	refreshToken: refreshToken,
+		// };
 	}
 
 

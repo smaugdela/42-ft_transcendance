@@ -1,4 +1,4 @@
-import { CanActivate, Injectable, ExecutionContext, UnauthorizedException, Headers } from "@nestjs/common";
+import { CanActivate, Injectable, ExecutionContext, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { jwtConstants } from "../constants";
 import { Reflector } from "@nestjs/core";
@@ -32,8 +32,9 @@ export class AuthGuard implements CanActivate {
 
 		// We extract the access jwt from the request.
 		const request = context.switchToHttp().getRequest();
-		const jwt = this.extractAccessTokenFromHeader(request.headers);
-
+		// const jwt = this.extractAccessTokenFromHeader(request.headers);
+		const jwt = request.cookies.jwt;
+		
 		// Check if the jwt exists and is valid.
 		if (!jwt)
 		{
@@ -46,16 +47,20 @@ export class AuthGuard implements CanActivate {
 			request['user'] = payload;
 			console.log("Access token is valid.")
 		} catch (error) {
-
+			
 			// Access token invalid, fallback to checking the refresh token
 			console.log("Access token is invalid.");
-			const user = await this.jwtService.decode(jwt);
-			if (this.checkRefreshToken(+user['sub'], request.refreshToken))
+			const refreshToken = request.cookies.refreshToken;
+			const user = await this.jwtService.decode(refreshToken);
+			if (user && this.checkRefreshToken(+user['sub'], refreshToken))
 			{
 				console.log("Refresh token is valid.");
-				this.authService.generateTokens(+user['sub'], user['username']);
+				const res = context.switchToHttp().getResponse();
+				this.authService.generateTokens(+user['sub'], user['username'], res);
+				request['user'] = user;
 				return true;
 			}
+
 			console.log("Refresh token is invalid.");
 			throw new UnauthorizedException('Bad token.');
 		}
@@ -63,13 +68,22 @@ export class AuthGuard implements CanActivate {
 	}
 
 	private async checkRefreshToken(userId: number, refreshToken: string): Promise<boolean> {
-		// Compare tokens.
-		// If they don't match, throw an exception.
+
+		// Check if the given refreshToken is valid first.
+		const payload = await this.jwtService.verifyAsync(refreshToken, {
+			secret: process.env.JWT_SECRET,
+		});
+		if (payload.id != userId)
+			return false;
+
 		const user = await prisma.user.findUnique({
 			where: {id: userId},
 		});
-		console.log("user.refreshToken:", user.refreshToken);
-		if (user.refreshToken == null)
+		console.log("refreshToken:", refreshToken);
+
+		// Compare tokens.
+		// If they don't match, throw an exception.
+		if (!user.refreshToken || !refreshToken)
 			return false;
 		const tokMatch = await argon.verify(user.refreshToken, refreshToken, hashingConfig);
 		if (tokMatch === false)
@@ -77,10 +91,10 @@ export class AuthGuard implements CanActivate {
 		return true;
 	}
 
-	private extractAccessTokenFromHeader(@Headers() headers): string | undefined {
-		const [type, token] = headers.authorization?.split(' ') ?? [];
-		return type === 'Bearer' ? token : undefined;
-	}
+	// private extractAccessTokenFromHeader(@Headers() headers): string | undefined {
+	// 	const [type, token] = headers.authorization?.split(' ') ?? [];
+	// 	return type === 'Bearer' ? token : undefined;
+	// }
 
 	// This next canActivate() function is used in conjunction with cookies and an access token.
 

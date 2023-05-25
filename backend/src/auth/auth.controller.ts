@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import AuthDto from './dto/auth.dto';
 import { Public } from './guards/public.decorator';
+import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -9,20 +10,20 @@ export class AuthController {
 
 	@Public()
 	@Post('login')
-	login(@Body() body: AuthDto) {
-		return this.authService.login(body);
+	login(@Body() body: AuthDto, @Res() res: Response) {
+		return this.authService.login(body, res);
 	}
 
 	@Public()
 	@Post('signup')
-	signup(@Body() body: AuthDto) {
-		return this.authService.signup(body);
+	signup(@Body() body: AuthDto, @Res() res: Response) {
+		return this.authService.signup(body, res);
 	}
 
 	@Public()
 	@Get('42/redirect')
-	async redirect42(@Query() query) {
-		return this.authService.redirect42(query);
+	async redirect42(@Query() query, @Res() res: Response) {
+		return this.authService.redirect42(query, res);
 	}
 
 	@Get('protected')
