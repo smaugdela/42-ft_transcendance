@@ -3,30 +3,45 @@ import { IUser, users } from "../data";
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus, faBan, faEnvelope} from '@fortawesome/free-solid-svg-icons';
-import Fuse from "fuse.js";
+import axios from "axios";
+// import Fuse from "fuse.js";
 
 export function SearchBar() {
 
 	// Utilisation d'une librairie pour la search
-	const options = {
-		isCaseSensitive: false,
-		findAllMatches: false,
-		minMatchCharLength: 1,
-		keys: ["nickname"]
-	};
+	// const options = {
+	// 	isCaseSensitive: false,
+	// 	findAllMatches: false,
+	// 	minMatchCharLength: 1,
+	// 	keys: ["nickname"]
+	// };
 
-	const fuse = new Fuse(users, options);
-	const [input, setSearch] = useState("");
-	const [searchedUser, setSearchedUSer] = useState<IUser>();
+	// const fuse = new Fuse(users, options);
+	// const [input, setSearch] = useState("");
+	// const [searchedUser, setSearchedUSer] = useState<IUser>();
 	
-	// Récupérer l'input value de la search bar
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSearch(event.target.value);
-		const searchResult = fuse.search(input)[0];
-		(searchResult) ? setSearchedUSer(searchResult.item) : setSearchedUSer(undefined);
-		if (event.target.value === "")
-			setSearchedUSer(undefined); // pour pouvoir reset le component qd on a fini la search
-	}
+	// // Récupérer l'input value de la search bar
+	// const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	// 	setSearch(event.target.value);
+	// 	const searchResult = fuse.search(input)[0];
+	// 	(searchResult) ? setSearchedUSer(searchResult.item) : setSearchedUSer(undefined);
+	// 	if (event.target.value === "")
+	// 		setSearchedUSer(undefined); // pour pouvoir reset le component qd on a fini la search
+	// }
+
+	const [searchQuery, setSearchQuery] = useState("");
+	const [searchResults, setSearchResults] = useState("");
+
+	useEffect( () => {
+		console.log(searchQuery);
+		(async () => {
+			const response = await axios.post("http://localhost:3001/search", {
+				test,
+			});
+			console.log('resp ', response);
+			setSearchResults(response.data.hits);
+		})();
+	}, [searchQuery]);
 
 	return (
 		<div>
@@ -36,10 +51,11 @@ export function SearchBar() {
 					type="text" 
 					id="search_input"
 					name="search"
-					onChange={handleChange}
+					// onChange={handleChange}
+					onChange={(event) => setSearchQuery(event.target.value)}
 					placeholder="Type the nickname of the person you want to find..."
 				/>
-				<>
+				{/* <>
 					{ searchedUser && (<div key={searchedUser.id} className="searched_user">
 						<div className="search_user_infos">
 							<img id="search_user_avatar" src={searchedUser.avatar} alt={searchedUser.nickname} />
@@ -51,7 +67,7 @@ export function SearchBar() {
 						</div>
 					</div>)
 					}
-				</>
+				</> */}
 			</div>
 		</div>
 	);

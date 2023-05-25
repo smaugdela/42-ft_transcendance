@@ -31,7 +31,7 @@ export function PerformanceDetail(props: {users: IUser[]}) {
 						   .map(user => {
 		if (user.rank < 4)
 			return (null);
-		return <div key={user.id} className="stats" id={user.isLogged ? "myRank" : "other"}>
+		return <div key={user.id} className="stats" id={user.isActive ? "myRank" : "other"}>
 			<img 
 				src={user.avatar}
 				alt={user.nickname}
