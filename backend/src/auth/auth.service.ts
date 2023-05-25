@@ -75,8 +75,8 @@ export class AuthService {
 
 			await this.generateTokens(userDb.id, userDb.nickname, res);
 
-			res.send("Successfully logged with 42.");
-			// return "Successfully logged with 42.";
+			// res.send("Successfully logged with 42.");
+			return "Successfully logged with 42.";
 
 		} catch (error) {
 			if (error.response) {
@@ -114,8 +114,8 @@ export class AuthService {
 
 			await this.generateTokens(activeUser.id, activeUser.nickname, res);
 
-			res.send("Successfully logged!");
-			// return "Successfully logged!";
+			// res.send("Successfully logged!");
+			return "Successfully logged!";
 
 		} catch (error) {
 			if (error.code === 'P2025')
@@ -153,8 +153,8 @@ export class AuthService {
 
 			await this.generateTokens(newUser.id, newUser.nickname, res);
 
-			res.send("Successfully signed up!");
-			// return "Successfully signed up!";
+			// res.send("Successfully signed up!");
+			return "Successfully signed up!";
 
 		} catch (error) {
 
@@ -225,6 +225,7 @@ export class AuthService {
 			// Additional cookie options if needed
 		  });
 
+		//   response.send();
 		  return true;
 		// return refresh and access JWTs.
 		// return {
