@@ -3,7 +3,8 @@ import { IUser, users } from "../data";
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus, faBan, faEnvelope} from '@fortawesome/free-solid-svg-icons';
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { postSearchQuery } from "../api/APIHandler";
 // import Fuse from "fuse.js";
 
 export function SearchBar() {
@@ -29,20 +30,23 @@ export function SearchBar() {
 	// 		setSearchedUSer(undefined); // pour pouvoir reset le component qd on a fini la search
 	// }
 
-	const [searchQuery, setSearchQuery] = useState("");
-	const [searchResults, setSearchResults] = useState("");
+
+	// const searchQuery = useQuery<IUser[]>({ queryKey: ['search'], queryFn: postSearchQuery});
+	const [userInput, setUserInput] = useState("");
+	const [searchedUser, setSearchResults] = useState<IUser>();
 
 	useEffect( () => {
-		console.log(searchQuery);
-		(async () => {
-			const response = await axios.post("http://localhost:3001/search", {
-				test,
+		if (userInput.length > 2){
+			postSearchQuery(userInput).then( (response) => {
+				const copy = {...response};
+				setSearchResults(copy.data.hits[0]._formatted);
 			});
-			console.log('resp ', response);
-			setSearchResults(response.data.hits);
-		})();
-	}, [searchQuery]);
-
+		}
+		if (userInput === "") {
+			setSearchResults(undefined);
+		}
+	}, [userInput]);
+	
 	return (
 		<div>
 			<p>Looking for someone to add ? Try this search bar! </p>
@@ -52,10 +56,10 @@ export function SearchBar() {
 					id="search_input"
 					name="search"
 					// onChange={handleChange}
-					onChange={(event) => setSearchQuery(event.target.value)}
+					onChange={(event) => setUserInput(event.target.value)}
 					placeholder="Type the nickname of the person you want to find..."
 				/>
-				{/* <>
+				<>
 					{ searchedUser && (<div key={searchedUser.id} className="searched_user">
 						<div className="search_user_infos">
 							<img id="search_user_avatar" src={searchedUser.avatar} alt={searchedUser.nickname} />
@@ -67,7 +71,7 @@ export function SearchBar() {
 						</div>
 					</div>)
 					}
-				</> */}
+				</>
 			</div>
 		</div>
 	);

@@ -3,6 +3,10 @@ import { IUser } from "./types";
 
 const BASE_URL = 'http://localhost:3001';
 
+/* ######################*/
+/* ######   USER   ######*/
+/* ######################*/
+
 export async function fetchUsers(): Promise<IUser[]> {
 	const response = await axios.get<IUser[]>(`${BASE_URL}/users`);
 	return response.data;
@@ -95,3 +99,20 @@ export async function deleteUserById(id : number): Promise<IUser> {
 // 	}
 // }
   
+/* ######################*/
+/* ######  SEARCH  ######*/
+/* ######################*/
+
+
+export async function getMeiliData(): Promise<IUser> {
+	const response = await axios.get(`${BASE_URL}/search`);
+	return response.data;
+}
+
+
+export async function postSearchQuery(userInput : string) {
+	const response = await axios.post(`${BASE_URL}/search`, { 
+		searchQuery : userInput,
+	});
+	return response;
+}
