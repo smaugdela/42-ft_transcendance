@@ -10,5 +10,5 @@ export class SearchUsersDto {
 
 	@IsNotEmpty()
 	@Length(2, 255)
-	text: string;
+	searchQuery: string;
 }
