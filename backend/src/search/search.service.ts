@@ -29,6 +29,15 @@ export class SearchService {
 
 	public async search(text: string, searchParams?: SearchParams) {
 		const index = this.getUserIndex();
+		index.updateSearchableAttributes([
+			'nickname'
+		  ]);
+		index.updateTypoTolerance({
+			'minWordSizeForTypos': {
+				'oneTypo': 2,
+				'twoTypos': 4
+			}
+		});
 		return await index.search(text, searchParams);
 	}
 

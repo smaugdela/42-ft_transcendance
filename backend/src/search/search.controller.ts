@@ -22,6 +22,7 @@ export class SearchController {
 	@Post('/')
 	public async searchUser(@Body() search: SearchUsersDto) {
 		this.getSearch();
+		
 		return await this.searchService.search(search.searchQuery, {
 			attributesToHighlight: ['*'],
 		})
