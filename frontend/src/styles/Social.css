@@ -7,7 +7,7 @@
 #social-dashboard {
 	--social-primary-bg-color : white;
 	--social-primary-font-color: black;
-	--social-secondary-color : rgb(223, 126, 220);
+	--social-secondary-color : rgb(4, 30, 136);
 
 	/* Buttons to filter groups in social page */ 
 	--filter-btn-main-color : var(--sides-color); /* vient de App.css */
@@ -119,19 +119,7 @@
 	gap : 0.5vw;
 }
 
-#search_user_avatar {
-	height: 6vh;
-	width: auto;
-	border-radius: 50%;
-}
-
-
-#title {
-	color: var(--search-bar-font-color);
-	font-size: 1em;
-}
-
-#title > a {
+.search_user_infos > a {
 	text-decoration: none;
 	color: var(--search-bar-add-btn);
 	padding: 0.5em 0.5em;
@@ -140,9 +128,26 @@
 	margin-left :0.5vw;
 }
 
-#title:hover > a {
+.search_user_infos:hover > a {
 	text-decoration: none;
-	background-color: var(--social-secondary-color);
+	background-color: var(--heading-color);
+}
+
+#search_user_avatar {
+	height: 6vh;
+	width: auto;
+	border-radius: 50%;
+}
+
+#title {
+	color: var(--search-bar-font-color);
+	font-family: var(--font-type);
+	font-size: 1em;
+}
+
+#title > em {
+	color:rgb(170, 168, 19);
+	font-family: var(--font-type);
 }
 
 /* **************************** */

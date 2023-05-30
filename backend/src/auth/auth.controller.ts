@@ -2,7 +2,9 @@ import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './guards/auth.guard';
 import { Request } from 'express';
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Auth') // for swagger
 @Controller('auth')
 // @UseGuards(GoogleAuthGuard)
 export class AuthController {
