@@ -15,9 +15,9 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class AuthService {
-	constructor(private readonly jwtService: JwtService) {}
+	constructor(private readonly jwtService: JwtService) { }
 
-	async redirect42(@Query() query, @Res() res: Response) {
+	async redirect42(@Query() query, @Res({ passthrough: true }) res: Response) {
 
 		try {
 
@@ -96,7 +96,7 @@ export class AuthService {
 		}
 	}
 
-	async login(body: AuthDto, @Res() res: Response) {
+	async login(body: AuthDto, @Res({ passthrough: true }) res: Response) {
 		// Find the user by nickname.
 		// If the user doesn't exists, throw an error.
 		try {
@@ -125,7 +125,7 @@ export class AuthService {
 		}
 	}
 
-	async signup(body: AuthDto, @Res() res: Response) {
+	async signup(body: AuthDto, @Res({ passthrough: true }) res: Response) {
 
 		try {
 			// generate password hash
@@ -165,8 +165,7 @@ export class AuthService {
 		}
 	}
 
-	async logout(userId: number)
-	{
+	async logout(userId: number) {
 		console.log("Logging out user", userId);
 
 		return await prisma.user.update({
@@ -179,7 +178,9 @@ export class AuthService {
 		});
 	}
 
-	async generateTokens(userId: number, username: string, @Res() response: Response) {
+	async generateTokens(userId: number, username: string, @Res({ passthrough: true }) response: Response) {
+
+		console.log("DONT FORGET TO SIGN COOKIES AND ADD OPTIONS LIKE EXPIRATION");
 
 		// generate refresh JWT.
 		const payload = { sub: userId, username: username };
@@ -208,25 +209,22 @@ export class AuthService {
 
 		// Generate access JWT.
 		const jwt = await this.jwtService.signAsync(payload, {
-					secret: process.env.JWT_SECRET,
-					expiresIn: '60s',
-				});
+			secret: process.env.JWT_SECRET,
+			expiresIn: '60s',
+		});
 
 		// Store both the tokens in client's cookies.
 		response.cookie('jwt', jwt, {
 			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
 			// secure: true, // Only send the cookie over HTTPS
 			// Additional cookie options if needed
-		  });
-
-		response.cookie('refreshToken', refreshToken, {
+		}).cookie('refreshToken', refreshToken, {
 			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
 			// secure: true, // Only send the cookie over HTTPS
 			// Additional cookie options if needed
-		  });
+		});
 
-		//   response.send();
-		  return true;
+		return true;
 		// return refresh and access JWTs.
 		// return {
 		// 	jwt: await this.jwtService.signAsync(payload, {
@@ -239,7 +237,7 @@ export class AuthService {
 
 
 
-	// async googleAuth(@Request() req, @Res() response: Response) {
+	// async googleAuth(@Request() req, @Res({passthrough: true}) response: Response) {
 
 	// 	if (!req.user) {
 	// 		return 'No user from google';

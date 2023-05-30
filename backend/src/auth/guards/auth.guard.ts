@@ -17,7 +17,7 @@ const prisma = new PrismaClient();
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-	constructor(private jwtService: JwtService, private reflector: Reflector, private readonly authService: AuthService) {}
+	constructor(private jwtService: JwtService, private reflector: Reflector, private readonly authService: AuthService) { }
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 
@@ -25,19 +25,18 @@ export class AuthGuard implements CanActivate {
 		const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
 			context.getHandler(),
 			context.getClass(),
-		  ]);
-		  if (isPublic) {
+		]);
+		if (isPublic) {
 			return true;
-		  }
+		}
 
 		// We extract the access jwt from the request.
 		const request = context.switchToHttp().getRequest();
 		// const jwt = this.extractAccessTokenFromHeader(request.headers);
 		const jwt = request.cookies.jwt;
-		
+
 		// Check if the jwt exists and is valid.
-		if (!jwt)
-		{
+		if (!jwt) {
 			throw new UnauthorizedException('No access token.');
 		}
 		try {
@@ -47,15 +46,15 @@ export class AuthGuard implements CanActivate {
 			request['user'] = payload;
 			console.log("Access token is valid.")
 		} catch (error) {
-			
+
 			// Access token invalid, fallback to checking the refresh token
 			console.log("Access token is invalid.");
 			const refreshToken = request.cookies.refreshToken;
 			const user = await this.jwtService.decode(refreshToken);
-			if (user && this.checkRefreshToken(+user['sub'], refreshToken))
-			{
+			if (user && this.checkRefreshToken(+user['sub'], refreshToken)) {
 				console.log("Refresh token is valid.");
-				const res = context.switchToHttp().getResponse();
+				// const res = context.switchToHttp().getResponse();
+				const res = request.res;
 				this.authService.generateTokens(+user['sub'], user['username'], res);
 				request['user'] = user;
 				return true;
@@ -77,12 +76,12 @@ export class AuthGuard implements CanActivate {
 			return false;
 
 		const user = await prisma.user.findUnique({
-			where: {id: userId},
+			where: { id: userId },
 		});
 		console.log("refreshToken:", refreshToken);
 
 		// Compare tokens.
-		// If they don't match, throw an exception.
+		// If they don't match, throw an exception
 		if (!user.refreshToken || !refreshToken)
 			return false;
 		const tokMatch = await argon.verify(user.refreshToken, refreshToken, hashingConfig);

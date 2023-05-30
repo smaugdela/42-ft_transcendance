@@ -6,23 +6,23 @@ import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
-	constructor(private readonly authService: AuthService) {}
+	constructor(private readonly authService: AuthService) { }
 
 	@Public()
 	@Post('login')
-	login(@Body() body: AuthDto, @Res() res: Response) {
+	login(@Body() body: AuthDto, @Res({ passthrough: true }) res: Response) {
 		return this.authService.login(body, res);
 	}
 
 	@Public()
 	@Post('signup')
-	signup(@Body() body: AuthDto, @Res() res: Response) {
+	signup(@Body() body: AuthDto, @Res({ passthrough: true }) res: Response) {
 		return this.authService.signup(body, res);
 	}
 
 	@Public()
 	@Get('42/redirect')
-	async redirect42(@Query() query, @Res() res: Response) {
+	async redirect42(@Query() query, @Res({ passthrough: true }) res: Response) {
 		return this.authService.redirect42(query, res);
 	}
 
