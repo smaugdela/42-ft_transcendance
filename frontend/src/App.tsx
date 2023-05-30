@@ -25,7 +25,7 @@ function App() {
     }
   }, []); // [] specifies the dependencies array (if empty : runs only when component mounts)
 
-  const toggleTheme = () => {
+ const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'kawaii' : 'dark';
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
