@@ -17,7 +17,7 @@ const prisma = new PrismaClient();
 export class AuthService {
 	constructor(private readonly jwtService: JwtService) { }
 
-	async redirect42(@Query() query, @Res({ passthrough: true }) res: Response) {
+	async redirect42(@Query() query, @Res() res: Response) {
 
 		try {
 
@@ -73,7 +73,7 @@ export class AuthService {
 
 			console.log("User 42 logged in: ", userDb);
 
-			await this.generateTokens(userDb.id, userDb.nickname, res);
+			await this.generateToken(userDb.id, userDb.nickname, res);
 
 			// res.send("Successfully logged with 42.");
 			return "Successfully logged with 42.";
@@ -96,7 +96,7 @@ export class AuthService {
 		}
 	}
 
-	async login(body: AuthDto, @Res({ passthrough: true }) res: Response) {
+	async login(body: AuthDto, @Res() res: Response) {
 		// Find the user by nickname.
 		// If the user doesn't exists, throw an error.
 		try {
@@ -112,7 +112,7 @@ export class AuthService {
 
 			console.log("User", body.nickname, "logged in.");
 
-			await this.generateTokens(activeUser.id, activeUser.nickname, res);
+			await this.generateToken(activeUser.id, activeUser.nickname, res);
 
 			// res.send("Successfully logged!");
 			return "Successfully logged!";
@@ -121,11 +121,11 @@ export class AuthService {
 			if (error.code === 'P2025')
 				throw new ForbiddenException('No such nickname');
 			else
-				throw error;
+				throw new ForbiddenException('Invalid login. Have you signed up?');
 		}
 	}
 
-	async signup(body: AuthDto, @Res({ passthrough: true }) res: Response) {
+	async signup(body: AuthDto, @Res() res: Response) {
 
 		try {
 			// generate password hash
@@ -151,7 +151,7 @@ export class AuthService {
 			// log the created user
 			console.log('New user created: ', newUser);
 
-			await this.generateTokens(newUser.id, newUser.nickname, res);
+			await this.generateToken(newUser.id, newUser.nickname, res);
 
 			// res.send("Successfully signed up!");
 			return "Successfully signed up!";
@@ -165,79 +165,40 @@ export class AuthService {
 		}
 	}
 
-	async logout(userId: number) {
+	async logout(userId: number, @Res() res: Response) {
 		console.log("Logging out user", userId);
 
-		return await prisma.user.update({
-			where: {
-				id: userId,
-			},
-			data: {
-				refreshToken: null,
-			},
-		});
+		// Delete jwt from cookies.
+		res.clearCookie('jwt');
+
+		return "Successfully logged out.";
 	}
 
-	async generateTokens(userId: number, username: string, @Res({ passthrough: true }) response: Response) {
+	async generateToken(userId: number, username: string, @Res() res: Response) {
 
 		console.log("DONT FORGET TO SIGN COOKIES AND ADD OPTIONS LIKE EXPIRATION");
 
-		// generate refresh JWT.
-		const payload = { sub: userId, username: username };
-		const refreshToken = await this.jwtService.signAsync(payload, {
-			secret: process.env.JWT_SECRET,
-			expiresIn: '7d',
-		});
-
-		// generate the refreshToken's hash and store it in DB
-		const { randomBytes } = await import('crypto');
-		const buf = randomBytes(16);
-		const hash = await argon.hash(refreshToken, {
-			...hashingConfig,
-			salt: buf
-		});
-		await prisma.user.update({
-			where: {
-				id: userId,
-			},
-			data: {
-				refreshToken: hash,
-			}
-		});
-
-		console.log("Generating tokens for user", username);
-
 		// Generate access JWT.
+		const payload = { sub: userId, username: username };
 		const jwt = await this.jwtService.signAsync(payload, {
 			secret: process.env.JWT_SECRET,
-			expiresIn: '60s',
+			expiresIn: '1d',
 		});
 
-		// Store both the tokens in client's cookies.
-		response.cookie('jwt', jwt, {
-			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
-			// secure: true, // Only send the cookie over HTTPS
-			// Additional cookie options if needed
-		}).cookie('refreshToken', refreshToken, {
+		// Add new tokens in cookies.
+		res.cookie('jwt', jwt, {
 			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
 			// secure: true, // Only send the cookie over HTTPS
 			// Additional cookie options if needed
 		});
 
 		return true;
-		// return refresh and access JWTs.
-		// return {
-		// 	jwt: await this.jwtService.signAsync(payload, {
-		// 		secret: process.env.JWT_SECRET,
-		// 		expiresIn: '60s',
-		// 	}),
-		// 	refreshToken: refreshToken,
-		// };
+
 	}
 
 
 
-	// async googleAuth(@Request() req, @Res({passthrough: true}) response: Response) {
+	// async googleAuth(@Req() req, @Res({passthrough: true}) response: Response) {
 
 	// 	if (!req.user) {
 	// 		return 'No user from google';

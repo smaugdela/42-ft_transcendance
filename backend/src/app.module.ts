@@ -10,12 +10,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth/auth.service';
 
 @Module({
-  controllers: [AppController],
-  providers: [
-	AppService,
-	{ provide: APP_GUARD, useClass: AuthGuard, },
-	AuthService,
+	controllers: [AppController],
+	providers: [
+		AppService,
+		{ provide: APP_GUARD, useClass: AuthGuard, },
+		AuthService,
 	],
-  imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({isGlobal: true})],
+	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true })],
 })
-export class AppModule {}
+
+export class AppModule { }

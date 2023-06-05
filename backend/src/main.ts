@@ -30,19 +30,19 @@ async function bootstrap() {
 
 	const port = Number(process.env.BACKEND_PORT);
 	if (isNaN(port)) {
-		console.log("Error: backend port undefined.")
+		console.log("Error: backend port undefinedin .env file.")
 		return;
 	}
 
 	const app = await NestFactory.create(AppModule, { logger: console, });
 
+	// Swagger setup
 	const config = new DocumentBuilder()
 		.setTitle('Daft Pong API')
 		.setDescription('Our transcendance API UI using swagger')
 		.setVersion('0.42')
 		.addTag('Daft Pong')
 		.build();
-
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('swagger', app, document);
 
@@ -59,4 +59,5 @@ async function bootstrap() {
 
 	console.log(`Backend started on port ${port}`);
 }
+
 bootstrap();

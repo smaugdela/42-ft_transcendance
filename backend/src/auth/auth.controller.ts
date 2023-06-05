@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Query, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Res, Delete, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import AuthDto from './dto/auth.dto';
 import { Public } from './guards/public.decorator';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -25,6 +25,11 @@ export class AuthController {
 	async redirect42(@Query() query, @Res({ passthrough: true }) res: Response) {
 		return this.authService.redirect42(query, res);
 	}
+
+	// @Delete('logout')
+	// async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+	// 	return this.authService.logout(req.user.sub, res);
+	// }
 
 	@Get('protected')
 	async protectedEndpoint() {
