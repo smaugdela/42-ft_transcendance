@@ -8,6 +8,7 @@ import { AuthGuard } from './auth/guards/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth/auth.service';
+import { WebSocketModule } from './websocket/websocket.module';
 
 @Module({
 	controllers: [AppController],
@@ -16,7 +17,7 @@ import { AuthService } from './auth/auth.service';
 		{ provide: APP_GUARD, useClass: AuthGuard, },
 		AuthService,
 	],
-	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true })],
+	imports: [UsersModule, AuthModule, JwtModule, WebSocketModule, ConfigModule.forRoot({ isGlobal: true })],
 })
 
 export class AppModule { }

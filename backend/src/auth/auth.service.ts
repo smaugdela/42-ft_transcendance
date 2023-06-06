@@ -5,6 +5,7 @@ import * as argon from 'argon2';
 import AuthDto from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { WebsocketGateway } from 'src/websocket/websocket.gateway';
 
 const hashingConfig = {
 	parallelism: 1,
@@ -15,7 +16,7 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class AuthService {
-	constructor(private readonly jwtService: JwtService) { }
+	constructor(private readonly jwtService: JwtService, private webSocketGateway: WebsocketGateway) { }
 
 	async redirect42(@Query() query, @Res() res: Response) {
 
@@ -66,7 +67,6 @@ export class AuthService {
 						token42: accessToken,
 						avatar: user.image.link,
 						email: user.email,
-						refreshToken: null
 					}
 				});
 			}
@@ -74,6 +74,8 @@ export class AuthService {
 			console.log("User 42 logged in: ", userDb);
 
 			await this.generateToken(userDb.id, userDb.nickname, res);
+
+			this.webSocketGateway.server.emit('activity', userDb.nickname);
 
 			// res.send("Successfully logged with 42.");
 			return "Successfully logged with 42.";
@@ -114,6 +116,8 @@ export class AuthService {
 
 			await this.generateToken(activeUser.id, activeUser.nickname, res);
 
+			this.webSocketGateway.server.emit('activity', activeUser.nickname);
+
 			// res.send("Successfully logged!");
 			return "Successfully logged!";
 
@@ -153,6 +157,8 @@ export class AuthService {
 
 			await this.generateToken(newUser.id, newUser.nickname, res);
 
+			this.webSocketGateway.server.emit('activity', newUser.nickname);
+
 			// res.send("Successfully signed up!");
 			return "Successfully signed up!";
 
@@ -170,6 +176,14 @@ export class AuthService {
 
 		// Delete jwt from cookies.
 		res.clearCookie('jwt');
+
+		const userDb = await prisma.user.findUnique({
+			where: {
+				id: userId,
+			}
+		});
+
+		this.webSocketGateway.server.emit('inactivity', userDb.nickname);
 
 		return "Successfully logged out.";
 	}
