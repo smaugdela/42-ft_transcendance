@@ -5,6 +5,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Server } from 'socket.io';
 
 // curl -X POST localhost:3001/users -H 'Content-Type: application/json' -d '{"nickname": "Zion","password": "test"}'
 
@@ -51,7 +52,9 @@ async function bootstrap() {
 
 	app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-	app.use(cookieParser());
+	app.use(cookieParser({
+		secret: process.env.COOKIE_SECRET,
+	}));
 
 	app.enableCors();
 

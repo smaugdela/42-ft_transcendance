@@ -3,13 +3,12 @@ import { JwtService } from "@nestjs/jwt";
 import { jwtConstants } from "../constants";
 import { Reflector } from "@nestjs/core";
 import { IS_PUBLIC_KEY } from "./public.decorator";
-import { AuthService } from "../auth.service";
 import { Request } from "express";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-	constructor(private jwtService: JwtService, private reflector: Reflector, private readonly authService: AuthService) { }
+	constructor(private jwtService: JwtService, private readonly reflector: Reflector) { }
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 
@@ -25,7 +24,9 @@ export class AuthGuard implements CanActivate {
 		// We extract the access jwt from the request.
 		const request: Request = context.switchToHttp().getRequest();
 		// const jwt = this.extractAccessTokenFromHeader(request.headers);
-		const jwt = request.cookies.jwt;
+		const jwt = request.signedCookies.jwt;
+
+		console.log("Access token read from signed cookie: ", jwt);
 
 		// Check if the jwt exists and is valid.
 		if (!jwt) {

@@ -26,10 +26,10 @@ export class AuthController {
 		return this.authService.redirect42(query, res);
 	}
 
-	// @Delete('logout')
-	// async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-	// 	return this.authService.logout(req.user.sub, res);
-	// }
+	@Delete('logout')
+	async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+		return this.authService.logout(req['user'].sub, res);
+	}
 
 	@Get('protected')
 	async protectedEndpoint() {

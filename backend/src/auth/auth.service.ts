@@ -203,7 +203,8 @@ export class AuthService {
 		res.cookie('jwt', jwt, {
 			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
 			// secure: true, // Only send the cookie over HTTPS
-			// Additional cookie options if needed
+			maxAge: 60 * 60 * 24 * 1000, // Set cookie expiry to 1 day
+			signed: true, // Indicates if the cookie should be signed
 		});
 
 		return true;
