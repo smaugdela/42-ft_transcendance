@@ -8,7 +8,7 @@ export default class CreateUserDto {
 
 	@IsString()
 	@IsNotEmpty()
-	password:		string;
+	accessToken:	string;
 
 	@IsString()
 	@IsNotEmpty()

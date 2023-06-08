@@ -4,6 +4,9 @@
 }
 .faq{
     display: flex;
+    padding-top: 200px ;
+    padding-bottom: 200px;
+    height: 1240px;
     flex-direction: column;
     justify-content: center;
     size-adjust: auto;
@@ -14,17 +17,32 @@
 }
 
 .faq_box {
+    font-family: var(--font-type);
     box-sizing: border-box;
     border-radius: 8px; 
-    box-shadow: 0 0 10px rgb(255, 192, 247), 0 0 20px rgb(255, 192, 247), 0 0 30px rgb(255, 192, 247), 0 0 40px rgb(255, 192, 247), 0 0 45px rgb(255, 192, 247);
     margin : 30px;
     padding: 15px;
-    font-size: 20px;
     transition: all 0.4s ease; 
-    font-size: 1.5rem;
-    color: black;
-    background-image: linear-gradient(to right, white, pink);
-    -webkit-text-fill-color: rgba(66, 16, 62, 0.9); 
+    font-size: 1.1rem;
+
+    background-color: rgba(255,255,255,0.13);
+    /* backdrop-filter: blur(10px); */
+
+    color: #e3eef1;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	/* animation: lumiere 1s infinite linear; */
+	border: 3px solid rgb(35, 71, 103);
+	box-shadow:
+		0 0 7px #efefef,
+		0 0 10px #efefef,
+		0 0 20px rgb(60, 116, 166),
+		0 0 42px rgb(60, 116, 166),
+		0 0 50px rgb(60, 116, 166);
 }
 
 
@@ -37,10 +55,12 @@
 
 .symbol{
     position: absolute;
-    right: 5%; 
+    right: 2.5%; 
+    text-shadow: none;
 }
 
 .answer{
+    font-family: var(--font-type);
     width: 100%;
     font-size: smaller;
     font-weight: lighter;
@@ -48,4 +68,5 @@
     overflow: hidden;
     transition: all 0.2s ease;
     margin-top: 15px;
+    text-shadow: none;
 }

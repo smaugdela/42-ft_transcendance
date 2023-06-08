@@ -12,7 +12,7 @@
 	0 0 42px rgb(60, 116, 166),
 	0 0 77px rgb(60, 116, 166),
 	0 0 100px rgb(24, 46, 65);
-	animation: lumiere 1s infinite linear;
+	/* animation: lumiere 1s infinite linear; */
 	border: 3px solid rgb(35, 71, 103);
 	box-shadow:
 		0 0 7px #efefef,
@@ -24,6 +24,7 @@
 	padding: 15px 25px;
 	letter-spacing:5px;
 	cursor: pointer;
+	font-weight: bold;
 	transition: .5s;
 } 
 .link-login2{
@@ -106,7 +107,7 @@
 
 #play-screen {
 	padding-top: 500px;
-	padding-bottom: 500px;
+	padding-bottom: 700px;
 	display: flex;
 	justify-content: center;
 }
