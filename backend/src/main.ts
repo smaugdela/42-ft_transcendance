@@ -8,24 +8,24 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 // curl -X POST localhost:3001/users -H 'Content-Type: application/json' -d '{"nickname": "Zion","password": "test"}'
 
-async function pushToDB_User (path: string)
-{
-	const prisma = new PrismaClient();
-	const jsonString = fs.readFileSync(path, 'utf-8');
-	const Data = JSON.parse(jsonString);
+// async function pushToDB_User (path: string)
+// {
+// 	const prisma = new PrismaClient();
+// 	const jsonString = fs.readFileSync(path, 'utf-8');
+// 	const Data = JSON.parse(jsonString);
 
-	Data.forEach(async element => {
-		await prisma.user.create({
-			data: {
-				avatar: element.avatar,
-				nickname: element.nickname,
-				mailAddress: element.mailAddress,
-				coalition: element.coalition,
-				accessToken: "default",
-				password: "default",
-		  },}).catch( (error) => console.log(error) );
-	});
-}
+// 	Data.forEach(async element => {
+// 		await prisma.user.create({
+// 			data: {
+// 				avatar: element.avatar,
+// 				nickname: element.nickname,
+// 				mailAddress: element.mailAddress,
+// 				coalition: element.coalition,
+// 				accessToken: "default",
+// 				password: "default",
+// 		  },}).catch( (error) => console.log(error) );
+// 	});
+// }
 
 async function bootstrap() {
 
@@ -36,16 +36,6 @@ async function bootstrap() {
 	}
 
 	const app = await NestFactory.create(AppModule, { logger: console, });
-
-	// Swagger setup
-	const config = new DocumentBuilder()
-		.setTitle('Daft Pong API')
-		.setDescription('Our transcendance API UI using swagger')
-		.setVersion('0.42')
-		.addTag('Daft Pong')
-		.build();
-	const document = SwaggerModule.createDocument(app, config);
-	SwaggerModule.setup('swagger', app, document);
 
 	// Swagger config
 	const config = new DocumentBuilder()
@@ -58,7 +48,7 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('swagger', app, document);
 
-	pushToDB_User('../database/user_data.json'); // Use this only to load test data
+	// pushToDB_User('../database/user_data.json'); // Use this only to load test data
 	console.log("Data loaded into db");
 
 	app.useGlobalPipes(new ValidationPipe({ whitelist: true }));

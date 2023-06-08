@@ -4,9 +4,9 @@ import { Index } from "meilisearch";
 
 @Injectable()
 export class SearchService {
-	
+
 	private _client: MeiliSearch;
-	
+
 	constructor() {
 		this._client = new MeiliSearch({
 			host: process.env.MEILISEARCH_HOST,
@@ -14,7 +14,7 @@ export class SearchService {
 		});
 
 	}
-	
+
 	// Returns a newly-created index.
 	// Index : aka a group of documents with associated settings
 	// Documents: containers for organizing data 
@@ -31,7 +31,7 @@ export class SearchService {
 		const index = this.getUserIndex();
 		index.updateSearchableAttributes([
 			'nickname'
-		  ]);
+		]);
 		index.updateTypoTolerance({
 			'minWordSizeForTypos': {
 				'oneTypo': 2,
@@ -40,5 +40,4 @@ export class SearchService {
 		});
 		return await index.search(text, searchParams);
 	}
-
 }
