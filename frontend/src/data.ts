@@ -335,7 +335,6 @@ export const users : IUser[] =  [
 		matchHistory: []	
 	}];
 
-
 export const achievements: IAchievement[] = [
 	{
 		icon : faBaby,

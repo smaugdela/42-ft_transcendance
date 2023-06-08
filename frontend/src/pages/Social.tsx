@@ -3,31 +3,25 @@ import { IUser, users } from "../data";
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus, faBan, faEnvelope} from '@fortawesome/free-solid-svg-icons';
-import Fuse from "fuse.js";
+import { postSearchQuery } from "../api/APIHandler";
 
 export function SearchBar() {
 
-	// Utilisation d'une librairie pour la search
-	const options = {
-		isCaseSensitive: false,
-		findAllMatches: false,
-		minMatchCharLength: 1,
-		keys: ["nickname"]
-	};
+	const [userInput, setUserInput] = useState("");
+	const [searchedUser, setSearchResults] = useState<IUser>();
 
-	const fuse = new Fuse(users, options);
-	const [input, setSearch] = useState("");
-	const [searchedUser, setSearchedUSer] = useState<IUser>();
+	useEffect( () => {
+		if (userInput.length > 2){
+			postSearchQuery(userInput).then( (response) => {
+				const copy = {...response};
+				setSearchResults(copy.data.hits[0]._formatted);
+			});
+		}
+		if (userInput === "") {
+			setSearchResults(undefined);
+		}
+	}, [userInput]);
 	
-	// Récupérer l'input value de la search bar
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSearch(event.target.value);
-		const searchResult = fuse.search(input)[0];
-		(searchResult) ? setSearchedUSer(searchResult.item) : setSearchedUSer(undefined);
-		if (event.target.value === "")
-			setSearchedUSer(undefined); // pour pouvoir reset le component qd on a fini la search
-	}
-
 	return (
 		<div>
 			<p className="text_serachBar">Looking for someone to add ? Try this search bar! </p>
@@ -36,18 +30,17 @@ export function SearchBar() {
 					type="text" 
 					id="search_input"
 					name="search"
-					onChange={handleChange}
+					onChange={(event) => setUserInput(event.target.value)}
 					placeholder="Type the nickname of the person you want to find..."
 				/>
 				<>
 					{ searchedUser && (<div key={searchedUser.id} className="searched_user">
 						<div className="search_user_infos">
 							<img id="search_user_avatar" src={searchedUser.avatar} alt={searchedUser.nickname} />
-							<h5 id="title" >{searchedUser.nickname} 
-								<a href="http://localhost:3000/social">
-									<FontAwesomeIcon icon={faUserPlus} />
-								</a>
-							</h5>
+							<h5 id="title" dangerouslySetInnerHTML={{__html: searchedUser.nickname}}></h5>
+							<a href="http://localhost:3000/social">
+								<FontAwesomeIcon icon={faUserPlus} />
+							</a>
 						</div>
 					</div>)
 					}
