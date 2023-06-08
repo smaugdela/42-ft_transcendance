@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { PrismaClient } from '@prisma/client';
-import * as fs from 'fs';
+// import { PrismaClient } from '@prisma/client';
+// import * as fs from 'fs';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -28,15 +28,24 @@ async function pushToDB_User (path: string)
 }
 
 async function bootstrap() {
-	
+
 	const port = Number(process.env.BACKEND_PORT);
-	if (isNaN(port))
-	{
-		console.log("Error: backend port undefined.")
-		return ;
+	if (isNaN(port)) {
+		console.log("Error: backend port undefinedin .env file.")
+		return;
 	}
 
-	const app = await NestFactory.create(AppModule, {logger: console,});
+	const app = await NestFactory.create(AppModule, { logger: console, });
+
+	// Swagger setup
+	const config = new DocumentBuilder()
+		.setTitle('Daft Pong API')
+		.setDescription('Our transcendance API UI using swagger')
+		.setVersion('0.42')
+		.addTag('Daft Pong')
+		.build();
+	const document = SwaggerModule.createDocument(app, config);
+	SwaggerModule.setup('swagger', app, document);
 
 	// Swagger config
 	const config = new DocumentBuilder()
@@ -52,9 +61,9 @@ async function bootstrap() {
 	pushToDB_User('../database/user_data.json'); // Use this only to load test data
 	console.log("Data loaded into db");
 
-	app.useGlobalPipes(new ValidationPipe({whitelist: true}));
+	app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-	app.use(cookieParser());
+	app.use(cookieParser(process.env.COOKIE_SECRET));
 
 	app.enableCors();
 
@@ -62,4 +71,5 @@ async function bootstrap() {
 
 	console.log(`Backend started on port ${port}`);
 }
+
 bootstrap();
