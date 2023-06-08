@@ -18,10 +18,10 @@ export default function Login() {
         <button id="login-btn">Log In</button>
         <div className="social">
           <div className="go">
-            <i className="fab fa-google"></i> Google
+            <i className="fab fa-google"></i> Log with 42
           </div>
           <div className="fb">
-            <i className="fab fa-facebook"></i> Facebook
+            <i className="fab fa-facebook"></i> Sign up
           </div>
         </div>
       </form>

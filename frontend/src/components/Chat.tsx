@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import '../styles/Chat.css'
+import '../styles/Chat.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCat, faComment, faAnglesLeft, faAnglesRight} from "@fortawesome/free-solid-svg-icons";
+import Tab_channels from './Tab_channels';
+import Tab_Chat from './Tab_Chat';
+
+interface Tab {
+  label: string;
+  content: JSX.Element;
+}
+
 
 
 const Chat = () => {
@@ -8,17 +18,41 @@ const Chat = () => {
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
+
+
+
+  const [activeTab, setActiveTab] = useState(0);
+  const tabs: Tab[] = [
+    { label: 'Channels', content: <div><Tab_channels/></div> },
+    { label: 'Chat', content: <div><Tab_Chat/></div> },
+    { label: 'Settings', content: <div>Content 3</div> },
+  ];
+  const handleTabClick = (index: number) => {
+    setActiveTab(index);
+  };
+
+
+
   return (
     <div className={`chat ${isExpanded ?  'collapsed': 'expanded'}`}>
       <div className="toggle-button" onClick={toggleExpand}>
-        {/* <image> "https://static-00.iconduck.com/assets.00/left-right-black-arrow-emoji-512x283-7vr1z2oc.png"</image> */}
-        {isExpanded ? '⬅' : '➡'} 
+        {isExpanded ? <FontAwesomeIcon icon={faAnglesLeft}/> : <FontAwesomeIcon icon={faAnglesRight}/>} 
       </div>
-      <input type="text" className="text-input" placeholder="Envoyer un message" />
+     
       <div className="content">
-        {"Simon : Bonjour"}
+        {/* {"Simon : Bonjour"} */}
+        {tabs.map((tab, index) => (
+          <div
+            key={index}
+            className={`tab ${index === activeTab ? 'active' : ''}`}
+            onClick={() => handleTabClick(index)}>
+            <button className='chat_button'>{tab.label}</button>
+          </div>
+        ))}
       </div>
-    </div>
+      <div className="tab-content">{tabs[activeTab].content}</div>
+      </div>
+    // </div>
   );
 };
 
