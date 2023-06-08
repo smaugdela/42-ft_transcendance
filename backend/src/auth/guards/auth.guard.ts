@@ -26,8 +26,6 @@ export class AuthGuard implements CanActivate {
 		// const jwt = this.extractAccessTokenFromHeader(request.headers);
 		const jwt = request.signedCookies.jwt;
 
-		console.log("Access token read from signed cookie: ", jwt);
-
 		// Check if the jwt exists and is valid.
 		if (!jwt) {
 			throw new UnauthorizedException('No access token.');
@@ -45,17 +43,8 @@ export class AuthGuard implements CanActivate {
 		return true;
 	}
 
-
-
-
-
 	// private extractAccessTokenFromHeader(@Headers() headers): string | undefined {
 	// 	const [type, token] = headers.authorization?.split(' ') ?? [];
-	// 	return type === 'Bearer' ? token : undefined;
-	// }
-
-	// private extractRefreshTokenFromHeader(@Headers() headers): string | undefined {
-	// 	const [type, token] = headers.refreshtoken?.split(' ') ?? [];
 	// 	return type === 'Bearer' ? token : undefined;
 	// }
 
@@ -85,29 +74,6 @@ export class AuthGuard implements CanActivate {
 	// 		console.log(error);
 	// 		return false;
 	// 	}
-	// 	return true;
-	// }
-
-	// This next canActivate() function is used in conjunction with cookies and an access token.
-
-	// async canActivate(context: ExecutionContext): Promise<boolean>
-	// {
-	// 	const request = context.switchToHttp().getRequest();
-
-	// 	const id: number = request.cookies.id;
-	// 	const accessToken: string = request.cookies.accessToken;
-
-	// 	const user = await prisma.user.findUnique({
-	// 		where: {
-	// 			id: +id,
-	// 		}
-	// 	});
-
-	// 	if (!user)
-	// 		throw new ForbiddenException('Unauthorized access');
-	// 	else if (user.accessToken !== accessToken)
-	// 		throw new ForbiddenException('Invalid Access Token.')
-
 	// 	return true;
 	// }
 }

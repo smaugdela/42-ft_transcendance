@@ -56,7 +56,7 @@ export class AuthService {
 			// console.log("user: ", user);
 
 			if (!userDb) {
-				console.log("Creating user.")
+				console.log("Creating 42 user.")
 				response = await axios.get('https://api.intra.42.fr/v2/users/' + user.id + '/coalitions', config);
 				userDb = await prisma.user.create({
 					data: {
@@ -153,7 +153,7 @@ export class AuthService {
 			// delete newUser.password;	// Temporary solution, should not be used permanently.
 
 			// log the created user
-			console.log('New user created: ', newUser);
+			console.log('New standard user created: ', newUser);
 
 			await this.generateToken(newUser.id, newUser.nickname, res);
 
