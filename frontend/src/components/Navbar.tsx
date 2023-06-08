@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import * as AiIcons from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import '../styles/Navbar.css';
 import { ChangeEventHandler } from 'react';
 import Avatar from './Avatar';
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapPin, faSpaghettiMonsterFlying, faPeoplePulling, faPersonDrowning, faHeadSideMask, faHandsHoldingChild, faComments, faUsers, faRobot, faOtter, faShieldCat} from "@fortawesome/free-solid-svg-icons";
+import { faMapPin, faSpaghettiMonsterFlying, faPeoplePulling, faPersonDrowning, faHandsHoldingChild, faRobot, faShieldCat} from "@fortawesome/free-solid-svg-icons";
 
 const SidebarData = [
 	{
@@ -24,21 +22,18 @@ const SidebarData = [
 		
 		title: 'Leaderboard',
 		path: '/leaderboard',
-		// icon: <GiIcons.GiRank3 />,
 		image: <FontAwesomeIcon className='item_image' icon={faHandsHoldingChild} />,
 		cName: 'nav-text'
 	},
 	{
-		title: 'Friends',
-		path: '/friends',
-		// image: '/assets/friends2.png',
+		title: 'Social',
+		path: '/social',
 		image: <FontAwesomeIcon className='item_image' icon={faPeoplePulling} />,
 		cName: 'nav-text'
 	},
 	{
 		title: 'Settings',
 		path: '/settings',
-		// icon: <FiIcons.FiSettings />,
 		image: <FontAwesomeIcon className='item_image' icon={faRobot} />,
 		cName: 'nav-text'
 	},
@@ -67,10 +62,10 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 				<input type="checkbox" id="check" onClick={showSidebar}/> 
 				<span className='span1'></span>
 				<span className='span2'></span>
-				<span className='span3'></span>
+				<span className='span3'></span> 
 			</label>
 			<div className="navbar__center">
-				<Link to="/" className="navbar__title">
+				<Link to="/" className="navbar__title" >
 					CYBERPONG
 				</Link>
 			</div>
@@ -80,9 +75,9 @@ function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
 
         </div> 
 	
+
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-          <ul className='nav-menu-items' onClick={showSidebar}>
-            
+          <ul className='nav-menu-items' /*onClick={showSidebar}*/>
             {SidebarData.map((item, index) => {
 				return (
 					<li key={index} className={item.cName}>

@@ -7,18 +7,17 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-// import { AuthService } from './auth/auth.service';
 import { WebsocketGateway } from './websocket/websocket.gateway';
+import { SearchModule } from './search/search.module';
 
 @Module({
 	controllers: [AppController],
 	providers: [
 		AppService,
 		{ provide: APP_GUARD, useClass: AuthGuard, },
-		// AuthService,
 		WebsocketGateway
 	],
-	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true })],
+	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule],
 })
 
-export class AppModule { }
+export class AppModule {}
