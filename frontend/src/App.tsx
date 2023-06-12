@@ -36,12 +36,12 @@ function App() {
     <div id='app' className={`App ${theme}`}>
       <section id="main-content">
         <Navbar theme={theme} toggleTheme={toggleTheme}/>
-          {/* <video className='videobg' autoPlay loop muted content="width=device-width, initial-scale=1.0">
+          <video className='videobg' autoPlay loop muted content="width=device-width, initial-scale=1.0">
             <source src="./assets/bg-video.mp4" type='video/mp4' />
-          </video> */}
-          {/* <audio className="music-bg" controls autoPlay loop >
+          </video>
+          <audio className="music-bg" controls autoPlay loop >
             <source src="./assets/edgerunner.mp3" type="audio/mpeg"/>
-          </audio> */}
+          </audio>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />

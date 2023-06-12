@@ -3,7 +3,6 @@ import { AuthService } from './auth.service';
 import AuthDto from './dto/auth.dto';
 import { Public } from './guards/public.decorator';
 import { Request, Response } from 'express';
-import { AuthGuard } from './guards/auth.guard';
 import { ApiTags } from "@nestjs/swagger";
 
 @ApiTags('Auth') // for swagger
