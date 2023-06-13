@@ -12,7 +12,9 @@ export class UsersController {
 	@Public()
 	@Get('check')
 	checkIfLoggedIn(@Request() req) {
-		return this.usersService.checkIfLoggedIn(req.user);
+		console.log("req.user", req.user);
+		console.log("req['user']", req['user']);
+		return this.usersService.checkIfLoggedIn(req['user']);
 	}
 
 	@Get()
@@ -22,17 +24,17 @@ export class UsersController {
 
 	@Get('me')
 	findMe(@Request() req) {
-		return this.usersService.findMe(req.user.id);
+		return this.usersService.findMe(+req.user.id);
 	}
 
 	@Patch('/me')
 	updateMe(@Request() req, @Body() body: UpdateUserDto) {
-		return this.usersService.updateMe(req.user.id, body);
+		return this.usersService.updateMe(+req.user.id, body);
 	}
 
 	@Delete('/me')
 	removeMe(@Request() req) {
-		return this.usersService.removeMe(req.user.id);
+		return this.usersService.removeMe(+req.user.id);
 	}
 
 	@Get(':username')
