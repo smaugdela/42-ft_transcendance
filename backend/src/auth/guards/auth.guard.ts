@@ -24,22 +24,22 @@ export class AuthGuard implements CanActivate {
 		// We extract the access jwt from the request.
 		const request: Request = context.switchToHttp().getRequest();
 		// const jwt = this.extractAccessTokenFromHeader(request.headers);
-		const jwt = request.signedCookies.jwt;
+		// const jwt = request.signedCookies.jwt;
 
-		// Check if the jwt exists and is valid.
-		if (!jwt) {
-			throw new UnauthorizedException('No access token.');
-		}
-		try {
-			const payload = await this.jwtService.verifyAsync(jwt, {
-				secret: jwtConstants.secret,
-			});
-			request['user'] = payload;
-			console.log("Access token is valid.");
-		} catch (error) {
-			console.log("Access token is invalid or expired.");
-			throw new UnauthorizedException('Bad token.');
-		}
+		// // Check if the jwt exists and is valid.
+		// if (!jwt) {
+		// 	throw new UnauthorizedException('No access token.');
+		// }
+		// try {
+		// 	const payload = await this.jwtService.verifyAsync(jwt, {
+		// 		secret: jwtConstants.secret,
+		// 	});
+		// 	request['user'] = payload;
+		// 	console.log("Access token is valid.");
+		// } catch (error) {
+		// 	console.log("Access token is invalid or expired.");
+		// 	throw new UnauthorizedException('Bad token.');
+		// }
 		return true;
 	}
 
