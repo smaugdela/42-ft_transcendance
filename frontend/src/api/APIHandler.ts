@@ -1,5 +1,6 @@
 import axios from "axios";
 import { IUser } from "./types";
+import { Console } from "console";
 
 const BASE_URL = 'http://localhost:3003';
 
@@ -7,32 +8,32 @@ const BASE_URL = 'http://localhost:3003';
 /* ##   INTERCEPTORS   ##*/
 /* ######################*/
 
-const api = axios.create({
-	baseURL: BASE_URL,
-});
+// const api = axios.create({
+// 	baseURL: BASE_URL,
+// });
 
-api.interceptors.response.use(
-	(response) => response,
-	(error) => {
-		if (error.response && error.response.status === 401) {
-			// Redirect to the "Login" page
-			window.location.href = '/Login';
-		}
-		return Promise.reject(error);
-	},
-);
+// api.interceptors.response.use(
+// 	(response) => response,
+// 	(error) => {
+// 		if (error.response && error.response.status === 401) {
+// 			// Redirect to the "Login" page
+// 			window.location.href = '/Login';
+// 		}
+// 		return Promise.reject(error);
+// 	},
+// );
 
 /* ######################*/
 /* ######   USER   ######*/
 /* ######################*/
 
 export async function fetchUsers(): Promise<IUser[]> {
-	const response = await api.get<IUser[]>(`/users`);
+	const response = await axios.get<IUser[]>(`${BASE_URL}/users`);
 	return response.data;
 }
 
 export async function fetchUserById(id : number): Promise<IUser> {
-	const response = await api.get<IUser>(`/users/${id}`);
+	const response = await axios.get<IUser>(`${BASE_URL}/users/${id}`);
 	return response.data;
 }
 
@@ -43,8 +44,8 @@ export async function fetchUserById(id : number): Promise<IUser> {
 export async function updateUserNickname( id : number, newNickname: string) {
 	try 
 	{
-		const response = await api.patch<IUser>(
-			`/users/${id}`, 		// url
+		const response = await axios.patch<IUser>(
+			`${BASE_URL}/users/${id}`, 		// url
 			{ nickname: newNickname},		// request body
 			{								// request config object
 				headers: {
@@ -55,9 +56,34 @@ export async function updateUserNickname( id : number, newNickname: string) {
 		);
 		return response.data;
 	} catch (error) {
-		// if (axios.isAxiosError(error)) {
-		// 	console.log('Axios error: ', error.message);
-		// }
+		if (axios.isAxiosError(error)) {
+			console.log('Axios error: ', error.message);
+		}
+		console.log('Unexpected error: ', error);
+	}
+}
+
+export async function updateUserStringProperty( id : number, property: keyof IUser, newProperty: string) {
+	try 
+	{
+		console.log('property: ', property);
+		const requestBody = { [property]: newProperty };
+
+		const response = await axios.patch<IUser>(
+			`${BASE_URL}/users/${id}`, 		// url
+			requestBody,					// request body
+			{								// request config object
+				headers: {
+					'Content-Type': 'application/json',
+          			Accept: 'application/json',
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		if (axios.isAxiosError(error)) {
+			console.log('Axios error: ', error.message);
+		}
 		console.log('Unexpected error: ', error);
 	}
 }
@@ -67,7 +93,7 @@ export async function deleteUserById(id : number): Promise<IUser> {
 	const userToDelete = await fetchUserById(id);
 	
 	if (userToDelete) {
-		return api.delete(`/users/${id}`);
+		return axios.delete(`${BASE_URL}/users/${id}`);
 	} else {
 		throw new Error('Deletion impossible: the user does not exist');
 	}
@@ -79,13 +105,13 @@ export async function deleteUserById(id : number): Promise<IUser> {
 
 
 export async function getMeiliData(): Promise<IUser> {
-	const response = await api.get(`/search`);
+	const response = await axios.get(`${BASE_URL}/search`);
 	return response.data;
 }
 
 
 export async function postSearchQuery(userInput : string) {
-	const response = await api.post(`/search`, { 
+	const response = await axios.post(`${BASE_URL}/search`, { 
 		searchQuery : userInput,
 	});
 	return response;
