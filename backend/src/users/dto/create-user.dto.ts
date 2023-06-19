@@ -22,6 +22,10 @@ export default class CreateUserDto {
 	@IsOptional()
 	@IsString()
 	@IsNotEmpty()
-	mailAddress:	string;
+	email:	string;
+
+	@IsOptional()
+	@IsString()
+	bio:	string;
 
 }
