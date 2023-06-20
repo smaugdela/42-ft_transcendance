@@ -1,10 +1,11 @@
 import "../styles/Settings.css";
 import { IUser } from "../api/types";
-import { fetchUserById, updateUserStringProperty } from "../api/APIHandler";
+import { fetchUserById, updateUserStringProperty, deleteUserById } from "../api/APIHandler";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareCheck } from '@fortawesome/free-solid-svg-icons';
+import { faSquareCheck, faTrashCanArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from "react-router-dom";
 
 export function TextCardSettings({ property } : {property: keyof IUser}) {
 	const [userInput, setUserInput] = useState<string>("");
@@ -21,7 +22,7 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 		mutationFn: () => updateUserStringProperty(id, property, userInput),
 		onSuccess: () => {
 			queryClient.invalidateQueries(['user']);
-			console.log("Update successful");
+			console.log("Update of user attribute successful");
 		},
 	});
 
@@ -54,10 +55,10 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 					onChange={handleChange}
 			/>
 		</div>
-			<button className="settings_btn" 
-					onClick={handleUpdate}>
-					<FontAwesomeIcon icon={faSquareCheck} />
-			</button>
+		<button className="settings_btn" 
+				onClick={handleUpdate}>
+				<FontAwesomeIcon icon={faSquareCheck} />
+		</button>
 	</div>
   );
 }
@@ -79,9 +80,58 @@ export function PasswordCardSettings() {
 }
 
 export function DeleteAccountCardSettings() {
-	return (
-		<div>
 
+	const [isDeleted, setDeleted] = useState<boolean>(false);
+	const queryClient = useQueryClient();
+	const id = 1;
+
+	// fonction qui va delete le User
+	const deleteUser = useMutation({
+		mutationFn: deleteUserById,
+		retry : false,
+		onSuccess: () => {
+			queryClient.invalidateQueries(['users']); // dit au serveur d'updater sa data plus à jour : ici, la liste des users en comprend un en moins
+			console.log("Deletion successful");
+		},
+	});
+
+	// fonction qui va être appelée au click du bouton, et activer deleteUser
+	const handleDelete = (e: React.MouseEvent<HTMLElement>) => {
+		e.preventDefault();
+		try { deleteUser.mutate(id); } // (à remplacer par JWT accessToken quand on aura l'auth)
+		catch (error) { console.log(error); } // J'ai throw une Erreur (user does not exist) dans ApiHandler.ts
+		setDeleted(true);
+	};
+
+	// UseEffect to redirect to home page after account deletion
+	const navigate = useNavigate();
+	useEffect(() => {
+		if (isDeleted === true) {
+			setTimeout(() => {
+				navigate('/');
+			}, 3000);
+			console.log("Redirected to home page...!");
+		}
+	}, [isDeleted]);
+
+	return (
+		<div className="delete_settings">
+			<h2 className="delete_settings__title">Do you want to delete your account?</h2>
+			<h4 className="delete_settings__subtitle">Beware, this action is irreversible.</h4>
+			<button className="delete_settings__btn"
+					onClick={handleDelete}>
+				<FontAwesomeIcon icon={faTrashCanArrowUp} />
+				Delete your account
+			</button>
+			<>
+			{
+				isDeleted && 
+				<div className="delete_settings__alert">
+					<h5>Your account was successfully deleted!</h5>
+					<h6>You will now be redirected to the home page in a few seconds...</h6>
+				</div>
+			}
+			</>
 		</div>
 	);
 }
@@ -103,6 +153,6 @@ export default function Settings() {
 	);
 }
 // TODO: mettre une confirmation que c'est fait
-// TODO: vérifier que nickname est unique ! Le faire dans le back !!!
+// TODO: Gérer l'erreur quand new nickname déjà pris
 // TODO: mail: trouver lib pour vérifier que correct + bio, mettre une limite de caractères
 // TODO: pour les images, vérifier que c'est un format accepté + stockage à prévoir
