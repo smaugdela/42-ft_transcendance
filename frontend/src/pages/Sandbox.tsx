@@ -66,7 +66,7 @@ export function GetOneUser() {
 export function DeleteOneUser() {
 	const [isDeleted, setDeleted] = useState<boolean>(false);
 	const queryClient = useQueryClient();
-	const id = 7;
+	const id = 1;
 
 	const deleteUser = useMutation({
 		mutationFn: deleteUserById,
@@ -79,7 +79,7 @@ export function DeleteOneUser() {
 
 	const handleDelete = (e: React.MouseEvent<HTMLElement>) => {
 		e.preventDefault();
-		try { deleteUser.mutate(7); } // 7 étant l'id de la personne à delete (à remplacer par JWT accessToken quand on aura l'auth)
+		try { deleteUser.mutate(id); } // 7 étant l'id de la personne à delete (à remplacer par JWT accessToken quand on aura l'auth)
 		catch (error) { console.log(error); } // J'ai throw une Erreur (user does not exist) dans ApiHandler.ts
 		setDeleted(true);
 	};

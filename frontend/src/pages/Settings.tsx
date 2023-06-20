@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faTrashCanArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
 
+// TODO: Gérer l'erreur quand new nickname déjà pris
+// TODO: mail: trouver lib pour vérifier que correct + bio, mettre une limite de caractères
 export function TextCardSettings({ property } : {property: keyof IUser}) {
 	const [userInput, setUserInput] = useState<string>("");
 	const [propertyChanged, setPropertyChange] = useState<boolean>(false);
@@ -73,6 +75,7 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
   );
 }
 
+// TODO: pour les images, vérifier que c'est un format accepté + stockage à prévoir
 export function ImageCardSettings() {
 	return (
 		<div>
@@ -81,10 +84,19 @@ export function ImageCardSettings() {
 	);
 }
 
+// TODO: vérifier que les deux inputs sont identiques
+// TODO: vérifier que le mot de passe est assez fort
+// TODO: cacher les caractères du mot de passe et permettre de les afficher
 export function PasswordCardSettings() {
 	return (
 		<div>
-
+			<h2>Changing your password</h2>
+			<h4>New password</h4>
+			<input type="text" />
+			<h4>Confirm the new password</h4>
+			<input type="text" />
+			<hr />
+			<button>Save changes</button>
 		</div>
 	);
 }
@@ -162,7 +174,3 @@ export default function Settings() {
 	</div>
 	);
 }
-
-// TODO: Gérer l'erreur quand new nickname déjà pris
-// TODO: mail: trouver lib pour vérifier que correct + bio, mettre une limite de caractères
-// TODO: pour les images, vérifier que c'est un format accepté + stockage à prévoir
