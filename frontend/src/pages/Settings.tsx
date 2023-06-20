@@ -45,21 +45,31 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 	const placeholderValue = String(userQuery.data[property]);
 
 	return (
-	<div className="settings__card">
-		<div className="settings_property">{property}</div>
-		<div className="settings_input">
-			<input	type="text" 
-					name={property}
-					id={property} 
-					placeholder={placeholderValue} 
-					onChange={handleChange}
-			/>
-		</div>
-		<button className="settings_btn" 
-				onClick={handleUpdate}>
-				<FontAwesomeIcon icon={faSquareCheck} />
-		</button>
-	</div>
+		<>
+			<div className="settings__card">
+				<div className="settings_property">{property}</div>
+				<div className="settings_input">
+					<input	type="text" 
+							name={property}
+							id={property} 
+							placeholder={placeholderValue} 
+							onChange={handleChange}
+					/>
+				</div>
+				<button className="settings_btn" 
+						onClick={handleUpdate}>
+						<FontAwesomeIcon icon={faSquareCheck} />
+				</button>
+			</div>
+			<>
+			{
+				propertyChanged && 
+				<div className="settings__alert">
+					<h6>Your modification was successful !</h6>
+				</div>
+			}
+			</>
+		</>
   );
 }
 
@@ -152,7 +162,7 @@ export default function Settings() {
 	</div>
 	);
 }
-// TODO: mettre une confirmation que c'est fait
+
 // TODO: Gérer l'erreur quand new nickname déjà pris
 // TODO: mail: trouver lib pour vérifier que correct + bio, mettre une limite de caractères
 // TODO: pour les images, vérifier que c'est un format accepté + stockage à prévoir
