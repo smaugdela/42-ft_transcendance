@@ -16,12 +16,14 @@
     "@types/node": "^16.18.23",
     "@types/react": "^18.0.35",
     "@types/react-dom": "^18.0.11",
+    "argon2": "^0.30.3",
     "awesome": "^0.0.7",
     "axios": "^1.4.0",
     "font": "^0.0.4",
     "font-awesome": "^4.7.0",
     "fontawesome": "^5.6.3",
     "fuse.js": "^6.6.2",
+    "node-gyp": "^9.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
@@ -30,6 +32,7 @@
     "sweetalert2": "^11.7.3",
     "ts-jest": "^29.1.0",
     "typescript": "^4.9.5",
+    "validator": "^13.9.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -63,6 +66,7 @@
     "@babel/preset-typescript": "^7.21.5",
     "@jest/globals": "^29.5.0",
     "@tanstack/eslint-plugin-query": "^4.29.4",
+    "@types/validator": "^13.7.17",
     "babel-jest": "^29.5.0",
     "jest": "^29.5.0",
     "react-router-dom": "^6.10.0"

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { IUser } from "./types";
-import { Console } from "console";
+// import * as argon2 from "argon2";
 
 const BASE_URL = 'http://localhost:3003';
 
@@ -68,14 +68,14 @@ export async function updateUserStringProperty( id : number, property: keyof IUs
 	{
 		console.log('property: ', property);
 		const requestBody = { [property]: newProperty };
-
+		
 		const response = await axios.patch<IUser>(
 			`${BASE_URL}/users/${id}`, 		// url
 			requestBody,					// request body
 			{								// request config object
 				headers: {
 					'Content-Type': 'application/json',
-          			Accept: 'application/json',
+					Accept: 'application/json',
 				},
 			},
 		);
@@ -84,9 +84,35 @@ export async function updateUserStringProperty( id : number, property: keyof IUs
 		if (axios.isAxiosError(error)) {
 			console.log('Axios error: ', error.message);
 		}
-		console.log('Unexpected error: ', error);
+		console.log('Error updating user: ', error);
 	}
 }
+
+
+// export async function updateUserPassword( id : number, newProperty: string) {
+// 	try 
+// 	{
+// 		// const hashedPassword = await argon2.hash(newProperty);
+
+// 		const response = await axios.patch<IUser>(
+// 			`${BASE_URL}/users/${id}`, 		// url
+// 			{ password: newProperty },					// request body
+// 			{								// request config object
+// 				headers: {
+// 					'Content-Type': 'application/json',
+// 					Accept: 'application/json',
+// 				},
+// 			},
+// 		);
+// 		return response.data;
+// 	} catch (error) {
+// 		if (axios.isAxiosError(error)) {
+// 			console.log('Axios error: ', error.message);
+// 		}
+// 		console.log('Error updating user password: ', error);
+// 	}
+// }
+
 
 export async function deleteUserById(id : number): Promise<IUser> {
 
