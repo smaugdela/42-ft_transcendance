@@ -28,4 +28,8 @@ export default class CreateUserDto {
 	@IsString()
 	bio:	string;
 
+	@IsNotEmpty()
+	@IsString()
+	password:		string;
+
 }
