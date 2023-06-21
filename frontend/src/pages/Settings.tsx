@@ -4,8 +4,9 @@ import { fetchUserById, updateUserStringProperty, deleteUserById } from "../api/
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareCheck, faTrashCanArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faSquareCheck, faTrashCanArrowUp, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
+import validator from 'validator';
 
 // TODO: Gérer l'erreur quand new nickname déjà pris
 // TODO: mail: trouver lib pour vérifier que correct + bio, mettre une limite de caractères
@@ -31,8 +32,10 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 	// Actions qui seront prises lors du click du bouton
 	const handleUpdate = (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
-		updateProperty.mutate();
-		setPropertyChange(true);
+		if (validator.isEmail(userInput) === true) {
+			updateProperty.mutate();
+			setPropertyChange(true);
+		}
 	};
 
 	const userQuery = useQuery({ queryKey: ['user', id], queryFn: () => fetchUserById(id)});
@@ -84,19 +87,93 @@ export function ImageCardSettings() {
 	);
 }
 
-// TODO: vérifier que les deux inputs sont identiques
-// TODO: vérifier que le mot de passe est assez fort
-// TODO: cacher les caractères du mot de passe et permettre de les afficher
 export function PasswordCardSettings() {
+
+	const [errorMsg, setErrorMsg] = useState<string>("");
+	const [userInput, setUserInput] = useState<string>("");
+	const [passwordChanged, setPasswordChange] = useState<boolean>(false);
+	const queryClient = useQueryClient();
+	const id = 1;
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setUserInput(event.target.value);
+		if (validator.isStrongPassword(userInput, { 
+			minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1
+		}) === false){
+			setErrorMsg("Your password is not strong enough");
+		} else {
+			setErrorMsg("");
+		}
+	}
+
+	const handleConfirmation = (event: React.ChangeEvent<HTMLInputElement>) => {
+		let confirmInput = event.target.value;
+		if (confirmInput !== userInput) {
+			console.log("Passwords don't match");
+			setErrorMsg("Passwords don't match");
+		}
+		else {
+			setErrorMsg("");
+		}
+	}
+
+	const updatePassword = useMutation({
+		mutationFn: () => updateUserStringProperty(id, 'password', userInput),
+		onSuccess: () => {
+			queryClient.invalidateQueries(['user']);
+			console.log("Update of user's password successful");
+		},
+	});
+
+	const handleUpdate = (event: React.MouseEvent<HTMLElement>) => {
+		event.preventDefault();
+		if (errorMsg === "") {
+			console.log("Updating password");
+			updatePassword.mutate();
+			setPasswordChange(true);
+		}
+	};
+
+	const [type, setType] = useState<string>("password");
+	const [icon, setIcon] = useState<any>(faEye);
+	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+		event.preventDefault();
+		if (type === "password") {
+			setType("text");
+			setIcon(faEyeSlash);
+		} else {
+			setType("password");
+			setIcon(faEye);
+		}
+	}
+
 	return (
 		<div>
 			<h2>Changing your password</h2>
 			<h4>New password</h4>
-			<input type="text" />
+			<input type={type} name="password" id="password" onChange={handleChange}/>
+			<span onClick={handleClick}><FontAwesomeIcon icon={icon} /></span>
 			<h4>Confirm the new password</h4>
-			<input type="text" />
+			<input type={type} name="password" id="password2" onChange={handleConfirmation}/>
+			<span onClick={handleClick}><FontAwesomeIcon icon={icon} /></span>
+			<>
+			{
+				errorMsg && 
+				<div className="settings__alert">
+					<h6>{errorMsg}</h6>
+				</div>
+			}
+			</>
 			<hr />
-			<button>Save changes</button>
+			<button onClick={handleUpdate}>Save changes</button>
+			<>
+			{
+				passwordChanged && 
+				<div className="settings__alert">
+					<h6>Your modification was successful !</h6>
+				</div>
+			}
+			</>
 		</div>
 	);
 }
