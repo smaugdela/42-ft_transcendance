@@ -12,7 +12,6 @@ export class SearchService {
 			host: process.env.MEILISEARCH_HOST,
 			apiKey: process.env.MEILISEARCH_APIKEY,
 		});
-
 	}
 
 	// Returns a newly-created index.
