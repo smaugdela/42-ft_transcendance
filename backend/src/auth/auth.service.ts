@@ -190,8 +190,6 @@ export class AuthService {
 
 	async generateToken(userId: number, username: string, @Res() res: Response) {
 
-		console.log("DONT FORGET TO SIGN COOKIES AND ADD OPTIONS LIKE EXPIRATION");
-
 		// Generate access JWT.
 		const payload = { sub: userId, username: username };
 		const jwt = await this.jwtService.signAsync(payload, {

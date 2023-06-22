@@ -7,10 +7,9 @@ const prisma = new PrismaClient();
 @Injectable()
 export class UsersService {
 
-	checkIfLoggedIn(user: any | undefined): boolean {
+	checkIfLoggedIn(userId: number | undefined): boolean {
 		// If id is undefined, then the user is not logged in
-		console.log("user, ", user);
-		return user !== undefined;
+		return userId !== undefined;
 	}
 
 	async findAll() {
