@@ -79,10 +79,23 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 }
 
 // TODO: pour les images, vérifier que c'est un format accepté + stockage à prévoir
-export function ImageCardSettings() {
+// TODO: permettre de crop l'image et de la preview ?
+export function AvatarCardSettings() {
+
+	const id = 1;
+	const userQuery = useQuery({ queryKey: ['user', id], queryFn: () => fetchUserById(id)});
+	
+	if (userQuery.error instanceof Error){
+		return <div>Error: {userQuery.error.message}</div>
+	}
+	if (userQuery.isLoading || !userQuery.isSuccess){
+		return <div>Loading</div>
+	}
 	return (
 		<div>
-
+			<div><img src={userQuery.data.avatar} alt={userQuery.data.nickname} /></div>
+			<h5>Change your avatar</h5>
+			<div><input type="file" accept="image/png, image/jpeg, image/gif"  name="avatar" id="avatar" /></div>
 		</div>
 	);
 }
@@ -241,7 +254,7 @@ export default function Settings() {
 		<h1>Settings</h1>
 		<img src="" alt="" />
 		<div className="settings__container">
-			<ImageCardSettings />
+			<AvatarCardSettings />
 			<TextCardSettings property={'nickname'}/>
 			<TextCardSettings property={'bio'}/>
 			<TextCardSettings property={'email'}/>
