@@ -26,12 +26,12 @@ export class UsersController {
 		return this.usersService.findMe(req.userId);
 	}
 
-	@Patch('/me')
+	@Patch('me')
 	updateMe(@Req() req: Request, @Body() body: UpdateUserDto) {
 		return this.usersService.updateMe(req.userId, body);
 	}
 
-	@Delete('/me')
+	@Delete('me')
 	removeMe(@Req() req: Request) {
 		return this.usersService.removeMe(req.userId);
 	}

@@ -1,26 +1,50 @@
-import { PartialType } from '@nestjs/mapped-types';
-import CreateUserDto from './create-user.dto';
-import { IsBoolean, IsNumber, IsOptional, IsPositive } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {
+export class UpdateUserDto {
+
+	@IsOptional()
+	@IsNotEmpty()
+	@IsString()
+	nickname: string;
+
+	@IsOptional()
+	@IsString()
+	@IsNotEmpty()
+	password: string;
+
+	@IsOptional()
+	@IsString()
+	@IsNotEmpty()
+	coalition: string;
+
+	@IsOptional()
+	@IsString()
+	@IsNotEmpty()
+	avatar: string;
+
+	@IsOptional()
+	@IsString()
+	@IsNotEmpty()
+	mailAddress: string;
+
 	@IsOptional()
 	@IsNumber()
 	@IsPositive()
-	nbGames:		number;
+	nbGames: number;
 
 	@IsOptional()
 	@IsNumber()
-	score:			number;
+	score: number;
 
 	@IsOptional()
 	@IsNumber()
-	rank:			number;
+	rank: number;
 
 	@IsOptional()
 	@IsBoolean()
-	isLogged   : boolean;
+	isLogged: boolean;
 
 	@IsOptional()
 	@IsBoolean()
-	isActive   : boolean;
+	isActive: boolean;
 }

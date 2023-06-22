@@ -1,14 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaClient } from '@prisma/client';
+import * as argon from 'argon2';
 
+const hashingConfig = {
+	parallelism: 1,
+	memoryCost: 64000, // 64 mb
+	timeCost: 3
+};
 const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService {
 
 	checkIfLoggedIn(userId: number | undefined): boolean {
-		// If id is undefined, then the user is not logged in
+		// If id is undefined, then the user is not logged in.
 		return userId !== undefined;
 	}
 
@@ -23,6 +29,19 @@ export class UsersService {
 	}
 
 	async updateMe(id: number, updateUserDto: UpdateUserDto) {
+
+		// If the user wants to change his password, we hash it.
+		if (updateUserDto.password) {
+			// generate password hash
+			const { randomBytes } = await import('crypto');
+			const buf = randomBytes(16);
+			const hash = await argon.hash(updateUserDto.password, {
+				...hashingConfig,
+				salt: buf
+			});
+			updateUserDto.password = hash;
+		}
+
 		return await prisma.user.update({
 			where: { id },
 			data: updateUserDto,
