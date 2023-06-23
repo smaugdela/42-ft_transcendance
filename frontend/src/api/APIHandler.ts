@@ -3,6 +3,8 @@ import { IUser } from "./types";
 
 const BASE_URL = 'http://localhost:3001';
 
+axios.defaults.withCredentials = true;
+
 /* ######################*/
 /* ##   INTERCEPTORS   ##*/
 /* ######################*/
@@ -22,42 +24,71 @@ api.interceptors.response.use(
 	},
 );
 
+
+/* ######################*/
+/* ######   AUTH   ######*/
+/* ######################*/
+
+export async function signUp(newNickname: string, password: string): Promise<any> {
+
+	try {
+		const response = await axios.post(`${BASE_URL}/auth/signup`,
+			{
+				nickname: newNickname,
+				password: password
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': ['http://localhost:3001', 'http://localhost:3000']
+				},
+			},
+		);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error signup: ", error);
+	}
+}
+
+
 /* ######################*/
 /* ######   USER   ######*/
 /* ######################*/
 
 export async function fetchUsers(): Promise<IUser[]> {
-	const response = await axios.get<IUser[]>(`${BASE_URL}/users`);
+	const response = await api.get<IUser[]>(`/users`);
 	return response.data;
 }
 
 export async function fetchUserById(id: number): Promise<IUser> {
-	const response = await axios.get<IUser>(`${BASE_URL}/users/${id}`);
+	const response = await api.get<IUser>(`/users/${id}`);
 	return response.data;
 }
 
-/* Différence PUT et PATCH -> les deux updatent mais 
-**	on préfére PATCH pour updater 1 field d'une ressource
-** https://stackoverflow.com/questions/31089221/what-is-the-difference-between-put-post-and-patch#:~:text=PUT%20is%20for%20checking%20if,always%20for%20updating%20a%20resource
-*/
-export async function updateUserNickname(id: number, newNickname: string) {
+export async function fetchMe(): Promise<IUser> {
+	const response = await api.get<IUser>(`/users/me`);
+	return response.data;
+}
+
+export async function updateUserStringProperty(property: keyof IUser, newProperty: string) {
 	try {
-		const response = await axios.patch<IUser>(
-			`${BASE_URL}/users/${id}`, 		// url
-			{ nickname: newNickname },		// request body
+		console.log('property: ', property);
+		const requestBody = { [property]: newProperty };
+
+		const response = await api.patch<IUser>(
+			`/users/me`, 				// url
+			requestBody,					// request body
 			{								// request config object
 				headers: {
 					'Content-Type': 'application/json',
-					Accept: 'application/json',
+					'Access-Control-Allow-Origin': ['http://localhost:3001', 'http://localhost:3000']
 				},
 			},
 		);
 		return response.data;
 	} catch (error) {
-		if (axios.isAxiosError(error)) {
-			console.log('Axios error: ', error.message);
-		}
-		console.log('Unexpected error: ', error);
+		console.log('Error updating user: ', error);
 	}
 }
 
@@ -66,56 +97,11 @@ export async function deleteUserById(id: number): Promise<IUser> {
 	const userToDelete = await fetchUserById(id);
 
 	if (userToDelete) {
-		return axios.delete(`${BASE_URL}/users/${id}`);
+		return api.delete(`/users/${id}`);
 	} else {
 		throw new Error('Deletion impossible: the user does not exist');
 	}
 }
-
-/* ############################################## */
-/* PREVIOUS API CALLS (sans React-Query ou Axios) */
-/* ############################################## */
-// export async function getUsers() {
-
-// 	const response = await fetch(`${BASE_URL}/users`);
-// 	const data = await response.json()
-// 							   .then( (data) => { return data;})
-// 							   .catch((error) => { console.error(error)});
-// 	const users = data;
-
-// 	console.log("users, ", users);
-// 	return users;
-// // }
-
-// export async function getOneUser( id : number ) {
-
-// 	const response = await fetch(`${BASE_URL}/users/${id}`);
-// 	if (!response.ok) {
-// 		throw new Error("Request failed with status: " + response.status);
-// 	}
-// 	const data = await response.json()
-// 							   .then( (data) => {return data;})
-// 							   .catch((error) => { console.error(error)});
-// 	const user = data;
-// 	console.log("user, ", user);
-// 	return user;
-// }
-
-// export async function deleteOneUser(id : number, abortController: AbortController ) {
-// 	const userToDelete = await getOneUser(id);
-
-// 	if (userToDelete)
-// 	{
-// 		await fetch(`${BASE_URL}/users/${id}`, 
-// 		{ 
-// 			method: 'DELETE',
-// 			signal: abortController.signal
-// 		});
-// 		console.log(`Delete of user #${id} done.`);
-// 	} else {
-// 		console.log('Delete impossible : User does not exist');
-// 	}
-// }
 
 /* ######################*/
 /* ######  SEARCH  ######*/
@@ -123,13 +109,13 @@ export async function deleteUserById(id: number): Promise<IUser> {
 
 
 export async function getMeiliData(): Promise<IUser> {
-	const response = await axios.get(`${BASE_URL}/search`);
+	const response = await api.get(`/search`);
 	return response.data;
 }
 
 
 export async function postSearchQuery(userInput: string) {
-	const response = await axios.post(`${BASE_URL}/search`, {
+	const response = await api.post(`/search`, {
 		searchQuery: userInput,
 	});
 	return response;

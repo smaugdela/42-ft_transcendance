@@ -17,6 +17,8 @@ export class AuthGuard implements CanActivate {
 		// const jwt = this.extractAccessTokenFromHeader(request.headers);
 		const jwt = request.signedCookies.jwt;
 
+		// console.log("jwt in cookies: ", jwt);
+
 		if (jwt) {
 			const payload = await this.jwtService.decode(jwt, {});
 			request.userId = payload.sub;

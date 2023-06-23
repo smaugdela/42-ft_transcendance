@@ -9,13 +9,15 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { WebsocketGateway } from './websocket/websocket.gateway';
 import { SearchModule } from './search/search.module';
+import { ChatGateway } from './chat/chat.gateway';
 
 @Module({
 	controllers: [AppController],
 	providers: [
 		AppService,
 		{ provide: APP_GUARD, useClass: AuthGuard, },
-		WebsocketGateway
+		WebsocketGateway,
+		ChatGateway
 	],
 	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule],
 })
