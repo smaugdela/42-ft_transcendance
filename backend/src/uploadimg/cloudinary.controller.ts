@@ -11,10 +11,12 @@ export class CloudinaryController {
         private cloudinaryService: CloudinaryService,
         private usersService: UsersService) {}
     
-        @Get('/')
-        public async getImage(): Promise<void> {
-            // const users = await this.usersService.findAll();
-        }
+        // // retrieve url of image from cloudinary
+        // @Get('/')
+        // public async getImage(id: number): Promise<void> {
+        //     const user = await this.usersService.findMe(id);
+        //     return await this.cloudinaryService.getImage(user.avatar);
+        // }
 
 
         @Post('/')

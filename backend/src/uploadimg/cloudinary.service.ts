@@ -25,7 +25,26 @@ export class CloudinaryService {
                     }
                 }
             );
+
             toStream(file.buffer).pipe(uploadStream);
         });
     }
+
+	// async getImage(avatar: string): Promise<void> {
+	// 	return new Promise((resolve, reject) => {
+	// 		const downloadStream = cloudinary.uploader.ex(
+	// 			{
+					
+	// 			},
+	// 			(error, file) => {
+	// 				if (file) {
+	// 					resolve(file);
+	// 				} else {
+	// 					reject(error);
+	// 				}
+	// 			}
+	// 		);
+	// 		downloadStream.end();
+	// 	});
+	// }
 }
