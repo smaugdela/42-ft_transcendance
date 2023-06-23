@@ -209,8 +209,6 @@ export class AuthService {
 
 	}
 
-
-
 	// async googleAuth(@Req() req, @Res({passthrough: true}) response: Response) {
 
 	// 	if (!req.user) {
