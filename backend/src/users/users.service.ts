@@ -1,39 +1,69 @@
 import { Injectable } from '@nestjs/common';
-// import CreateUserDto from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaClient } from '@prisma/client';
+import * as argon from 'argon2';
 
+const hashingConfig = {
+	parallelism: 1,
+	memoryCost: 64000, // 64 mb
+	timeCost: 3
+};
 const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService {
 
-//   async create(body: CreateUserDto) {
-//     return await prisma.user.create({
-// 		data: body,
-// 	});
-//   }
+	checkIfLoggedIn(userId: number | undefined): boolean {
+		// If id is undefined, then the user is not logged in.
+		return userId !== undefined;
+	}
 
-  async findAll() {
-    return await prisma.user.findMany();
-  }
+	async findAll() {
+		return await prisma.user.findMany();
+	}
 
-  async findOne(id: number) {
-    return await prisma.user.findUnique({
-		where: {id}
-	});
-  }
+	async findMe(id: number) {
+		return await prisma.user.findUnique({
+			where: { id }
+		});
+	}
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    return await prisma.user.update({
-		where: {id},
-		data: updateUserDto,
-	});
-  }
+	async updateMe(id: number, updateUserDto: UpdateUserDto) {
 
-  async remove(id: number) {
-    return await prisma.user.delete({
-		where: {id}
-	});
-  }
+		// If the user wants to change his password, we hash it.
+		if (updateUserDto.password) {
+			// generate password hash
+			const { randomBytes } = await import('crypto');
+			const buf = randomBytes(16);
+			const hash = await argon.hash(updateUserDto.password, {
+				...hashingConfig,
+				salt: buf
+			});
+			updateUserDto.password = hash;
+		}
+
+		return await prisma.user.update({
+			where: { id },
+			data: updateUserDto,
+		});
+	}
+
+	async removeMe(id: number) {
+		return await prisma.user.delete({
+			where: { id }
+		});
+	}
+
+	async findOne(username: string) {
+		return await prisma.user.findUnique({
+			where: { nickname: username }
+		});
+	}
+
+	async updateOne(username: string, updateUserDto: UpdateUserDto) {
+		return await prisma.user.update({
+			where: { nickname: username },
+			data: updateUserDto,
+		});
+	}
 }

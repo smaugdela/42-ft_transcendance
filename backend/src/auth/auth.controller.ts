@@ -30,7 +30,7 @@ export class AuthController {
 
 	@Delete('logout')
 	async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-		return this.authService.logout(req['user'].sub, res);
+		return this.authService.logout(req.userId, res);
 	}
 
 	@Get('protected')

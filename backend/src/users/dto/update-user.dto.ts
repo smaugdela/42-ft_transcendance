@@ -30,25 +30,25 @@ export class UpdateUserDto {
 	@IsNotEmpty()
 	@IsString()
 	password:		string;
-	
+
 	@IsOptional()
 	@IsNumber()
 	@IsPositive()
-	nbGames:		number;
+	nbGames: number;
 
 	@IsOptional()
 	@IsNumber()
-	score:			number;
+	score: number;
 
 	@IsOptional()
 	@IsNumber()
-	rank:			number;
+	rank: number;
 
 	@IsOptional()
 	@IsBoolean()
-	isLogged   : boolean;
+	isLogged: boolean;
 
 	@IsOptional()
 	@IsBoolean()
-	isActive   : boolean;
+	isActive: boolean;
 }
