@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/Tab_Chat.css';
 
-function Tab_Chat() {
+function TabChat() {
   return (
     <div>
        <input type="text" className="text-input" placeholder="Envoyer un message" />
@@ -9,4 +9,4 @@ function Tab_Chat() {
   )
 }
 
-export default Tab_Chat
+export default TabChat

@@ -2,7 +2,7 @@ export interface IUser {
 	id: number;
 	avatar: string;
 	nickname: string;
-	mailAddress: string;
+	email: string;
 	bio: string;
 	password: string;
 	coalition: string;

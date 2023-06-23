@@ -1,31 +1,35 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsPositive, IsString, IsNotEmpty } from 'class-validator';
 
 export class UpdateUserDto {
-
-	@IsOptional()
 	@IsNotEmpty()
 	@IsString()
-	nickname: string;
+	nickname:		string;
 
-	@IsOptional()
 	@IsString()
 	@IsNotEmpty()
-	password: string;
+	accessToken:	string;
 
-	@IsOptional()
 	@IsString()
 	@IsNotEmpty()
-	coalition: string;
+	coalition:		string;
 
 	@IsOptional()
 	@IsString()
 	@IsNotEmpty()
-	avatar: string;
+	avatar:			string;
 
 	@IsOptional()
 	@IsString()
 	@IsNotEmpty()
-	mailAddress: string;
+	email:	string;
+
+	@IsOptional()
+	@IsString()
+	bio:	string;
+
+	@IsNotEmpty()
+	@IsString()
+	password:		string;
 
 	@IsOptional()
 	@IsNumber()

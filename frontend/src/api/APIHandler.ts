@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IUser } from "./types";
 
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = 'http://localhost:3003';
 
 /* ######################*/
 /* ##   INTERCEPTORS   ##*/
@@ -61,7 +61,32 @@ export async function updateUserNickname(id: number, newNickname: string) {
 	}
 }
 
-export async function deleteUserById(id: number): Promise<IUser> {
+export async function updateUserStringProperty( id : number, property: keyof IUser, newProperty: string) {
+	try 
+	{
+		console.log('property: ', property);
+		const requestBody = { [property]: newProperty };
+		
+		const response = await axios.patch<IUser>(
+			`${BASE_URL}/users/${id}`, 		// url
+			requestBody,					// request body
+			{								// request config object
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		if (axios.isAxiosError(error)) {
+			console.log('Axios error: ', error.message);
+		}
+		console.log('Error updating user: ', error);
+	}
+}
+
+export async function deleteUserById(id : number): Promise<IUser> {
 
 	const userToDelete = await fetchUserById(id);
 
@@ -71,51 +96,6 @@ export async function deleteUserById(id: number): Promise<IUser> {
 		throw new Error('Deletion impossible: the user does not exist');
 	}
 }
-
-/* ############################################## */
-/* PREVIOUS API CALLS (sans React-Query ou Axios) */
-/* ############################################## */
-// export async function getUsers() {
-
-// 	const response = await fetch(`${BASE_URL}/users`);
-// 	const data = await response.json()
-// 							   .then( (data) => { return data;})
-// 							   .catch((error) => { console.error(error)});
-// 	const users = data;
-
-// 	console.log("users, ", users);
-// 	return users;
-// // }
-
-// export async function getOneUser( id : number ) {
-
-// 	const response = await fetch(`${BASE_URL}/users/${id}`);
-// 	if (!response.ok) {
-// 		throw new Error("Request failed with status: " + response.status);
-// 	}
-// 	const data = await response.json()
-// 							   .then( (data) => {return data;})
-// 							   .catch((error) => { console.error(error)});
-// 	const user = data;
-// 	console.log("user, ", user);
-// 	return user;
-// }
-
-// export async function deleteOneUser(id : number, abortController: AbortController ) {
-// 	const userToDelete = await getOneUser(id);
-
-// 	if (userToDelete)
-// 	{
-// 		await fetch(`${BASE_URL}/users/${id}`, 
-// 		{ 
-// 			method: 'DELETE',
-// 			signal: abortController.signal
-// 		});
-// 		console.log(`Delete of user #${id} done.`);
-// 	} else {
-// 		console.log('Delete impossible : User does not exist');
-// 	}
-// }
 
 /* ######################*/
 /* ######  SEARCH  ######*/

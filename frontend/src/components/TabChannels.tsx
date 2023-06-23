@@ -1,7 +1,7 @@
 import React from 'react'
 import '../styles/Tab_channels.css';
 
-function Tab_channels() {
+function TabChannels() {
   return (
     <div className='channels_page'>
       <ul >
@@ -24,4 +24,4 @@ function Tab_channels() {
   )
 }
 
-export default Tab_channels
+export default TabChannels
