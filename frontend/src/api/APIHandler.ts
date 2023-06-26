@@ -120,3 +120,29 @@ export async function postSearchQuery(userInput: string) {
 	});
 	return response;
 }
+
+/* ######################*/
+/* ###   CLOUDINARY   ###*/
+/* ######################*/
+
+export async function uploadImage(file: File, userId: number) {
+	try {
+		
+		const formData = new FormData();
+		formData.append('file', file);
+	
+		const response = await axios.post(`${BASE_URL}/cloudinary`, 
+			formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				origin: ['http://localhost:3000', 'http://localhost:3001']
+			},
+			params: {
+				id: userId,
+			},
+		});
+		return response.data; // response.data = avatarUrl
+	} catch (error) {
+		console.error(`Error uploading image: ${error}`);
+	}
+}

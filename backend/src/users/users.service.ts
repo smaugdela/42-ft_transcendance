@@ -60,6 +60,12 @@ export class UsersService {
 		});
 	}
 
+	async findOneById(id: number) {
+		return await prisma.user.findUnique({
+			where: { id: id }
+		});
+	}
+
 	async updateOne(username: string, updateUserDto: UpdateUserDto) {
 		return await prisma.user.update({
 			where: { nickname: username },

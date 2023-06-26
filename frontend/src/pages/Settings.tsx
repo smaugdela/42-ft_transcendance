@@ -1,6 +1,6 @@
 import "../styles/Settings.css";
 import { IUser } from "../api/types";
-import { fetchUserById, updateUserStringProperty, deleteUserById, fetchMe } from "../api/APIHandler";
+import { fetchUserById, updateUserStringProperty, deleteUserById, fetchMe, uploadImage } from "../api/APIHandler";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -76,13 +76,27 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
   );
 }
 
-// TODO: pour les images, vérifier que c'est un format accepté + stockage à prévoir
-// TODO: permettre de crop l'image et de la preview ?
 export function AvatarCardSettings() {
-
-	const id = 1;
-	const userQuery = useQuery({ queryKey: ['user', id], queryFn: () => fetchUserById(id)});
 	
+	const id = 1;
+	const [avatar, setAvatar] = useState<File>();
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files)
+		{
+			setAvatar(event.target.files[0]);
+		}
+	}
+
+	const handleSubmit = () => {
+		if (!avatar)
+			return;
+		const response = uploadImage(avatar, id).then((response) => {
+			console.log(response);});
+	}
+
+	const userQuery = useQuery({ queryKey: ['user', id], queryFn: () => fetchUserById(id)});
+
 	if (userQuery.error instanceof Error){
 		return <div>Error: {userQuery.error.message}</div>
 	}
@@ -93,7 +107,8 @@ export function AvatarCardSettings() {
 		<div>
 			<div><img src={userQuery.data.avatar} alt={userQuery.data.nickname} /></div>
 			<h5>Change your avatar</h5>
-			<div><input type="file" accept="image/png, image/jpeg, image/gif"  name="avatar" id="avatar" /></div>
+			<div><input onChange={handleChange} type="file" accept="image/png, image/jpeg, image/gif"  name="avatar" id="avatar" /></div>
+			<div><button onClick={handleSubmit}>Upload</button></div>
 		</div>
 	);
 }

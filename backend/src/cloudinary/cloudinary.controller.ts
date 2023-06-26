@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body } from "@nestjs/common";
+import { Controller, Get, Post, Body, UseInterceptors, UploadedFile } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { CloudinaryService } from "./cloudinary.service";
 import { UsersService } from "src/users/users.service";
+import { CloudinaryFileDto } from "./dto/cloudinary-file.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @ApiTags('Cloudinary') // for swagger
 @Controller('cloudinary')
@@ -12,9 +14,13 @@ export class CloudinaryController {
 		private usersService: UsersService) {}
 	
 		@Post('/')
-		public async uploadImage(@Body() file: Express.Multer.File, id:number) {
+		@UseInterceptors(FileInterceptor('file'))
+		public async uploadImage(
+			@UploadedFile() file: Express.Multer.File,
+			// @Body() cloudinaryFileDto: CloudinaryFileDto, 
+			id:number
+			) {
 			try {
-				// const user = await this.usersService.findMe(id);
 				const uploadedImage =  await this.cloudinaryService.uploadImage(file);
 
 				const avatarUrl = uploadedImage.url;
