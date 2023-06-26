@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { WebsocketGateway } from './websocket/websocket.gateway';
 import { SearchModule } from './search/search.module';
 import { ChatGateway } from './chat/chat.gateway';
+import { CloudinaryModule } from './uploadimg/cloudinary.module';
 
 @Module({
 	controllers: [AppController],
@@ -19,7 +20,7 @@ import { ChatGateway } from './chat/chat.gateway';
 		WebsocketGateway,
 		ChatGateway
 	],
-	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule],
+	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule, CloudinaryModule],
 })
 
 export class AppModule {}
