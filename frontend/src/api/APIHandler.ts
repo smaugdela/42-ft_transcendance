@@ -24,7 +24,6 @@ api.interceptors.response.use(
 	},
 );
 
-
 /* ######################*/
 /* ######   AUTH   ######*/
 /* ######################*/
@@ -131,7 +130,7 @@ export async function uploadImage(file: File, userId: number) {
 		const formData = new FormData();
 		formData.append('file', file);
 	
-		const response = await axios.post(`${BASE_URL}/cloudinary`, 
+		const response = await api.post(`/cloudinary`, 
 			formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
