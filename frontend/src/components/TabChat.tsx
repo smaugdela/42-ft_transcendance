@@ -18,7 +18,10 @@ function TabChat() {
 	};
   
 	useEffect(() => {
-	  const newSocket = io('http://localhost:3001');
+
+	  const newSocket = io('http://localhost:3001'/*, {
+		withCredentials: true,
+	  }*/);
 	  setSocket(newSocket);
   
 	  newSocket.on('chatMessage', (message: string) => {

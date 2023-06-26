@@ -5,7 +5,6 @@ import * as argon from 'argon2';
 import AuthDto from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
-import { SocketsGateway } from 'src/sockets/sockets.gateway';
 
 const hashingConfig = {
 	parallelism: 1,
@@ -16,7 +15,7 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class AuthService {
-	constructor(private readonly jwtService: JwtService, private socketsGateway: SocketsGateway) { }
+	constructor(private readonly jwtService: JwtService) { }
 
 	async redirect42(@Query() query, @Res({ passthrough: true }) res: Response) {
 
@@ -199,12 +198,11 @@ export class AuthService {
 
 		// Add new tokens in cookies.
 		res.cookie('jwt', jwt, {
-			httpOnly: false,
-			// domain: 'http://localhost',
-			// httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
+			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
 			// secure: true, // Only send the cookie over HTTPS
 			maxAge: 60 * 60 * 24 * 1000, // Set cookie expiry to 1 day
 			signed: true, // Indicates if the cookie should be signed
+			sameSite: 'none', // Allow cross-site cookies
 			// domain: "process.env.FRONTEND_HOST",
 		});
 

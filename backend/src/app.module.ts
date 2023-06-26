@@ -17,11 +17,9 @@ import { SocketsService } from './sockets/sockets.service';
 	controllers: [AppController],
 	providers: [
 		AppService,
-		{ provide: APP_GUARD, useClass: AuthGuard, },
-		SocketsGateway,
-		SocketsService
+		{ provide: APP_GUARD, useClass: AuthGuard, }
 	],
 	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule, CloudinaryModule, SocketsModule],
 })
 
-export class AppModule {}
+export class AppModule { }
