@@ -18,7 +18,7 @@ const prisma = new PrismaClient();
 export class AuthService {
 	constructor(private readonly jwtService: JwtService, private webSocketGateway: WebsocketGateway) { }
 
-	async redirect42(@Query() query, @Res() res: Response) {
+	async redirect42(@Query() query, @Res({ passthrough: true }) res: Response) {
 
 		try {
 
@@ -98,7 +98,7 @@ export class AuthService {
 		}
 	}
 
-	async login(body: AuthDto, @Res() res: Response) {
+	async login(body: AuthDto, @Res({ passthrough: true }) res: Response) {
 		// Find the user by nickname.
 		// If the user doesn't exists, throw an error.
 		try {
@@ -129,7 +129,7 @@ export class AuthService {
 		}
 	}
 
-	async signup(body: AuthDto, @Res() res: Response) {
+	async signup(body: AuthDto, @Res({ passthrough: true }) res: Response) {
 
 		try {
 			// generate password hash
@@ -171,7 +171,7 @@ export class AuthService {
 		}
 	}
 
-	async logout(userId: number, @Res() res: Response) {
+	async logout(userId: number, @Res({ passthrough: true }) res: Response) {
 		console.log("Logging out user", userId);
 
 		// Delete jwt from cookies.
@@ -183,12 +183,12 @@ export class AuthService {
 			}
 		});
 
-		this.webSocketGateway.server.emit('inactivity', userDb.nickname);
+		// this.webSocketGateway.server.emit('inactivity', userDb.nickname);
 
 		return "Successfully logged out.";
 	}
 
-	async generateToken(userId: number, username: string, @Res() res: Response) {
+	async generateToken(userId: number, username: string, @Res({ passthrough: true }) res: Response) {
 
 		// Generate access JWT.
 		const payload = { sub: userId, username: username };
@@ -199,14 +199,16 @@ export class AuthService {
 
 		// Add new tokens in cookies.
 		res.cookie('jwt', jwt, {
-			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
+			httpOnly: false,
+			// domain: 'http://localhost',
+			// httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
 			// secure: true, // Only send the cookie over HTTPS
 			maxAge: 60 * 60 * 24 * 1000, // Set cookie expiry to 1 day
 			signed: true, // Indicates if the cookie should be signed
+			// domain: "process.env.FRONTEND_HOST",
 		});
 
 		return true;
-
 	}
 
 	// async googleAuth(@Req() req, @Res({passthrough: true}) response: Response) {

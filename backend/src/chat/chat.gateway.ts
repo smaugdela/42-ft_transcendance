@@ -1,8 +1,8 @@
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 
-@WebSocketGateway(3003, { namespace: 'chat'}) // url is : ws://localhost:3001/chat
+@WebSocketGateway(3003, { namespace: 'chat' }) // url is : ws://localhost:3001/chat
 export class ChatGateway {
-	
+
 	@WebSocketServer()
 	server;
 
