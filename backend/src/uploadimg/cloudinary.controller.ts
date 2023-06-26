@@ -7,18 +7,24 @@ import { UsersService } from "src/users/users.service";
 @Controller('cloudinary')
 
 export class CloudinaryController {
-    constructor(
-        private cloudinaryService: CloudinaryService,
-        private usersService: UsersService) {}
-    
-        @Get('/')
-        public async getImage(): Promise<void> {
-            // const users = await this.usersService.findAll();
-        }
+	constructor(
+		private cloudinaryService: CloudinaryService,
+		private usersService: UsersService) {}
+	
+		@Post('/')
+		public async uploadImage(@Body() file: Express.Multer.File, id:number) {
+			try {
+				// const user = await this.usersService.findMe(id);
+				const uploadedImage =  await this.cloudinaryService.uploadImage(file);
 
+				const avatarUrl = uploadedImage.url;
+				// await this.usersService.updateMe(id, {avatar: avatarUrl});
+				await this.usersService.updateMe(id, avatarUrl);
+				return avatarUrl;
 
-        @Post('/')
-        public async uploadImage(@Body() file: Express.Multer.File) {
-            return await this.cloudinaryService.uploadImage(file);
-        }
+			} catch (error) {
+				console.error(error);
+				throw new Error('Cloudinary image upload error');
+			}
+		}
 }
