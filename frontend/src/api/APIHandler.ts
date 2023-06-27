@@ -126,15 +126,15 @@ export async function postSearchQuery(userInput: string) {
 
 export async function uploadImage(file: File, userId: number) {
 	try {
-		
 		const formData = new FormData();
 		formData.append('file', file);
-	
+		
 		const response = await api.post(`/cloudinary`, 
 			formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
-				origin: ['http://localhost:3000', 'http://localhost:3001']
+				origin: ['http://localhost:3000', 'http://localhost:3001'],
+				credentials: true,
 			},
 			params: {
 				id: userId,

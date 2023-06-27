@@ -87,12 +87,16 @@ export function AvatarCardSettings() {
 			setAvatar(event.target.files[0]);
 		}
 	}
-
+	console.log(avatar);
+	
 	const handleSubmit = () => {
 		if (!avatar)
 			return;
 		const response = uploadImage(avatar, id).then((response) => {
-			console.log(response);});
+			// console.log(response);
+			setAvatar(response);
+		});
+			console.log(' response : lol ', response);
 	}
 
 	const userQuery = useQuery({ queryKey: ['user', id], queryFn: () => fetchUserById(id)});
@@ -103,6 +107,9 @@ export function AvatarCardSettings() {
 	if (userQuery.isLoading || !userQuery.isSuccess){
 		return <div>Loading</div>
 	}
+	// TODO: tout est en undefined!!!
+	console.log('hello', userQuery.data.email);
+	
 	return (
 		<div>
 			<div><img src={userQuery.data.avatar} alt={userQuery.data.nickname} /></div>
@@ -236,7 +243,7 @@ export function DeleteAccountCardSettings() {
 			}, 3000);
 			console.log("Redirected to home page...!");
 		}
-	}, [isDeleted]);
+	}, [isDeleted, navigate]);
 
 	return (
 		<div className="delete_settings">

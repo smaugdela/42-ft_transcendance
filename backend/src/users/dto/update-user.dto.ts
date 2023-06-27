@@ -1,6 +1,10 @@
 import { IsBoolean, IsNumber, IsOptional, IsPositive, IsString, IsNotEmpty } from 'class-validator';
 
 export class UpdateUserDto {
+	@IsOptional()
+	@IsString()
+	avatar:	string;
+	
 	@IsNotEmpty()
 	@IsString()
 	nickname:		string;
@@ -13,10 +17,6 @@ export class UpdateUserDto {
 	@IsNotEmpty()
 	coalition:		string;
 
-	@IsOptional()
-	@IsString()
-	@IsNotEmpty()
-	avatar:			string;
 
 	@IsOptional()
 	@IsString()

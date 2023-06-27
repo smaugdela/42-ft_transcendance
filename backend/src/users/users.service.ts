@@ -48,9 +48,20 @@ export class UsersService {
 		});
 	}
 
+	async updateAvatar(id: number, avatarUrl: string) {
+		console.log(typeof id);
+		
+		return await prisma.user.update({
+			where: { id: id },
+			data: {
+				avatar: avatarUrl
+			},
+		});
+	}
+
 	async removeMe(id: number) {
 		return await prisma.user.delete({
-			where: { id }
+			where: { id: id }
 		});
 	}
 
@@ -73,3 +84,4 @@ export class UsersService {
 		});
 	}
 }
+
