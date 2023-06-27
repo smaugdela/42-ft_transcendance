@@ -12,16 +12,16 @@ function TabChat() {
 	console.log("Sending Message");
 	  if (socket) {
 		console.log("socket defined");
-		socket.emit('chatMessage', message);
+		socket.emit('sendMessage', message);
 		setInputValue('');
 	  }
 	};
   
 	useEffect(() => {
 
-	  const newSocket = io('http://localhost:3001'/*, {
+	  const newSocket = io('http://localhost:3001', {
 		withCredentials: true,
-	  }*/);
+	  });
 	  setSocket(newSocket);
   
 	  newSocket.on('chatMessage', (message: string) => {

@@ -1,10 +1,12 @@
 import { WebSocketGateway, SubscribeMessage, OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
 import { SocketsService } from './sockets.service';
 import { Server, Socket } from 'socket.io';
+import { UnauthorizedException } from '@nestjs/common';
 
 @WebSocketGateway({
 	cors: {
 		origin: process.env.FRONTEND_URL,
+		credentials: true,
 	}
 })
 export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect {
@@ -16,19 +18,18 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		console.log('WS Initialized');
 	}
 
-	handleConnection(client: Socket, ...args: any[]) {
+	async handleConnection(client: Socket, ...args: any[]) {
+
 		const cookies = client.handshake.headers.cookie;
-		// try {
-		// 	this.socketAuthService.authenticate(client);
-		// 	console.log(`Client connected: ${client.id}`);
-		// } catch (e) {
-		// 	console.log(`Client ${client.id} tried to connect with invalid token`);
-		// 	client.emit('unauthorized', 'Invalid Token');
-		// 	client.disconnect();
-		// 	console.log(`Client disconnected due to invalid token: ${client.id}`);
-		// }
-		console.log('Client connected:', client.id);
-		console.log('cookies:', cookies);
+		const isAuthorized = await this.socketsService.authSocket(cookies);
+		if (isAuthorized) {
+			console.log('Client connected:', client.id);
+		} else {
+			console.log('Client not authorized:', client.id);
+			client.disconnect();
+			throw new UnauthorizedException("Acess Token is either inexistent, invalid or expired.");
+		}
+		// console.log('cookies:', cookies);
 	}
 
 	handleDisconnect(client: Socket) {

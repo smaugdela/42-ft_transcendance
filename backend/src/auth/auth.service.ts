@@ -196,6 +196,8 @@ export class AuthService {
 			expiresIn: '1d',
 		});
 
+		console.log("Generated JWT: ", jwt);
+
 		// Add new tokens in cookies.
 		res.cookie('jwt', jwt, {
 			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
