@@ -1,0 +1,27 @@
+
+.login-button {
+	background-color: transparent;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	border: 3px solid rgb(35, 71, 103);
+	box-shadow:
+	0 0 7px #efefef,
+	0 0 10px #efefef,
+	0 0 20px rgb(60, 116, 166),
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166);
+	border-radius:15px;
+	padding: 10px;
+}
+
+.link-login{
+	color: #e3eef1;
+	font-size: 15px;
+	font-family: var(--font-type);
+	text-decoration: none;
+
+}

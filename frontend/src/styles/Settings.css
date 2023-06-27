@@ -1,0 +1,46 @@
+@import "../App.css";
+
+/* ********************************/
+/* ***      VARIABLES CSS       ***/
+/* ********************************/
+
+/* Jai mis les couleurs que jai utilisées dans ces variables */
+/* tu pourras les modifier, les ajouter dans le theme, etc. bref ce que tu veux  */
+
+.settings {
+	--main-shadow-color : rgba(0, 0, 0, 0.3);
+	--main-element-bg-color : rgb(255, 255, 255);
+	--user-element-bg-color : rgb(206, 151, 216);
+
+	--main-element-border-color : rgb(239, 242, 253);
+	--user-element-border-color : rgb(91, 73, 94);
+
+	--bg-gradient-color-1 : rgb(254,248,250);
+	--bg-gradient-color-2 : rgba(254,248,250,1);
+	--bg-gradient-color-3 : rgba(237,242,249,1);
+	--bg-gradient-color-4 : rgb(215, 148, 233);
+
+	--font-color : white;
+}
+
+
+.settings {
+	min-height: 80vh;
+	margin: 6em;
+	padding: 2em;
+	background-color: rgba(57, 76, 97, 0.798);
+	color: var(--font-color);
+	border-radius: 24px;
+}
+
+.settings__card {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0 18vw; 
+}
+
+.settings_btn {
+	all: unset;
+	cursor: pointer;
+}
