@@ -9,7 +9,9 @@ export class ChatGateway {
 	// extract out the message from the data payload
 	@SubscribeMessage('message')
 	handleMessage(@MessageBody() message: string): void {
+		console.log(message);
+		
+		// broadcast an incoming message to all listeners of this gateway; with namespace chat
 		this.server.emit('message', message); // 'message' is the name of the event we're emitting
 	}
-	// broadcast an incoming message to all listeners of this gateway; with namespace chat
 }
