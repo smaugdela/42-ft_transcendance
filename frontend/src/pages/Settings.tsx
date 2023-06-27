@@ -1,6 +1,6 @@
 import "../styles/Settings.css";
 import { IUser } from "../api/types";
-import { fetchUserById, updateUserStringProperty, deleteUserById } from "../api/APIHandler";
+import { fetchUserById, updateUserStringProperty, deleteUserById, fetchMe, uploadImage } from "../api/APIHandler";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,14 +15,12 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 	const [propertyChanged, setPropertyChange] = useState<boolean>(false);
 	const queryClient = useQueryClient();
 
-	const id:number = 1; // à remplacer par le token JWT de la personne loggée à ce moment là
-
 	// Récupérer l'input user
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {setUserInput(event.target.value);}
 
 	// Préparer les actions qui seront faites à la mutation du IUser
 	const updateProperty = useMutation({
-		mutationFn: () => updateUserStringProperty(id, property, userInput),
+		mutationFn: () => updateUserStringProperty(property, userInput),
 		onSuccess: () => {
 			queryClient.invalidateQueries(['user']);
 			console.log("Update of user attribute successful");
@@ -38,7 +36,7 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 		}
 	};
 
-	const userQuery = useQuery({ queryKey: ['user', id], queryFn: () => fetchUserById(id)});
+	const userQuery = useQuery({ queryKey: ['user'], queryFn: () => fetchMe()});
 	
 	if (userQuery.error instanceof Error){
 		return <div>Error: {userQuery.error.message}</div>
@@ -78,13 +76,27 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
   );
 }
 
-// TODO: pour les images, vérifier que c'est un format accepté + stockage à prévoir
-// TODO: permettre de crop l'image et de la preview ?
 export function AvatarCardSettings() {
-
-	const id = 1;
-	const userQuery = useQuery({ queryKey: ['user', id], queryFn: () => fetchUserById(id)});
 	
+	const id = 1;
+	const [avatar, setAvatar] = useState<File>();
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files)
+		{
+			setAvatar(event.target.files[0]);
+		}
+	}
+
+	const handleSubmit = () => {
+		if (!avatar)
+			return;
+		const response = uploadImage(avatar, id).then((response) => {
+			console.log(response);});
+	}
+
+	const userQuery = useQuery({ queryKey: ['user', id], queryFn: () => fetchUserById(id)});
+
 	if (userQuery.error instanceof Error){
 		return <div>Error: {userQuery.error.message}</div>
 	}
@@ -95,7 +107,8 @@ export function AvatarCardSettings() {
 		<div>
 			<div><img src={userQuery.data.avatar} alt={userQuery.data.nickname} /></div>
 			<h5>Change your avatar</h5>
-			<div><input type="file" accept="image/png, image/jpeg, image/gif"  name="avatar" id="avatar" /></div>
+			<div><input onChange={handleChange} type="file" accept="image/png, image/jpeg, image/gif"  name="avatar" id="avatar" /></div>
+			<div><button onClick={handleSubmit}>Upload</button></div>
 		</div>
 	);
 }
@@ -106,7 +119,6 @@ export function PasswordCardSettings() {
 	const [userInput, setUserInput] = useState<string>("");
 	const [passwordChanged, setPasswordChange] = useState<boolean>(false);
 	const queryClient = useQueryClient();
-	const id = 1;
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUserInput(event.target.value);
@@ -131,7 +143,7 @@ export function PasswordCardSettings() {
 	}
 
 	const updatePassword = useMutation({
-		mutationFn: () => updateUserStringProperty(id, 'password', userInput),
+		mutationFn: () => updateUserStringProperty('password', userInput),
 		onSuccess: () => {
 			queryClient.invalidateQueries(['user']);
 			console.log("Update of user's password successful");

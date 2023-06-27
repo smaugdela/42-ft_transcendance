@@ -31,7 +31,7 @@ async function bootstrap() {
 
 	const port = Number(process.env.BACKEND_PORT);
 	if (isNaN(port)) {
-		console.log("Error: backend port undefinedin .env file.")
+		console.log("Error: backend port undefined in .env file.")
 		return;
 	}
 
@@ -49,13 +49,16 @@ async function bootstrap() {
 	SwaggerModule.setup('swagger', app, document);
 
 	// pushToDB_User('../database/user_data.json'); // Use this only to load test data
-	console.log("Data loaded into db");
+	// console.log("Data loaded into db");
 
 	app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
 	app.use(cookieParser(process.env.COOKIE_SECRET));
 
-	app.enableCors();
+	app.enableCors({
+		credentials: true,
+		origin: process.env.FRONTEND_URL,
+	});
 
 	await app.listen(port);
 

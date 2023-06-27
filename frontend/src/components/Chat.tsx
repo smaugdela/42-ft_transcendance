@@ -34,7 +34,6 @@ const Chat = () => {
 		</div>
      
 		<div className="content">
-		{/* {"Simon : Bonjour"} */}
 		{tabs.map((tab, index) => (
 			<div
 			key={index}

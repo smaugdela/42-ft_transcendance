@@ -12,6 +12,18 @@ export class AuthGuard implements CanActivate {
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 
+		// We extract the access jwt from the request.
+		const request: Request = context.switchToHttp().getRequest();
+		// const jwt = this.extractAccessTokenFromHeader(request.headers);
+		const jwt = request.signedCookies.jwt;
+
+		// console.log("jwt in cookies: ", jwt);
+
+		if (jwt) {
+			const payload = await this.jwtService.decode(jwt, {});
+			request.userId = payload.sub;
+		}
+
 		// We first check if it's a public endpoint.
 		const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
 			context.getHandler(),
@@ -21,25 +33,19 @@ export class AuthGuard implements CanActivate {
 			return true;
 		}
 
-		// We extract the access jwt from the request.
-		const request: Request = context.switchToHttp().getRequest();
-		// const jwt = this.extractAccessTokenFromHeader(request.headers);
-		// const jwt = request.signedCookies.jwt;
-
-		// // Check if the jwt exists and is valid.
-		// if (!jwt) {
-		// 	throw new UnauthorizedException('No access token.');
-		// }
-		// try {
-		// 	const payload = await this.jwtService.verifyAsync(jwt, {
-		// 		secret: jwtConstants.secret,
-		// 	});
-		// 	request['user'] = payload;
-		// 	console.log("Access token is valid.");
-		// } catch (error) {
-		// 	console.log("Access token is invalid or expired.");
-		// 	throw new UnauthorizedException('Bad token.');
-		// }
+		// Check if the jwt exists and is valid.
+		if (!jwt) {
+			throw new UnauthorizedException('No access token.');
+		}
+		try {
+			await this.jwtService.verifyAsync(jwt, {
+				secret: jwtConstants.secret,
+			});
+			console.log("Access token is valid.");
+		} catch (error) {
+			console.log("Access token is invalid or expired.");
+			throw new UnauthorizedException('Bad token.');
+		}
 		return true;
 	}
 
