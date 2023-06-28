@@ -87,6 +87,7 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 
 export function AvatarCardSettings( props: {user : IUser}) {
 
+	const [errorMsg, setErrorMsg] = useState<string>("");
 	const [avatar, setAvatar] = useState<File>();
 	const [avatarUrl, setAvatarUrl] = useState<string>(props.user.avatar);
 	
@@ -96,16 +97,34 @@ export function AvatarCardSettings( props: {user : IUser}) {
 		}
 	}
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		if (!avatar) return;
-		uploadImage(avatar).then((response) => { setAvatarUrl(response); });
+		try {
+			const url = await uploadImage(avatar);
+			setAvatarUrl(url);
+			setErrorMsg("");
+		} catch (error) {
+			setErrorMsg("File must be png/jpg/gif and not exceed 5MB!");
+		}
 	}
+	if (avatarUrl === undefined) {
+		setAvatarUrl(props.user.avatar);
+	}
+	
 	return (
 		<div>
 			<div><img src={avatarUrl} alt={props.user.nickname}/></div>
 			<h5>Change your avatar</h5>
 			<div><input onChange={handleChange} type="file" accept="image/png, image/jpeg, image/gif"  name="avatar" id="avatar" /></div>
 			<div><button onClick={handleSubmit}>Upload</button></div>
+			<>
+			{
+				errorMsg && 
+				<div className="settings__alert">
+					<h6>{errorMsg}</h6>
+				</div>
+			}
+			</>
 		</div>
 	);
 }

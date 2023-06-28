@@ -57,8 +57,6 @@ export class UsersService {
 	}
 
 	async updateAvatar(id: number, avatarUrl: string) {
-		console.log(typeof id);
-		
 		return await prisma.user.update({
 			where: { id: id },
 			data: {

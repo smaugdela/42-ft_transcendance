@@ -130,6 +130,6 @@ export async function uploadImage(file: File) {
 		});
 		return response.data; // response.data = avatarUrl
 	} catch (error) {
-		console.error(`Error uploading image: ${error}`);
+		throw new Error('Error uploading image');
 	}
 }

@@ -9,6 +9,11 @@ export class CloudinaryService {
             if (file.size > 1024 * 1024 * 5) {
                 return reject("File too large");
             }
+
+            const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            if (allowedMimeTypes.includes(file.mimetype) === false) {
+                return reject("Only JPEG, JPG, PNG, and GIF files are allowed");
+            }
             
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
