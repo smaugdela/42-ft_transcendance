@@ -27,12 +27,8 @@
 }
 
 #main-dashboard {
-	/* background-color: var(--heading-color); */
 	background-color: rgba(255,255,255,0.13);
     backdrop-filter: blur(10px);
-
-
-	
 	border: 2px solid rgb(35, 71, 103);
 	box-shadow:
 		0 0 7px #efefef,
@@ -40,9 +36,6 @@
 		0 0 20px rgb(60, 116, 166),
 		0 0 42px rgb(60, 116, 166),
 		0 0 50px rgb(60, 116, 166);
-
-	/* opacity : 95%; */
-	/* color: white; */
 	padding : 1vw;
 	border-radius: 20px;
 	margin : 2vw;

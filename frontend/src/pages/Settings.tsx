@@ -4,7 +4,7 @@ import { updateUserStringProperty, deleteMe, fetchMe, uploadImage } from "../api
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareCheck, faTrashCanArrowUp, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faSquareCheck, faTrashCanArrowUp, faEye, faEyeSlash, faFileArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
 import validator from 'validator';
 
@@ -112,10 +112,13 @@ export function AvatarCardSettings( props: {user : IUser}) {
 	}
 	
 	return (
-		<div>
-			<div><img src={avatarUrl} alt={props.user.nickname}/></div>
+		<div id="avatar_settings">
+			<div><img src={avatarUrl} alt={props.user.nickname} id="user_avatar"/></div>
 			<h5>Change your avatar</h5>
-			<div><input onChange={handleChange} type="file" accept="image/png, image/jpeg, image/gif"  name="avatar" id="avatar" /></div>
+			<div>
+				<input onChange={handleChange} type="file" accept="image/png, image/jpeg, image/gif"  name="file" id="file" />
+				<label htmlFor="file" id="choose_file"><FontAwesomeIcon icon={faFileArrowUp} /> Choose a file</label>
+			</div>
 			<div><button onClick={handleSubmit}>Upload</button></div>
 			<>
 			{

@@ -18,7 +18,6 @@ export default function Login() {
 
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 	event.preventDefault();
-	console.log("je veux m'inscrire");
 
 	const response = signUp(nickname, password).then((response) => {console.log(response)});
 	console.log(response);

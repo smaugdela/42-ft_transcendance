@@ -7,6 +7,11 @@
 /* Jai mis les couleurs que jai utilisées dans ces variables */
 /* tu pourras les modifier, les ajouter dans le theme, etc. bref ce que tu veux  */
 
+
+/* ********************************/
+/* ***      MAIN SETTINGS       ***/
+/* ********************************/
+
 .settings {
 	--main-shadow-color : rgba(0, 0, 0, 0.3);
 	--main-element-bg-color : rgb(255, 255, 255);
@@ -28,9 +33,18 @@
 	min-height: 80vh;
 	margin: 6em;
 	padding: 2em;
-	background-color: rgba(57, 76, 97, 0.798);
 	color: var(--font-color);
 	border-radius: 24px;
+
+	background-color: rgba(255,255,255,0.13);
+    backdrop-filter: blur(10px);
+	border: 2px solid rgb(35, 71, 103);
+	box-shadow:
+		0 0 7px #efefef,
+		0 0 10px #efefef,
+		0 0 20px rgb(60, 116, 166),
+		0 0 42px rgb(60, 116, 166),
+		0 0 50px rgb(60, 116, 166);
 }
 
 .settings__card {
@@ -43,4 +57,45 @@
 .settings_btn {
 	all: unset;
 	cursor: pointer;
+}
+
+/* ********************************/
+/* ***     AVATAR COMPONENT     ***/
+/* ********************************/
+/* 
+#avatar-settings {
+	
+} */
+
+#user_avatar {
+	height: 9em;
+	width : 8em;
+	background-size: cover;
+	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+	margin : 1em;
+	background-position: top center;
+
+}
+
+#file {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+	display: inline-block;
+}
+
+#file + label {
+	font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    display: inline-block;
+	cursor: pointer;
+}
+
+#file:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
 }
