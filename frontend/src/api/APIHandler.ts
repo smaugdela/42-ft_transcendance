@@ -72,11 +72,10 @@ export async function fetchMe(): Promise<IUser> {
 
 export async function updateUserStringProperty(property: keyof IUser, newProperty: string) {
 	try {
-		console.log('property: ', property);
 		const requestBody = { [property]: newProperty };
 
 		const response = await api.patch<IUser>(
-			`/users/me`, 				// url
+			`/users/me`, 					// url
 			requestBody,					// request body
 			{								// request config object
 				headers: {
@@ -91,21 +90,13 @@ export async function updateUserStringProperty(property: keyof IUser, newPropert
 	}
 }
 
-export async function deleteUserById(id: number): Promise<IUser> {
-
-	const userToDelete = await fetchUserById(id);
-
-	if (userToDelete) {
-		return api.delete(`/users/${id}`);
-	} else {
-		throw new Error('Deletion impossible: the user does not exist');
-	}
+export async function deleteMe(): Promise<IUser> {
+	return api.delete(`/users/me`);
 }
 
 /* ######################*/
 /* ######  SEARCH  ######*/
 /* ######################*/
-
 
 export async function getMeiliData(): Promise<IUser> {
 	const response = await api.get(`/search`);
@@ -124,20 +115,17 @@ export async function postSearchQuery(userInput: string) {
 /* ###   CLOUDINARY   ###*/
 /* ######################*/
 
-export async function uploadImage(file: File, userId: number) {
+export async function uploadImage(file: File) {
 	try {
 		const formData = new FormData();
 		formData.append('file', file);
 		
+		const user = await fetchMe();
+
 		const response = await api.post(`/cloudinary`, 
 			formData, {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-				origin: ['http://localhost:3000', 'http://localhost:3001'],
-				credentials: true,
-			},
 			params: {
-				id: userId,
+				id: user.id,
 			},
 		});
 		return response.data; // response.data = avatarUrl
