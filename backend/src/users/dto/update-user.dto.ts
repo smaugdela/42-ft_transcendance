@@ -5,14 +5,17 @@ export class UpdateUserDto {
 	@IsString()
 	avatar:	string;
 	
+	@IsOptional()
 	@IsNotEmpty()
 	@IsString()
 	nickname:		string;
 
+	@IsOptional()
 	@IsString()
 	@IsNotEmpty()
 	accessToken:	string;
 
+	@IsOptional()
 	@IsString()
 	@IsNotEmpty()
 	coalition:		string;
@@ -27,6 +30,7 @@ export class UpdateUserDto {
 	@IsString()
 	bio:	string;
 
+	@IsOptional()
 	@IsNotEmpty()
 	@IsString()
 	password:		string;

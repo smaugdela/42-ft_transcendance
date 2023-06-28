@@ -31,7 +31,7 @@ export class UsersService {
 	async updateMe(id: number, updateUserDto: UpdateUserDto) {
 
 		// If the user wants to change his password, we hash it.
-		if (updateUserDto.password) {
+		if (updateUserDto.password !== undefined) {
 			// generate password hash
 			const { randomBytes } = await import('crypto');
 			const buf = randomBytes(16);
