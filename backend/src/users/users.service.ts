@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import * as argon from 'argon2';
 
 const hashingConfig = {
@@ -42,10 +42,18 @@ export class UsersService {
 			updateUserDto.password = hash;
 		}
 
-		return await prisma.user.update({
-			where: { id },
-			data: updateUserDto,
-		});
+		try {
+			await prisma.user.update({
+				where: { id },
+				data: updateUserDto,
+			});
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2002') { // https://www.prisma.io/docs/reference/api-reference/error-reference
+					throw new Error('Nickname is already taken');
+				}
+			}
+		}
 	}
 
 	async updateAvatar(id: number, avatarUrl: string) {

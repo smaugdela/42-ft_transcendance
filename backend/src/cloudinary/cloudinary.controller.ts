@@ -24,7 +24,6 @@ export class CloudinaryController {
 				return uploadedImage.url;
 
 			} catch (error) {
-				console.error(error);
 				throw new Error('Cloudinary image upload error');
 			}
 		}

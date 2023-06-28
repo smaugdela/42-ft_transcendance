@@ -86,7 +86,7 @@ export async function updateUserStringProperty(property: keyof IUser, newPropert
 		);
 		return response.data;
 	} catch (error) {
-		console.log('Error updating user: ', error);
+		throw new Error('Nickname is already taken');
 	}
 }
 

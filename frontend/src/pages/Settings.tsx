@@ -10,6 +10,7 @@ import validator from 'validator';
 
 export function TextCardSettings({ property } : {property: keyof IUser}) {
 	const [userInput, setUserInput] = useState<string>("");
+	const [errorMsg, setErrorMsg] = useState<string>("");
 	const [propertyChanged, setPropertyChange] = useState<boolean>(false);
 	const queryClient = useQueryClient();
 
@@ -19,17 +20,20 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 	// Préparer les actions qui seront faites à la mutation du IUser
 	const updateProperty = useMutation({
 		mutationFn: () => updateUserStringProperty(property, userInput),
-		onSuccess: () => { queryClient.invalidateQueries(['user']); },
+		onSuccess: () => { 
+			queryClient.invalidateQueries(['user']);
+			setPropertyChange(true); },
+		onError: (error: any) => {
+			setErrorMsg(error.message || 'An error occurred');
+		  },
 	});
 
 	// Actions qui seront prises lors du click du bouton
-	const handleUpdate = (event: React.MouseEvent<HTMLElement>) => {
+	const handleUpdate = async (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
-		
 		if (property !== 'email' ||
 			(property === 'email' && validator.isEmail(userInput) === true)) {
-			updateProperty.mutate();
-			setPropertyChange(true);
+				updateProperty.mutate();
 		}
 	};
 
@@ -66,6 +70,14 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 				propertyChanged && 
 				<div className="settings__alert">
 					<h6>Your modification was successful !</h6>
+				</div>
+			}
+			</>
+			<>
+			{
+				errorMsg && 
+				<div className="settings__alert">
+					<h6>{errorMsg}</h6>
 				</div>
 			}
 			</>
