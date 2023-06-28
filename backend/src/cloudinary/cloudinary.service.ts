@@ -1,6 +1,5 @@
 import { UploadApiResponse, UploadApiErrorResponse, v2 as cloudinary } from "cloudinary";
 import * as streamifier from 'streamifier';
-// import toStream from "buffer-to-stream";
 
 export class CloudinaryService {
     async uploadImage(file: Express.Multer.File): Promise<UploadApiResponse | UploadApiErrorResponse> {
@@ -10,10 +9,6 @@ export class CloudinaryService {
             if (file.size > 1024 * 1024 * 5) {
                 return reject("File too large");
             }
-            console.log('I have the file!', file);
-            console.log(' file multer name: ', file.originalname);
-            
-            
             
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
@@ -30,12 +25,8 @@ export class CloudinaryService {
                     }
                 }
             );
-            console.log(`i'm there!`);
-            // BLOQUE A CE MOMENT LA
             const readableStream = streamifier.createReadStream(file.buffer);
             readableStream.pipe(uploadStream);
-            console.log('wooooooH');
-            
         });
     }
 }

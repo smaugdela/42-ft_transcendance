@@ -4,7 +4,7 @@ import { CloudinaryService } from "./cloudinary.service";
 import { UsersService } from "src/users/users.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 
-@ApiTags('Cloudinary') // for swagger
+@ApiTags('Cloudinary')
 @Controller('cloudinary')
 
 export class CloudinaryController {
@@ -20,10 +20,8 @@ export class CloudinaryController {
 			) {
 			try {
 				const uploadedImage =  await this.cloudinaryService.uploadImage(file);
-				const avatarUrl = uploadedImage.url;
-	
-				await this.usersService.updateAvatar(+id, avatarUrl);
-				return avatarUrl;
+				await this.usersService.updateAvatar(+id, uploadedImage.url);
+				return uploadedImage.url;
 
 			} catch (error) {
 				console.error(error);
