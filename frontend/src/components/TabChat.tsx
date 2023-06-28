@@ -16,7 +16,7 @@ function TabChat() {
 		setInputValue('');
 	  }
 	};
-  
+
 	useEffect(() => {
 
 	  const newSocket = io('http://localhost:3001', {
@@ -24,7 +24,7 @@ function TabChat() {
 	  });
 	  setSocket(newSocket);
   
-	  newSocket.on('chatMessage', (message: string) => {
+	  newSocket.on('receiveMessage', (message: string) => {
 		console.log("Message received");
 		setMessages((prevMessages) => [...prevMessages, message]);
 	  });
