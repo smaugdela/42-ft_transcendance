@@ -1,15 +1,8 @@
-@import "../App.css";
+/* @import "../App.css"; */
+@import url('https://fonts.googleapis.com/css2?family=Licorice&family=Open+Sans&family=Share+Tech&display=swap');
 
 /* ********************************/
 /* ***      VARIABLES CSS       ***/
-/* ********************************/
-
-/* Jai mis les couleurs que jai utilisées dans ces variables */
-/* tu pourras les modifier, les ajouter dans le theme, etc. bref ce que tu veux  */
-
-
-/* ********************************/
-/* ***      MAIN SETTINGS       ***/
 /* ********************************/
 
 .settings {
@@ -29,13 +22,16 @@
 }
 
 
+/* ********************************/
+/* ***      MAIN SETTINGS       ***/
+/* ********************************/
+
 .settings {
 	min-height: 80vh;
 	margin: 6em;
 	padding: 2em;
 	color: var(--font-color);
 	border-radius: 24px;
-
 	background-color: rgba(255,255,255,0.13);
     backdrop-filter: blur(10px);
 	border: 2px solid rgb(35, 71, 103);
@@ -45,6 +41,11 @@
 		0 0 20px rgb(60, 116, 166),
 		0 0 42px rgb(60, 116, 166),
 		0 0 50px rgb(60, 116, 166);
+}
+
+.settings > h1 {
+	text-align: center;
+	font-size: 2.5em;
 }
 
 .settings__card {
@@ -62,10 +63,30 @@
 /* ********************************/
 /* ***     AVATAR COMPONENT     ***/
 /* ********************************/
-/* 
-#avatar-settings {
-	
-} */
+
+#avatar_settings {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	flex-direction: row;
+}
+
+.avatar_block:nth-child(2) {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.avatar_block:nth-child(2) > h5 {
+	font-family: 'Bruno Ace SC', cursive;
+	color: black;
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+	text-align: left;
+	font-size: 1.1em;
+	margin-bottom: 0.5vh;
+}
+
 
 #user_avatar {
 	height: 9em;
@@ -77,6 +98,7 @@
 
 }
 
+/* input file moche qu'on veut cacher */
 #file {
 	width: 0.1px;
 	height: 0.1px;
@@ -84,18 +106,60 @@
 	overflow: hidden;
 	position: absolute;
 	z-index: -1;
-	display: inline-block;
 }
 
+/* le label 'choose a file */
 #file + label {
-	font-size: 1.25em;
-    font-weight: 700;
+    font-weight: 600;
     color: white;
-    display: inline-block;
+    display: inline;
+	cursor: pointer;
+	padding: 7px 0;
+}
+
+#file + label:hover {
+    font-weight: 600;
+    color: black;
+    display: inline;
+	cursor: pointer;
+	padding: 7px 0;
+}
+
+#file + label > span {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.8em;
+	padding: 5px 10px;
+
+}
+
+#avatar_upload_btn {
+	display : block;
+	font-weight: 0;
+	font-size: 14px;
+	color: #fff;
+	background-color: transparent;
+	padding: 10px 20px;
+	border: solid white 2px;
+	box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+	border-radius: 50px;
+	transition : 1000ms;
+	transform: translateY(0);
+	font-family: 'Bruno Ace SC', cursive;
 	cursor: pointer;
 }
 
-#file:focus + label {
-	outline: 1px dotted #000;
-	outline: -webkit-focus-ring-color auto 5px;
+#avatar_upload_btn:hover {
+	transition : 600ms;
+	padding: 10px 25px;
+	transform : translateY(-0px);
+	background-color: #fff;
+	color: var(--heading-color);
+}
+
+
+.settings__alert {
+	color: rgb(160, 21, 21);
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	padding: 0 0 0.5em 0;
 }

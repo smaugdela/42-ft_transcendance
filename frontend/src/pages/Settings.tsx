@@ -89,11 +89,13 @@ export function AvatarCardSettings( props: {user : IUser}) {
 
 	const [errorMsg, setErrorMsg] = useState<string>("");
 	const [avatar, setAvatar] = useState<File>();
+	const [browseMsg, setBrowseMsg] = useState<string>("Choose a file");
 	const [avatarUrl, setAvatarUrl] = useState<string>(props.user.avatar);
 	
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files){
 			setAvatar(event.target.files[0]);
+			setBrowseMsg("File chosen!");
 		}
 	}
 
@@ -106,6 +108,7 @@ export function AvatarCardSettings( props: {user : IUser}) {
 		} catch (error) {
 			setErrorMsg("File must be png/jpg/gif and not exceed 5MB!");
 		}
+		setBrowseMsg("Choose a file");
 	}
 	if (avatarUrl === undefined) {
 		setAvatarUrl(props.user.avatar);
@@ -113,21 +116,26 @@ export function AvatarCardSettings( props: {user : IUser}) {
 	
 	return (
 		<div id="avatar_settings">
-			<div><img src={avatarUrl} alt={props.user.nickname} id="user_avatar"/></div>
-			<h5>Change your avatar</h5>
 			<div>
-				<input onChange={handleChange} type="file" accept="image/png, image/jpeg, image/gif"  name="file" id="file" />
-				<label htmlFor="file" id="choose_file"><FontAwesomeIcon icon={faFileArrowUp} /> Choose a file</label>
+				<img src={avatarUrl} alt={props.user.nickname} id="user_avatar"/>
 			</div>
-			<div><button onClick={handleSubmit}>Upload</button></div>
-			<>
-			{
-				errorMsg && 
-				<div className="settings__alert">
-					<h6>{errorMsg}</h6>
-				</div>
-			}
-			</>
+			<div className="avatar_block">
+				<h5>Change your avatar :</h5>
+				<input onChange={handleChange} type="file" accept="image/png, image/jpeg, image/gif"  name="file" id="file" />
+				<label htmlFor="file" id="choose_file">
+					<FontAwesomeIcon icon={faFileArrowUp} />
+					<span>{browseMsg}</span>
+				</label>
+				<>
+				{
+					errorMsg && 
+					<div className="settings__alert">
+						<h6>{errorMsg}</h6>
+					</div>
+				}
+				</>
+				<button id="avatar_upload_btn" onClick={handleSubmit}>Upload</button>
+			</div>
 		</div>
 	);
 }
@@ -284,11 +292,11 @@ export default function Settings() {
 		<img src="" alt="" />
 		<div className="settings__container">
 			<AvatarCardSettings user={userQuery.data}/>
-			<TextCardSettings property={'nickname'}/>
+			{/* <TextCardSettings property={'nickname'}/>
 			<TextCardSettings property={'bio'}/>
 			<TextCardSettings property={'email'}/>
 			<PasswordCardSettings />
-			<DeleteAccountCardSettings />
+			<DeleteAccountCardSettings /> */}
 		</div>
 	</div>
 	);
