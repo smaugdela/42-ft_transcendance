@@ -30,10 +30,10 @@ export default function Login() {
 		<form>
 		{/* <h3>Login Here</h3> */}
 
-		<label htmlFor="username">Username</label>
+		<label className="login_label" htmlFor="username">Username</label>
 		<input onChange={handleNickname} type="text" placeholder="Email or Phone" id="username" />
 
-		<label htmlFor="password">Password</label>
+		<label  className="login_label" htmlFor="password">Password</label>
 		<input onChange={handlePassword} type="password" placeholder="Password" id="password" />
 
 		<button onClick={handleClick} id="login-btn">Log In</button>

@@ -42,7 +42,7 @@ form *{
     border: none;
 }
 
-label{
+.login_label {
 	color: #e3eef1;
 	text-shadow:
 	0 0 7px #efefef,
