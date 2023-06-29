@@ -26,9 +26,15 @@
 /* ***      MAIN SETTINGS       ***/
 /* ********************************/
 
+.settings__flex {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .settings {
 	min-height: 80vh;
-	margin: 6em;
+	margin: 6vh 0;
 	padding: 2em;
 	color: var(--font-color);
 	border-radius: 24px;
@@ -291,4 +297,110 @@
 	box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
 	transition : 1000ms;
 	transform: translateY(0);
+}
+
+
+#password__btn:hover {
+	transition : 600ms;
+	padding: 10px 25px;
+	transform : translateY(-0px);
+	background-color: #fff;
+	color: var(--heading-color);
+}
+
+/* ********************************/
+/* *** DELETE ACCOUNT COMPONENT ***/
+/* ********************************/
+
+.delete_settings {
+	text-align: center;
+}
+
+.delete_settings__title {
+	font-family: 'Bruno Ace SC', cursive;
+	color: black;
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+	text-align: left;
+	font-size: 1.1em;
+	margin-bottom: 0.8vh;
+}
+
+.delete_settings__subtitle {
+	font-family: 'Open Sans', sans-serif;
+	text-align: left;
+	margin-bottom: 15px;
+}
+
+.delete_settings__btn {
+	display: inline-block;
+	cursor: pointer;
+	
+	padding: 10px 20px;
+	border: solid white 2px;
+	margin-bottom: 1em;
+	border-radius: 50px;
+
+	color: #fff;
+
+	background-color: transparent;
+	box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+	transition : 1000ms;
+	transform: translateY(0);
+}
+
+
+.delete_settings__btn:hover {
+	transition : 600ms;
+	padding: 10px 25px;
+	transform : translateY(-0px);
+	background-color: #fff;
+	color: black;
+}
+
+.delete_settings__btn > span {
+	padding-left: 15px;
+	font-family: 'Bruno Ace SC', cursive;
+	font-size: 14px;
+	font-weight: 400;
+	color: #fff;
+}
+
+.delete_settings__btn > span:hover {
+	color: #000000;
+}
+
+.delete_settings__alert {
+	background-color: rgb(35, 71, 103);
+	backdrop-filter: blur(10px);
+	border: 2px solid rgb(35, 71, 103);
+	box-shadow:
+		0 0 7px #efefef,
+		0 0 10px #efefef,
+		0 0 20px rgb(60, 116, 166),
+		0 0 42px rgb(60, 116, 166),
+		0 0 50px rgb(60, 116, 166);
+
+	padding: 40px 20px;
+	border-radius: 18px;
+
+	z-index: 200;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%,-50%);
+    left: 50%;
+}
+
+.delete_settings__alert > h5 {
+	color: rgb(255, 255, 255);
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+	font-family: 'Bruno Ace SC', cursive;
+	font-size: 1em;
+	padding: 0 0 0.5em 0;
+}
+
+.delete_settings__alert > h6 {
+	color: rgb(231, 231, 231);
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	padding: 0 0 0.5em 0;
 }

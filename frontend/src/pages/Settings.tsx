@@ -269,24 +269,24 @@ export function DeleteAccountCardSettings() {
 	}, [isDeleted, navigate]);
 
 	return (
-		<div className="delete_settings">
-			<h2 className="delete_settings__title">Do you want to delete your account?</h2>
-			<h4 className="delete_settings__subtitle">Beware, this action is irreversible.</h4>
-			<button className="delete_settings__btn"
-					onClick={handleDelete}>
-				<FontAwesomeIcon icon={faTrashCanArrowUp} />
-				Delete your account
-			</button>
-			<>
-			{
-				isDeleted && 
-				<div className="delete_settings__alert">
-					<h5>Your account was successfully deleted!</h5>
-					<h6>You will now be redirected to the home page in a few seconds...</h6>
-				</div>
-			}
-			</>
-		</div>
+			<div className="delete_settings">
+				<h2 className="delete_settings__title">Do you want to delete your account?</h2>
+				<h4 className="delete_settings__subtitle">Beware, this action is irreversible.</h4>
+				<button className="delete_settings__btn"
+						onClick={handleDelete}>
+					<FontAwesomeIcon icon={faTrashCanArrowUp} />
+					<span>Delete your account</span>
+				</button>
+				<>
+				{
+					isDeleted && 
+					<div className="delete_settings__alert">
+						<h5>Your account was successfully deleted!</h5>
+						<h6>You will now be redirected to the home page in a few seconds...</h6>
+					</div>
+				}
+				</>
+			</div>
 	);
 }
 
@@ -302,17 +302,19 @@ export default function Settings() {
 	}
 
 	return (
-	<div className='settings'>
-		<h1>Settings</h1>
-		<img src="" alt="" />
-		<div className="settings__container">
-			<AvatarCardSettings user={userQuery.data}/>
-			<TextCardSettings property={'nickname'}/>
-			<TextCardSettings property={'bio'}/>
-			<TextCardSettings property={'email'}/>
-			<PasswordCardSettings />
-			{/* <DeleteAccountCardSettings /> */}
+		<div className="settings__flex">
+			<div className='settings'>
+				<h1>Settings</h1>
+				<img src="" alt="" />
+				<div className="settings__container">
+					<AvatarCardSettings user={userQuery.data}/>
+					<TextCardSettings property={'nickname'}/>
+					<TextCardSettings property={'bio'}/>
+					<TextCardSettings property={'email'}/>
+					<PasswordCardSettings />
+					<DeleteAccountCardSettings />
+				</div>
+			</div>
 		</div>
-	</div>
 	);
 }
