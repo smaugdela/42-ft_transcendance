@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Res } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaClient, Prisma } from '@prisma/client';
+import { Response } from 'express';
 import * as argon from 'argon2';
 
 const hashingConfig = {
@@ -65,7 +66,8 @@ export class UsersService {
 		});
 	}
 
-	async removeMe(id: number) {
+	async removeMe(id: number,  @Res({ passthrough: true }) res: Response) {
+		res.clearCookie('jwt');
 		return await prisma.user.delete({
 			where: { id: id }
 		});
