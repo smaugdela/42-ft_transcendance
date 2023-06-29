@@ -135,7 +135,7 @@ export function AvatarCardSettings( props: {user : IUser}) {
 				<>
 				{
 					errorMsg && 
-					<div className="settings__alert">
+					<div className="settings__alert_err">
 						<h6>{errorMsg}</h6>
 					</div>
 				}
@@ -197,28 +197,37 @@ export function PasswordCardSettings() {
 	}
 
 	return (
-		<div>
-			<h2>Changing your password</h2>
+		<div className="password__card">
+			<h2>Change your password</h2>
 			<h4>New password</h4>
-			<input type={type} name="password" id="password" onChange={handleChange}/>
-			<span onClick={handleClick}><FontAwesomeIcon icon={icon} /></span>
+			<div className="input_container">
+				<input 
+					type={type}
+					name="password"
+					id="password"
+					onChange={handleChange}
+					className="password__input"
+				/>
+				<span onClick={handleClick}><FontAwesomeIcon icon={icon} /></span>
+			</div>
 			<h4>Confirm the new password</h4>
-			<input type={type} name="password" id="password2" onChange={handleConfirmation}/>
-			<span onClick={handleClick}><FontAwesomeIcon icon={icon} /></span>
+			<div className="input_container">
+				<input type={type} name="password" id="password2" className="password__input" onChange={handleConfirmation}></input>
+				<span onClick={handleClick}><FontAwesomeIcon icon={icon} /></span>
+			</div>
 			<>
 			{
 				errorMsg && 
-				<div className="settings__alert">
+				<div className="settings__alert_err">
 					<h6>{errorMsg}</h6>
 				</div>
 			}
 			</>
-			<hr />
-			<button onClick={handleUpdate}>Save changes</button>
+			<button id="password__btn" onClick={handleUpdate}>Save changes</button>
 			<>
 			{
-				passwordChanged && 
-				<div className="settings__alert">
+				passwordChanged &&
+				<div className="settings__alert_ok">
 					<h6>Your modification was successful !</h6>
 				</div>
 			}
@@ -301,8 +310,8 @@ export default function Settings() {
 			<TextCardSettings property={'nickname'}/>
 			<TextCardSettings property={'bio'}/>
 			<TextCardSettings property={'email'}/>
-			{/* <PasswordCardSettings />
-			<DeleteAccountCardSettings /> */}
+			<PasswordCardSettings />
+			{/* <DeleteAccountCardSettings /> */}
 		</div>
 	</div>
 	);

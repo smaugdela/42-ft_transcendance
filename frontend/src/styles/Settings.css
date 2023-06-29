@@ -53,7 +53,7 @@
 /* ********************************/
 
 .settings__alert_err {
-	color: rgb(160, 21, 21);
+	color: rgb(194, 78, 78);
 	font-family: 'Open Sans', sans-serif;
 	font-size: 1em;
 	padding: 0 0 0.5em 0;
@@ -168,7 +168,7 @@
 /* ***   INPUT TEXT COMPONENT   ***/
 /* ********************************/
 
-
+/* Can be 'nickname', 'bio' or 'email' title */
 .text_settings_property {
 	text-align: center;
 	font-family: 'Bruno Ace SC', cursive;
@@ -210,4 +210,85 @@
 
 .text_checkbox:hover {
 	color:#90d0f0;
+}
+
+/* ********************************/
+/* ***    PASSWORD COMPONENT    ***/
+/* ********************************/
+
+.password__card {
+	margin: 1em;
+	margin-top : 2em;
+	text-align: center;
+}
+
+/* change your password */
+.password__card > h2 {
+	font-family: 'Bruno Ace SC', cursive;
+	color: black;
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+	text-align: left;
+	font-size: 1.1em;
+	margin-bottom: 0.8vh;
+}
+
+/* new password, confirm the new password */
+.password__card > h4 {
+	text-align: left;
+	font-family: 'Bruno Ace SC', cursive;
+	font-size: 0.9em;
+	font-weight: 400;
+	color: rgb(255, 255, 255);
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+}
+
+.input_container {
+	position: relative;
+}
+
+
+.input_container > span {
+	color:rgb(255, 255, 255);
+	position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+
+.password__input {
+	padding:10px;
+	border:0;
+	border-radius:5px;
+	margin: 10px 5px;
+	margin-right: 10px;
+	box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+	font-family: 'Bruno Ace SC', cursive;
+	color: white;
+}
+
+.password__input:hover {
+	border:0;
+	border-bottom:0.5px solid #eee;
+}
+
+#password__btn {
+	display: inline-block;
+	cursor: pointer;
+	
+	padding: 10px 20px;
+	border: solid white 2px;
+	margin-bottom: 1em;
+	border-radius: 50px;
+
+	font-family: 'Bruno Ace SC', cursive;
+	font-size: 14px;
+	font-weight: 0;
+	color: #fff;
+
+	background-color: transparent;
+	box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+	transition : 1000ms;
+	transform: translateY(0);
 }
