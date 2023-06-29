@@ -4,7 +4,7 @@ import { updateUserStringProperty, deleteMe, fetchMe, uploadImage } from "../api
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareCheck, faTrashCanArrowUp, faEye, faEyeSlash, faFileArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faTrashCanArrowUp, faEye, faEyeSlash, faFileArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
 import validator from 'validator';
 
@@ -34,6 +34,10 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 		if (property !== 'email' ||
 			(property === 'email' && validator.isEmail(userInput) === true)) {
 				updateProperty.mutate();
+				setErrorMsg("");
+		}
+		else {
+			setErrorMsg("Email must be formatted mail@mail.mail");
 		}
 	};
 
@@ -46,29 +50,31 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 		return <div>Loading</div>
 	}
 
-	const placeholderValue = String(userQuery.data[property]);
-
+	const placeholderValue: string = (userQuery.data[property] === null) ?
+									"empty" : String(userQuery.data[property]);
+	
 	return (
 		<>
-			<div className="settings__card">
-				<div className="settings_property">{property}</div>
-				<div className="settings_input">
+			<div className="text_settings__card">
+				<div className="text_settings_property">{property}</div>
+				<div className="text_settings_input">
 					<input	type="text" 
 							name={property}
 							id={property} 
-							placeholder={placeholderValue} 
+							placeholder={placeholderValue}
 							onChange={handleChange}
+							className="text_input"
 					/>
-				</div>
-				<button className="settings_btn" 
+				<button className="text_settings_btn" 
 						onClick={handleUpdate}>
-						<FontAwesomeIcon icon={faSquareCheck} />
+						<FontAwesomeIcon icon={faCircleCheck} className="text_checkbox"/>
 				</button>
+				</div>
 			</div>
 			<>
 			{
 				propertyChanged && 
-				<div className="settings__alert">
+				<div className="settings__alert_ok">
 					<h6>Your modification was successful !</h6>
 				</div>
 			}
@@ -76,7 +82,7 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 			<>
 			{
 				errorMsg && 
-				<div className="settings__alert">
+				<div className="settings__alert_err">
 					<h6>{errorMsg}</h6>
 				</div>
 			}
@@ -292,10 +298,10 @@ export default function Settings() {
 		<img src="" alt="" />
 		<div className="settings__container">
 			<AvatarCardSettings user={userQuery.data}/>
-			{/* <TextCardSettings property={'nickname'}/>
+			<TextCardSettings property={'nickname'}/>
 			<TextCardSettings property={'bio'}/>
 			<TextCardSettings property={'email'}/>
-			<PasswordCardSettings />
+			{/* <PasswordCardSettings />
 			<DeleteAccountCardSettings /> */}
 		</div>
 	</div>

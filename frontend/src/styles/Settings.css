@@ -48,16 +48,24 @@
 	font-size: 2.5em;
 }
 
-.settings__card {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin: 0 18vw; 
+/* ********************************/
+/* ***   ERROR MSG COMPONENT    ***/
+/* ********************************/
+
+.settings__alert_err {
+	color: rgb(160, 21, 21);
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	padding: 0 0 0.5em 0;
+	text-align: center;
 }
 
-.settings_btn {
-	all: unset;
-	cursor: pointer;
+.settings__alert_ok {
+	color: rgb(153, 201, 139);
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	padding: 0 0 0.5em 0;
+	text-align: center;
 }
 
 /* ********************************/
@@ -156,10 +164,50 @@
 	color: var(--heading-color);
 }
 
+/* ********************************/
+/* ***   INPUT TEXT COMPONENT   ***/
+/* ********************************/
 
-.settings__alert {
-	color: rgb(160, 21, 21);
-	font-family: 'Open Sans', sans-serif;
-	font-size: 1em;
-	padding: 0 0 0.5em 0;
+
+.text_settings_property {
+	text-align: center;
+	font-family: 'Bruno Ace SC', cursive;
+	color: rgb(255, 255, 255);
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+}
+.text_settings_input {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0 18vw; 
+}
+
+.text_input[type=text] {
+	padding:10px;
+	border:0;
+	border-radius:5px;
+	margin: 10px 5px;
+	margin-right: 10px;
+	box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+	font-family: 'Bruno Ace SC', cursive;
+	color: white;
+	resize: vertical;
+}
+
+.text_input[type=text]:hover {
+	border:0;
+	border-bottom:0.5px solid #eee;
+}
+
+.text_settings_btn {
+	all: unset;
+	cursor: pointer;
+}
+
+.text_checkbox {
+	color: rgb(255, 255, 255);
+}
+
+.text_checkbox:hover {
+	color:#90d0f0;
 }
