@@ -12,6 +12,8 @@ import { CloudinaryModule } from './uploadimg/cloudinary.module';
 import { SocketsModule } from './sockets/sockets.module';
 import { SocketsGateway } from './sockets/sockets.gateway';
 import { SocketsService } from './sockets/sockets.service';
+import { SocialModule } from './social/social.module';
+import { SocialModule } from './social/social.module';
 
 @Module({
 	controllers: [AppController],
@@ -21,7 +23,7 @@ import { SocketsService } from './sockets/sockets.service';
 		SocketsGateway,
 		SocketsService
 	],
-	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule, CloudinaryModule, SocketsModule],
+	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule, CloudinaryModule, SocketsModule, SocialModule],
 })
 
 export class AppModule {}

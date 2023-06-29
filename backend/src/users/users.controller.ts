@@ -45,4 +45,6 @@ export class UsersController {
 	updateOne(@Param('username') username: string, @Body() body: UpdateUserDto) {
 		return this.usersService.updateOne(username, body);
 	}
+
+	
 }
