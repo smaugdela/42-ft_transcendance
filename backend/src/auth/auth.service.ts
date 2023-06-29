@@ -177,11 +177,11 @@ export class AuthService {
 		// Delete jwt from cookies.
 		res.clearCookie('jwt');
 
-		const userDb = await prisma.user.findUnique({
-			where: {
-				id: userId,
-			}
-		});
+		// const userDb = await prisma.user.findUnique({
+		// 	where: {
+		// 		id: userId,
+		// 	}
+		// });
 
 		// this.webSocketGateway.server.emit('inactivity', userDb.nickname);
 

@@ -8,7 +8,7 @@ import { AuthGuard } from './auth/guards/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { SearchModule } from './search/search.module';
-import { CloudinaryModule } from './uploadimg/cloudinary.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { SocketsModule } from './sockets/sockets.module';
 import { SocketsGateway } from './sockets/sockets.gateway';
 import { SocketsService } from './sockets/sockets.service';

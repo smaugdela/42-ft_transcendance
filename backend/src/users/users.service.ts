@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Res } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
+import { Response } from 'express';
 import * as argon from 'argon2';
 
 const hashingConfig = {
@@ -31,7 +32,7 @@ export class UsersService {
 	async updateMe(id: number, updateUserDto: UpdateUserDto) {
 
 		// If the user wants to change his password, we hash it.
-		if (updateUserDto.password) {
+		if (updateUserDto.password !== undefined) {
 			// generate password hash
 			const { randomBytes } = await import('crypto');
 			const buf = randomBytes(16);
@@ -42,21 +43,45 @@ export class UsersService {
 			updateUserDto.password = hash;
 		}
 
+		try {
+			await prisma.user.update({
+				where: { id },
+				data: updateUserDto,
+			});
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2002') { // https://www.prisma.io/docs/reference/api-reference/error-reference
+					throw new Error('Nickname is already taken');
+				}
+			}
+		}
+	}
+
+	async updateAvatar(id: number, avatarUrl: string) {
 		return await prisma.user.update({
-			where: { id },
-			data: updateUserDto,
+			where: { id: id },
+			data: {
+				avatar: avatarUrl
+			},
 		});
 	}
 
-	async removeMe(id: number) {
+	async removeMe(id: number,  @Res({ passthrough: true }) res: Response) {
+		res.clearCookie('jwt');
 		return await prisma.user.delete({
-			where: { id }
+			where: { id: id }
 		});
 	}
 
 	async findOne(username: string) {
 		return await prisma.user.findUnique({
 			where: { nickname: username }
+		});
+	}
+
+	async findOneById(id: number) {
+		return await prisma.user.findUnique({
+			where: { id: id }
 		});
 	}
 
@@ -67,3 +92,4 @@ export class UsersService {
 		});
 	}
 }
+
