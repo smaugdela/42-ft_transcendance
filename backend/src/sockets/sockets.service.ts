@@ -18,7 +18,7 @@ export class SocketsService {
 		if (!jwt)
 			return false;
 
-		// We unsign th jwt cookie to make it readable
+		// We unsign the jwt cookie to make it readable
 		const unsignedJwt = cookieParser.signedCookie(decodeURIComponent(jwt), process.env.COOKIE_SECRET);
 		if (!unsignedJwt)
 			return false;

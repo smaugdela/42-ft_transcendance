@@ -33,13 +33,13 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	}
 
 	handleDisconnect(client: Socket) {
-		console.log('Client disconnected:', client.id)
+		console.log('Client disconnected:', client.id);
 		client.disconnect();
 	}
 
 	@SubscribeMessage('sendMessage')
 	async handleSendMessage(client: Socket, payload: string): Promise<void> {
-		console.log(client.id, 'sent message:', payload)
+		console.log(client.id, 'sent message:', payload);
 		this.server.emit('receiveMessage', payload);
 	}
 }
