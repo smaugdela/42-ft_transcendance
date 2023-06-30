@@ -72,7 +72,7 @@ export class AuthService {
 
 			console.log("User 42 logged in: ", userDb);
 
-			await this.generateToken(userDb.id, userDb.nickname, res);
+			await this.generateToken(userDb.id, res);
 
 			// this.webSocketGateway.server.emit('activity', userDb.nickname);
 
@@ -113,7 +113,7 @@ export class AuthService {
 
 			console.log("User", body.nickname, "logged in.");
 
-			await this.generateToken(activeUser.id, activeUser.nickname, res);
+			await this.generateToken(activeUser.id, res);
 
 			// this.webSocketGateway.server.emit('activity', activeUser.nickname);
 
@@ -154,7 +154,7 @@ export class AuthService {
 			// log the created user
 			console.log('New standard user created: ', newUser);
 
-			await this.generateToken(newUser.id, newUser.nickname, res);
+			await this.generateToken(newUser.id, res);
 
 			// this.webSocketGateway.server.emit('activity', newUser.nickname);
 
@@ -176,22 +176,21 @@ export class AuthService {
 		// Delete jwt from cookies.
 		res.clearCookie('jwt');
 
-		// We inform 
+		// We inform everyone that the user is now inactive via websockets.
 		// const userDb = await prisma.user.findUnique({
 		// 	where: {
 		// 		id: userId,
 		// 	}
 		// });
-
 		// this.webSocketGateway.server.emit('inactivity', userDb.nickname);
 
 		return "Successfully logged out.";
 	}
 
-	async generateToken(userId: number, username: string, @Res({ passthrough: true }) res: Response) {
+	async generateToken(userId: number, @Res({ passthrough: true }) res: Response) {
 
 		// Generate access JWT.
-		const payload = { sub: userId, username: username };
+		const payload = { sub: userId };
 		const jwt = await this.jwtService.signAsync(payload, {
 			secret: process.env.JWT_SECRET,
 			expiresIn: '1d',
@@ -200,7 +199,7 @@ export class AuthService {
 		// Add new tokens in cookies.
 		res.cookie('jwt', jwt, {
 			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
-			// secure: true, // Only send the cookie over HTTPS
+			secure: true, // Only send the cookie over HTTPS
 			maxAge: 60 * 60 * 24 * 1000, // Set cookie expiry to 1 day
 			signed: true, // Indicates if the cookie should be signed
 			sameSite: 'none', // Allow cross-site cookies

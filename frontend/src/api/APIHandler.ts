@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IUser } from "./types";
 
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 axios.defaults.withCredentials = true;
 
@@ -39,7 +39,7 @@ export async function signUp(newNickname: string, password: string): Promise<any
 			{
 				headers: {
 					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': ['http://localhost:3001', 'http://localhost:3000']
+					'Access-Control-Allow-Origin': BASE_URL,
 				},
 			},
 		);
@@ -80,7 +80,7 @@ export async function updateUserStringProperty(property: keyof IUser, newPropert
 			{								// request config object
 				headers: {
 					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': ['http://localhost:3001', 'http://localhost:3000']
+					'Access-Control-Allow-Origin': BASE_URL,
 				},
 			},
 		);
@@ -119,10 +119,10 @@ export async function uploadImage(file: File) {
 	try {
 		const formData = new FormData();
 		formData.append('file', file);
-		
+
 		const user = await fetchMe();
 
-		const response = await api.post(`/cloudinary`, 
+		const response = await api.post(`/cloudinary`,
 			formData, {
 			params: {
 				id: user.id,
