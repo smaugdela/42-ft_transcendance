@@ -182,6 +182,7 @@ export class AuthService {
 		// 		id: userId,
 		// 	}
 		// });
+
 		// this.webSocketGateway.server.emit('inactivity', userDb.nickname);
 
 		return "Successfully logged out.";

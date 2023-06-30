@@ -27,12 +27,8 @@
 }
 
 #main-dashboard {
-	/* background-color: var(--heading-color); */
 	background-color: rgba(255,255,255,0.13);
     backdrop-filter: blur(10px);
-
-
-	
 	border: 2px solid rgb(35, 71, 103);
 	box-shadow:
 		0 0 7px #efefef,
@@ -40,9 +36,6 @@
 		0 0 20px rgb(60, 116, 166),
 		0 0 42px rgb(60, 116, 166),
 		0 0 50px rgb(60, 116, 166);
-
-	/* opacity : 95%; */
-	/* color: white; */
 	padding : 1vw;
 	border-radius: 20px;
 	margin : 2vw;
@@ -193,11 +186,8 @@
 	border-radius: 20px;
 	padding-top: 1rem;
 	text-align: center;
-	
 	background-color: #e8f5fca6;
 	border : solid 1px rgb(251, 251, 251);
-	
-	
 }
 
 .one-achievement:hover {
@@ -248,7 +238,7 @@
 }
 
 
-#stats > h1, h5 {
+#stats > h1, #stats > h5 {
 	font-family: var(--font-type);
 	text-shadow:
 	0 0 7px #efefef,
@@ -337,7 +327,7 @@
 }
 
 .challenge-btn:hover{
-	transition : 1000ms;
+	transition : 500ms;
 	padding: 10px 50px;
 	transform : translateY(-0px);
 	background-color: #fff;
