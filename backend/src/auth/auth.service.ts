@@ -176,12 +176,12 @@ export class AuthService {
 		// Delete jwt from cookies.
 		res.clearCookie('jwt');
 
-		const userDb = await prisma.user.findUnique({
-			where: {
-				id: userId,
-			}
-		});
-
+		// We inform 
+		// const userDb = await prisma.user.findUnique({
+		// 	where: {
+		// 		id: userId,
+		// 	}
+		// });
 		// this.webSocketGateway.server.emit('inactivity', userDb.nickname);
 
 		return "Successfully logged out.";
@@ -196,8 +196,6 @@ export class AuthService {
 			expiresIn: '1d',
 		});
 
-		console.log("Generated JWT: ", jwt);
-
 		// Add new tokens in cookies.
 		res.cookie('jwt', jwt, {
 			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
@@ -210,46 +208,4 @@ export class AuthService {
 
 		return true;
 	}
-
-	// async googleAuth(@Req() req, @Res({passthrough: true}) response: Response) {
-
-	// 	if (!req.user) {
-	// 		return 'No user from google';
-	// 	}
-
-	// 	console.log("Google returned this user: ", req.user);
-
-	// 	const logUser: AuthDto = req.user;
-	// 	console.log("User: ", logUser);
-
-	// 	let userDb = await prisma.user.findUnique({
-	// 		where: {
-	// 			nickname: logUser.nickname,
-	// 		}
-	// 	});
-
-	// 	if (!userDb)
-	// 	{
-	// 		userDb = await prisma.user.create({
-	// 			data: logUser
-	// 		});
-	// 		console.log("User created.");
-	// 	}
-	// 	else
-	// 	{
-	// 		await prisma.user.update({
-	// 			where: {
-	// 				id: userDb.id,
-	// 			},
-	// 			data: {
-	// 				accessToken: req.user.accessToken,
-	// 			}
-	// 		});
-	// 	}
-
-	// 	response.cookie('accessToken', req.user.accessToken);
-	// 	response.cookie('id', userDb.id);
-
-	// 	return 'Successfully connected to google.';
-	// }
 }

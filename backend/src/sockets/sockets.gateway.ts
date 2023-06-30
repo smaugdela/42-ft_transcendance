@@ -1,4 +1,4 @@
-import { WebSocketGateway, SubscribeMessage, OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect, WebSocketServer, ConnectedSocket, WsException } from '@nestjs/websockets';
+import { WebSocketGateway, SubscribeMessage, OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
 import { SocketsService } from './sockets.service';
 import { Server, Socket } from 'socket.io';
 
@@ -14,11 +14,21 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	@WebSocketServer() server: Server;
 
 	afterInit(server: Server) {
-		console.log('WS Initialized');
+		console.log('WS Initialized! Server:', server);
 	}
 
-	handleConnection(client: Socket, ...args: any[]) {
-		console.log('Client connected:', client.id);
+	async handleConnection(client: Socket, ...args: any[]) {
+
+		console.log("args:", args);
+
+		// We protect the socket connection
+		const cookie: string = client.handshake.headers.cookie;
+		if (await this.socketsService.authSocket(cookie) === false) {
+			console.log("Socket Error: Invalid or inexistent JWT.")
+			client.disconnect(true);
+		}
+		else
+			console.log('Client connected:', client.id);
 	}
 
 	handleDisconnect(client: Socket) {

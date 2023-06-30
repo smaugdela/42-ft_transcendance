@@ -11,7 +11,6 @@ function TabChat() {
 	const sendMessage = (message: string) => {
 	console.log("Sending Message");
 	  if (socket) {
-		console.log("socket defined");
 		socket.emit('sendMessage', message);
 		setInputValue('');
 	  }
