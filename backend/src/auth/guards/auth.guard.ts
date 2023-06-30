@@ -4,6 +4,9 @@ import { jwtConstants } from "../constants";
 import { Reflector } from "@nestjs/core";
 import { IS_PUBLIC_KEY } from "./public.decorator";
 import { Request } from "express";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -36,9 +39,22 @@ export class AuthGuard implements CanActivate {
 			throw new UnauthorizedException('No access token.');
 		}
 		try {
+
+			// We verify the jwt.
 			await this.jwtService.verifyAsync(jwt, {
 				secret: jwtConstants.secret,
 			});
+
+			// We check if the user exists in db.
+			const user = await prisma.user.findUniqueOrThrow({
+				where: {
+					id: request.userId,
+				}
+			});
+			if (!user) {
+				throw new UnauthorizedException('Bad token.');
+			}
+
 			console.log("Access token is valid.");
 		} catch (error) {
 			console.log("Access token is invalid or expired.");

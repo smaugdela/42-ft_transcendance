@@ -72,7 +72,7 @@ export class AuthService {
 
 			console.log("User 42 logged in: ", userDb);
 
-			await this.generateToken(userDb.id, userDb.nickname, res);
+			await this.generateToken(userDb.id, res);
 
 			// this.webSocketGateway.server.emit('activity', userDb.nickname);
 
@@ -113,7 +113,7 @@ export class AuthService {
 
 			console.log("User", body.nickname, "logged in.");
 
-			await this.generateToken(activeUser.id, activeUser.nickname, res);
+			await this.generateToken(activeUser.id, res);
 
 			// this.webSocketGateway.server.emit('activity', activeUser.nickname);
 
@@ -154,7 +154,7 @@ export class AuthService {
 			// log the created user
 			console.log('New standard user created: ', newUser);
 
-			await this.generateToken(newUser.id, newUser.nickname, res);
+			await this.generateToken(newUser.id, res);
 
 			// this.webSocketGateway.server.emit('activity', newUser.nickname);
 
@@ -188,10 +188,10 @@ export class AuthService {
 		return "Successfully logged out.";
 	}
 
-	async generateToken(userId: number, username: string, @Res({ passthrough: true }) res: Response) {
+	async generateToken(userId: number, @Res({ passthrough: true }) res: Response) {
 
 		// Generate access JWT.
-		const payload = { sub: userId, username: username };
+		const payload = { sub: userId };
 		const jwt = await this.jwtService.signAsync(payload, {
 			secret: process.env.JWT_SECRET,
 			expiresIn: '1d',
