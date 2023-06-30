@@ -5,7 +5,6 @@ import * as argon from 'argon2';
 import AuthDto from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
-import { SocketsGateway } from 'src/sockets/sockets.gateway';
 
 const hashingConfig = {
 	parallelism: 1,
@@ -16,7 +15,7 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class AuthService {
-	constructor(private readonly jwtService: JwtService, private socketsGateway: SocketsGateway) { }
+	constructor(private readonly jwtService: JwtService) { }
 
 	async redirect42(@Query() query, @Res({ passthrough: true }) res: Response) {
 
@@ -177,6 +176,7 @@ export class AuthService {
 		// Delete jwt from cookies.
 		res.clearCookie('jwt');
 
+		// We inform 
 		// const userDb = await prisma.user.findUnique({
 		// 	where: {
 		// 		id: userId,
@@ -199,57 +199,14 @@ export class AuthService {
 
 		// Add new tokens in cookies.
 		res.cookie('jwt', jwt, {
-			httpOnly: false,
-			// domain: 'http://localhost',
-			// httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
+			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
 			// secure: true, // Only send the cookie over HTTPS
 			maxAge: 60 * 60 * 24 * 1000, // Set cookie expiry to 1 day
 			signed: true, // Indicates if the cookie should be signed
+			sameSite: 'none', // Allow cross-site cookies
 			// domain: "process.env.FRONTEND_HOST",
 		});
 
 		return true;
 	}
-
-	// async googleAuth(@Req() req, @Res({passthrough: true}) response: Response) {
-
-	// 	if (!req.user) {
-	// 		return 'No user from google';
-	// 	}
-
-	// 	console.log("Google returned this user: ", req.user);
-
-	// 	const logUser: AuthDto = req.user;
-	// 	console.log("User: ", logUser);
-
-	// 	let userDb = await prisma.user.findUnique({
-	// 		where: {
-	// 			nickname: logUser.nickname,
-	// 		}
-	// 	});
-
-	// 	if (!userDb)
-	// 	{
-	// 		userDb = await prisma.user.create({
-	// 			data: logUser
-	// 		});
-	// 		console.log("User created.");
-	// 	}
-	// 	else
-	// 	{
-	// 		await prisma.user.update({
-	// 			where: {
-	// 				id: userDb.id,
-	// 			},
-	// 			data: {
-	// 				accessToken: req.user.accessToken,
-	// 			}
-	// 		});
-	// 	}
-
-	// 	response.cookie('accessToken', req.user.accessToken);
-	// 	response.cookie('id', userDb.id);
-
-	// 	return 'Successfully connected to google.';
-	// }
 }

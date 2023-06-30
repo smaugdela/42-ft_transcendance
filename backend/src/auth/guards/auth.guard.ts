@@ -17,8 +17,6 @@ export class AuthGuard implements CanActivate {
 		// const jwt = this.extractAccessTokenFromHeader(request.headers);
 		const jwt = request.signedCookies.jwt;
 
-		// console.log("jwt in cookies: ", jwt);
-
 		if (jwt) {
 			const payload = await this.jwtService.decode(jwt, {});
 			request.userId = payload.sub;
@@ -54,32 +52,4 @@ export class AuthGuard implements CanActivate {
 	// 	return type === 'Bearer' ? token : undefined;
 	// }
 
-	// private async checkRefreshToken(userId: number, refreshToken: string): Promise<boolean> {
-
-	// 	try {
-	// 		// Check if the given refreshToken is valid first.
-	// 		const payload = await this.jwtService.verifyAsync(refreshToken, {
-	// 			secret: process.env.JWT_SECRET,
-	// 		});
-	// 		if (payload.id != userId)
-	// 			return false;
-
-	// 		const user = await prisma.user.findUnique({
-	// 			where: { id: userId },
-	// 		});
-	// 		console.log("refreshToken:", refreshToken);
-
-	// 		// Compare tokens.
-	// 		// If they don't match, throw an exception
-	// 		if (!user.refreshToken || !refreshToken)
-	// 			return false;
-	// 		const tokMatch = await argon.verify(user.refreshToken, refreshToken, hashingConfig);
-	// 		if (tokMatch === false)
-	// 			return false;
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 		return false;
-	// 	}
-	// 	return true;
-	// }
 }

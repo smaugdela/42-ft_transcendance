@@ -41,10 +41,9 @@ export class UsersController {
 		return this.usersService.findOne(username);
 	}
 
-	@Patch(':username')
-	updateOne(@Param('username') username: string, @Body() body: UpdateUserDto) {
-		return this.usersService.updateOne(username, body);
-	}
+	// @Patch(':username')
+	// updateOne(@Param('username') username: string, @Body() body: UpdateUserDto) {
+	// 	return this.usersService.updateOne(username, body);
 
 	@Get(':id')
 	findOneById(@Param('id') id: string) {
