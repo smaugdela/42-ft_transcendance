@@ -176,13 +176,12 @@ export class AuthService {
 		// Delete jwt from cookies.
 		res.clearCookie('jwt');
 
-		// We inform 
+		// We inform everyone that the user is now inactive via websockets.
 		// const userDb = await prisma.user.findUnique({
 		// 	where: {
 		// 		id: userId,
 		// 	}
 		// });
-
 		// this.webSocketGateway.server.emit('inactivity', userDb.nickname);
 
 		return "Successfully logged out.";
@@ -200,7 +199,7 @@ export class AuthService {
 		// Add new tokens in cookies.
 		res.cookie('jwt', jwt, {
 			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
-			// secure: true, // Only send the cookie over HTTPS
+			secure: true, // Only send the cookie over HTTPS
 			maxAge: 60 * 60 * 24 * 1000, // Set cookie expiry to 1 day
 			signed: true, // Indicates if the cookie should be signed
 			sameSite: 'none', // Allow cross-site cookies

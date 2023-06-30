@@ -14,7 +14,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	@WebSocketServer() server: Server;
 
 	afterInit(server: Server) {
-		console.log('WS Initialized! Server:', server);
+		console.log('WS Initialized');
+		void (server);
 	}
 
 	async handleConnection(client: Socket, ...args: any[]) {
