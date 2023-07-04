@@ -5,6 +5,7 @@ export interface IUser {
 	email: string;
 	bio: string;
 	password: string;
+	enabled2FA: boolean;
 	coalition: string;
 	wins: number;
 	loses: number;

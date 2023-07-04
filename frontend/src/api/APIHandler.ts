@@ -90,6 +90,27 @@ export async function updateUserStringProperty(property: keyof IUser, newPropert
 	}
 }
 
+
+export async function updateUserBooleanProperty(property: keyof IUser, newProperty: boolean) {
+	try {
+		const requestBody = { [property]: newProperty };
+
+		const response = await api.patch<IUser>(
+			`/users/me`, 					// url
+			requestBody,					// request body
+			{								// request config object
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error('Error during change of boolean user property');
+	}
+}
+
 export async function deleteMe(): Promise<IUser> {
 	return api.delete(`/users/me`);
 }
