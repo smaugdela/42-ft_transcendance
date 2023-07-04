@@ -15,7 +15,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 	@WebSocketServer() server: Server;
 
-
 	afterInit(server: Server) {
 		server.use(usernameMiddleware(this.jwtService));
 		console.log('WS Initialized');
