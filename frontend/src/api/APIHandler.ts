@@ -52,13 +52,13 @@ export async function signUp(newNickname: string, password: string): Promise<any
 }
 
 
-export async function logOut(newNickname: string, password: string): Promise<any> {
+export async function logOut(): Promise<any> {
 
 	try {
-		const response = await axios.post(`${BASE_URL}/auth/signup`,
+		const user = await fetchMe();
+		const response = await axios.post(`${BASE_URL}/auth/logout`,
 			{
-				nickname: newNickname,
-				password: password
+				userId: user.id,
 			},
 			{
 				headers: {

@@ -1,11 +1,12 @@
 import '../styles/Navbar.css';
 import Avatar from './Avatar';
+import LoginBtn from './LoginBtn';
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import { ChangeEventHandler } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapPin, faSpaghettiMonsterFlying, faPeoplePulling, faPersonDrowning, faHandsHoldingChild, faRobot, faShieldCat, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
-import { checkIfLogged } from "../api/APIHandler";
+import { checkIfLogged, logOut } from "../api/APIHandler";
 
 const SidebarData = [
 	{
@@ -64,8 +65,16 @@ export default function Navbar(props: { theme: string, toggleTheme: ChangeEventH
 		fetchData();
 	}, [isLoggedIn]);
 	
+	
+	const handleLogout = async () => {
+		try {
+			await logOut();
+		} catch (error) {
+			console.log("logout error");
+		}
+	}
+	
 	const showSidebar = () => setSidebar(!sidebar);
-
   return (
 	<>
 			<div className='navbar'>
@@ -80,15 +89,25 @@ export default function Navbar(props: { theme: string, toggleTheme: ChangeEventH
 					CYBERPONG
 				</Link>
 			</div>
-			<div className="nav-avatar">
-				<Avatar />
 				<>
-			{
-				isLoggedIn && 
-				<FontAwesomeIcon className='nav-logout-icon' icon={faRightFromBracket} />
-			}
-			</>
-			</div>
+				{
+					isLoggedIn === false && 
+					<div className="nav-avatar">
+						<LoginBtn />
+					</div>
+				}
+				</>
+				<>
+				{
+					isLoggedIn === true && 
+					<div className="nav-avatar">
+						<Avatar />
+						<button onClick={handleLogout}>
+							<FontAwesomeIcon className='nav-logout-icon' icon={faRightFromBracket} />
+						</button>
+					</div>
+				}
+				</>
 
 		</div> 
 	
@@ -102,19 +121,18 @@ export default function Navbar(props: { theme: string, toggleTheme: ChangeEventH
 
 					<div className='item_image' >{item.image}
 					</div>
-				  {/* <FontAwesomeIcon icon={item.image} className='item_image'/> */}
-					{/* <img className='item_image' src={item.image}/> */}
 					<span className='item_title'> {item.title}</span>	
 				  </Link>
 				</li>
 			  );
 			})}
 		  </ul>
-		  <label id="test" className="theme-switch" htmlFor="checkbox">
-				<input type="checkbox" id="checkbox" checked={props.theme === 'kawaii'} onChange={props.toggleTheme}/>
-				<div className="slider round"></div>
-		  </label>
 		</nav> 
 	</>
   );
 }
+
+//   <label id="test" className="theme-switch" htmlFor="checkbox">
+// 		<input type="checkbox" id="checkbox" checked={props.theme === 'kawaii'} onChange={props.toggleTheme}/>
+// 		<div className="slider round"></div>
+//   </label>
