@@ -28,7 +28,31 @@ api.interceptors.response.use(
 /* ######   AUTH   ######*/
 /* ######################*/
 
+
 export async function signUp(newNickname: string, password: string): Promise<any> {
+
+	try {
+		const response = await axios.post(`${BASE_URL}/auth/signup`,
+			{
+				nickname: newNickname,
+				password: password
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error signup: ", error);
+	}
+}
+
+
+export async function logOut(newNickname: string, password: string): Promise<any> {
 
 	try {
 		const response = await axios.post(`${BASE_URL}/auth/signup`,
@@ -54,6 +78,11 @@ export async function signUp(newNickname: string, password: string): Promise<any
 /* ######################*/
 /* ######   USER   ######*/
 /* ######################*/
+
+export async function checkIfLogged(): Promise<boolean> {
+	const response = await axios.get<boolean>(`${BASE_URL}/users/check`);
+	return response.data;
+}
 
 export async function fetchUsers(): Promise<IUser[]> {
 	const response = await api.get<IUser[]>(`/users`);

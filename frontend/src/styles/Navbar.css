@@ -1,8 +1,8 @@
 @import '../App.css';
 @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Pacifico&display=swap');
+
 .navbar {
     background-color:var(--heading-color);
-	/* background-image: var(--header-image); */
     height: 80px;
 	width: 100%;
 	position : fixed;
@@ -29,6 +29,17 @@
 
 .nav-avatar{
 	padding-right: 10px;
+	display:flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 5px;
+}
+
+
+.nav-logout-icon {
+	color: white;
+	height: 30px;
+	width: auto;
 }
   
 .nav-menu.active {
