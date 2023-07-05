@@ -7,75 +7,111 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class SocialService {
-  async friendRequest(userId: number, username: string) {
-    return await prisma.user.update(
-      {
-        where: {id: userId},
-        connect: {pendingList: username}
-      }
-    );
-  }
+	async friendRequest(userId: number, username: string) {
+		return await prisma.user.update(
+			{
+				where: { id: userId },
+				data: {
+					pendingList: {
+						connect: { nickname: username }
+					}
+				}
+			}
+		);
+	}
 
-  async acceptRequest(userId: number, id: number) {
-    await prisma.user.update(
-      {
-        where: {id: userId},
-        disconnect: {pendingList: id}
-      }
-    )
-    return  await prisma.user.update(
-      {
-        where: {id: userId},
-        connect: {friendList: id}
-      }
-    );
-  }
+	async acceptRequest(userId: number, id: number) {
+		await prisma.user.update(
+			{
+				where: { id: userId },
+				data: {
+					pendingList: {
+						disconnect: { id: id }
+					}
+				}
+			}
+		)
+		return await prisma.user.update(
+			{
+				where: { id: userId },
+				data: {
+					friendsList: {
+						connect: { id: id }
+					}
+				}
+			}
+		);
+	}
 
-  async blockUser(userId: number, username: string) {
-    await prisma.user.update (
-      {
-        where: {id: userId},
-        disconnect: {pendingList: username}
-      }
-    )
-    return  await prisma.user.update(
-      {
-        where: {id: userId},
-        connect: {blockList: username}
-      }
-    );
-  }
+	async blockUser(userId: number, username: string) {
+		await prisma.user.update(
+			{
+				where: { id: userId },
+				data: {
+					pendingList: {
+						disconnect: { nickname: username }
+					}
+				}
+			}
+		)
+		return await prisma.user.update(
+			{
+				where: { id: userId },
+				data: {
+					blockList: {
+						connect: { nickname: username }
+					}
+				}
+			}
+		);
+	}
 
-  async removeFromBlock(userId: number, id : number) {
-    await prisma.user.update(
-      {
-        where: {id: userId},
-        disconnect: {blockList: id}
-      }
-    );
-    return  await prisma.user.update(
-      {
-        where: {id: userId},
-        connect: {friendList: id}
-      }
-    );
-  }
+	async removeFromBlock(userId: number, id: number) {
+		await prisma.user.update(
+			{
+				where: { id: userId },
+				data: {
+					blockList: {
+						disconnect: { id: id }
+					}
+				}
+			}
+		);
+		return await prisma.user.update(
+			{
+				where: { id: userId },
+				data: {
+					friendsList: {
+						connect: { id: id }
+					}
+				}
+			}
+		);
+	}
 
-  async rejectRequest(userId: number, id : number) {
-    return await prisma.user.update(
-      {
-        where: {id: userId},
-        disconnect: {pendingList: id}
-      }
-    );
-  }
+	async rejectRequest(userId: number, id: number) {
+		return await prisma.user.update(
+			{
+				where: { id: userId },
+				data: {
+					pendingList: {
+						disconnect: { id: id }
+					}
+				}
+			}
+		);
+	}
 
-  async removeFriend(userId: number, id :number) {
-    return await prisma.user.update(
-      {
-        where: {id: userId},
-        disconnect: {friendList: id}
-      }
-    );
-  }
+	async removeFriend(userId: number, id: number) {
+		return await prisma.user.update(
+			{
+				where: { id: userId },
+				data: {
+					friendsList: {
+						disconnect: { id: id }
+					}
+				}
+			}
+		);
+	}
 }
