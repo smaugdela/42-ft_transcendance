@@ -227,7 +227,7 @@ input:checked + .slider:before {
 	
 	/* Burger menu  */
 
-label{
+.nav-elements{
 	display: flex;
 	flex-direction: column;
 	width: 70px;
@@ -236,7 +236,7 @@ label{
 	transform: scale(0.7);
 }
 
-label span{
+.nav-elements span{
 	background: white;
 	border-radius: 5px;
 	height: 7px;

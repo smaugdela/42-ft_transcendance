@@ -1,5 +1,5 @@
 import { UploadApiResponse, UploadApiErrorResponse, v2 as cloudinary } from "cloudinary";
-import toStream from "buffer-to-stream";
+import * as streamifier from 'streamifier';
 
 export class CloudinaryService {
     async uploadImage(file: Express.Multer.File): Promise<UploadApiResponse | UploadApiErrorResponse> {
@@ -10,6 +10,11 @@ export class CloudinaryService {
                 return reject("File too large");
             }
 
+            const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            if (allowedMimeTypes.includes(file.mimetype) === false) {
+                return reject("Only JPEG, JPG, PNG, and GIF files are allowed");
+            }
+            
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
                     folder: "pong_avatars", // upload in folder name
@@ -25,8 +30,8 @@ export class CloudinaryService {
                     }
                 }
             );
-
-            toStream(file.buffer).pipe(uploadStream);
+            const readableStream = streamifier.createReadStream(file.buffer);
+            readableStream.pipe(uploadStream);
         });
     }
 }

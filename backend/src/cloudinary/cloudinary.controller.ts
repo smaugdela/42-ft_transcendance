@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body } from "@nestjs/common";
+import { Controller, Post, UseInterceptors, UploadedFile, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { CloudinaryService } from "./cloudinary.service";
 import { UsersService } from "src/users/users.service";
+import { FileInterceptor } from "@nestjs/platform-express";
 
-@ApiTags('Cloudinary') // for swagger
+@ApiTags('Cloudinary')
 @Controller('cloudinary')
 
 export class CloudinaryController {
@@ -12,18 +13,17 @@ export class CloudinaryController {
 		private usersService: UsersService) {}
 	
 		@Post('/')
-		public async uploadImage(@Body() file: Express.Multer.File, id:number) {
+		@UseInterceptors(FileInterceptor('file'))
+		public async uploadImage(
+			@UploadedFile() file: Express.Multer.File,
+			@Query('id') id: number
+			) {
 			try {
-				// const user = await this.usersService.findMe(id);
 				const uploadedImage =  await this.cloudinaryService.uploadImage(file);
-
-				const avatarUrl = uploadedImage.url;
-				// await this.usersService.updateMe(id, {avatar: avatarUrl});
-				await this.usersService.updateMe(id, avatarUrl);
-				return avatarUrl;
+				await this.usersService.updateAvatar(+id, uploadedImage.url);
+				return uploadedImage.url;
 
 			} catch (error) {
-				console.error(error);
 				throw new Error('Cloudinary image upload error');
 			}
 		}

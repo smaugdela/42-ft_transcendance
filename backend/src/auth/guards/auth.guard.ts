@@ -4,6 +4,9 @@ import { jwtConstants } from "../constants";
 import { Reflector } from "@nestjs/core";
 import { IS_PUBLIC_KEY } from "./public.decorator";
 import { Request } from "express";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -16,8 +19,6 @@ export class AuthGuard implements CanActivate {
 		const request: Request = context.switchToHttp().getRequest();
 		// const jwt = this.extractAccessTokenFromHeader(request.headers);
 		const jwt = request.signedCookies.jwt;
-
-		// console.log("jwt in cookies: ", jwt);
 
 		if (jwt) {
 			const payload = await this.jwtService.decode(jwt, {});
@@ -38,9 +39,22 @@ export class AuthGuard implements CanActivate {
 			throw new UnauthorizedException('No access token.');
 		}
 		try {
+
+			// We verify the jwt.
 			await this.jwtService.verifyAsync(jwt, {
 				secret: jwtConstants.secret,
 			});
+
+			// We check if the user exists in db.
+			const user = await prisma.user.findUniqueOrThrow({
+				where: {
+					id: request.userId,
+				}
+			});
+			if (!user) {
+				throw new UnauthorizedException('Bad token.');
+			}
+
 			console.log("Access token is valid.");
 		} catch (error) {
 			console.log("Access token is invalid or expired.");
@@ -54,32 +68,4 @@ export class AuthGuard implements CanActivate {
 	// 	return type === 'Bearer' ? token : undefined;
 	// }
 
-	// private async checkRefreshToken(userId: number, refreshToken: string): Promise<boolean> {
-
-	// 	try {
-	// 		// Check if the given refreshToken is valid first.
-	// 		const payload = await this.jwtService.verifyAsync(refreshToken, {
-	// 			secret: process.env.JWT_SECRET,
-	// 		});
-	// 		if (payload.id != userId)
-	// 			return false;
-
-	// 		const user = await prisma.user.findUnique({
-	// 			where: { id: userId },
-	// 		});
-	// 		console.log("refreshToken:", refreshToken);
-
-	// 		// Compare tokens.
-	// 		// If they don't match, throw an exception
-	// 		if (!user.refreshToken || !refreshToken)
-	// 			return false;
-	// 		const tokMatch = await argon.verify(user.refreshToken, refreshToken, hashingConfig);
-	// 		if (tokMatch === false)
-	// 			return false;
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 		return false;
-	// 	}
-	// 	return true;
-	// }
 }

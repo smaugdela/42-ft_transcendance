@@ -1,9 +1,9 @@
-import { Controller, Get, Body, Patch, Param, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete, Req, Res } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from "@nestjs/swagger";
 import { Public } from 'src/auth/guards/public.decorator';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
 @ApiTags('Users') // for swagger
 @Controller('users')
@@ -32,8 +32,8 @@ export class UsersController {
 	}
 
 	@Delete('me')
-	removeMe(@Req() req: Request) {
-		return this.usersService.removeMe(req.userId);
+	removeMe(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+		return this.usersService.removeMe(req.userId, res);
 	}
 
 	@Get(':username')
@@ -41,10 +41,22 @@ export class UsersController {
 		return this.usersService.findOne(username);
 	}
 
-	@Patch(':username')
-	updateOne(@Param('username') username: string, @Body() body: UpdateUserDto) {
-		return this.usersService.updateOne(username, body);
+	// @Patch(':username')
+	// updateOne(@Param('username') username: string, @Body() body: UpdateUserDto) {
+	// 	return this.usersService.updateOne(username, body);
+
+	@Get(':id')
+	findOneById(@Param('id') id: string) {
+	  return this.usersService.findOneById(+id);
+	}
+	@Patch(':id')
+	update(@Param('id') id: string, @Body() body: UpdateUserDto) {
+	  return this.usersService.updateMe(+id, body);
 	}
 
-	
+	// @Delete(':id')
+	// remove(@Param('id') id: string) {
+	//   return this.usersService.removeMe(+id);
+	// }
+
 }

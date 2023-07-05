@@ -1,11 +1,9 @@
-@import "../App.css";
+/* @import "../App.css"; */
+@import url('https://fonts.googleapis.com/css2?family=Licorice&family=Open+Sans&family=Share+Tech&display=swap');
 
 /* ********************************/
 /* ***      VARIABLES CSS       ***/
 /* ********************************/
-
-/* Jai mis les couleurs que jai utilisées dans ces variables */
-/* tu pourras les modifier, les ajouter dans le theme, etc. bref ce que tu veux  */
 
 .settings {
 	--main-shadow-color : rgba(0, 0, 0, 0.3);
@@ -24,23 +22,385 @@
 }
 
 
-.settings {
-	min-height: 80vh;
-	margin: 6em;
-	padding: 2em;
-	background-color: rgba(57, 76, 97, 0.798);
-	color: var(--font-color);
-	border-radius: 24px;
+/* ********************************/
+/* ***      MAIN SETTINGS       ***/
+/* ********************************/
+
+.settings__flex {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.settings__card {
+.settings {
+	min-height: 80vh;
+	margin: 6vh 0;
+	padding: 2em;
+	color: var(--font-color);
+	border-radius: 24px;
+	background-color: rgba(255,255,255,0.13);
+    backdrop-filter: blur(10px);
+	border: 2px solid rgb(35, 71, 103);
+	box-shadow:
+		0 0 7px #efefef,
+		0 0 10px #efefef,
+		0 0 20px rgb(60, 116, 166),
+		0 0 42px rgb(60, 116, 166),
+		0 0 50px rgb(60, 116, 166);
+}
+
+.settings > h1 {
+	text-align: center;
+	font-size: 2.5em;
+}
+
+/* ********************************/
+/* ***   ERROR MSG COMPONENT    ***/
+/* ********************************/
+
+.settings__alert_err {
+	color: rgb(194, 78, 78);
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	padding: 0 0 0.5em 0;
+	text-align: center;
+}
+
+.settings__alert_ok {
+	color: rgb(153, 201, 139);
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	padding: 0 0 0.5em 0;
+	text-align: center;
+}
+
+/* ********************************/
+/* ***     AVATAR COMPONENT     ***/
+/* ********************************/
+
+#avatar_settings {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	flex-direction: row;
+}
+
+.avatar_block:nth-child(2) {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.avatar_block:nth-child(2) > h5 {
+	font-family: 'Bruno Ace SC', cursive;
+	color: black;
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+	text-align: left;
+	font-size: 1.1em;
+	margin-bottom: 0.5vh;
+}
+
+
+#user_avatar {
+	height: 9em;
+	width : 8em;
+	background-size: cover;
+	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+	margin : 1em;
+	background-position: top center;
+
+}
+
+/* input file moche qu'on veut cacher */
+#file {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+/* le label 'choose a file */
+#file + label {
+    font-weight: 600;
+    color: white;
+    display: inline;
+	cursor: pointer;
+	padding: 7px 0;
+}
+
+#file + label:hover {
+    font-weight: 600;
+    color: black;
+    display: inline;
+	cursor: pointer;
+	padding: 7px 0;
+}
+
+#file + label > span {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.8em;
+	padding: 5px 10px;
+
+}
+
+#avatar_upload_btn {
+	display : block;
+	font-weight: 0;
+	font-size: 14px;
+	color: #fff;
+	background-color: transparent;
+	padding: 10px 20px;
+	border: solid white 2px;
+	box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+	border-radius: 50px;
+	transition : 1000ms;
+	transform: translateY(0);
+	font-family: 'Bruno Ace SC', cursive;
+	cursor: pointer;
+}
+
+#avatar_upload_btn:hover {
+	transition : 600ms;
+	padding: 10px 25px;
+	transform : translateY(-0px);
+	background-color: #fff;
+	color: var(--heading-color);
+}
+
+/* ********************************/
+/* ***   INPUT TEXT COMPONENT   ***/
+/* ********************************/
+
+/* Can be 'nickname', 'bio' or 'email' title */
+.text_settings_property {
+	text-align: center;
+	font-family: 'Bruno Ace SC', cursive;
+	color: rgb(255, 255, 255);
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+}
+.text_settings_input {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	margin: 0 18vw; 
 }
 
-.settings_btn {
+.text_input[type=text] {
+	padding:10px;
+	border:0;
+	border-radius:5px;
+	margin: 10px 5px;
+	margin-right: 10px;
+	box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+	font-family: 'Bruno Ace SC', cursive;
+	color: white;
+	resize: vertical;
+}
+
+.text_input[type=text]:hover {
+	border:0;
+	border-bottom:0.5px solid #eee;
+}
+
+.text_settings_btn {
 	all: unset;
 	cursor: pointer;
+}
+
+.text_checkbox {
+	color: rgb(255, 255, 255);
+}
+
+.text_checkbox:hover {
+	color:#90d0f0;
+}
+
+/* ********************************/
+/* ***    PASSWORD COMPONENT    ***/
+/* ********************************/
+
+.password__card {
+	margin: 1em;
+	margin-top : 2em;
+	text-align: center;
+}
+
+/* change your password */
+.password__card > h2 {
+	font-family: 'Bruno Ace SC', cursive;
+	color: black;
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+	text-align: left;
+	font-size: 1.1em;
+	margin-bottom: 0.8vh;
+}
+
+/* new password, confirm the new password */
+.password__card > h4 {
+	text-align: left;
+	font-family: 'Bruno Ace SC', cursive;
+	font-size: 0.9em;
+	font-weight: 400;
+	color: rgb(255, 255, 255);
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+}
+
+.input_container {
+	position: relative;
+}
+
+
+.input_container > span {
+	color:rgb(255, 255, 255);
+	position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+
+.password__input {
+	padding:10px;
+	border:0;
+	border-radius:5px;
+	margin: 10px 5px;
+	margin-right: 10px;
+	box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+	font-family: 'Bruno Ace SC', cursive;
+	color: white;
+}
+
+.password__input:hover {
+	border:0;
+	border-bottom:0.5px solid #eee;
+}
+
+#password__btn {
+	display: inline-block;
+	cursor: pointer;
+	
+	padding: 10px 20px;
+	border: solid white 2px;
+	margin-bottom: 1em;
+	border-radius: 50px;
+
+	font-family: 'Bruno Ace SC', cursive;
+	font-size: 14px;
+	font-weight: 0;
+	color: #fff;
+
+	background-color: transparent;
+	box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+	transition : 1000ms;
+	transform: translateY(0);
+}
+
+
+#password__btn:hover {
+	transition : 600ms;
+	padding: 10px 25px;
+	transform : translateY(-0px);
+	background-color: #fff;
+	color: var(--heading-color);
+}
+
+/* ********************************/
+/* *** DELETE ACCOUNT COMPONENT ***/
+/* ********************************/
+
+.delete_settings {
+	text-align: center;
+}
+
+.delete_settings__title {
+	font-family: 'Bruno Ace SC', cursive;
+	color: black;
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+	text-align: left;
+	font-size: 1.1em;
+	margin-bottom: 0.8vh;
+}
+
+.delete_settings__subtitle {
+	font-family: 'Open Sans', sans-serif;
+	text-align: left;
+	margin-bottom: 15px;
+}
+
+.delete_settings__btn {
+	display: inline-block;
+	cursor: pointer;
+	
+	padding: 10px 20px;
+	border: solid white 2px;
+	margin-bottom: 1em;
+	border-radius: 50px;
+
+	color: #fff;
+
+	background-color: transparent;
+	box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+	transition : 1000ms;
+	transform: translateY(0);
+}
+
+
+.delete_settings__btn:hover {
+	transition : 600ms;
+	padding: 10px 25px;
+	transform : translateY(-0px);
+	background-color: #fff;
+	color: black;
+}
+
+.delete_settings__btn > span {
+	padding-left: 15px;
+	font-family: 'Bruno Ace SC', cursive;
+	font-size: 14px;
+	font-weight: 400;
+	color: #fff;
+}
+
+.delete_settings__btn > span:hover {
+	color: #000000;
+}
+
+.delete_settings__alert {
+	background-color: rgb(35, 71, 103);
+	backdrop-filter: blur(10px);
+	border: 2px solid rgb(35, 71, 103);
+	box-shadow:
+		0 0 7px #efefef,
+		0 0 10px #efefef,
+		0 0 20px rgb(60, 116, 166),
+		0 0 42px rgb(60, 116, 166),
+		0 0 50px rgb(60, 116, 166);
+
+	padding: 40px 20px;
+	border-radius: 18px;
+
+	z-index: 200;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%,-50%);
+    left: 50%;
+}
+
+.delete_settings__alert > h5 {
+	color: rgb(255, 255, 255);
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+	font-family: 'Bruno Ace SC', cursive;
+	font-size: 1em;
+	padding: 0 0 0.5em 0;
+}
+
+.delete_settings__alert > h6 {
+	color: rgb(231, 231, 231);
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	padding: 0 0 0.5em 0;
 }

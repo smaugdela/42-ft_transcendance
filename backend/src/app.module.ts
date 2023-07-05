@@ -8,7 +8,7 @@ import { AuthGuard } from './auth/guards/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { SearchModule } from './search/search.module';
-import { CloudinaryModule } from './uploadimg/cloudinary.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { SocketsModule } from './sockets/sockets.module';
 import { SocketsGateway } from './sockets/sockets.gateway';
 import { SocketsService } from './sockets/sockets.service';
@@ -19,11 +19,9 @@ import { SocialModule } from './social/social.module';
 	controllers: [AppController],
 	providers: [
 		AppService,
-		{ provide: APP_GUARD, useClass: AuthGuard, },
-		SocketsGateway,
-		SocketsService
+		{ provide: APP_GUARD, useClass: AuthGuard, }
 	],
 	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule, CloudinaryModule, SocketsModule, SocialModule],
 })
 
-export class AppModule {}
+export class AppModule { }

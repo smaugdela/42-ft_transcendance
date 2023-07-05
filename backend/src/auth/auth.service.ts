@@ -5,7 +5,6 @@ import * as argon from 'argon2';
 import AuthDto from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
-import { SocketsGateway } from 'src/sockets/sockets.gateway';
 
 const hashingConfig = {
 	parallelism: 1,
@@ -16,7 +15,7 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class AuthService {
-	constructor(private readonly jwtService: JwtService, private socketsGateway: SocketsGateway) { }
+	constructor(private readonly jwtService: JwtService) { }
 
 	async redirect42(@Query() query, @Res({ passthrough: true }) res: Response) {
 
@@ -73,7 +72,7 @@ export class AuthService {
 
 			console.log("User 42 logged in: ", userDb);
 
-			await this.generateToken(userDb.id, userDb.nickname, res);
+			await this.generateToken(userDb.id, res);
 
 			// this.webSocketGateway.server.emit('activity', userDb.nickname);
 
@@ -114,7 +113,7 @@ export class AuthService {
 
 			console.log("User", body.nickname, "logged in.");
 
-			await this.generateToken(activeUser.id, activeUser.nickname, res);
+			await this.generateToken(activeUser.id, res);
 
 			// this.webSocketGateway.server.emit('activity', activeUser.nickname);
 
@@ -155,7 +154,7 @@ export class AuthService {
 			// log the created user
 			console.log('New standard user created: ', newUser);
 
-			await this.generateToken(newUser.id, newUser.nickname, res);
+			await this.generateToken(newUser.id, res);
 
 			// this.webSocketGateway.server.emit('activity', newUser.nickname);
 
@@ -177,21 +176,21 @@ export class AuthService {
 		// Delete jwt from cookies.
 		res.clearCookie('jwt');
 
-		const userDb = await prisma.user.findUnique({
-			where: {
-				id: userId,
-			}
-		});
-
+		// We inform everyone that the user is now inactive via websockets.
+		// const userDb = await prisma.user.findUnique({
+		// 	where: {
+		// 		id: userId,
+		// 	}
+		// });
 		// this.webSocketGateway.server.emit('inactivity', userDb.nickname);
 
 		return "Successfully logged out.";
 	}
 
-	async generateToken(userId: number, username: string, @Res({ passthrough: true }) res: Response) {
+	async generateToken(userId: number, @Res({ passthrough: true }) res: Response) {
 
 		// Generate access JWT.
-		const payload = { sub: userId, username: username };
+		const payload = { sub: userId };
 		const jwt = await this.jwtService.signAsync(payload, {
 			secret: process.env.JWT_SECRET,
 			expiresIn: '1d',
@@ -199,57 +198,14 @@ export class AuthService {
 
 		// Add new tokens in cookies.
 		res.cookie('jwt', jwt, {
-			httpOnly: false,
-			// domain: 'http://localhost',
-			// httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
-			// secure: true, // Only send the cookie over HTTPS
+			httpOnly: true, // Ensures that the cookie cannot be accessed via client-side JavaScript
+			secure: true, // Only send the cookie over HTTPS
 			maxAge: 60 * 60 * 24 * 1000, // Set cookie expiry to 1 day
 			signed: true, // Indicates if the cookie should be signed
+			sameSite: 'none', // Allow cross-site cookies
 			// domain: "process.env.FRONTEND_HOST",
 		});
 
 		return true;
 	}
-
-	// async googleAuth(@Req() req, @Res({passthrough: true}) response: Response) {
-
-	// 	if (!req.user) {
-	// 		return 'No user from google';
-	// 	}
-
-	// 	console.log("Google returned this user: ", req.user);
-
-	// 	const logUser: AuthDto = req.user;
-	// 	console.log("User: ", logUser);
-
-	// 	let userDb = await prisma.user.findUnique({
-	// 		where: {
-	// 			nickname: logUser.nickname,
-	// 		}
-	// 	});
-
-	// 	if (!userDb)
-	// 	{
-	// 		userDb = await prisma.user.create({
-	// 			data: logUser
-	// 		});
-	// 		console.log("User created.");
-	// 	}
-	// 	else
-	// 	{
-	// 		await prisma.user.update({
-	// 			where: {
-	// 				id: userDb.id,
-	// 			},
-	// 			data: {
-	// 				accessToken: req.user.accessToken,
-	// 			}
-	// 		});
-	// 	}
-
-	// 	response.cookie('accessToken', req.user.accessToken);
-	// 	response.cookie('id', userDb.id);
-
-	// 	return 'Successfully connected to google.';
-	// }
 }
