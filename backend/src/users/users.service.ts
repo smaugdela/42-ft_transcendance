@@ -1,8 +1,9 @@
-import { Injectable, Res } from '@nestjs/common';
+import { ConflictException, HttpCode, HttpException, Injectable, Res } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaClient, Prisma } from '@prisma/client';
 import { Response } from 'express';
 import * as argon from 'argon2';
+import { MailService } from 'src/mail/mail.service';
 
 const hashingConfig = {
 	parallelism: 1,
@@ -13,6 +14,8 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService {
+
+	constructor(private mailService: MailService) { }
 
 	checkIfLoggedIn(userId: number | undefined): boolean {
 		// If id is undefined, then the user is not logged in.
@@ -48,12 +51,16 @@ export class UsersService {
 				where: { id },
 				data: updateUserDto,
 			});
-		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				if (error.code === 'P2002') { // https://www.prisma.io/docs/reference/api-reference/error-reference
-					throw new Error('Nickname is already taken');
-				}
+			if (updateUserDto.email !== undefined) {
+				// Send confirmation email
+				const token = Math.floor(1000 + Math.random() * 9000).toString();
+				this.mailService.sendUserConfirmation(id, token);
 			}
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') { // https://www.prisma.io/docs/reference/api-reference/error-reference
+				throw new ConflictException('Nickname already exists');
+			}
+			throw new HttpException('Bad email', 400);
 		}
 	}
 
@@ -66,7 +73,7 @@ export class UsersService {
 		});
 	}
 
-	async removeMe(id: number,  @Res({ passthrough: true }) res: Response) {
+	async removeMe(id: number, @Res({ passthrough: true }) res: Response) {
 		res.clearCookie('jwt');
 		return await prisma.user.delete({
 			where: { id: id }

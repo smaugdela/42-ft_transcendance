@@ -49,17 +49,21 @@ export class AuthService {
 					id42: user.id,
 				}
 			});
-
-			// delete user.achievements;
-			// delete user.projects_users;
-			// console.log("user: ", user);
-
 			if (!userDb) {
+
+				// If the user already exists, we add a number to its nickname.
+				let name = user.login;
+				let i = 1;
+				while (await prisma.user.findUnique({ where: { nickname: name, } })) {
+					name = user.login + i;
+					i++;
+				}
+
 				console.log("Creating 42 user.")
 				response = await axios.get('https://api.intra.42.fr/v2/users/' + user.id + '/coalitions', config);
 				userDb = await prisma.user.create({
 					data: {
-						nickname: user.login,
+						nickname: name,
 						id42: user.id,
 						coalition: response.data[response.data.length - 1].name,
 						authtype: AuthType.FORTYTWO,
@@ -80,18 +84,20 @@ export class AuthService {
 			return "Successfully logged with 42.";
 
 		} catch (error) {
-			if (error.response) {
-				// The client was given an error response (5xx, 4xx)
-				console.log(error.response.data);
-				console.log(error.response.status);
-				console.log(error.response.headers);
-			} else if (error.request) {
-				// The client never received a response, and the request was never left
-				console.log(error.request);
-			} else {
-				// Anything else
-				console.log("error: ", error.message);
-			}
+			// if (error.response) {
+			// 	// The client was given an error response (5xx, 4xx)
+			// 	console.log(error.response.data);
+			// 	console.log(error.response.status);
+			// 	console.log(error.response.headers);
+			// } else if (error.request) {
+			// 	// The client never received a response, and the request was never left
+			// 	console.log(error.request);
+			// } else {
+			// 	// Anything else
+			// 	console.log("error: ", error.message);
+			// }
+
+			throw new ForbiddenException('Invalid resolution from 42 API.');
 
 			return 'An error occured while logging with 42.';
 		}
@@ -203,7 +209,6 @@ export class AuthService {
 			maxAge: 60 * 60 * 24 * 1000, // Set cookie expiry to 1 day
 			signed: true, // Indicates if the cookie should be signed
 			sameSite: 'none', // Allow cross-site cookies
-			// domain: "process.env.FRONTEND_HOST",
 		});
 
 		return true;

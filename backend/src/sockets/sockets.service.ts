@@ -1,36 +1,40 @@
-import { Injectable } from '@nestjs/common';
-import * as cookieParser from 'cookie-parser';
-import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from 'src/auth/constants';
+import { HttpException, Injectable } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 @Injectable()
 export class SocketsService {
 
-	constructor(private jwtService: JwtService) { }
-
-	async authSocket(cookie: string): Promise<boolean> {
-
-		if (!cookie)
-			return false;
-
-		// We extract the jwt from the cookies
-		const jwt: string = cookie.split('; ').find((cookie: string) => cookie.startsWith('jwt')).split('=')[1];
-		if (!jwt)
-			return false;
-
-		// We unsign th jwt cookie to make it readable
-		const unsignedJwt = cookieParser.signedCookie(decodeURIComponent(jwt), process.env.COOKIE_SECRET);
-		if (!unsignedJwt)
-			return false;
-
-		// We check the token's validity
+	async activeUser(userId: number) {
 		try {
-			await this.jwtService.verifyAsync(unsignedJwt, {
-				secret: jwtConstants.secret,
+			await prisma.user.update({
+				where: {
+					id: userId,
+				},
+				data: {
+					isActive: true,
+				},
 			});
 		} catch (error) {
-			return false
+			console.log(error);
+			throw new HttpException("No such user", 400);
 		}
-		return true;
+	}
+
+	async inactiveUser(userId: number) {
+		try {
+			await prisma.user.update({
+				where: {
+					id: userId,
+				},
+				data: {
+					isActive: false,
+				},
+			});
+		} catch (error) {
+			console.log(error);
+			throw new HttpException("No such user", 400);
+		}
 	}
 }

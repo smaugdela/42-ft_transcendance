@@ -9,7 +9,7 @@ datasource db {
 
 model User {
     id        Int      @id @default(autoincrement())
-    avatar    String?   @default("/assets/avatar1.png")
+    avatar    String?  @default("/assets/avatar1.png")
     nickname  String   @unique
     email     String?  @unique
     bio       String?
