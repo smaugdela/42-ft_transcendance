@@ -19,23 +19,23 @@ export class SocialController {
   }
   
   @Post('/block/:username')
-  blockUser(@Param('username') username: string){
-    return this.socialService.blockUser(username);
+  blockUser(@Req() req: Request, @Param('username') username: string){
+    return this.socialService.blockUser(req.userId, username);
   }
 
   @Delete('/block/:username')
-  removeFromBlock(@Param('id') id: string){
-    return this.socialService.removeFromBlock(+id);
+  removeFromBlock(@Req() req: Request, @Param('id') id: string){
+    return this.socialService.removeFromBlock(req.userId, +id);
   }
 
   @Delete('/friend-request/:id/reject')
-  rejectRequest(@Param('id') id: string){
-    return this.socialService.rejectRequest(+id);
+  rejectRequest(@Req() req: Request, @Param('id') id: string){
+    return this.socialService.rejectRequest(req.userId, +id);
   }
 
   @Delete('friends/:username')
-  removeFriend(@Param('id') id: string){
-    return this.socialService.removeFriend(+id);
+  removeFriend(@Req() req: Request, @Param('id') id: string){
+    return this.socialService.removeFriend(req.userId, +id);
   }
 
 }

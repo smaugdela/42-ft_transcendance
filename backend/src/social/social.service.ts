@@ -31,19 +31,51 @@ export class SocialService {
     );
   }
 
-  blockUser(username: string) {
-    return 'This action adds a new social';
+  async blockUser(userId: number, username: string) {
+    await prisma.user.update (
+      {
+        where: {id: userId},
+        disconnect: {pendingList: username}
+      }
+    )
+    return  await prisma.user.update(
+      {
+        where: {id: userId},
+        connect: {blockList: username}
+      }
+    );
   }
 
-  removeFromBlock(id : number) {
-    return 'This action adds a new social';
+  async removeFromBlock(userId: number, id : number) {
+    await prisma.user.update(
+      {
+        where: {id: userId},
+        disconnect: {blockList: id}
+      }
+    );
+    return  await prisma.user.update(
+      {
+        where: {id: userId},
+        connect: {friendList: id}
+      }
+    );
   }
 
-  rejectRequest(id : number) {
-    return 'This action adds a new social';
+  async rejectRequest(userId: number, id : number) {
+    return await prisma.user.update(
+      {
+        where: {id: userId},
+        disconnect: {pendingList: id}
+      }
+    );
   }
 
-  removeFriend(id :number) {
-    return 'This action adds a new social';
+  async removeFriend(userId: number, id :number) {
+    return await prisma.user.update(
+      {
+        where: {id: userId},
+        disconnect: {friendList: id}
+      }
+    );
   }
 }
