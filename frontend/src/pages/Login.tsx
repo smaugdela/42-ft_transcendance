@@ -5,23 +5,26 @@ import { useNavigate } from 'react-router-dom';
 import { signUp, logIn } from "../api/APIHandler";
 
 export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }) {
-	const [nickname, setNickname] = useState("");
-	const [password, setPassword] = useState("");
+	const [nickname, setNickname] = useState<string>("");
+	const [password, setPassword] = useState<string>("");
+	const [errorMsg, setErrorMsg] = useState<string>("");
+	const [successMsg, setSuccessMsg] = useState<string>("");
 	const navigate = useNavigate();
+
 	const handleSignUp = async (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		
 		try {
 			await signUp(nickname, password);
 			setLoggedIn(true);
+			setSuccessMsg("Successfully signed up! ")
+			setErrorMsg('');
 			setTimeout(() => {
 				navigate('/');
-			}, 1000);
-			console.log("c'est bon je suis sign up!");
-			
+			}, 2500);
 		} catch (error) {
-			console.log(error);
-			// TODO: erreur si user est deja dans db
+			setSuccessMsg('');
+			setErrorMsg("A user with this nickname already exists");
 		}
 	}
 
@@ -31,13 +34,17 @@ export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<Rea
 		try {
 			await logIn(nickname, password);
 			setLoggedIn(true);
+			setErrorMsg('');
 			setTimeout(() => {
 				navigate('/');
-			}, 1000);
-			console.log("c'est bon je suis logged in!");
+			}, 2500);
 		} catch (error) {
-			console.log("error logging in ", error);
-			// TODO: si erreur, afficher que user does not exist
+			if ((error as Error).message === 'No such nickname') {
+				setErrorMsg("User does not exist: please sign up before")
+			}
+			else {
+				setErrorMsg("Password does not match");
+			}
 		}
 	}
 
@@ -52,7 +59,22 @@ export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<Rea
 
 			<label  className="login_label" htmlFor="password">Password</label>
 			<input onChange={(event) => {setPassword(event.target.value)}} type="password" placeholder="Password" id="password" />
-
+			<>
+			{
+				successMsg && 
+				<div className="settings__alert_ok">
+					<h6>{successMsg}</h6>
+				</div>
+			}
+			</>
+			<>
+			{
+				errorMsg && 
+				<div className="settings__alert_err">
+					<h6>{errorMsg}</h6>
+				</div>
+			}
+			</>
 			<button onClick={handleLogIn} id="login-btn">Log In</button>
 			<div className="social">
 				<div className="go">

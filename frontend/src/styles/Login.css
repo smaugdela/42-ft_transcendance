@@ -1,14 +1,4 @@
-
-*,
-*:before,
-*:after{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-body{
-    background-color: #080710;
-}
+@import url('https://fonts.googleapis.com/css2?family=Licorice&family=Open+Sans&family=Share+Tech&display=swap');
 
 
 .background{
@@ -20,7 +10,7 @@ body{
     top: 50%;
 }
 
-form{
+form {
     height: 440px;
     width: 400px;
     background-color: rgba(255,255,255,0.13);
@@ -56,6 +46,7 @@ form *{
     font-size: 25px;
     font-weight: 500;
 }
+
 input{
     display: block;
     height: 50px;
@@ -160,4 +151,24 @@ input{
   0 0 100px rgb(24, 46, 65);
   font-size: 17px;
   cursor: pointer;
+}
+
+/* ********************************/
+/* ***   ERROR MSG COMPONENT    ***/
+/* ********************************/
+
+.settings__alert_err {
+	color: rgb(194, 78, 78);
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	padding: 0 0 0.5em 0;
+	text-align: center;
+}
+
+.settings__alert_ok {
+	color: rgb(153, 201, 139);
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	padding: 0 0 0.5em 0;
+	text-align: center;
 }

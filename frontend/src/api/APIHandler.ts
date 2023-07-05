@@ -47,7 +47,7 @@ export async function signUp(newNickname: string, password: string): Promise<any
 		return response.data;
 
 	} catch (error) {
-		console.log("Error signup: ", error);
+		throw new Error('A user with this nickname already exists');
 	}
 }
 
@@ -70,8 +70,17 @@ export async function logIn(newNickname: string, password: string): Promise<any>
 		return response.data;
 
 	} catch (error) {
-		console.log("Error login : ", error);
-	}
+		if (axios.isAxiosError(error)) {
+			if (error.response && error.response.data && error.response.data.message) {
+			  if (error.response.data.message === 'No such nickname') {
+				throw new Error('No such nickname');
+			  } else {
+				throw new Error('Password does not match');
+			  }
+			}
+		  }
+		  throw new Error('An error occurred');
+		}
 }
 
 export async function logOut(): Promise<any> {
