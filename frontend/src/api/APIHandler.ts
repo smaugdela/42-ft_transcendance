@@ -52,6 +52,28 @@ export async function signUp(newNickname: string, password: string): Promise<any
 }
 
 
+export async function logIn(newNickname: string, password: string): Promise<any> {
+
+	try {
+		const response = await axios.post(`${BASE_URL}/auth/login`,
+			{
+				nickname: newNickname,
+				password: password
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error login : ", error);
+	}
+}
+
 export async function logOut(): Promise<any> {
 
 	try {

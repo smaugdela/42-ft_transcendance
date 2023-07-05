@@ -65,6 +65,7 @@ export default function Navbar(props: { theme: string, toggleTheme: ChangeEventH
 	
 
 	useEffect( () => {
+		fetchData();
 	}, [isLoggedIn]);
 	
 	const navigate = useNavigate();

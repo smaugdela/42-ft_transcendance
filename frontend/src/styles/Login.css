@@ -93,6 +93,7 @@ input{
     font-size: 18px;
     font-weight: 600;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 #login-btn:hover{
@@ -141,7 +142,22 @@ input{
 	0 0 77px rgb(60, 116, 166),
 	0 0 100px rgb(24, 46, 65);
   }
+
 .social i{
   margin-right: 4px;
   
+}
+
+#signup_btn {
+  background: none;
+	border: none;
+  color: #e3eef1;
+  text-shadow:
+  0 0 7px #efefef,
+  0 0 10px #90d0f0,
+  0 0 42px rgb(60, 116, 166),
+  0 0 77px rgb(60, 116, 166),
+  0 0 100px rgb(24, 46, 65);
+  font-size: 17px;
+  cursor: pointer;
 }
