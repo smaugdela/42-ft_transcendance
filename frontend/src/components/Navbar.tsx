@@ -19,7 +19,8 @@ const SidebarData = [
 	{
 		title: 'User',
 		path: '/user',
-		image: <FontAwesomeIcon className='item_image' icon={faSpaghettiMonsterFlying} />,		cName: 'nav-text'
+		image: <FontAwesomeIcon className='item_image' icon={faSpaghettiMonsterFlying} />,
+		cName: 'nav-text'
 	},
 	{
 		
@@ -43,12 +44,14 @@ const SidebarData = [
 	{
 		title: 'FAQ',
 		path: '/faq',
-		image: <FontAwesomeIcon className='item_image' icon={faPersonDrowning} />,		cName: 'nav-text'
+		image: <FontAwesomeIcon className='item_image' icon={faPersonDrowning} />,
+		cName: 'nav-text'
 	},
 	{
 		title: 'About us',
 		path: '/aboutus',
-		image: <FontAwesomeIcon className='item_image' icon={faShieldCat} />,	  cName: 'nav-text'
+		image: <FontAwesomeIcon className='item_image' icon={faShieldCat} />,
+		cName: 'nav-text'
 	},
 
 ];
