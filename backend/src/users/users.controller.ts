@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Patch, Param, Delete, Req, Res, HttpException } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete, Req, Res } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from "@nestjs/swagger";
@@ -28,11 +28,7 @@ export class UsersController {
 
 	@Patch('me')
 	updateMe(@Req() req: Request, @Body() body: UpdateUserDto) {
-		try {
-			this.usersService.updateMe(req.userId, body);
-		} catch (error) {
-			throw new HttpException('Error updating user', 400, { cause: error });
-		}
+		return this.usersService.updateMe(req.userId, body);
 	}
 
 	@Delete('me')

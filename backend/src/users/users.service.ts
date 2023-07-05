@@ -1,4 +1,4 @@
-import { Injectable, Res } from '@nestjs/common';
+import { ConflictException, HttpCode, HttpException, Injectable, Res } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaClient, Prisma } from '@prisma/client';
 import { Response } from 'express';
@@ -58,11 +58,9 @@ export class UsersService {
 			}
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') { // https://www.prisma.io/docs/reference/api-reference/error-reference
-				throw new Error('Nickname is already taken');
+				throw new ConflictException('Nickname already exists');
 			}
-			else {
-				throw new Error('Error updating user');
-			}
+			throw new HttpException('Bad email', 400);
 		}
 	}
 
