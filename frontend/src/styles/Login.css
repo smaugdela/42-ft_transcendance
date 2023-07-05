@@ -10,7 +10,7 @@
     top: 50%;
 }
 
-form {
+.connection-form {
     height: 440px;
     width: 400px;
     background-color: rgba(255,255,255,0.13);
@@ -24,12 +24,13 @@ form {
     box-shadow: 0 0 40px rgba(8,7,16,0.6);
     padding: 30px 30px;
 }
-form *{
-    font-family: var(--font-type);
-    color: #ffffff;
-    letter-spacing: 0.5px;
-    outline: none;
-    border: none;
+
+.connection-form > * , .title-logs , #signup_btn {
+  font-family: var(--font-type);
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
 }
 
 .login_label {
@@ -85,6 +86,7 @@ input{
     font-weight: 600;
     border-radius: 5px;
     cursor: pointer;
+    
 }
 
 #login-btn:hover{
@@ -122,6 +124,7 @@ input{
   0 0 42px rgb(60, 116, 166),
   0 0 77px rgb(60, 116, 166),
   0 0 100px rgb(24, 46, 65);
+  
 }
 
 .social .go{
@@ -157,18 +160,18 @@ input{
 /* ***   ERROR MSG COMPONENT    ***/
 /* ********************************/
 
-.settings__alert_err {
-	color: rgb(194, 78, 78);
+.login__alert_err {
+	color: rgb(255, 26, 26);
 	font-family: 'Open Sans', sans-serif;
 	font-size: 1em;
-	padding: 0 0 0.5em 0;
 	text-align: center;
+  margin-top: 5px;
 }
 
-.settings__alert_ok {
+.login__alert_ok {
 	color: rgb(153, 201, 139);
 	font-family: 'Open Sans', sans-serif;
 	font-size: 1em;
-	padding: 0 0 0.5em 0;
 	text-align: center;
+  margin-top: 5px;
 }

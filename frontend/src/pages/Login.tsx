@@ -52,7 +52,7 @@ export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<Rea
 		<div className="Login">
 			<div className="background">
 			</div>
-			<form>
+			<form  className="connection-form">
 
 			<label className="login_label" htmlFor="username">Username</label>
 			<input onChange={(event) => {setNickname(event.target.value)}} type="text" placeholder="Email or Phone" id="username" />
@@ -62,7 +62,7 @@ export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<Rea
 			<>
 			{
 				successMsg && 
-				<div className="settings__alert_ok">
+				<div className="login__alert_ok">
 					<h6>{successMsg}</h6>
 				</div>
 			}
@@ -70,7 +70,7 @@ export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<Rea
 			<>
 			{
 				errorMsg && 
-				<div className="settings__alert_err">
+				<div className="login__alert_err">
 					<h6>{errorMsg}</h6>
 				</div>
 			}
@@ -78,7 +78,7 @@ export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<Rea
 			<button onClick={handleLogIn} id="login-btn">Log In</button>
 			<div className="social">
 				<div className="go">
-					<a href={process.env.REACT_APP_URL_42}>Log with 42</a>
+					<a className="title-logs" href={process.env.REACT_APP_URL_42}>Log with 42</a>
 				</div>
 				<div className="fb">
 					<button  onClick={handleSignUp} id="signup_btn">Sign up</button>
