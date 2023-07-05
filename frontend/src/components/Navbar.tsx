@@ -2,7 +2,7 @@ import '../styles/Navbar.css';
 import Avatar from './Avatar';
 import LoginBtn from './LoginBtn';
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ChangeEventHandler } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapPin, faSpaghettiMonsterFlying, faPeoplePulling, faPersonDrowning, faHandsHoldingChild, faRobot, faShieldCat, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
@@ -56,28 +56,36 @@ export default function Navbar(props: { theme: string, toggleTheme: ChangeEventH
 
 	const [sidebar, setSidebar] = useState<boolean>(false);
 	const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+	
+	const fetchData = async () => {
+		const userStatus = await checkIfLogged();
+		setLoggedIn(userStatus);
+	};
+	
+	
 
 	useEffect( () => {
-		const fetchData = async () => {
-			const userStatus = await checkIfLogged();
-			setLoggedIn(userStatus);
-		};
-		fetchData();
 	}, [isLoggedIn]);
 	
-	
+	const navigate = useNavigate();
 	const handleLogout = async () => {
 		try {
 			await logOut();
+			fetchData();
+			setLoggedIn(false);
+			setTimeout(() => {
+				navigate('/');
+			}, 1000);
 		} catch (error) {
 			console.log("logout error");
 		}
 	}
-	
+
+
 	const showSidebar = () => setSidebar(!sidebar);
-  return (
+	return (
 	<>
-			<div className='navbar'>
+		<div className='navbar'>
 			<label className="nav-elements" id="burger-menu" htmlFor="check"  >
 				<input type="checkbox" id="check" onClick={showSidebar}/> 
 				<span className='span1'></span>
@@ -90,25 +98,24 @@ export default function Navbar(props: { theme: string, toggleTheme: ChangeEventH
 				</Link>
 			</div>
 				<>
-				{
-					isLoggedIn === false && 
-					<div className="nav-avatar">
-						<LoginBtn />
-					</div>
-				}
+					{ 
+						isLoggedIn === false && 
+						<div className="nav-avatar">
+							<LoginBtn />
+						</div>
+					}
 				</>
 				<>
-				{
-					isLoggedIn === true && 
-					<div className="nav-avatar">
-						<Avatar />
-						<button onClick={handleLogout}>
-							<FontAwesomeIcon className='nav-logout-icon' icon={faRightFromBracket} />
-						</button>
-					</div>
-				}
+					{
+						isLoggedIn === true && 
+						<div className="nav-avatar">
+							<Avatar />
+							<button onClick={handleLogout}>
+								<FontAwesomeIcon className='nav-logout-icon' icon={faRightFromBracket} />
+							</button>
+						</div>
+					}
 				</>
-
 		</div> 
 	
 

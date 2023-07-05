@@ -1,7 +1,7 @@
 import "../styles/Avatar.css";
-import { Link } from 'react-router-dom';
 import { fetchMe } from "../api/APIHandler";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from 'react-router-dom';
 
 export default function Avatar() {
 	const userQuery = useQuery({ queryKey: ['user'], queryFn: () => fetchMe()});
@@ -14,13 +14,13 @@ export default function Avatar() {
 	}
 
 	return (
-	 <div id="nav-avatar-icon">
-		<Link className='link-profile' to="/settings">
-		<img src={userQuery.data?.avatar} alt={userQuery.data?.nickname} id="nav_avatar"/>
-		</Link>
-		<div id="active-dot"></div>
-	 </div>
+		<div id="nav-avatar-icon">
+			<Link className='link-profile' to="/settings">
+			<img src={userQuery.data?.avatar} alt={userQuery.data?.nickname} id="nav_avatar"/>
+			</Link>
+			<div id="active-dot"></div>
+		</div>
 	);
-  };
+};
  
   

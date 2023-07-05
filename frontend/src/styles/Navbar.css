@@ -35,11 +35,22 @@
 	gap: 5px;
 }
 
+.nav-avatar > button {
+	background: none;
+	border: none;
+}
 
 .nav-logout-icon {
 	color: white;
 	height: 30px;
 	width: auto;
+	cursor: pointer;
+}
+
+
+.nav-logout-icon:hover {
+	color:#90d0f0;
+	
 }
   
 .nav-menu.active {
