@@ -77,18 +77,7 @@ export async function logIn(newNickname: string, password: string): Promise<any>
 export async function logOut(): Promise<any> {
 
 	try {
-		const user = await fetchMe();
-		const response = await axios.post(`${BASE_URL}/auth/logout`,
-			{
-				userId: user.id,
-			},
-			{
-				headers: {
-					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': BASE_URL,
-				},
-			},
-		);
+		const response = await axios.delete(`${BASE_URL}/auth/logout`);
 		return response.data;
 
 	} catch (error) {

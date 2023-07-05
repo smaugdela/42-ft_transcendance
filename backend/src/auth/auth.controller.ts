@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Query, Res, Req } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Query, Res, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import AuthDto from './dto/auth.dto';
 import { Public } from './guards/public.decorator';
@@ -28,7 +28,7 @@ export class AuthController {
 		return this.authService.redirect42(query, res);
 	}
 
-	@Post('logout')
+	@Delete('logout')
 	async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
 		return this.authService.logout(req.userId, res);
 	}
