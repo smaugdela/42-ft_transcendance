@@ -1,21 +1,27 @@
 import "../styles/Login.css";
 import '../App.css';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { signUp, logIn } from "../api/APIHandler";
 
-export default function Login() {
+export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }) {
 	const [nickname, setNickname] = useState("");
 	const [password, setPassword] = useState("");
-
+	const navigate = useNavigate();
 	const handleSignUp = async (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		
 		try {
 			await signUp(nickname, password);
+			setLoggedIn(true);
+			setTimeout(() => {
+				navigate('/');
+			}, 1000);
 			console.log("c'est bon je suis sign up!");
 			
 		} catch (error) {
 			console.log(error);
+			// TODO: erreur si user est deja dans db
 		}
 	}
 
@@ -24,6 +30,10 @@ export default function Login() {
 		
 		try {
 			await logIn(nickname, password);
+			setLoggedIn(true);
+			setTimeout(() => {
+				navigate('/');
+			}, 1000);
 			console.log("c'est bon je suis logged in!");
 		} catch (error) {
 			console.log("error logging in ", error);

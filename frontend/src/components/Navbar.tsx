@@ -1,12 +1,13 @@
 import '../styles/Navbar.css';
 import Avatar from './Avatar';
 import LoginBtn from './LoginBtn';
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { ChangeEventHandler } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapPin, faSpaghettiMonsterFlying, faPeoplePulling, faPersonDrowning, faHandsHoldingChild, faRobot, faShieldCat, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
-import { checkIfLogged, logOut } from "../api/APIHandler";
+import { logOut } from "../api/APIHandler";
+import { IsLoggedInContext } from '../App';
 
 const SidebarData = [
 	{
@@ -52,27 +53,16 @@ const SidebarData = [
 
 ];
 
-export default function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler }) {
-
+export default function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler, setLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }) {
+	
 	const [sidebar, setSidebar] = useState<boolean>(false);
-	const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
-	
-	const fetchData = async () => {
-		const userStatus = await checkIfLogged();
-		setLoggedIn(userStatus);
-	};
-	
-	
-
-	useEffect( () => {
-		fetchData();
-	}, [isLoggedIn]);
+	const isLoggedIn = useContext(IsLoggedInContext);
+	const { setLoggedIn } = props;
 	
 	const navigate = useNavigate();
 	const handleLogout = async () => {
 		try {
 			await logOut();
-			fetchData();
 			setLoggedIn(false);
 			setTimeout(() => {
 				navigate('/');
