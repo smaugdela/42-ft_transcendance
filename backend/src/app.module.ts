@@ -11,6 +11,8 @@ import { SearchModule } from './search/search.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { SocketsModule } from './sockets/sockets.module';
 import { MailModule } from './mail/mail.module';
+import { SocialModule } from './social/social.module';
+
 
 @Module({
 	controllers: [AppController],
@@ -18,7 +20,7 @@ import { MailModule } from './mail/mail.module';
 		AppService,
 		{ provide: APP_GUARD, useClass: AuthGuard, }
 	],
-	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule, CloudinaryModule, SocketsModule, MailModule],
+	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule, CloudinaryModule, SocketsModule, SocialModule, MailModule],
 })
 
 export class AppModule { }
