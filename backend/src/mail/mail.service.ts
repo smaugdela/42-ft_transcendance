@@ -25,7 +25,8 @@ export class MailService {
 				},
 			});
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
+			throw new HttpException('Error sending confirmation email', 400, { cause: error });
 		}
 	}
 }

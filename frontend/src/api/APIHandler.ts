@@ -31,7 +31,7 @@ api.interceptors.response.use(
 export async function signUp(newNickname: string, password: string): Promise<any> {
 
 	try {
-		const response = await axios.post(`${BASE_URL}/auth/signup`,
+		const response = await api.post(`${BASE_URL}/auth/signup`,
 			{
 				nickname: newNickname,
 				password: password
@@ -86,6 +86,8 @@ export async function updateUserStringProperty(property: keyof IUser, newPropert
 		);
 		return response.data;
 	} catch (error) {
+		// console.log("Error updating user string property: ", error);
+		// Handle possible exceptions from the backend accordingly! Recover the error code and eventually display the according page...
 		throw new Error('Nickname is already taken');
 	}
 }

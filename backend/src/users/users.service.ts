@@ -57,10 +57,11 @@ export class UsersService {
 				this.mailService.sendUserConfirmation(id, token);
 			}
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				if (error.code === 'P2002') { // https://www.prisma.io/docs/reference/api-reference/error-reference
-					throw new Error('Nickname is already taken');
-				}
+			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') { // https://www.prisma.io/docs/reference/api-reference/error-reference
+				throw new Error('Nickname is already taken');
+			}
+			else {
+				throw new Error('Error updating user');
 			}
 		}
 	}
