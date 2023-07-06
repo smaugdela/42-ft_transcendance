@@ -42,7 +42,7 @@ function App() {
             <source src="./assets/bg-video.mp4" type='video/mp4' />
           </video>
           <audio className="music-bg" controls autoPlay loop >
-            <source src="./assets/edgerunner.mp3" type="audio/mpeg"/>
+            <source src="./assets/derezzed.mp3" type="audio/mpeg"/>
           </audio>
           <Routes>
             <Route path="/" element={<Home />} />

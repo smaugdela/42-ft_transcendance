@@ -47,14 +47,16 @@ export class UsersController {
 
 	@Get(':id')
 	findOneById(@Param('id') id: string) {
-	  return this.usersService.findOneById(+id);
+		return this.usersService.findOneById(+id);
 	}
 	@Patch(':id')
 	update(@Param('id') id: string, @Body() body: UpdateUserDto) {
-	  return this.usersService.updateMe(+id, body);
+		return this.usersService.updateMe(+id, body);
 	}
+
 	// @Delete(':id')
 	// remove(@Param('id') id: string) {
 	//   return this.usersService.removeMe(+id);
 	// }
+
 }

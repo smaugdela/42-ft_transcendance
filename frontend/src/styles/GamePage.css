@@ -66,12 +66,12 @@
 	-0.025em -0.025em 0 #90d0f0,
 	-0.025em 0.05em 0 rgb(60, 116, 166);
 	/* text-shadow: -3px -3px 0px #90d0f09e, 3px 3px 9px rgb(35, 71, 103); */
-	animation: glitch 200ms infinite;
-	animation-timing-function: steps(2, end);
+	/* animation: glitch 200ms infinite;
+	animation-timing-function: steps(2, end); */
 }
-@keyframes glitch2 {
+/* @keyframes glitch2 {
 	0%{
 		clip-path: var(--slice-1);
 		transform: translate(-20px, -10px);
 	}
-}
+} */

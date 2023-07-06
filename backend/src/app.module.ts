@@ -10,8 +10,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { SearchModule } from './search/search.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { SocketsModule } from './sockets/sockets.module';
-import { SocketsGateway } from './sockets/sockets.gateway';
-import { SocketsService } from './sockets/sockets.service';
+import { MailModule } from './mail/mail.module';
+import { SocialModule } from './social/social.module';
+
 
 @Module({
 	controllers: [AppController],
@@ -19,7 +20,7 @@ import { SocketsService } from './sockets/sockets.service';
 		AppService,
 		{ provide: APP_GUARD, useClass: AuthGuard, }
 	],
-	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule, CloudinaryModule, SocketsModule],
+	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule, CloudinaryModule, SocketsModule, SocialModule, MailModule],
 })
 
 export class AppModule { }
