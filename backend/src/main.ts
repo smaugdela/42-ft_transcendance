@@ -36,8 +36,8 @@ async function bootstrap() {
 	}
 
 	const httpsOptions = {
-		key: fs.readFileSync('/home/smagdela/Documents/42-ft_transcendance/backend/src/localhost-key.pem'),
-		cert: fs.readFileSync('/home/smagdela/Documents/42-ft_transcendance/backend/src/localhost.pem'),
+		key: fs.readFileSync(process.env.HTTPS_KEY),
+		cert: fs.readFileSync(process.env.HTTPS_CERT),
 		logger: console,
 	};
 

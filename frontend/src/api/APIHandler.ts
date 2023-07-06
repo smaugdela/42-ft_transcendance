@@ -28,6 +28,7 @@ api.interceptors.response.use(
 /* ######   AUTH   ######*/
 /* ######################*/
 
+
 export async function signUp(newNickname: string, password: string): Promise<any> {
 
 	try {
@@ -46,6 +47,49 @@ export async function signUp(newNickname: string, password: string): Promise<any
 		return response.data;
 
 	} catch (error) {
+		throw new Error('A user with this nickname already exists');
+	}
+}
+
+
+export async function logIn(newNickname: string, password: string): Promise<any> {
+
+	try {
+		const response = await axios.post(`${BASE_URL}/auth/login`,
+			{
+				nickname: newNickname,
+				password: password
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+
+	} catch (error) {
+		if (axios.isAxiosError(error)) {
+			if (error.response && error.response.data && error.response.data.message) {
+			  if (error.response.data.message === 'No such nickname') {
+				throw new Error('No such nickname');
+			  } else {
+				throw new Error('Password does not match');
+			  }
+			}
+		  }
+		  throw new Error('An error occurred');
+		}
+}
+
+export async function logOut(): Promise<any> {
+
+	try {
+		const response = await axios.delete(`${BASE_URL}/auth/logout`);
+		return response.data;
+
+	} catch (error) {
 		console.log("Error signup: ", error);
 	}
 }
@@ -54,6 +98,11 @@ export async function signUp(newNickname: string, password: string): Promise<any
 /* ######################*/
 /* ######   USER   ######*/
 /* ######################*/
+
+export async function checkIfLogged(): Promise<boolean> {
+	const response = await axios.get<boolean>(`${BASE_URL}/users/check`);
+	return response.data;
+}
 
 export async function fetchUsers(): Promise<IUser[]> {
 	const response = await api.get<IUser[]>(`/users`);
@@ -89,6 +138,27 @@ export async function updateUserStringProperty(property: keyof IUser, newPropert
 		// console.log("Error updating user string property: ", error);
 		// Handle possible exceptions from the backend accordingly! Recover the error code and eventually display the according page...
 		throw new Error('Nickname is already taken');
+	}
+}
+
+
+export async function updateUserBooleanProperty(property: keyof IUser, newProperty: boolean) {
+	try {
+		const requestBody = { [property]: newProperty };
+
+		const response = await api.patch<IUser>(
+			`/users/me`, 					// url
+			requestBody,					// request body
+			{								// request config object
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error('Error during change of boolean user property');
 	}
 }
 

@@ -11,6 +11,7 @@ interface Tab {
 }
 
 const Chat = () => {
+	
 	const [isExpanded, setIsExpanded] = useState(true);
 
 	const toggleExpand = () => {
@@ -28,7 +29,7 @@ const Chat = () => {
 	};
 
   return (
-	<div className={`chat ${isExpanded ?  'collapsed': 'expanded'}`}>
+	<div className={`chat ${isExpanded ? 'expanded' : 'collapsed'}`}>
 		<div className="toggle-button" onClick={toggleExpand}>
 		{isExpanded ? <FontAwesomeIcon icon={faAnglesLeft}/> : <FontAwesomeIcon icon={faAnglesRight}/>} 
 		</div>

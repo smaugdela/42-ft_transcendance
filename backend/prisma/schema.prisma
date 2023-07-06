@@ -14,6 +14,7 @@ model User {
     email     String?  @unique
     bio       String?
     authtype  AuthType
+    enabled2FA Boolean? @default(false)
     id42      Int?     @unique
     token42   String?  @unique // Is the 42 oauth token for 42 students.
     password  String? // Is the password for non 42 students.
