@@ -80,7 +80,6 @@ export class AuthService {
 
 			// this.webSocketGateway.server.emit('activity', userDb.nickname);
 
-			// res.send("Successfully logged with 42.");
 			return "Successfully logged with 42.";
 
 		} catch (error) {
@@ -98,8 +97,6 @@ export class AuthService {
 			// }
 
 			throw new ForbiddenException('Invalid resolution from 42 API.');
-
-			return 'An error occured while logging with 42.';
 		}
 	}
 
@@ -123,7 +120,6 @@ export class AuthService {
 
 			// this.webSocketGateway.server.emit('activity', activeUser.nickname);
 
-			// res.send("Successfully logged!");
 			return "Successfully logged!";
 
 		} catch (error) {
