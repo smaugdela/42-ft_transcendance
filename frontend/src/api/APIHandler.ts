@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser } from "./types";
+import { IMatch, IUser } from "./types";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -101,6 +101,11 @@ export async function logOut(): Promise<any> {
 
 export async function checkIfLogged(): Promise<boolean> {
 	const response = await axios.get<boolean>(`${BASE_URL}/users/check`);
+	return response.data;
+}
+
+export async function getUserMatches(): Promise<IMatch[]> {
+	const response = await api.get<IMatch[]>(`/users/matches`);
 	return response.data;
 }
 

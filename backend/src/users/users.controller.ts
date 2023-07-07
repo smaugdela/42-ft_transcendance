@@ -42,6 +42,10 @@ export class UsersController {
 		return this.usersService.findOne(username);
 	}
 
+	@Get('matches')
+	getHistoryMatch(@Req() req: Request) {
+		return this.usersService.getHistoryMatch(req.userId);
+	}
 	// @Patch(':username')
 	// updateOne(@Param('username') username: string, @Body() body: UpdateUserDto) {
 	// 	return this.usersService.updateOne(username, body);
@@ -55,9 +59,6 @@ export class UsersController {
 		return this.usersService.updateMe(+id, body);
 	}
 
-	// @Delete(':id')
-	// remove(@Param('id') id: string) {
-	//   return this.usersService.removeMe(+id);
-	// }
+
 
 }

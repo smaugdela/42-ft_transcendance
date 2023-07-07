@@ -28,7 +28,8 @@ export class UsersService {
 
 	async findMe(id: number) {
 		return await prisma.user.findUnique({
-			where: { id }
+			where: { id },
+			include: { achievements: true },
 		});
 	}
 
@@ -81,13 +82,15 @@ export class UsersService {
 
 	async findOne(username: string) {
 		return await prisma.user.findUnique({
-			where: { nickname: username }
+			where: { nickname: username },
+			include: { achievements: true },
 		});
 	}
 
 	async findOneById(id: number) {
 		return await prisma.user.findUnique({
-			where: { id: id }
+			where: { id: id },
+			include: { achievements: true },
 		});
 	}
 
@@ -97,5 +100,29 @@ export class UsersService {
 			data: updateUserDto,
 		});
 	}
+
+	async getHistoryMatch(id: number) {
+		console.log("id", id);
+		
+		const user = await prisma.user.findUnique({
+		  where: { id: id },
+		  include: {
+			matchAsP1: true,
+			matchAsP2: true,
+		  },
+		});
+	  
+		const winnerMatches = user.matchAsP1;
+		const loserMatches = user.matchAsP2;
+		const allMatches = [...winnerMatches, ...loserMatches];
+	  
+		const sortedMatches = allMatches.sort((a, b) => {
+		  return a.date.getTime() - b.date.getTime();
+		});
+		
+		console.log('User history matches are: ', sortedMatches);
+		
+		return sortedMatches;
+	  }
 }
 
