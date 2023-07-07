@@ -9,20 +9,24 @@ export default function WinrateCircularBar(props : { winRate : number}) {
 	let progressStartValue = 0;
 	let speed = 50;
 
-	let progress = setInterval(() => {
-		progressStartValue++;
-		
-		if (progressValue)
-			progressValue.innerHTML = `${progressStartValue}%`;
-		if (circularProgress)
-			circularProgress.style.background = `conic-gradient(rgba(98, 20, 104, 0.7) ${progressStartValue * 3.6}deg, #ededed 0deg)`;
-		
-		
-		if (progressStartValue === props.winRate)
-		{
-			clearInterval(progress);
-		}
-	}, speed);
+	if (props.winRate !== 0)
+	{
+
+		let progress = setInterval(() => {
+			progressStartValue++;
+			
+			if (progressValue)
+				progressValue.innerHTML = `${progressStartValue}%`;
+			if (circularProgress)
+				circularProgress.style.background = `conic-gradient(rgba(98, 20, 104, 0.7) ${progressStartValue * 3.6}deg, #ededed 0deg)`;
+			
+			
+			if (progressStartValue === props.winRate)
+			{
+				clearInterval(progress);
+			}
+		}, speed);
+	}
 
 	return (
 		<div className="circular-progress">
