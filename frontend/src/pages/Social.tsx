@@ -12,9 +12,13 @@ export function SearchBar() {
 
 	useEffect( () => {
 		if (userInput.length > 2){
-			postSearchQuery(userInput).then( (response) => {
+			postSearchQuery(userInput)
+			.then( (response) => {
 				const copy = {...response};
 				setSearchResults(copy.data.hits[0]._formatted);
+			})
+			.catch(() => {
+				setSearchResults(undefined);
 			});
 		}
 		if (userInput === "") {
@@ -24,7 +28,7 @@ export function SearchBar() {
 	
 	return (
 		<div>
-			<p className="text_serachBar">Looking for someone to add ? Try this search bar! </p>
+			<p className="text_serachBar">Looking for someone to add ? Try this search bar!</p>
 			<div className="search_bar">
 				<input 
 					type="text" 
@@ -126,7 +130,6 @@ export function Social() {
 
 	return (
 		<div  id="social-dashboard">
-			{/* <h1>SOCIAL</h1> */}
 			<SearchBar />
 			<div className="social-btn">
 				<button 
