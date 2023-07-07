@@ -17,6 +17,12 @@ export class AuthController {
 	}
 
 	@Public()
+	@Get('2fa')
+	async twoFactorAuth(@Query() query, @Res({ passthrough: true }) res: Response) {
+		return this.authService.login2FA(query, res);
+	}
+
+	@Public()
 	@Post('signup')
 	signup(@Body() body: AuthDto, @Res({ passthrough: true }) res: Response) {
 		return this.authService.signup(body, res);
