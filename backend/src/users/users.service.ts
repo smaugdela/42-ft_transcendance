@@ -1,4 +1,4 @@
-import { ConflictException, HttpCode, HttpException, Injectable, Res } from '@nestjs/common';
+import { ConflictException, HttpException, Injectable, Res } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaClient, Prisma } from '@prisma/client';
 import { Response } from 'express';
@@ -53,8 +53,7 @@ export class UsersService {
 			});
 			if (updateUserDto.email !== undefined) {
 				// Send confirmation email
-				const token = Math.floor(1000 + Math.random() * 9000).toString();
-				this.mailService.sendUserConfirmation(id, token);
+				this.mailService.sendUserConfirmation(id);
 			}
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') { // https://www.prisma.io/docs/reference/api-reference/error-reference

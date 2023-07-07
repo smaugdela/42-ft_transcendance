@@ -4,11 +4,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from "@nestjs/swagger";
 import { Public } from 'src/auth/guards/public.decorator';
 import { Request, Response } from 'express';
+import { MailService } from 'src/mail/mail.service';
 
 @ApiTags('Users') // for swagger
 @Controller('users')
 export class UsersController {
-	constructor(private readonly usersService: UsersService) { }
+	constructor(private readonly usersService: UsersService, private readonly mailService: MailService) { }
 
 	@Public()
 	@Get('check')
