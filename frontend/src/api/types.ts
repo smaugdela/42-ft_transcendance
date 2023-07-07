@@ -29,7 +29,7 @@ export interface IUser {
 export interface IAchievement {
 	id: number;
 	title: string;
-	icon: string; // iconProp
+	icon: string;
 	description: string;
 	date: Date;
 	fullfilled: boolean;
