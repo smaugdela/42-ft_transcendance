@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int             @id @default(autoincrement())
+  avatar         String?         @default("/assets/avatar1.png")
+  nickname       String          @unique
+  email          String?         @unique
+  bio            String?
+  authtype       AuthType
+  enabled2FA     Boolean?        @default(false)
+  login2FAstatus Login2FAStatus? @default(NONE)
+  id42           Int?            @unique
+  token42        String?         @unique // Is the 42 oauth token for 42 students.
+  password       String? // Is the password for non 42 students.
+  coalition      String?         @default("Invite")
+
+  wins     Int?     @default(0)
+  loses    Int?     @default(0)
+  aces     Int?     @default(0)
+  score    Int?     @default(0)
+  rank     Int?     @default(0)
+  isActive Boolean? @default(false)
+
+  friendsList     User[] @relation("friends")
+  friendsRelation User[] @relation("friends") // Used to store the many-to-many relation.
+
+  blockList   User[] @relation("blocked")
+  blockedFrom User[] @relation("blocked") // Used to store the many-to-many relation.
+
+  pendingList User[] @relation("pendings")
+  pendingFrom User[] @relation("pendings") // Used to store the many-to-many relation.
+
+  achievements Achievement[]
+
+  matchAsP1 Match[] @relation("winner")
+  matchAsP2 Match[] @relation("loser")
+
+  @@map("users")
+}
+
+model Achievement {
+  id          Int       @id @default(autoincrement())
+  title       String
+  icon        String
+  description String
+  date        DateTime?
+  fullfilled  Boolean   @default(false)
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+
+  @@map("achievements")
+}
+
+model Match {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @default(now())
+  mode        String
+  duration    Int
+  winner      User     @relation(fields: [winnerId], references: [id], name: "winner")
+  winnerId    Int
+  scoreWinner Int
+  loser       User     @relation(fields: [loserId], references: [id], name: "loser")
+  loserId     Int
+  scoreLoser  Int
+
+  @@map("matches")
+}
+
+enum AuthType {
+  FORTYTWO
+  LOGNPWD
+}
+
+enum Login2FAStatus {
+  NONE // No login requested
+  PENDING // User has successfully entered credentials, and must now follow the 2FA link sent by mail
+  CONFIRMED // 2FA link has been followed, user is now logged in
+}

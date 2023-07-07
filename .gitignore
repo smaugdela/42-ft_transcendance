@@ -1,2 +1,6 @@
 .env
+.vscode/
+*.pem
 
+# React Component Preview
+previewConfig.json

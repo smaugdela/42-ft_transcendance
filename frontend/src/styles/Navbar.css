@@ -1,0 +1,303 @@
+@import '../App.css';
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Pacifico&display=swap');
+
+.navbar {
+    background-color:var(--heading-color);
+    height: 80px;
+	width: 100%;
+	position : fixed;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+	z-index : 150;
+  }
+
+/* Menu qui apparait quand tu clique sur la croix  */
+
+.nav-menu {
+  background-color: var(--sides-color);
+  width: 250px;
+  height: 1153px;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 79px;
+  left: -100%;
+  transition: 850ms;
+  z-index: 100;
+}
+
+.nav-avatar{
+	padding-right: 10px;
+	display:flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 5px;
+}
+
+.nav-avatar > button {
+	background: none;
+	border: none;
+}
+
+.nav-logout-icon {
+	color: white;
+	height: 30px;
+	width: auto;
+	cursor: pointer;
+}
+
+
+.nav-logout-icon:hover {
+	color:#90d0f0;
+	
+}
+  
+.nav-menu.active {
+left: 0;
+transition: 350ms;
+z-index: 1000;
+}
+
+.nav-text {
+height: 60px;
+font-size:50px;
+border: none;
+color: rgba(246, 234, 245, 0.6);
+text-decoration: none;
+}
+
+.nav-text a {
+	text-decoration: none;
+    color: #e3eef1;
+    font-size: 30px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    border-radius: 4px;
+	text-shadow: 
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	-webkit-animation: neon1 1.5s ease-in-out infinite alternate;
+	-moz-animation: neon1 1.5s ease-in-out infinite alternate;
+	/* animation: neon1 1.5s ease-in-out infinite alternate; */
+}
+/* trying something */
+
+.nav-text:hover{
+	background-color: rgb(15, 29, 42);
+	filter: drop-shadow(0 0 20px #90d0f09e) contrast(2) brightness(1);
+	background: linear-gradient(rgba(5, 5, 5, 0.6), rgba(0, 0, 0, 0)), repeating-linear-gradient(0, transparent, transparent 2px, black 3px, black 3px);
+}
+
+/* end of try */
+
+.nav-menu-items {
+	font-size: 18px;
+}
+
+.item_image{
+	width: 30px;
+	height: 30px;
+	top: 50;
+	color: rgb(216, 237, 239);
+	box-shadow: 
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	/* outline: none; */
+	border-radius: 5px;
+}
+
+
+.item_title{
+	font-family: var(--font-type);
+	font-size: large;
+	margin-left: 10px;
+
+}
+
+
+
+.item_title span{
+	animation: blink .3s infinite alternate;
+  }
+  
+.item_title span.delay{
+	animation-duration:6s;
+	animation-delay: 2s;
+	animation-direction: alternate;
+/* cubic-bezier(0.5, 0.2, 0.3, 1.0) */
+}
+
+/* START NEON titre */
+.navbar__title {
+	font-family: 'Monoton', cursive;
+	display: flex; 
+	font-size:40px;
+	border: none;
+	color: rgba(255,255,255,0.6);
+	text-decoration: none;
+	font-size: 3rem;
+	text-align: center;
+	color: #e3eef1;
+	text-shadow:
+		0 0 7px #efefef,
+		0 0 10px #90d0f0,
+		0 0 42px rgb(60, 116, 166),
+		0 0 77px rgb(60, 116, 166),
+		0 0 100px rgb(24, 46, 65);
+	animation: lumiere 1s infinite linear;
+}
+@keyframes lumiere {
+0%{
+	text-shadow:
+	0 0 7px #d8e0e1,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+}
+50%{
+	text-shadow:
+	0 0 7px #ffffff,
+	0 0 10px #90d0f0,
+	0 0 32px rgb(60, 116, 166),
+	0 0 87px rgb(60, 116, 166),
+	0 0 120px rgb(24, 46, 65);
+}
+}
+.effetneon span {
+	font-size: 6rem;
+}
+
+/* .container {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	min-height: 100vh;
+} */
+
+/* END NEON */
+
+/* Position du bouton switch mode  */
+
+#test {
+	position: relative;
+	top: 85%;
+	left: -65%;
+}
+
+/* Styling du bouton pour  changer de thème */
+.theme-switch {
+	display: inline-block;
+	height: 34px;
+	position: relative;
+	width: 80px;
+	margin-right: 1.5vw;
+}
+	
+.theme-switch input {
+	display:none;
+}
+
+.slider {
+	background-color: #ccc;
+	bottom: 0;
+	/* cursor: pointer; */
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	transition: .4s;
+}
+
+.slider:before {
+	background-color: #fff;
+	bottom: 4px;
+	content: "";
+	height: 26px;
+	left: 4px;
+	position: absolute;
+	transition: .4s;
+	width: 26px;
+}
+
+input:checked + .slider {
+	background-color: #bfded6;
+}
+
+input:checked + .slider:before {
+	transform: translateX(18px);
+}
+
+.slider.round {
+	border-radius: 34px;
+}
+
+.slider.round:before {
+	border-radius: 50%;
+}
+	
+	/* Burger menu  */
+
+.nav-elements{
+	display: flex;
+	flex-direction: column;
+	width: 70px;
+	/* cursor: pointer; */
+	position:relative;
+	transform: scale(0.7);
+}
+
+.nav-elements span{
+	background: white;
+	border-radius: 5px;
+	height: 7px;
+	margin: 7px;
+	transform: .4s cubic-bezier(0.68, -0.6, 0.32,1.6);
+}
+
+/* Les barres du burger menu  */
+
+.span1{
+	width: 50%;
+}
+
+.span2{
+	width: 100%;
+}
+
+.span3{
+	width: 75%;
+} 
+
+/* Display et rotation pour former la croix  */
+
+input[type="checkbox"]{
+	display:none;
+}
+
+input[type="checkbox"]:checked ~ .span1{
+	transform-origin:bottom;
+	transform:rotateZ(45deg) translate(8px,0px)
+}
+
+input[type="checkbox"]:checked ~ .span2{
+	transform-origin:top;
+	transform:rotateZ(-45deg)
+}
+
+input[type="checkbox"]:checked ~ .span3{
+	transform-origin:bottom;
+	width:50%;
+	transform:translate(30px,-11px) rotateZ(45deg)
+}

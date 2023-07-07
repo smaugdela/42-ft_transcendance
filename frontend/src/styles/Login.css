@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Licorice&family=Open+Sans&family=Share+Tech&display=swap');
+
+
+.background{
+    width: 430px;
+	  position: flex;
+    height: 1233px;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+}
+
+.connection-form {
+    height: 440px;
+    width: 400px;
+    background-color: rgba(255,255,255,0.13);
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 30px 30px;
+}
+
+.connection-form > * , .title-logs , #signup_btn {
+  font-family: var(--font-type);
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+
+.login_label {
+	color: #e3eef1;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	/* animation: lumiere 1s infinite linear; */
+	padding-top: 10px;
+    display: block;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+input{
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 300;
+}
+::placeholder{
+    color: #e5e5e5;
+}
+
+#login-btn {
+    margin-top: 50px;
+    width: 100%;
+     background-color: #fffeff;
+    /* color: #080710; */
+	color: rgb(60, 116, 166);
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+	box-shadow:
+		0 0 7px #efefef,
+		0 0 10px #efefef,
+		0 0 20px rgb(60, 116, 166),
+		0 0 42px rgb(60, 116, 166),
+		0 0 77px rgb(60, 116, 166);
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
+
+#login-btn:hover{
+	color: rgb(243, 249, 255);
+	filter: drop-shadow(0 0 20px #90d0f09e) contrast(2) brightness(1);
+	background: linear-gradient(rgba(5, 5, 5, 0.6), rgba(0, 0, 0, 0)), repeating-linear-gradient(0, transparent, transparent 2px, black 3px, black 3px);
+	text-shadow: -3px -3px 0px #90d0f09e, 3px 3px 9px rgb(35, 71, 103);
+	animation: 5s glitch;
+	animation-timing-function: steps(2, end);
+}
+
+.social{
+  margin-top: 30px;
+  display: flex;
+  font-size: 17px;
+}
+.social div{
+  background: red;
+  width: 150px;
+  border-radius: 3px;
+  padding: 5px 10px 10px 5px;
+  background-color: rgba(255,255,255,0.27);
+  color: #eaf0fb;
+  text-align: center;
+}
+.social div:hover{
+  background-color: rgba(255,255,255,0.47);
+}
+.social .fb{
+  margin-left: 30px;
+  color: #e3eef1;
+  text-shadow:
+  0 0 7px #efefef,
+  0 0 10px #90d0f0,
+  0 0 42px rgb(60, 116, 166),
+  0 0 77px rgb(60, 116, 166),
+  0 0 100px rgb(24, 46, 65);
+  
+}
+
+.social .go{
+	color: #e3eef1;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+  }
+
+.social i{
+  margin-right: 4px;
+  
+}
+
+#signup_btn {
+  background: none;
+	border: none;
+  color: #e3eef1;
+  text-shadow:
+  0 0 7px #efefef,
+  0 0 10px #90d0f0,
+  0 0 42px rgb(60, 116, 166),
+  0 0 77px rgb(60, 116, 166),
+  0 0 100px rgb(24, 46, 65);
+  font-size: 17px;
+  cursor: pointer;
+}
+
+/* ********************************/
+/* ***   ERROR MSG COMPONENT    ***/
+/* ********************************/
+
+.login__alert_err {
+	color: rgb(255, 26, 26);
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	text-align: center;
+  margin-top: 5px;
+}
+
+.login__alert_ok {
+	color: rgb(153, 201, 139);
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1em;
+	text-align: center;
+  margin-top: 5px;
+}

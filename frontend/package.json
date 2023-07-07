@@ -1,0 +1,75 @@
+{
+	"name": "mon-app",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"dependencies": {
+		"@fortawesome/fontawesome-svg-core": "^6.4.0",
+		"@fortawesome/free-brands-svg-icons": "^6.4.0",
+		"@fortawesome/free-solid-svg-icons": "^6.4.0",
+		"@fortawesome/react-fontawesome": "^0.2.0",
+		"@tanstack/react-query": "^4.29.7",
+		"@testing-library/jest-dom": "^5.16.5",
+		"@testing-library/react": "^13.4.0",
+		"@testing-library/user-event": "^13.5.0",
+		"@types/jest": "^27.5.2",
+		"@types/node": "^16.18.23",
+		"@types/react": "^18.0.35",
+		"@types/react-dom": "^18.0.11",
+		"argon2": "^0.27.1",
+		"awesome": "^0.0.7",
+		"axios": "^1.4.0",
+		"font": "^0.0.4",
+		"font-awesome": "^4.7.0",
+		"fontawesome": "^5.6.3",
+		"fuse.js": "^6.6.2",
+		"node-gyp": "^9.4.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-icons": "^4.8.0",
+		"react-query": "^3.39.3",
+		"react-scripts": "5.0.1",
+		"socket.io-client": "^4.7.0",
+		"sweetalert2": "^11.7.3",
+		"ts-jest": "^29.1.0",
+		"typescript": "^4.9.5",
+		"validator": "^13.9.0",
+		"web-vitals": "^2.1.4"
+	},
+	"scripts": {
+		"start": "HTTPS=true SSL_CRT_FILE=localhost.pem SSL_KEY_FILE=localhost-key.pem react-scripts start",
+		"build": "react-scripts build",
+		"test": "jest",
+		"test:watch": "jest --watch",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"@babel/core": "^7.21.8",
+		"@babel/preset-env": "^7.21.5",
+		"@babel/preset-typescript": "^7.21.5",
+		"@jest/globals": "^27.5.1",
+		"@tanstack/eslint-plugin-query": "^4.29.4",
+		"@types/validator": "^13.7.17",
+		"babel-jest": "^5.3.0",
+		"jest": "^25.0.0",
+		"react-router-dom": "^6.10.0"
+	}
+}
