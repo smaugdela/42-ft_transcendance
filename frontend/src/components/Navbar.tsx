@@ -1,12 +1,12 @@
 import '../styles/Navbar.css';
 import Avatar from './Avatar';
 import LoginBtn from './LoginBtn';
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { ChangeEventHandler } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapPin, faSpaghettiMonsterFlying, faPeoplePulling, faPersonDrowning, faHandsHoldingChild, faRobot, faShieldCat, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
-import { logOut } from "../api/APIHandler";
+import { logOut, checkIfLogged } from "../api/APIHandler";
 import { IsLoggedInContext } from '../App';
 
 const SidebarData = [
@@ -61,6 +61,15 @@ export default function Navbar(props: { theme: string, toggleTheme: ChangeEventH
 	const [sidebar, setSidebar] = useState<boolean>(false);
 	const isLoggedIn = useContext(IsLoggedInContext);
 	const { setLoggedIn } = props;
+	
+	useEffect( () => {
+		const fetchData = async () => {
+			const userStatus = await checkIfLogged();
+			setLoggedIn(userStatus);
+		};
+		
+		fetchData();
+	}, [setLoggedIn]);
 	
 	const navigate = useNavigate();
 	const handleLogout = async () => {
