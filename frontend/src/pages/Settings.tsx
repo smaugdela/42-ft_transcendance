@@ -1,6 +1,6 @@
 import "../styles/Settings.css";
 import { IUser } from "../api/types";
-import { updateUserStringProperty, deleteMe, fetchMe, uploadImage } from "../api/APIHandler";
+import { updateUserStringProperty, deleteMe, fetchMe, uploadImage, updateUserBooleanProperty } from "../api/APIHandler";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -290,6 +290,76 @@ export function DeleteAccountCardSettings() {
 	);
 }
 
+// Pour Simon quand tu feras le 2FA:
+/* 
+	Roadmap 2FA côté Front:
+	- FAIT/ useState<boolean> de la propriété prisma du User
+	- FAIT/ check si la personne a bien renseigné son adresse mail et message d'err
+	- FAIT/ utiliser UseMutation hook pour call la fonction API qui va Patch ce booléen
+	- FAIT/ utiliser React-Query pour get les infos du User et afficher le statut du 2FA
+	- FAIT/ un onClick pour récupérer l'état du slider et le lier au UseMutation
+	- FAIT/ par défaut, afficher le switch d'après le statut du user (si 2FA activé, afficher
+		 par défaut en vert quand le user retourne sur sa page)
+	
+	RESTE A FAIRE:
+	- utiliser le state du booléen pour afficher la popup du code à rentrer
+*/
+export function Activate2FA() {
+	const [errorMsg, setErrorMsg] = useState<string>("");
+	const [isEnabled, setIsEnabled] = useState<boolean>(false);
+	const queryClient = useQueryClient();
+	
+	const enable2FA = useMutation({
+		mutationFn: () => updateUserBooleanProperty("enabled2FA", isEnabled),
+		onSuccess: () => { 
+			queryClient.invalidateQueries(['user']);
+		},
+		onError: (error: any) => {
+			setErrorMsg(error.message || 'An error occurred');
+		},
+	});
+	
+	const userQuery = useQuery({ queryKey: ['user'], queryFn: () => fetchMe()});
+	
+	useEffect(() => {
+		if (userQuery.data && !userQuery.data.email) {
+			setErrorMsg("You must provide your email above to use this feature.");
+		} else {
+			setErrorMsg("");
+		}
+	}, [userQuery.data, userQuery.data?.email, isEnabled]);
+	
+	if (userQuery.error instanceof Error){
+		return <div>Error: {userQuery.error.message}</div>
+	}
+	if (userQuery.isLoading || !userQuery.isSuccess){
+		return <div>Loading</div>
+	}
+	
+	const handleChange= () => {
+		const tmp = (isEnabled === true)? false : true;
+		setIsEnabled(tmp);
+		enable2FA.mutate();
+	}
+
+	return (
+		<div id="fa_settings">
+			<h2>Two-factor authentication</h2>
+			<h4>Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in.</h4>
+			<input type="checkbox" id="switch" checked={userQuery.data.enabled2FA} onChange={handleChange}/>
+			<label htmlFor="switch" className="switch-label"></label>
+			<>
+			{
+				errorMsg && 
+				<div className="settings__alert_err">
+					<h6>{errorMsg}</h6>
+				</div>
+			}
+			</>
+		</div>
+	);
+}
+
 export default function Settings() {
 
 	const userQuery = useQuery({ queryKey: ['user'], queryFn: () => fetchMe()});
@@ -312,6 +382,7 @@ export default function Settings() {
 					<TextCardSettings property={'bio'}/>
 					<TextCardSettings property={'email'}/>
 					<PasswordCardSettings />
+					<Activate2FA/>
 					<DeleteAccountCardSettings />
 				</div>
 			</div>

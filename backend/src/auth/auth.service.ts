@@ -123,10 +123,14 @@ export class AuthService {
 			return "Successfully logged!";
 
 		} catch (error) {
-			if (error.code === 'P2025')
-				throw new ForbiddenException('No such nickname');
-			else
-				throw new ForbiddenException('Invalid login. Have you signed up?');
+			if (error.code === 'P2025') {
+				const errorMessage = 'No such nickname';
+				throw new ForbiddenException(errorMessage);
+			}
+			else {
+				const errorMessage = 'Invalid login. Have you signed up?';
+				throw new ForbiddenException(errorMessage);
+			}
 		}
 	}
 

@@ -36,6 +36,9 @@ export class UpdateUserDto {
 	password:		string;
 
 	@IsOptional()
+	enabled2FA:	boolean;
+
+	@IsOptional()
 	@IsNumber()
 	@IsPositive()
 	nbGames: number;

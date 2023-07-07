@@ -30,11 +30,11 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin: 6vh 10vw;
 }
 
 .settings {
 	min-height: 80vh;
-	margin: 6vh 0;
 	padding: 2em;
 	color: var(--font-color);
 	border-radius: 24px;
@@ -309,11 +309,79 @@
 }
 
 /* ********************************/
+/* ***   ENABLE 2FA COMPONENT   ***/
+/* ********************************/
+
+#fa_settings {
+	margin: 1em;
+	margin-top : 2em;
+}
+
+#fa_settings > h2 {
+	font-family: 'Bruno Ace SC', cursive;
+	color: black;
+	text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+	text-align: left;
+	font-size: 1.1em;
+	margin-bottom: 0.8vh;
+}
+
+#fa_settings > h4 {
+	font-family: 'Open Sans', sans-serif;
+	text-align: left;
+	margin-bottom: 15px;
+}
+
+
+#switch[type=checkbox]{
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+  
+#fa_settings > label {
+	cursor: pointer;
+	width: 100px;
+	height: 50px;
+	background: grey;
+	display: block;
+	border-radius: 100px;
+	position: relative;
+}
+  
+#fa_settings > label:after {
+	content: '';
+	position: absolute;
+	top: 2.5px;
+	left: 2.5px;
+	width: 45px;
+	height: 45px;
+	background: #fff;
+	border-radius: 90px;
+	transition: 0.5s;
+}
+
+#switch:checked + label {
+	background: #8cbb8b;
+}
+
+#switch:checked + label:after {
+	left: calc(90%);
+	transform: translateX(-90%);
+}
+
+#fa_settings > label:active:after {
+	width: 50px;
+}
+
+/* ********************************/
 /* *** DELETE ACCOUNT COMPONENT ***/
 /* ********************************/
 
 .delete_settings {
 	text-align: center;
+	margin: 1em;
+	margin-top : 2em;
 }
 
 .delete_settings__title {
