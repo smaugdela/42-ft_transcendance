@@ -177,10 +177,16 @@ export async function getMeiliData(): Promise<IUser> {
 
 
 export async function postSearchQuery(userInput: string) {
-	const response = await api.post(`/search`, {
-		searchQuery: userInput,
-	});
-	return response;
+
+	try {
+		const response = await api.post(`/search`, {
+			searchQuery: userInput,
+		});
+		return response;
+	} catch (error) {
+		throw new Error('Meilisearch: error caught during search');
+	}
+
 }
 
 /* ######################*/

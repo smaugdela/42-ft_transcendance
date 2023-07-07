@@ -20,14 +20,16 @@ export class SearchService {
 	private getUserIndex(): Index {
 		return (this._client.index('users'));
 	}
-
+	
 	public async addDocuments(documents) {
 		const index = this.getUserIndex();
+		console.log('An index was created');
 		return await index.addDocuments(documents);
 	}
 
 	public async search(text: string, searchParams?: SearchParams) {
 		const index = this.getUserIndex();
+		
 		index.updateSearchableAttributes([
 			'nickname'
 		]);
