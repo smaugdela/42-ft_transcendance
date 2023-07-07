@@ -13,5 +13,4 @@ export class MailController {
 		const token = req.query.token as string;
 		return await this.mailService.confirmationUrl(req.userId, token);
 	}
-
 }
