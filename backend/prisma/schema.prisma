@@ -9,6 +9,7 @@ datasource db {
 
 model User {
   id             Int             @id @default(autoincrement())
+  createdAt      DateTime        @default(now())
   avatar         String?         @default("/assets/avatar1.png")
   nickname       String          @unique
   email          String?         @unique
