@@ -11,6 +11,7 @@ export interface IUser {
 	loses: number;
 	aces: number;
 	accessToken: number;
+	createdAt: Date;
 
 	score: number;
 	rank: number;
