@@ -31,64 +31,66 @@ export function Achievement( props: { userAchievements: IAchievement[] }) {
 export function MatchHistory(props: { user: IUser }) {
 	
 	const matchesQuery : UseQueryResult<IMatch[]>= useQuery({ 
-		queryKey: ['match'],
-		queryFn: () => getUserMatches()
+		queryKey: ['match', props.user.id],
+		queryFn: () => getUserMatches(props.user.id)
 	});
 
 	if (matchesQuery.error instanceof Error){
 		return <div>Error: {matchesQuery.error.message}</div>
 	}
-	if (matchesQuery.isLoading || !matchesQuery.isSuccess){
+	if (matchesQuery.isLoading || !matchesQuery.isSuccess || !props.user){
 		return <div>Loading</div>
 	}
 
-	// console.log("Matches: ", matchesQuery);
+	const matches: IMatch[] = matchesQuery.data;	
+
+	const displayMatchHistory = matches.map(match => {
+
+		let banner: string = "ACE !";
+		let banner_style: string = "ace";
+
+		if (match.loserId === props.user.id) {
+			banner = "DEFEAT!";
+			banner_style = "defeat";
+		}
+		else if (match.winnerId === props.user.id && match.scoreLoser !== 0) {
+			banner = "VICTORY !";
+			banner_style = "victory";
+		}	
+		else if (match.scoreWinner === match.scoreLoser) {
+			banner = "EQUALITY !";
+			banner_style = "equality";
+		}
 		
-
-	// const displayMatchHistory = matchesQuery.map(match => {
-
-	// 	let banner: string = "ACE !";
-	// 	let banner_style: string = "ace";
-	// 	let outcome : number = match.score_p1 - match.score_p2;
-	// 	if (outcome < 0) {
-	// 		banner = "DEFEAT!";
-	// 		banner_style = "defeat";
-	// 	}
-	// 	else if (outcome > 0 && match.score_p2 !== 0) {
-	// 		banner = "VICTORY !";
-	// 		banner_style = "victory";
-	// 	}	
-	// 	else if (outcome === 0) {
-	// 		banner = "EQUALITY !";
-	// 		banner_style = "equality";
-	// 	}
+		const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const;
+		const date = match.date.toLocaleDateString('en-US', options);
 		
-	// 	const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const;
-	// 	const date = match.date.toLocaleDateString('en-US', options);
-	// 	const opponent: IUser = props.users.filter(player => player.id === match.id_p2)[0];
+		const userScore: number = (match.winnerId === props.user.id) ? match.scoreWinner: match.scoreLoser;
+		const opponentScore: number = (match.winnerId === props.user.id) ? match.scoreLoser : match.scoreWinner;
+		const opponent: IUser = (match.winnerId === props.user.id) ? match.loser : match.winner;
 
-	// 	return <div className="match-card">
-	// 				<h5>{date}</h5>
-	// 				<h4 className={`match-outcome ${banner_style}`}>{banner}</h4>
-	// 				<div className="match-detail">
-	// 					<div className="opponent">
-	// 						<img src={props.user.avatar} alt={props.user.nickname} />
-	// 						<h4>{props.user.nickname}</h4>
-	// 					</div>
-	// 					<div>
-	// 						<h2>{match.score_p1} - {match.score_p2}</h2>
-	// 					</div>
-	// 					<div className="opponent">
-	// 						<img src={opponent.avatar} alt={opponent.nickname} />
-	// 						<h4>{opponent.nickname}</h4>
-	// 					</div>
-	// 				</div>
-	// 			</div>
-	// })
+		return <div key={match.id} className="match-card">
+					<h5>{date}</h5>
+					<h4 className={`match-outcome ${banner_style}`}>{banner}</h4>
+					<div className="match-detail">
+						<div className="opponent">
+							<img src={props.user.avatar} alt={props.user.nickname} />
+							<h4>{props.user.nickname}</h4>
+						</div>
+						<div>
+							<h2>{userScore} - {opponentScore}</h2>
+						</div>
+						<div className="opponent">
+							<img src={opponent?.avatar} alt={opponent?.nickname} />
+							<h4>{opponent?.nickname}</h4>
+						</div>
+					</div>
+				</div>
+	})
 	return (
 		<aside>
 			<h1>MATCH HISTORY</h1>
-			{/* {displayMatchHistory} */}
+			{displayMatchHistory}
 		</aside>
 	);
 }
@@ -114,13 +116,18 @@ export function UserProfile() {
 	const userWinrate: number = userTotalMatches !== 0 ? user.wins * 100 / userTotalMatches : 0;
 	const userFriendsCount: number = (user.friendsList && user.friendsList?.length >= 1) ? user.friendsList.length : 0;
 
+	const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' } as const;
+	const creationDate = new Date(user.createdAt).toLocaleDateString('en-US', options);
+
 	return (
 		<div id="whole-profile">
 			<section id="main-dashboard">
 				<div id="top-dashboard">
 					<div>
 						<article id="bio">
-							<div id="hexagon-avatar"></div>
+							<div 
+								 style={{ backgroundImage: `url(${user.avatar})` }}
+								 id="hexagon-avatar"></div>
 							<div className="user-infos">
 								<div className="titles">
 									<h2>{user.nickname}</h2>
@@ -130,7 +137,7 @@ export function UserProfile() {
 								<button><FontAwesomeIcon icon={faUserPlus} /></button>
 								<button><FontAwesomeIcon icon={faBan} /></button>
 								<button><FontAwesomeIcon icon={faComment} /></button>
-								<h5>Member since April 25, 2023</h5>
+								<h5>Member since {creationDate}</h5>
 							</div>
 						</article>
 						<article className="user_bio">

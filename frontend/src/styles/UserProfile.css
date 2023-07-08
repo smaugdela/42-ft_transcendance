@@ -55,7 +55,6 @@
 #hexagon-avatar {
 	height: 9em;
 	width : 8em;
-	background-image: url("../../public/assets/jinx.png");
 	background-size: cover;
 	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
 	margin : 1em;
@@ -90,6 +89,9 @@
 	background-color: rgb(27, 102, 27);
 	color: rgb(84, 187, 84);
 	border-radius: 20px;
+
+	font-size: 0.7rem;
+	text-align: center;
 	
 	padding: 0.5rem 0.67rem;
 	width: 5rem;
