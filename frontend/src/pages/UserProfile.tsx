@@ -4,8 +4,9 @@ import StatDisplay from "../components/StatDisplay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus, faBan, faComment, faDice, faHeart, faTrophy } from '@fortawesome/free-solid-svg-icons';
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { fetchMe, getUserMatches } from "../api/APIHandler";
+import { fetchUserByNickname, getUserMatches } from "../api/APIHandler";
 import { IUser, IAchievement, IMatch } from "../api/types";
+import { useParams, Link } from 'react-router-dom';
 
 export function Achievement( props: { userAchievements: IAchievement[] }) {
 	
@@ -81,7 +82,9 @@ export function MatchHistory(props: { user: IUser }) {
 							<h2>{userScore} - {opponentScore}</h2>
 						</div>
 						<div className="opponent">
+							<Link to={`/user/${opponent?.nickname}`} >
 							<img src={opponent?.avatar} alt={opponent?.nickname} />
+							</Link>
 							<h4>{opponent?.nickname}</h4>
 						</div>
 					</div>
@@ -97,10 +100,15 @@ export function MatchHistory(props: { user: IUser }) {
 
 export function UserProfile() {
 
+	const { nickname } = useParams<{ nickname?: string }>();
+	
 	/* On fait une requête au backend pour récupérer le user connecté */
 	const userQuery : UseQueryResult<IUser>= useQuery({ 
-		queryKey: ['user'], 	 // on relie notre requête au mot clé 'user'
-		queryFn: () => fetchMe() // call API
+		queryKey: ['user', nickname], 	 				// on relie notre requête au mot clé 'user'
+		queryFn: () => {
+			if (nickname) {
+				return fetchUserByNickname(nickname)}	// call API
+			}
 	});
 
     if (userQuery.error instanceof Error){

@@ -127,6 +127,11 @@ export async function fetchUserById(id: number): Promise<IUser> {
 	return response.data;
 }
 
+export async function fetchUserByNickname(nickname: string): Promise<IUser> {
+	const response = await api.get<IUser>(`/users/${nickname}`);
+	return response.data;
+}
+
 export async function fetchMe(): Promise<IUser> {
 	const response = await api.get<IUser>(`/users/me`);
 	return response.data;

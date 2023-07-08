@@ -14,7 +14,6 @@ import FAQ from './pages/FAQ';
 import Home from './pages/Home';
 import GamePage from './pages/GamePage';
 
-
 export const IsLoggedInContext = React.createContext<boolean>(false);
 
 function App() {
@@ -54,8 +53,7 @@ function App() {
             <Route path="/social" element={<Social />} />
             <Route path='/settings' element={<Settings />} />
             <Route path='/login' element={<Login setLoggedIn={setLoggedIn}/>} />
-            <Route path='/user' element={<UserProfile />} />
-                {/* // <Route path=`/user/${}` element={<UserProfile />} /> */}
+            <Route path={`/user/:nickname`}  element={<UserProfile />} />
 			      <Route path='/gamepage' element ={<GamePage/>}/>
           </Routes>
           {
