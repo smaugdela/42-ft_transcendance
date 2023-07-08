@@ -42,9 +42,9 @@ export class UsersController {
 		return this.usersService.findOne(username);
 	}
 
-	@Get('matches')
-	getHistoryMatch(@Req() req: Request) {
-		return this.usersService.getHistoryMatch(req.userId);
+	@Get('matches/:id')
+	getHistoryMatch(@Param('id') id: string) {
+		return this.usersService.getHistoryMatch(+id);
 	}
 	// @Patch(':username')
 	// updateOne(@Param('username') username: string, @Body() body: UpdateUserDto) {

@@ -29,7 +29,11 @@ export class UsersService {
 	async findMe(id: number) {
 		return await prisma.user.findUnique({
 			where: { id },
-			include: { achievements: true },
+			include: { 
+				achievements: true,
+				matchAsP1: true,
+				matchAsP2: true, 
+			},
 		});
 	}
 
@@ -105,12 +109,20 @@ export class UsersService {
 		console.log("id", id);
 		
 		const user = await prisma.user.findUnique({
-		  where: { id: id },
-		  include: {
-			matchAsP1: true,
-			matchAsP2: true,
-		  },
-		});
+			where: { id: id },
+			include: {
+			  matchAsP1: { // quand user a gagné
+				include: {
+				  loser: true, // permet de récup les data de l'opponent
+				},
+			  },
+			  matchAsP2: { // quand user a perdu
+				include: {
+				  winner: true, // permet de récup les data de l'opponent
+				},
+			  },
+			},
+		  });
 	  
 		const winnerMatches = user.matchAsP1;
 		const loserMatches = user.matchAsP2;
