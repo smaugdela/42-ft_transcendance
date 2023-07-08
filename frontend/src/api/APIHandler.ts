@@ -104,9 +104,17 @@ export async function checkIfLogged(): Promise<boolean> {
 	return response.data;
 }
 
-export async function getUserMatches(): Promise<IMatch[]> {
-	const response = await api.get<IMatch[]>(`/users/matches`);
-	return response.data;
+export async function getUserMatches(id: number): Promise<IMatch[]> {
+	const response = await api.get<IMatch[]>(`/users/matches/${id}`);
+
+	// nécessaire car Prisma ne renvoie pas exactement un Date object selon JS
+	// thread: https://github.com/prisma/prisma/discussions/5522
+	const matches: IMatch[] = response.data.map((match) => ({
+		...match,
+		date: new Date(match.date),
+	  }));
+
+	return (matches);
 }
 
 export async function fetchUsers(): Promise<IUser[]> {
