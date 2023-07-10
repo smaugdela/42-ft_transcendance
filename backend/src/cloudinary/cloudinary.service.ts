@@ -18,7 +18,6 @@ export class CloudinaryService {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
                     folder: "pong_avatars", // upload in folder name
-                    public_id: file.originalname, // rename file
                     overwrite: true, // overwrite the image if it already exists
                     resource_type: "auto", // detect the file extension and upload it correctly
                 },
