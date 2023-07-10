@@ -87,7 +87,11 @@ export class UsersService {
 	async findOne(username: string) {
 		return await prisma.user.findUnique({
 			where: { nickname: username },
-			include: { achievements: true },
+			include: { 
+				achievements: true,
+				matchAsP1: true,
+				matchAsP2: true, 
+			 },
 		});
 	}
 
