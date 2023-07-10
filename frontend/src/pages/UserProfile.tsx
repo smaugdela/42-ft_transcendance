@@ -120,8 +120,8 @@ export function UserProfile() {
 
 	/* Pour pouvoir passer ses infos dans les components, on renomme pour + de lisbilité */
 	const user: IUser = userQuery.data as IUser;
-	const userTotalMatches: number = user.wins + user.loses;
-	const userWinrate: number = userTotalMatches !== 0 ? user.wins * 100 / userTotalMatches : 0;
+	const userTotalMatches: number = user.matchAsP1.length + user.matchAsP2.length;
+	const userWinrate: number = userTotalMatches !== 0 ? user.matchAsP1.length * 100 / userTotalMatches : 0;
 	const userFriendsCount: number = (user.friendsList && user.friendsList?.length >= 1) ? user.friendsList.length : 0;
 
 	const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' } as const;
@@ -169,7 +169,7 @@ export function UserProfile() {
 									<FontAwesomeIcon icon={faTrophy} className="fa-icon"/>
 								</div>
 								<div className="one-stat_txt">
-									<h2>{user.wins}</h2>
+									<h2>{user.matchAsP1.length}</h2>
 									<h5>Victories</h5>
 								</div>
 								
@@ -193,8 +193,8 @@ export function UserProfile() {
 						<div className="winratio_stats">
 							<WinrateCircularBar winRate={userWinrate} />
 							<div className="statdisplay">
-								<StatDisplay title={"Wins"} stat={user.wins} />
-								<StatDisplay title={"Lose"} stat={user.loses} />
+								<StatDisplay title={"Wins"} stat={user.matchAsP1.length} />
+								<StatDisplay title={"Lose"} stat={user.matchAsP2.length} />
 							</div>
 						</div>
 						<div className="statdisplay">

@@ -1,18 +1,16 @@
 export interface IUser {
 	id: number;
-	avatar: string;
-	nickname: string;
-	email: string;
-	bio: string;
-	password: string;
-	enabled2FA: boolean;
-	coalition: string;
-	wins: number;
-	loses: number;
-	aces: number;
-	accessToken: number;
 	createdAt: Date;
-
+	nickname: string;
+	avatar: string;
+	password: string;
+	email: string;
+	enabled2FA: boolean;
+	accessToken: number;
+	bio: string;
+	coalition: string;
+	
+	aces: number;
 	score: number;
 	rank: number;
 	isActive : boolean;
