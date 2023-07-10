@@ -447,6 +447,7 @@ aside > h1:first-child {
 
 .opponent img {
 	height: 5rem;
+	width: 5rem;
 	max-width: 5rem;
 	border-radius: 50%;
 }
