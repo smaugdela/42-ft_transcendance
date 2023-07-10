@@ -1,4 +1,4 @@
-import "../styles/StatDisplay.css"
+import "../../styles/StatDisplay.css"
 
 export default function StatDisplay( props : { title: string, stat: number }) {
 	

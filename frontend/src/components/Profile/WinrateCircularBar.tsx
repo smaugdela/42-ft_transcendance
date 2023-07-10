@@ -1,5 +1,4 @@
-import "../styles/UserProfile.css"
-
+import "../../styles/UserProfile.css"
 
 export default function WinrateCircularBar(props : { winRate : number}) {
 
