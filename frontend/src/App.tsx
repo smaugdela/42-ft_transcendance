@@ -13,6 +13,8 @@ import AboutUs from './pages/AboutUs';
 import FAQ from './pages/FAQ';
 import Home from './pages/Home';
 import GamePage from './pages/GamePage';
+import DoubleFA from './pages/DoubleFA';
+import Error from './pages/Error';
 
 export const IsLoggedInContext = React.createContext<boolean>(false);
 
@@ -52,8 +54,11 @@ function App() {
             <Route path="/social" element={<Social />} />
             <Route path='/settings' element={<Settings />} />
             <Route path='/login' element={<Login setLoggedIn={setLoggedIn}/>} />
+			<Route path='/2fa' element={<DoubleFA/>} />
             <Route path='/user' element={<UserProfile />} />
-			      <Route path='/gamepage' element ={<GamePage/>}/>
+	    	<Route path='/gamepage' element ={<GamePage/>}/>
+			<Route path='/error/:status' element={<Error/>} />
+			<Route path='*' element={<Error/>} />
           </Routes>
           {
             isLoggedIn &&

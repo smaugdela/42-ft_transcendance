@@ -95,7 +95,7 @@ export class MailService {
 			token: code,
 			date: new Date(),
 		});
-		const url = process.env.BACKEND_URL + '/auth/2fa?code=' + code + '&userId=' + userId;
+		const url = process.env.FRONTEND_URL + '/2fa?code=' + code + '&userId=' + userId;
 
 		await this.mailerService.sendMail({
 			to: user.email,
@@ -109,10 +109,14 @@ export class MailService {
 	}
 
 	async Confirmation2FA(userId: number, token: string) {
+
 		// Find if token exists
-		const index = this.Tokens2FA.findIndex((t) => t.token === token);
-		if (index === -1) {
-			throw new HttpException('Bad Link', 406);
+		let index = 0;
+		while (index < this.Tokens2FA.length && this.Tokens2FA[index].token !== token) {
+			index++;
+		}
+		if (index === this.Tokens2FA.length) {
+			return false;
 		}
 
 		// Find if token is expired
@@ -122,20 +126,21 @@ export class MailService {
 
 		// 10 minutes
 		if (diff > 10 * 60 * 1000) {
-			throw new HttpException('Link Expired', 406);
+			return false;
 		}
 
 		if (this.Tokens2FA[index].userId !== userId) {
-			throw new HttpException('Bad Link', 406);
+			return false;
 		}
 
 		const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
 		if (user.login2FAstatus !== Login2FAStatus.PENDING) {
-			throw new HttpException('Bad Link', 406);
+			return false;
 		}
 
 		// Delete token
 		this.Tokens2FA.splice(index, 1);
+
 
 		return true;
 	}

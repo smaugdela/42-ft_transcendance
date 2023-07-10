@@ -148,17 +148,20 @@ export class AuthService {
 	async login2FA(@Query() query, @Res({ passthrough: true }) res: Response) {
 		const code = query.code;
 		const id: number = +query.userId;
-
-		if (this.mailService.Confirmation2FA(id, code)) {
-			const user = await prisma.user.update({
-				where: { id: id },
-				data: { login2FAstatus: Login2FAStatus.CONFIRMED }
-			});
-			await this.generateToken(id, res);
-			console.log("User", user.nickname, "logged in.");
-			return "Successfully logged!";
+		try {
+			if (await this.mailService.Confirmation2FA(id, code)) {
+				const user = await prisma.user.update({
+					where: { id: id },
+					data: { login2FAstatus: Login2FAStatus.CONFIRMED }
+				});
+				await this.generateToken(id, res);
+				console.log("User", user.nickname, "logged in.");
+				return "Successfully logged!";
+			}
+		} catch (error) {
+			throw new ForbiddenException('Invalid Link.');
 		}
-		throw new ForbiddenException('Invalid code.');
+		throw new ForbiddenException('Invalid Link.');
 	}
 
 	async signup(body: AuthDto, @Res({ passthrough: true }) res: Response) {
