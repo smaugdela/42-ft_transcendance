@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signUp, logIn } from "../api/APIHandler";
 
+// { setLoggedIn }: { setLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }
 export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }) {
 	const [nickname, setNickname] = useState<string>("");
 	const [password, setPassword] = useState<string>("");

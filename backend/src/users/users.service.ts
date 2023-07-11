@@ -17,10 +17,24 @@ export class UsersService {
 
 	constructor(private mailService: MailService) { }
 
-	checkIfLoggedIn(userId: number | undefined): boolean {
-		// If id is undefined, then the user is not logged in.
-		return userId !== undefined;
-	}
+	async checkIfLoggedIn(userId: number | undefined): Promise<boolean> {
+        // If id is undefined, then the user is not logged in.
+        if (userId === undefined) {
+            return false;
+        } else {
+            const ret: boolean = await prisma.user.findUnique({
+                where: { id: userId }
+            })
+                .then(user => {
+                    if (user) {
+                        console.log(user);
+                        return true;
+                    }
+                    return false;
+                }).catch(() => { return false });
+            return ret;
+        }
+    }
 
 	async findAll() {
 		return await prisma.user.findMany();

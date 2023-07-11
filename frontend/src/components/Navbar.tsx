@@ -25,6 +25,7 @@ export default function Navbar(props: { theme: string, toggleTheme: ChangeEventH
 		fetchData();
 	}, [setLoggedIn]);
 	
+	
 	const navigate = useNavigate();
 	const handleLogout = async () => {
 		try {
@@ -66,7 +67,7 @@ export default function Navbar(props: { theme: string, toggleTheme: ChangeEventH
 					{
 						isLoggedIn === true && 
 						<div className="nav-avatar">
-							<Avatar />
+							<Avatar setLoggedIn={setLoggedIn} />
 							<button onClick={handleLogout}>
 								<FontAwesomeIcon className='nav-logout-icon' icon={faRightFromBracket} />
 							</button>
