@@ -26,9 +26,12 @@ const ErrorPage = () => {
   }
 
   return (
-    <div>
-      <h1>Error {status}</h1>
-      <p>{errorMessage}</p>
+    <div className='Error'>
+		<div className="background"/>
+		<form className="connection-form">
+      		<h1>Error {status}</h1>
+      		<p>{errorMessage}</p>
+	  	</form>
     </div>
   );
 };

@@ -122,7 +122,7 @@ export class AuthService {
 					where: { id: activeUser.id },
 					data: { login2FAstatus: Login2FAStatus.PENDING }
 				});
-				return "Mail sent to login using 2FA."
+				return { doubleFA: true };
 			}
 
 			console.log("User", body.nickname, "logged in.");
@@ -131,7 +131,7 @@ export class AuthService {
 
 			// this.webSocketGateway.server.emit('activity', activeUser.nickname);
 
-			return "Successfully logged!";
+			return { doubleFA: false };
 
 		} catch (error) {
 			if (error.code === 'P2025') {

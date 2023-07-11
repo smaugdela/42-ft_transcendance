@@ -32,7 +32,12 @@ export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<Rea
 		event.preventDefault();
 		
 		try {
-			await logIn(nickname, password);
+			const response = await logIn(nickname, password);
+			console.log("Login Response.data.doubleFA: " + response.data.doubleFA);
+			if (response.data.doubleFA === true) {
+				navigate('/2fa/pending');
+				return;
+			}
 			setLoggedIn(true);
 			setErrorMsg('');
 			setTimeout(() => {

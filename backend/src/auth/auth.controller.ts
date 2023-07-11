@@ -29,7 +29,7 @@ export class AuthController {
 		return this.authService.signup(body, res);
 	}
 
-	@Redirect(process.env.FRONTEND_URL, 302)
+	@Redirect(process.env.FRONTEND_URL + '/settings', 302)
 	@Public()
 	@Get('42/redirect')
 	async redirect42(@Query() query, @Res({ passthrough: true }) res: Response) {

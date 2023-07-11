@@ -70,7 +70,7 @@ export async function logIn(newNickname: string, password: string): Promise<any>
 				},
 			},
 		);
-		return response.data;
+		return response;
 
 	} catch (error) {
 		if (axios.isAxiosError(error)) {
