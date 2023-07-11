@@ -46,7 +46,7 @@ const SidebarData = [
 		title: 'About us',
 		path: '/aboutus',
 		image: <FontAwesomeIcon className='item_image' icon={faShieldCat} />,	  cName: 'nav-text'
-	},
+	}, 
 
 ];
 
