@@ -1,4 +1,5 @@
 import { IsBoolean, IsNumber, IsOptional, IsPositive, IsString, IsNotEmpty } from 'class-validator';
+// import { Achievement } from '@prisma/client';
 
 export class UpdateUserDto {
 	@IsOptional()
@@ -58,4 +59,7 @@ export class UpdateUserDto {
 	@IsOptional()
 	@IsBoolean()
 	isActive: boolean;
+
+	// @IsOptional()
+	// achievements: Achievement[];
 }

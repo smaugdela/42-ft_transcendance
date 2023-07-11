@@ -25,13 +25,14 @@ function App() {
     if (storedTheme) {
       setTheme(storedTheme);
     }
-  }, []); // [] specifies the dependencies array (if empty : runs only when component mounts)
+  }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'kawaii' : 'dark';
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
   };
+
 
   return (
     <div id='app' className={`App ${theme}`}>
@@ -52,7 +53,7 @@ function App() {
             <Route path="/social" element={<Social />} />
             <Route path='/settings' element={<Settings />} />
             <Route path='/login' element={<Login setLoggedIn={setLoggedIn}/>} />
-            <Route path='/user' element={<UserProfile />} />
+            <Route path={`/user/:nickname`}  element={<UserProfile />} />
 			      <Route path='/gamepage' element ={<GamePage/>}/>
           </Routes>
           {
