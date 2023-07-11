@@ -13,6 +13,9 @@ import AboutUs from './pages/AboutUs';
 import FAQ from './pages/FAQ';
 import Home from './pages/Home';
 import GamePage from './pages/GamePage';
+import DoubleFA from './pages/DoubleFA';
+import Error from './pages/Error';
+import PendingPage from './pages/DoubleFAPending';
 
 export const IsLoggedInContext = React.createContext<boolean>(false);
 
@@ -53,8 +56,13 @@ function App() {
             <Route path="/social" element={<Social />} />
             <Route path='/settings' element={<Settings />} />
             <Route path='/login' element={<Login setLoggedIn={setLoggedIn}/>} />
+			      <Route path='/2fa' element={<DoubleFA/>} />
+			      <Route path='/2fa/pending' element={<PendingPage/>} />
+            <Route path='/user' element={<UserProfile />} />
+	    	    <Route path='/gamepage' element ={<GamePage/>}/>
+			      <Route path='/error/:status' element={<Error/>} />
+			      <Route path='*' element={<Error/>} />
             <Route path={`/user/:nickname`}  element={<UserProfile />} />
-			      <Route path='/gamepage' element ={<GamePage/>}/>
           </Routes>
           {
             isLoggedIn &&
