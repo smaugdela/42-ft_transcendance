@@ -17,9 +17,23 @@ export class UsersService {
 
 	constructor(private mailService: MailService) { }
 
-	checkIfLoggedIn(userId: number | undefined): boolean {
+	async checkIfLoggedIn(userId: number | undefined): Promise<boolean> {
 		// If id is undefined, then the user is not logged in.
-		return userId !== undefined;
+		if (userId === undefined) {
+			return false;
+		} else {
+			const ret: boolean = await prisma.user.findUnique({
+				where: { id: userId }
+			})
+				.then(user => {
+					if (user) {
+						console.log(user);
+						return true;
+					}
+					return false;
+				}).catch(() => { return false });
+			return ret;
+		}
 	}
 
 	async findAll() {
@@ -51,7 +65,7 @@ export class UsersService {
 				where: { id },
 				data: updateUserDto,
 			});
-			if (updateUserDto.email !== undefined) {
+			if (updateUserDto.email !== undefined || (updateUserDto.enabled2FA !== undefined && updateUserDto.enabled2FA === true)) {
 				// Send confirmation email
 				this.mailService.sendUserConfirmation(id);
 			}
@@ -91,11 +105,12 @@ export class UsersService {
 		});
 	}
 
-	async updateOne(username: string, updateUserDto: UpdateUserDto) {
-		return await prisma.user.update({
-			where: { nickname: username },
-			data: updateUserDto,
-		});
-	}
+	// !!!NOT PROPERLY WRITTEN cf. updateMe() ABOVE!!!
+	// async updateOne(username: string, updateUserDto: UpdateUserDto) {
+	// 	return await prisma.user.update({
+	// 		where: { nickname: username },
+	// 		data: updateUserDto,
+	// 	});
+	// }
 }
 

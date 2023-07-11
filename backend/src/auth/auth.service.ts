@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, Query, Res } from '@nestjs/common';
+import { ForbiddenException, HttpException, Injectable, Query, Res } from '@nestjs/common';
 import axios from 'axios';
 import { PrismaClient, AuthType, Login2FAStatus } from '@prisma/client';
 import * as argon from 'argon2';
@@ -6,6 +6,7 @@ import AuthDto from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { MailService } from 'src/mail/mail.service';
+import { sleep } from 'pactum';
 
 const hashingConfig = {
 	parallelism: 1,
@@ -75,29 +76,26 @@ export class AuthService {
 				});
 			}
 
+			// Handle 2FA login
+			if (userDb.enabled2FA === true) {
+				this.mailService.send2FALoginCode(userDb.id);
+				await prisma.user.update({
+					where: { id: userDb.id },
+					data: { login2FAstatus: Login2FAStatus.PENDING }
+				});
+				return res.redirect(process.env.FRONTEND_URL + '/2fa/pending');
+			}
+
 			console.log("User 42 logged in: ", userDb);
 
 			await this.generateToken(userDb.id, res);
 
 			// this.webSocketGateway.server.emit('activity', userDb.nickname);
 
-			return "Successfully logged with 42.";
+			return res.redirect(process.env.FRONTEND_URL + '/settings');
 
 		} catch (error) {
-			// if (error.response) {
-			// 	// The client was given an error response (5xx, 4xx)
-			// 	console.log(error.response.data);
-			// 	console.log(error.response.status);
-			// 	console.log(error.response.headers);
-			// } else if (error.request) {
-			// 	// The client never received a response, and the request was never left
-			// 	console.log(error.request);
-			// } else {
-			// 	// Anything else
-			// 	console.log("error: ", error.message);
-			// }
-
-			throw new ForbiddenException('Invalid resolution from 42 API.');
+			throw new HttpException('Invalid resolution from 42 API.', 502);
 		}
 	}
 
@@ -148,6 +146,7 @@ export class AuthService {
 	async login2FA(@Query() query, @Res({ passthrough: true }) res: Response) {
 		const code = query.code;
 		const id: number = +query.userId;
+		sleep(1000);
 		try {
 			if (await this.mailService.Confirmation2FA(id, code)) {
 				const user = await prisma.user.update({

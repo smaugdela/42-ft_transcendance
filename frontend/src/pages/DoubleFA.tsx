@@ -20,22 +20,24 @@ const VerificationPage = () => {
         try {
           const response = await fetch2FA(code, userId);
 
+		  console.log("response.status: " + response.status);
+
           if (response.status === 200) {
-			setIsLoading(false);
 			setIsSuccess(true);
+			setIsLoading(false);
             setTimeout(() => {
               navigate('/');
             }, 2000); // Delay before redirecting to the home page (2 seconds)
           } else {
             // Handle the case when the code is not valid
             console.log('Code verification failed');
-			setIsLoading(false);
 			setIsSuccess(false);
+			setIsLoading(false);
           }
         } catch (error) {
           console.log('Error occurred during code verification', error);
-          setIsLoading(false);
 		  setIsSuccess(false);
+          setIsLoading(false);
 		//   navigate('/error/');
         }
       };
