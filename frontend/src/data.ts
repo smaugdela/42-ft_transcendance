@@ -1,5 +1,5 @@
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { faBaby, faJetFighterUp, faLemon, faUserSlash, faViruses, faUserAstronaut, faFrog, faRobot, faShieldDog, faHandSpock, faHandHoldingDollar } from '@fortawesome/free-solid-svg-icons';
+// import { IconProp } from "@fortawesome/fontawesome-svg-core";
+// import { faBaby, faJetFighterUp, faLemon, faUserSlash, faViruses, faUserAstronaut, faFrog, faRobot, faShieldDog, faHandSpock, faHandHoldingDollar } from '@fortawesome/free-solid-svg-icons';
 
 export interface IUser {
 	id: number;
@@ -19,7 +19,7 @@ export interface IUser {
 }
 
 export interface IAchievement {
-	icon : IconProp;
+	icon : string;
 	title : string;
 	description : string;
 	wasAchieved: boolean;
@@ -335,74 +335,143 @@ export const users : IUser[] =  [
 		matchHistory: []	
 	}];
 
-export const achievements: IAchievement[] = [
-	{
-		icon : faBaby,
-		title : "Baby steps",
-		description: "Played the game for the first time",
-		wasAchieved: false,
-	},
-	{
-		icon : faJetFighterUp,
-		title : "Veteran",
-		description: "Played 10 games",
-		wasAchieved: false,
-	},
-	{
-		icon : faLemon,
-		title : "Easy peasy lemon squeezy",
-		description: "Won 3 games in a row",
-		wasAchieved: false,
-	},
-	{
-		icon : faUserSlash,
-		title : "It's my lil bro playing",
-		description: "Lost 3 games in a row",
-		wasAchieved: false,
-	},
-	{
-		icon : faViruses,
-		title : "Social butterfly",
-		description: "Added 3 friends",
-		wasAchieved: false,
-	},
-	{
-		icon : faUserAstronaut,
-		title : "Influencer",
-		description: "Added 10 friends",
-		wasAchieved: false,
-	},
-	{
-		icon : faFrog,
-		title : "Cosmetic change",
-		description: "Updated their profile picture once",
-		wasAchieved: false,
-	},
-	{
-		icon : faRobot,
-		title : "Existential crisis",
-		description: "Changed their nickname",
-		wasAchieved: false,
-	},
-	{
-		icon : faShieldDog,
-		title : "Safety first",
-		description: "Activated the 2FA authentification",
-		wasAchieved: false,
-	},
-	{
-		icon : faHandSpock,
-		title : "My safe place",
-		description: "Created their first channel",
-		wasAchieved: false,
-	},
-	{
-		icon : faHandHoldingDollar,
-		title : "Pay to Win",
-		description: "Donated to have an in-game advantage",
-		wasAchieved: false,
-	},
-];
+	export const achievements: IAchievement[] = [
+		{
+			icon : "fa-solid fa-baby",
+			title : "Baby steps",
+			description: "Played the game for the first time",
+			wasAchieved: false,
+		},
+		{
+			icon : "fa-solid fa-jet-fighter-up",
+			title : "Veteran",
+			description: "Played 10 games",
+			wasAchieved: false,
+		},
+		{
+			icon : "fa-solid fa-lemon",
+			title : "Easy peasy lemon squeezy",
+			description: "Won 3 games in a row",
+			wasAchieved: false,
+		},
+		{
+			icon : "fa-solid fa-user-slash",
+			title : "It's my lil bro playing",
+			description: "Lost 3 games in a row",
+			wasAchieved: false,
+		},
+		{
+			icon : "fa-solid fa-viruses",
+			title : "Social butterfly",
+			description: "Added 3 friends",
+			wasAchieved: false,
+		},
+		{
+			icon : "fa-solid fa-user-astronaut",
+			title : "Influencer",
+			description: "Added 10 friends",
+			wasAchieved: false,
+		},
+		{
+			icon : "fa-solid fa-frog",
+			title : "Cosmetic change",
+			description: "Updated their profile picture once",
+			wasAchieved: false,
+		},
+		{
+			icon : "fa-solid fa-robot",
+			title : "Existential crisis",
+			description: "Changed their nickname",
+			wasAchieved: false,
+		},
+		{
+			icon : "fa-solid fa-shield-dog",
+			title : "Safety first",
+			description: "Activated the 2FA authentification",
+			wasAchieved: false,
+		},
+		{
+			icon : "fa-solid fa-hand-spock",
+			title : "My safe place",
+			description: "Created their first channel",
+			wasAchieved: false,
+		},
+		{
+			icon : "fa-solid fa-hand-holding-dollar",
+			title : "Pay to Win",
+			description: "Donated to have an in-game advantage",
+			wasAchieved: false,
+		},
+	];
+
+// export const achievements: IAchievement[] = [
+// 	{
+// 		icon : faBaby,
+// 		title : "Baby steps",
+// 		description: "Played the game for the first time",
+// 		wasAchieved: false,
+// 	},
+// 	{
+// 		icon : faJetFighterUp,
+// 		title : "Veteran",
+// 		description: "Played 10 games",
+// 		wasAchieved: false,
+// 	},
+// 	{
+// 		icon : faLemon,
+// 		title : "Easy peasy lemon squeezy",
+// 		description: "Won 3 games in a row",
+// 		wasAchieved: false,
+// 	},
+// 	{
+// 		icon : faUserSlash,
+// 		title : "It's my lil bro playing",
+// 		description: "Lost 3 games in a row",
+// 		wasAchieved: false,
+// 	},
+// 	{
+// 		icon : faViruses,
+// 		title : "Social butterfly",
+// 		description: "Added 3 friends",
+// 		wasAchieved: false,
+// 	},
+// 	{
+// 		icon : faUserAstronaut,
+// 		title : "Influencer",
+// 		description: "Added 10 friends",
+// 		wasAchieved: false,
+// 	},
+// 	{
+// 		icon : faFrog,
+// 		title : "Cosmetic change",
+// 		description: "Updated their profile picture once",
+// 		wasAchieved: false,
+// 	},
+// 	{
+// 		icon : faRobot,
+// 		title : "Existential crisis",
+// 		description: "Changed their nickname",
+// 		wasAchieved: false,
+// 	},
+// 	{
+// 		icon : faShieldDog,
+// 		title : "Safety first",
+// 		description: "Activated the 2FA authentification",
+// 		wasAchieved: false,
+// 	},
+// 	{
+// 		icon : faHandSpock,
+// 		title : "My safe place",
+// 		description: "Created their first channel",
+// 		wasAchieved: false,
+// 	},
+// 	{
+// 		icon : faHandHoldingDollar,
+// 		title : "Pay to Win",
+// 		description: "Donated to have an in-game advantage",
+// 		wasAchieved: false,
+// 	},
+// ];
 
 export const matches: IMatch[] = [
 	{

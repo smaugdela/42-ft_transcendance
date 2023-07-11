@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signUp, logIn } from "../api/APIHandler";
 
+// { setLoggedIn }: { setLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }
 export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }) {
 	const [nickname, setNickname] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -20,8 +21,8 @@ export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<Rea
 			setSuccessMsg("Successfully signed up! ")
 			setErrorMsg('');
 			setTimeout(() => {
-				navigate('/');
-			}, 2500);
+				navigate('/settings');
+			}, 2000);
 		} catch (error) {
 			setSuccessMsg('');
 			setErrorMsg("A user with this nickname already exists");
@@ -41,8 +42,8 @@ export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<Rea
 			setLoggedIn(true);
 			setErrorMsg('');
 			setTimeout(() => {
-				navigate('/');
-			}, 2500);
+				navigate('/settings');
+			}, 1500);
 		} catch (error) {
 			if ((error as Error).message === 'No such nickname') {
 				setErrorMsg("User does not exist: please sign up before")

@@ -1,17 +1,16 @@
 export interface IUser {
 	id: number;
-	avatar: string;
+	createdAt: Date;
 	nickname: string;
-	email: string;
-	bio: string;
+	avatar: string;
 	password: string;
+	email: string;
 	enabled2FA: boolean;
-	coalition: string;
-	wins: number;
-	loses: number;
-	aces: number;
 	accessToken: number;
-
+	bio: string;
+	coalition: string;
+	
+	aces: number;
 	score: number;
 	rank: number;
 	isActive : boolean;
@@ -29,7 +28,7 @@ export interface IUser {
 export interface IAchievement {
 	id: number;
 	title: string;
-	icon: string; // iconProp
+	icon: string;
 	description: string;
 	date: Date;
 	fullfilled: boolean;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser } from "./types";
+import { IMatch, IUser } from "./types";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -117,6 +117,19 @@ export async function checkIfLogged(): Promise<boolean> {
 	return response.data;
 }
 
+export async function getUserMatches(id: number): Promise<IMatch[]> {
+	const response = await api.get<IMatch[]>(`/users/matches/${id}`);
+
+	// nécessaire car Prisma ne renvoie pas exactement un Date object selon JS
+	// thread: https://github.com/prisma/prisma/discussions/5522
+	const matches: IMatch[] = response.data.map((match) => ({
+		...match,
+		date: new Date(match.date),
+	  }));
+
+	return (matches);
+}
+
 export async function fetchUsers(): Promise<IUser[]> {
 	const response = await api.get<IUser[]>(`/users`);
 	return response.data;
@@ -124,6 +137,11 @@ export async function fetchUsers(): Promise<IUser[]> {
 
 export async function fetchUserById(id: number): Promise<IUser> {
 	const response = await api.get<IUser>(`/users/${id}`);
+	return response.data;
+}
+
+export async function fetchUserByNickname(nickname: string): Promise<IUser> {
+	const response = await api.get<IUser>(`/users/${nickname}`);
 	return response.data;
 }
 
@@ -190,10 +208,16 @@ export async function getMeiliData(): Promise<IUser> {
 
 
 export async function postSearchQuery(userInput: string) {
-	const response = await api.post(`/search`, {
-		searchQuery: userInput,
-	});
-	return response;
+
+	try {
+		const response = await api.post(`/search`, {
+			searchQuery: userInput,
+		});
+		return response;
+	} catch (error) {
+		throw new Error('Meilisearch: error caught during search');
+	}
+
 }
 
 /* ######################*/

@@ -184,6 +184,80 @@ export class AuthService {
 				},
 			});
 
+			// create the achievements and add it to the user created
+			const userId = newUser.id;
+
+			await prisma.achievement.createMany({
+				data: [
+						{
+							userId: userId,
+							icon : "fa-solid fa-baby",
+							title : "Baby steps",
+							description: "Played the game for the first time",
+						},
+						{
+							userId: userId,
+							icon : "fa-solid fa-jet-fighter-up",
+							title : "Veteran",
+							description: "Played 10 games",
+						},
+						{
+							userId: userId,
+							icon : "fa-solid fa-lemon",
+							title : "Easy peasy lemon squeezy",
+							description: "Won 3 games in a row",
+						},
+						{
+							userId: userId,
+							icon : "fa-solid fa-user-slash",
+							title : "It's my lil bro playing",
+							description: "Lost 3 games in a row",
+						},
+						{
+							userId: userId,
+							icon : "fa-solid fa-viruses",
+							title : "Social butterfly",
+							description: "Added 3 friends",
+						},
+						{
+							userId: userId,
+							icon : "fa-solid fa-user-astronaut",
+							title : "Influencer",
+							description: "Added 10 friends",
+						},
+						{
+							userId: userId,
+							icon : "fa-solid fa-frog",
+							title : "Cosmetic change",
+							description: "Updated their profile picture once",
+						},
+						{
+							userId: userId,
+							icon : "fa-solid fa-robot",
+							title : "Existential crisis",
+							description: "Changed their nickname",
+						},
+						{
+							userId: userId,
+							icon : "fa-solid fa-shield-dog",
+							title : "Safety first",
+							description: "Activated the 2FA authentification",
+						},
+						{
+							userId: userId,
+							icon : "fa-solid fa-hand-spock",
+							title : "My safe place",
+							description: "Created their first channel",
+						},
+						{
+							userId: userId,
+							icon : "fa-solid fa-hand-holding-dollar",
+							title : "Pay to Win",
+							description: "Donated to have an in-game advantage",
+						},
+				]
+			});
+
 			// delete newUser.password;	// Temporary solution, should not be used permanently.
 
 			// log the created user

@@ -9,6 +9,7 @@ datasource db {
 
 model User {
   id             Int             @id @default(autoincrement())
+  createdAt      DateTime        @default(now())
   avatar         String?         @default("/assets/avatar1.png")
   nickname       String          @unique
   email          String?         @unique
@@ -21,8 +22,6 @@ model User {
   password       String? // Is the password for non 42 students.
   coalition      String?         @default("Invite")
 
-  wins     Int?     @default(0)
-  loses    Int?     @default(0)
   aces     Int?     @default(0)
   score    Int?     @default(0)
   rank     Int?     @default(0)
