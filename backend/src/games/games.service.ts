@@ -1,5 +1,4 @@
-import { HttpException, Injectable, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
