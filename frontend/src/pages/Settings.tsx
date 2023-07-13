@@ -337,9 +337,9 @@ export function Activate2FA() {
 	}
 	
 	const handleChange= () => {
-		const tmp = (isEnabled === true)? false : true;
-		setIsEnabled(tmp);
-		enable2FA.mutate();
+			const tmp = (isEnabled === true)? false : true;
+			setIsEnabled(tmp);
+			enable2FA.mutate();
 	}
 
 	return (
