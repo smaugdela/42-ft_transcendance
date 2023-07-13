@@ -69,9 +69,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		if (client.data.username === "euh" || client.data.username === "Marinette") {
 			client.join(room); // une room étant: un chan ou un DM
 			console.log(client.data.username ," has joined the room!");	
+			this.server.to(room).emit('receiveMessage', client.data.username + ": " + payload);
 		}
-		// cf. Doc: every socket in the room excluding the sender will get the event.
-		this.server.to(room).emit('receiveMessage', client.data.username + ": " + payload);
 	}
 
 
