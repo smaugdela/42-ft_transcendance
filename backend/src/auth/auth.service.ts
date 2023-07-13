@@ -1,6 +1,6 @@
 import { ForbiddenException, HttpException, Injectable, Query, Res } from '@nestjs/common';
 import axios from 'axios';
-import { PrismaClient, AuthType, Login2FAStatus } from '@prisma/client';
+import { PrismaClient, AuthType } from '@prisma/client';
 import * as argon from 'argon2';
 import AuthDto from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -81,7 +81,7 @@ export class AuthService {
 				this.mailService.send2FALoginCode(userDb.id);
 				await prisma.user.update({
 					where: { id: userDb.id },
-					data: { login2FAstatus: Login2FAStatus.PENDING }
+					data: { login2FAstatus: true }
 				});
 				return res.redirect(process.env.FRONTEND_URL + '/2fa/pending');
 			}
@@ -118,7 +118,7 @@ export class AuthService {
 				this.mailService.send2FALoginCode(activeUser.id);
 				await prisma.user.update({
 					where: { id: activeUser.id },
-					data: { login2FAstatus: Login2FAStatus.PENDING }
+					data: { login2FAstatus: true }
 				});
 				return { doubleFA: true };
 			}
@@ -151,7 +151,7 @@ export class AuthService {
 			if (await this.mailService.Confirmation2FA(id, code)) {
 				const user = await prisma.user.update({
 					where: { id: id },
-					data: { login2FAstatus: Login2FAStatus.CONFIRMED }
+					data: { login2FAstatus: false }
 				});
 				await this.generateToken(id, res);
 				console.log("User", user.nickname, "logged in.");
@@ -189,72 +189,72 @@ export class AuthService {
 
 			await prisma.achievement.createMany({
 				data: [
-						{
-							userId: userId,
-							icon : "fa-solid fa-baby",
-							title : "Baby steps",
-							description: "Played the game for the first time",
-						},
-						{
-							userId: userId,
-							icon : "fa-solid fa-jet-fighter-up",
-							title : "Veteran",
-							description: "Played 10 games",
-						},
-						{
-							userId: userId,
-							icon : "fa-solid fa-lemon",
-							title : "Easy peasy lemon squeezy",
-							description: "Won 3 games in a row",
-						},
-						{
-							userId: userId,
-							icon : "fa-solid fa-user-slash",
-							title : "It's my lil bro playing",
-							description: "Lost 3 games in a row",
-						},
-						{
-							userId: userId,
-							icon : "fa-solid fa-viruses",
-							title : "Social butterfly",
-							description: "Added 3 friends",
-						},
-						{
-							userId: userId,
-							icon : "fa-solid fa-user-astronaut",
-							title : "Influencer",
-							description: "Added 10 friends",
-						},
-						{
-							userId: userId,
-							icon : "fa-solid fa-frog",
-							title : "Cosmetic change",
-							description: "Updated their profile picture once",
-						},
-						{
-							userId: userId,
-							icon : "fa-solid fa-robot",
-							title : "Existential crisis",
-							description: "Changed their nickname",
-						},
-						{
-							userId: userId,
-							icon : "fa-solid fa-shield-dog",
-							title : "Safety first",
-							description: "Activated the 2FA authentification",
-						},
-						{
-							userId: userId,
-							icon : "fa-solid fa-hand-spock",
-							title : "My safe place",
-							description: "Created their first channel",
-						},
-						{
-							userId: userId,
-							icon : "fa-solid fa-hand-holding-dollar",
-							title : "Pay to Win",
-							description: "Donated to have an in-game advantage",
-						},
+					{
+						userId: userId,
+						icon: "fa-solid fa-baby",
+						title: "Baby steps",
+						description: "Played the game for the first time",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-jet-fighter-up",
+						title: "Veteran",
+						description: "Played 10 games",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-lemon",
+						title: "Easy peasy lemon squeezy",
+						description: "Won 3 games in a row",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-user-slash",
+						title: "It's my lil bro playing",
+						description: "Lost 3 games in a row",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-viruses",
+						title: "Social butterfly",
+						description: "Added 3 friends",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-user-astronaut",
+						title: "Influencer",
+						description: "Added 10 friends",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-frog",
+						title: "Cosmetic change",
+						description: "Updated their profile picture once",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-robot",
+						title: "Existential crisis",
+						description: "Changed their nickname",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-shield-dog",
+						title: "Safety first",
+						description: "Activated the 2FA authentification",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-hand-spock",
+						title: "My safe place",
+						description: "Created their first channel",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-hand-holding-dollar",
+						title: "Pay to Win",
+						description: "Donated to have an in-game advantage",
+					},
 				]
 			});
 
