@@ -8,6 +8,16 @@ import { Request } from 'express';
 export class SocialController {
   constructor(private readonly socialService: SocialService) {}
 
+  @Get('/friends')
+  myFriends(@Req() req: Request){
+    return this.socialService.myFriends(req.userId);
+  }
+
+  @Get('/blocked-list')
+  blockedList(@Req() req: Request){
+    return this.socialService.blockedList(req.userId);
+  }
+
   @Post('/friend-request/:username')
   friendRequest(@Req() req: Request, @Param('username') username: string) {
     return this.socialService.friendRequest(req.userId, username);
