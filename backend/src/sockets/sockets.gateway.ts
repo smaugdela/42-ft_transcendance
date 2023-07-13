@@ -28,10 +28,9 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		await this.socketsService.activeUser(client.data.userId);
 		console.log('Client connected:', client.data.username);
 
-		/* Stocker tous les sockets des users actuellement connectés dans un map */ 
-		this.socketsService.currentActiveUsers.set(client.data.userId, client.id);
-		console.log("Map: Last connected: ",  this.socketsService.currentActiveUsers);
-		
+		/* Stocker tous les sockets des users actuellement connectés dans un map */
+		this.socketsService.registerActiveSockets(client.data.userId, client.id);
+	
 		/* TODO: regarder dans quels chans la personne est déjà et la rajouter */
 
 	}
@@ -39,11 +38,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	/* Indique dans le User scheme qu'il est inactif et le déconnecte */
 	handleDisconnect(client: Socket) {
 		this.socketsService.inactiveUser(client.data.userId);
-
-		this.socketsService.currentActiveUsers.delete(client.data.userId);
-		console.log("Apres déco, nb de users en ligne: ", this.socketsService.currentActiveUsers.size);
+		this.socketsService.deleteDisconnectedSockets(client.data.userId);
 		
-
 		console.log('Client disconnected:', client.data.username);
 		client.disconnect(true);
 
