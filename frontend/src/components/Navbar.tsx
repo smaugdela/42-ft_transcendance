@@ -8,12 +8,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext, useEffect, ChangeEventHandler } from "react";
 import { IsLoggedInContext } from '../App';
 import { logOut, checkIfLogged } from "../api/APIHandler";
-
+import { SocketContext } from '../App';
 
 export default function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler, setLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }) {
 	
 	const [sidebar, setSidebar] = useState<boolean>(false);
 	const isLoggedIn = useContext(IsLoggedInContext);
+	const socket = useContext(SocketContext);
 	const { setLoggedIn } = props;
 	
 	useEffect( () => {
@@ -31,6 +32,9 @@ export default function Navbar(props: { theme: string, toggleTheme: ChangeEventH
 		try {
 			await logOut();
 			setLoggedIn(false);
+			if (socket) {
+				socket.disconnect();
+			}
 			setTimeout(() => {
 				navigate('/');
 			}, 1000);

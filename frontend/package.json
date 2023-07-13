@@ -16,6 +16,7 @@
 		"@types/node": "^16.18.23",
 		"@types/react": "^18.0.35",
 		"@types/react-dom": "^18.0.11",
+		"@types/socket.io": "^3.0.2",
 		"argon2": "^0.27.1",
 		"awesome": "^0.0.7",
 		"axios": "^1.4.0",
