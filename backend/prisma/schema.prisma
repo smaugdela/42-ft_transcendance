@@ -39,6 +39,13 @@ model User {
 
   achievements Achievement[]
 
+  ownerChans      Channel[] @relation("owner")
+  adminsChans     Channel[] @relation("admins")
+  bannedChans     Channel[] @relation("banned")
+  joinedChans     Channel[] @relation("joined")
+  kickedFromChans Channel[] @relation("kicked")
+  mutedInChans    Channel[] @relation("muted")
+
   matchAsP1 Match[] @relation("winner")
   matchAsP2 Match[] @relation("loser")
 
@@ -73,7 +80,41 @@ model Match {
   @@map("matches")
 }
 
+model Channel {
+  id          Int       @id @default(autoincrement())
+  date        DateTime  @default(now())
+  type        ChanMode  @default(PUBLIC)
+  password    String?
+  owner       User      @relation(fields: [ownerId], references: [id], name:"owner")
+  ownerId     Int
+  admin       User[]    @relation("admins")
+  joinedUsers User[]    @relation("joined")
+  bannedUsers User[]    @relation("banned")
+  kickedUsers User[]    @relation("kicked")
+  mutedUsers  User[]    @relation("muted")
+  messages    Message[] @relation("messages")
+
+  @@map("channels")
+}
+
+model Message {
+  id          Int       @id @default(autoincrement())
+  date        DateTime  @default(now())
+  from        Int       // socket id de l'expéditeur
+  to          Int       // socket id du destinataire
+  content     String
+  channel     Channel   @relation(fields: [channelId], references: [id], name: "messages")
+  channelId   Int
+  @@map("messages")
+}
+
 enum AuthType {
   FORTYTWO
   LOGNPWD
+}
+
+enum ChanMode {
+  PUBLIC    // everyone can see and join the channel
+  PRIVATE   // only users with an invite can join
+  PROTECTED // only user with the password can join
 }
