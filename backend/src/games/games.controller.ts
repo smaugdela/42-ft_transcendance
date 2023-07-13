@@ -8,6 +8,6 @@ export class GamesController {
 
 	@Post()
 	async matchmaking(@Req() req: Request) {
-		return await this.gamesService.matchmaking(req.body.userId);
+		return await this.gamesService.matchmaking(req.userId);
 	}
 }
