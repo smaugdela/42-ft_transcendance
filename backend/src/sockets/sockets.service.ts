@@ -6,6 +6,9 @@ const prisma = new PrismaClient();
 @Injectable()
 export class SocketsService {
 
+	/* key = userId, value:string = socketId */
+	public currentActiveUsers = new Map; 
+
 	async activeUser(userId: number) {
 		try {
 			await prisma.user.update({
