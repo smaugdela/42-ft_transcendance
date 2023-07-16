@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import * as argon from 'argon2';
 import { UsersService } from 'src/users/users.service';
 import { ChanMode } from '@prisma/client';
@@ -31,29 +31,51 @@ export class ChatService {
 			});
 		}
 		const newPassword = (password)? hashedPwd : null;
-		const createdChannel = await prisma.channel.create({
-			data: {
-				roomName,
-				type,
-				password: newPassword,
-				owner: { connect: {id: ownerId}},
-				admin: { connect: {id: ownerId}},
+		try {
+			const createdChannel = await prisma.channel.create({
+				data: {
+					roomName,
+					type,
+					password: newPassword,
+					owner: { connect: {id: ownerId}},
+					admin: { connect: {id: ownerId}},
+				}
+			});
+	
+			await prisma.user.update({
+				where: { id: ownerId },
+				data: {
+					ownerChans: { connect: { id: createdChannel.id } },
+					joinedChans: { connect: { id: createdChannel.id } },
+				},
+			});
+			return createdChannel;
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2002') {
+					throw new BadRequestException('A channel with this name already exists');
+				}
 			}
-		});
-
-		await prisma.user.update({
-			where: { id: ownerId },
-			data: {
-				ownerChans: { connect: { id: createdChannel.id } },
-    			joinedChans: { connect: { id: createdChannel.id } },
-			},
-		});
-		return createdChannel;
+		}
 	}
 
 	async getOneChannel(id: number) {
 		return await prisma.channel.findUnique({
 			where: { id },
+			include: { 
+				admin: true,
+				joinedUsers: true,
+				bannedUsers: true, 
+				kickedUsers: true,
+				mutedUsers: true,
+				messages: true
+			},
+		});
+	}
+
+	async getOneChannelByName(roomName: string) {
+		return await prisma.channel.findUnique({
+			where: { roomName },
 			include: { 
 				admin: true,
 				joinedUsers: true,

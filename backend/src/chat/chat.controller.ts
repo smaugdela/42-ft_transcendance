@@ -20,6 +20,11 @@ export class ChatController {
 	getOneConv(@Param('id') id: string) {
 		return this.chatService.getOneChannel(+id);
 	}
+
+	@Get('channel/find/:roomName')
+	getOneConvByName(@Param('roomName') roomName: string) {
+		return this.chatService.getOneChannelByName(roomName);
+	}
 		
 	@Get('channels/all/:id')
 	getAllConvs(@Param('id') id: string) {

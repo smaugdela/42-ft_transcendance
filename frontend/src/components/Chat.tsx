@@ -20,9 +20,9 @@ const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<So
 
 	const [activeTab, setActiveTab] = useState(0);
 	const tabs: Tab[] = [
-		{ label: 'Channels', content: <div><TabChannels/></div> },
+		{ label: 'Convs', content: <div><TabChannels/></div> },
 		{ label: 'Chat', content: <div><TabChat setSocket={setSocket}/></div> },
-		{ label: 'Settings', content: <div>Content 3</div> },
+		// { label: 'Settings', content: <div>Content 3</div> },
 	];
 	const handleTabClick = (index: number) => {
 		setActiveTab(index);

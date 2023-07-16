@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 		credentials: true,
 	}
 })
+
 export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect {
 	constructor(private readonly socketsService: SocketsService, private readonly jwtService: JwtService) { }
 
@@ -46,31 +47,26 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 	}
 
-	// TODO: comprendre comment récupérer l'info de la room du front
-	// faire un event? genre create Lobby et le payload c'est le chan ou DM
-	// @SubscribeMessage('Create Lobby')
-	// async handleLobbyCreation(client: Socket, payload: string): Promise<void> {
-	// 	const room = payload;
-
-	// 	client.join(room);
-	// 	console.log(client.data.username ," has joined the room!");	
-	// 	// rajouter la room dans Channels[] du model User ?
-	// }
-
+	@SubscribeMessage('Create Lobby')
+	async handleLobbyCreation(client: Socket, payload: string): Promise<void> {
+		const room = payload;
+		client.join(room);
+		console.log(client.data.username ,` has joined the room ${payload}!`);	
+	}
 
 	/* Message à envoyer aux listeners de l'event "receiveMessage" */
 	@SubscribeMessage('Chat')
 	async handleSendMessage(client: Socket, payload: string): Promise<void> {
 		console.log(client.data.username, ':', payload);
-		// this.server.emit('receiveMessage', client.data.username + ": " + payload);
+		this.server.emit('receiveMessage', client.data.username + ": " + payload);
 
-		const room = "room test";
+		// const room = "room test";
 		// PB: on les ajoute dans la room que quand ils écrivent
-		if (client.data.username === "euh" || client.data.username === "Marinette") {
-			client.join(room); // une room étant: un chan ou un DM
-			console.log(client.data.username ," has joined the room!");	
-			this.server.to(room).emit('receiveMessage', client.data.username + ": " + payload);
-		}
+		// if (client.data.username === "euh" || client.data.username === "Marinette") {
+		// 	client.join(room); // une room étant: un chan ou un DM
+		// 	console.log(client.data.username ," has joined the room!");	
+		// }
+		// this.server.to(room).emit('receiveMessage', client.data.username + ": " + payload);
 	}
 
 

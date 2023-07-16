@@ -1,27 +1,68 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react';
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import '../styles/Tab_channels.css';
+import toast from 'react-hot-toast';
+import { createChannel } from '../api/APIHandler';
+import { SocketContext } from '../App';
+import { sendNotificationToServer } from '../sockets/sockets';
 
-function TabChannels() {
-  return (
-    <div className='channels_page'>
-      <ul >
-        <h1>Joined channels</h1>
-        <br />
-        <li>Pro_Gamers</li>
-        <li>Marvel_fans</li>
-        <li>...</li>
-        <br />
-        <br />
-      </ul>
-      <ul>
-        <h1>Channels created</h1>
-        <br />
-        <li>Code_war</li>
-        <li>LifeStyle</li>
-        <li>...</li>
-      </ul>
-    </div>
+export default function TabChannels() {
+	const [channelType, setChannelType] = useState<string>('PUBLIC');
+	const [channelPassword, setChannelPassword] = useState<string>('');
+	const [channelName, setChannelName] = useState<string>('');
+	const socket = useContext(SocketContext);
+
+	// Pour récupérer le nom du Channel
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.value.length > 10) {
+			toast.error('Channel name length must be under 10!');
+		} else {
+			setChannelName(event.target.value);
+		}
+	};
+
+	// La requête de création de Chan et ses aboutissants (success ou error)
+	const createChannelRequest = useMutation({
+		mutationFn: () => createChannel(channelName, channelPassword, channelType),
+		onSuccess: () => { toast.success(`Your channel ${channelName} was successfully created!`) },
+		onError: () => { toast.error('Error during creation: channel name already in use') }
+	})
+
+	// Pour créer le channel et faire la connexion websocket
+	const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		createChannelRequest.mutate();
+		if (socket) {
+			sendNotificationToServer(socket, 'Create Lobby', channelName);
+		}
+	};
+
+	return (
+	<div className='channels_page'>
+	   <form id="create-chan-form" onSubmit={handleFormSubmit}>
+			<input
+			  id="create-chan-input"
+			  type="text"
+			  value={channelName}
+			  onChange={handleInputChange}
+			  placeholder="Choose your channel name! (max 10 characters)"
+			/>
+			<label htmlFor="select-type-label">Choose your channel type!</label>
+			<select name="type" id="select-chan-type" onChange={(event) => setChannelType(event.target.value)}>
+				<option value="PUBLIC">Public</option>
+				<option value="PRIVATE">Private</option>
+				<option value="PROTECTED">Protected</option>
+			</select>
+			{channelType === 'PROTECTED' && (
+			<input
+				type="password"
+				value={channelPassword}
+				onChange={(event) => setChannelPassword(event.target.value)}
+				placeholder="Enter channel password"
+			/>
+			)}
+			<button type="submit">Create a channel</button>
+		</form>
+	</div>
   )
 }
-
-export default TabChannels

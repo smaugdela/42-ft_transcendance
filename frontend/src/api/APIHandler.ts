@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IMatch, IUser } from "./types";
+import { IMatch, IUser, IChannel } from "./types";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -182,6 +182,46 @@ export async function updateUserBooleanProperty(property: keyof IUser, newProper
 
 export async function deleteMe(): Promise<IUser> {
 	return api.delete(`/users/me`);
+}
+
+/* ######################*/
+/* ###      CHAT      ###*/
+/* ######################*/
+
+export async function getOneChannelById(id: number): Promise<IChannel> {
+	const response = await api.get(`/chat/channel/${id}`);
+	return response.data;
+}
+
+export async function getOneChannelByName(roomName: string): Promise<IChannel> {
+	const response = await api.get(`/chat/channel/find/${roomName}`);
+	return response.data;
+}
+
+export async function createChannel(roomName: string, password: string, type: string)
+: Promise<IChannel> {
+	try {
+		const user = await fetchMe();
+		const userId = user.id;
+		const response = await api.post(`/chat/channel`,
+			{
+				roomName: roomName,
+				ownerId: userId,
+				password: password,
+				type: type,
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+
+	} catch (error) {
+		throw new Error('A channel with this name already exists');
+	}
 }
 
 /* ######################*/
