@@ -189,12 +189,18 @@ export async function deleteMe(): Promise<IUser> {
 /* ######################*/
 
 export async function getOneChannelById(id: number): Promise<IChannel> {
-	const response = await api.get(`/chat/channel/${id}`);
+	const response = await api.get<IChannel>(`/chat/channel/${id}`);
 	return response.data;
 }
 
 export async function getOneChannelByName(roomName: string): Promise<IChannel> {
-	const response = await api.get(`/chat/channel/find/${roomName}`);
+	const response = await api.get<IChannel>(`/chat/channel/find/${roomName}`);
+	return response.data;
+}
+
+export async function getAllUserChannels(): Promise<IChannel[]> {
+	const user = await fetchMe();
+	const response = await api.get<IChannel[]>(`/chat/channels/all/${user.id}`);
 	return response.data;
 }
 
