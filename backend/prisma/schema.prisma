@@ -123,4 +123,5 @@ enum ChanMode {
   PUBLIC    // everyone can see and join the channel
   PRIVATE   // only users with an invite can join
   PROTECTED // only user with the password can join
+  DM        // private message 1-on-1
 }
