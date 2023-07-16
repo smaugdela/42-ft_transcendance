@@ -14,6 +14,7 @@ import FAQ from './pages/FAQ';
 import Home from './pages/Home';
 import GamePage from './pages/GamePage';
 import { Socket } from 'socket.io-client';
+import { Toaster } from 'react-hot-toast';
 
 export const IsLoggedInContext = React.createContext<boolean>(false);
 export const SocketContext = React.createContext<Socket | null>(null);
@@ -49,6 +50,7 @@ function App() {
           <audio className="music-bg" controls autoPlay loop >
             <source src="./assets/derezzed.mp3" type="audio/mpeg"/>
           </audio>
+          <Toaster/>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
