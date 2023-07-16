@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesLeft, faAnglesRight} from "@fortawesome/free-solid-svg-icons";
 import TabChannels from './TabChannels';
 import TabChat from './TabChat';
+import TabMore from './ChatElements/TabMore';
 import { Socket } from 'socket.io-client';
 
 interface Tab {
@@ -22,7 +23,7 @@ const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<So
 	const tabs: Tab[] = [
 		{ label: 'Convs', content: <div><TabChannels/></div> },
 		{ label: 'Chat', content: <div><TabChat setSocket={setSocket}/></div> },
-		// { label: 'Settings', content: <div>Content 3</div> },
+		{ label: 'More', content: <div><TabMore /></div> },
 	];
 	const handleTabClick = (index: number) => {
 		setActiveTab(index);

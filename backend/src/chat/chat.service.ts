@@ -152,6 +152,22 @@ export class ChatService {
 		});
 		return directMessages;	
 	}
+
+	async getDisplayableChans(userId: number) {
+		return await prisma.channel.findMany({
+			where: {
+				OR: [
+					{type: ChanMode.PROTECTED},
+					{type: ChanMode.PUBLIC},
+				],
+				NOT: {
+					joinedUsers: {
+						some: { id: userId }
+					}
+				}
+			}
+		});
+	}
 	
 	async deleteOneChannel(id: number) {
 		// On delete le channel

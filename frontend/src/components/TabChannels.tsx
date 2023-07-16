@@ -3,8 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import toast from 'react-hot-toast';
 import '../styles/Tab_channels.css';
 import { getAllUserChannels } from '../api/APIHandler';
-import ChanCreationForm from './ChatElements/ChanCreationForm';
-import ChannelLink from './ChannelLink';
+import ChannelLink from './ChatElements/ChannelLink';
 
 export default function TabChannels() {
 
@@ -25,7 +24,6 @@ export default function TabChannels() {
 	const joinedChannels = channelsQuery?.data;
 	return (
 	<div className='channels_page'>
-	  <ChanCreationForm />
 	  <>
 	  {
 		joinedChannels && (

@@ -204,6 +204,12 @@ export async function getAllUserChannels(): Promise<IChannel[]> {
 	return response.data;
 }
 
+export async function getAllChannels(): Promise<IChannel[]> {
+	const user = await fetchMe();
+	const response = await api.get<IChannel[]>(`/chat/channels/more/${user.id}`);
+	return response.data;
+}
+
 export async function createChannel(roomName: string, password: string, type: string)
 : Promise<IChannel> {
 	try {
@@ -228,6 +234,29 @@ export async function createChannel(roomName: string, password: string, type: st
 	} catch (error) {
 		throw new Error('A channel with this name already exists');
 	}
+}
+
+export async function updateUserInChannel(channelId: number, groupToInsert: string, action: string) {
+	try {
+		const user = await fetchMe();
+		const response = await api.post(`/chat/channel/${channelId}`,
+			{
+				groupToInsert,
+				action,
+				userId: user.id,
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error('Error: cannot join this channel');
+	}
+
 }
 
 /* ######################*/

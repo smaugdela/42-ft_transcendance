@@ -25,7 +25,12 @@ export class ChatController {
 	getOneConvByName(@Param('roomName') roomName: string) {
 		return this.chatService.getOneChannelByName(roomName);
 	}
-		
+	
+	@Get('channels/more/:id')
+	getDisplayableConvs(@Param('id') id: string) {
+		return this.chatService.getDisplayableChans(+id);
+	}
+
 	@Get('channels/all/:id')
 	getAllConvs(@Param('id') id: string) {
 		return this.chatService.getAllUserChannels(+id);
