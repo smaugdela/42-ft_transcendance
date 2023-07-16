@@ -84,6 +84,7 @@ model Channel {
   date        DateTime  @default(now())
   type        ChanMode  @default(PUBLIC)
   password    String?
+  roomName    String
   owner       User      @relation(fields: [ownerId], references: [id], name:"owner")
   ownerId     Int
   admin       User[]    @relation("admins")
