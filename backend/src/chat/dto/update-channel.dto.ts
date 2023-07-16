@@ -1,20 +1,14 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString, Length, IsOptional, IsNumber } from "class-validator";
+
+import { IsOptional } from "class-validator";
 import { 
 	ChanMode, 
 	User, 
 	Message 
 } from '@prisma/client';
 
-export class CreateChannelDto {
-
-	@ApiProperty({
-		description: 'Name of channel or DM',
-	})
-
-	@IsString()
-	@IsNotEmpty()
-	@Length(2, 11)
+export class UpdateChannelDto {
+	
+	@IsOptional()
 	roomName: string;
 
 	@IsOptional()
@@ -22,12 +16,6 @@ export class CreateChannelDto {
 
 	@IsOptional()
 	password: string;
-
-	owner: User;
-
-	@IsNumber()
-	@IsNotEmpty()
-	ownerId: number;
 
 	@IsOptional()
 	admin      : User[];
@@ -46,4 +34,13 @@ export class CreateChannelDto {
 	
 	@IsOptional()
 	messages: Message[];
+	
+	@IsOptional()
+	groupToInsert: string;
+	
+	@IsOptional()
+	userId: number;
+
+	@IsOptional()
+	action: string;
 }
