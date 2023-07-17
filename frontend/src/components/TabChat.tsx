@@ -18,13 +18,19 @@ function TabChat() {
 
 	useEffect(() => {
 
-		const base_url: string = process.env.REACT_APP_BACKEND_URL || "https://localhost:3001";
+	const base_url: string = process.env.REACT_APP_BACKEND_URL || "https://localhost:3001";
 	
 	  const newSocket = io(base_url, {
 		withCredentials: true,
 	  });
 	  setSocket(newSocket);
+
+	/* For debug: any event received by the client will be printed in the console.*/
+	  newSocket.onAny((event:any, ...args: any[]) => {
+		console.log(event, args);
+	  });
   
+	  /* Listen tous les messages de l'event receiveMessage */
 	  newSocket.on('receiveMessage', (message: string) => {
 		console.log("Message received");
 		setMessages((prevMessages) => [...prevMessages, message]);

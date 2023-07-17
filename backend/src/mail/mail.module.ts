@@ -3,23 +3,26 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { Global, Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { join } from 'path';
+import { MailController } from './mail.controller';
 
 @Global()
 @Module({
 	imports: [
 		MailerModule.forRoot({
-			// transport: 'smtps://user@example.com:topsecret@smtp.example.com',
-			// or
 			transport: {
-				host: 'smtp.DaftPong.com',
-				secure: true,
+				host: "smtp-mail.outlook.com", // hostname
+				secure: false, // TLS requires secureConnection to be false
+				port: 587, // port for secure SMTP
+				tls: {
+					ciphers: 'SSLv3'
+				},
 				auth: {
-					user: 'mailer@DaftPong.com',
-					pass: 'topsecret',
+					user: process.env.MAIL_USER,
+					pass: process.env.MAIL_PASSWORD
 				},
 			},
 			defaults: {
-				from: '"Daft Pong" <noreply@DaftPong.com>',
+				from: '"Daft Pong" <daftpong@outlook.com>',
 			},
 			template: {
 				dir: join(__dirname, 'templates'),
@@ -31,7 +34,8 @@ import { join } from 'path';
 		}),
 	],
 	providers: [MailService],
-	exports: [MailService], // 👈 export for DI
+	exports: [MailService],
+	controllers: [MailController], // 👈 export for DI
 })
 
 export class MailModule { }

@@ -47,6 +47,7 @@ body {
 	margin: auto;
 	position: flex;
 	border-radius: 3px;
+	background-color: rgb(76, 77, 129);
 }
 
 .videobg{

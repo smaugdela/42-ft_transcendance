@@ -3,9 +3,12 @@ import { SocialService } from './social.service';
 import { CreateSocialDto } from './dto/create-social.dto';
 import { UpdateSocialDto } from './dto/update-social.dto';
 import { Request } from 'express';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Social') // for swagger
 @Controller('social')
 export class SocialController {
+
   constructor(private readonly socialService: SocialService) {}
 
   @Get('/friends')
@@ -47,5 +50,6 @@ export class SocialController {
   removeFriend(@Req() req: Request, @Param('id') id: string){
     return this.socialService.removeFriend(req.userId, +id);
   }
+
 
 }

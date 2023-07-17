@@ -4,11 +4,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from "@nestjs/swagger";
 import { Public } from 'src/auth/guards/public.decorator';
 import { Request, Response } from 'express';
+import { MailService } from 'src/mail/mail.service';
 
 @ApiTags('Users') // for swagger
 @Controller('users')
 export class UsersController {
-	constructor(private readonly usersService: UsersService) { }
+	constructor(private readonly usersService: UsersService, private readonly mailService: MailService) { }
 
 	@Public()
 	@Get('check')
@@ -41,6 +42,10 @@ export class UsersController {
 		return this.usersService.findOne(username);
 	}
 
+	@Get('matches/:id')
+	getHistoryMatch(@Param('id') id: string) {
+		return this.usersService.getHistoryMatch(+id);
+	}
 	// @Patch(':username')
 	// updateOne(@Param('username') username: string, @Body() body: UpdateUserDto) {
 	// 	return this.usersService.updateOne(username, body);
@@ -53,10 +58,5 @@ export class UsersController {
 	update(@Param('id') id: string, @Body() body: UpdateUserDto) {
 		return this.usersService.updateMe(+id, body);
 	}
-
-	// @Delete(':id')
-	// remove(@Param('id') id: string) {
-	//   return this.usersService.removeMe(+id);
-	// }
 
 }

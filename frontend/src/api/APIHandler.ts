@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser } from "./types";
+import { IMatch, IUser } from "./types";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -20,6 +20,10 @@ api.interceptors.response.use(
 			// Redirect to the "Login" page
 			window.location.href = '/Login';
 		}
+		else if (error.response) {
+			// Redirect to the according error pages
+			window.location.href = '/Error' + error.response.status;
+		}
 		return Promise.reject(error);
 	},
 );
@@ -27,7 +31,6 @@ api.interceptors.response.use(
 /* ######################*/
 /* ######   AUTH   ######*/
 /* ######################*/
-
 
 export async function signUp(newNickname: string, password: string): Promise<any> {
 
@@ -67,20 +70,20 @@ export async function logIn(newNickname: string, password: string): Promise<any>
 				},
 			},
 		);
-		return response.data;
+		return response;
 
 	} catch (error) {
 		if (axios.isAxiosError(error)) {
 			if (error.response && error.response.data && error.response.data.message) {
-			  if (error.response.data.message === 'No such nickname') {
-				throw new Error('No such nickname');
-			  } else {
-				throw new Error('Password does not match');
-			  }
+				if (error.response.data.message === 'No such nickname') {
+					throw new Error('No such nickname');
+				} else {
+					throw new Error('Password does not match');
+				}
 			}
-		  }
-		  throw new Error('An error occurred');
 		}
+		throw new Error('An error occurred');
+	}
 }
 
 export async function logOut(): Promise<any> {
@@ -94,6 +97,16 @@ export async function logOut(): Promise<any> {
 	}
 }
 
+export async function fetch2FA(code: string, userId: string): Promise<any> {
+
+	try {
+		const response = await axios.get(`${BASE_URL}/auth/2fa?code=${code}&userId=${userId}`);
+		return response;
+
+	} catch (error) {
+		console.log("Error signup: ", error);
+	}
+}
 
 /* ######################*/
 /* ######   USER   ######*/
@@ -104,6 +117,19 @@ export async function checkIfLogged(): Promise<boolean> {
 	return response.data;
 }
 
+export async function getUserMatches(id: number): Promise<IMatch[]> {
+	const response = await api.get<IMatch[]>(`/users/matches/${id}`);
+
+	// nécessaire car Prisma ne renvoie pas exactement un Date object selon JS
+	// thread: https://github.com/prisma/prisma/discussions/5522
+	const matches: IMatch[] = response.data.map((match) => ({
+		...match,
+		date: new Date(match.date),
+	  }));
+
+	return (matches);
+}
+
 export async function fetchUsers(): Promise<IUser[]> {
 	const response = await api.get<IUser[]>(`/users`);
 	return response.data;
@@ -111,6 +137,11 @@ export async function fetchUsers(): Promise<IUser[]> {
 
 export async function fetchUserById(id: number): Promise<IUser> {
 	const response = await api.get<IUser>(`/users/${id}`);
+	return response.data;
+}
+
+export async function fetchUserByNickname(nickname: string): Promise<IUser> {
+	const response = await api.get<IUser>(`/users/${nickname}`);
 	return response.data;
 }
 
@@ -177,10 +208,16 @@ export async function getMeiliData(): Promise<IUser> {
 
 
 export async function postSearchQuery(userInput: string) {
-	const response = await api.post(`/search`, {
-		searchQuery: userInput,
-	});
-	return response;
+
+	try {
+		const response = await api.post(`/search`, {
+			searchQuery: userInput,
+		});
+		return response;
+	} catch (error) {
+		throw new Error('Meilisearch: error caught during search');
+	}
+
 }
 
 /* ######################*/
