@@ -46,7 +46,8 @@ export class UsersService {
 			include: {
 				achievements: true,
 				matchAsP1: true,
-				matchAsP2: true,
+				matchAsP2: true, 
+				joinedChans: true,
 			},
 		});
 	}

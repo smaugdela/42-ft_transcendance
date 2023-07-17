@@ -1,12 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSocialDto } from './dto/create-social.dto';
 import { UpdateSocialDto } from './dto/update-social.dto';
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 @Injectable()
 export class SocialService {
+	async myFriends(userId: number) {
+		const user   = await prisma.user.findUnique(
+			{
+				where : {id: userId},
+				include: { friendsList: true },
+			}
+		)
+		if (user) {
+			return user.friendsList;
+		  }
+		  
+		  return null;
+	}
+
+	async blockedList(userId: number){
+		const user = await prisma.user.findUnique(
+			{
+				where : {id: userId},
+				include: { blockList: true},
+			}
+		)
+		if (user)
+			return user.blockList;
+		return null;
+	}
+
+
 	async friendRequest(userId: number, username: string) {
 		return await prisma.user.update(
 			{

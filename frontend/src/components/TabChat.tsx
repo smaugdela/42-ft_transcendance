@@ -1,45 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import '../styles/Tab_Chat.css';
-import io from 'socket.io-client';
+import { SocketContext } from '../App';
+import { Socket } from 'socket.io-client';
 
-function TabChat() {
+function TabChat({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<Socket | null>> }) {
 
 	const [messages, setMessages] = useState<string[]>([]);
 	const [inputValue, setInputValue] = useState('');
-	const [socket, setSocket] = useState<any>(null); // Set any as the type for socket
-  
+	const socket = useContext(SocketContext);
+
 	const sendMessage = (message: string) => {
-	console.log("Sending Message");
-	  if (socket) {
-		socket.emit('sendMessage', message);
-		setInputValue('');
+		if (socket) {
+			socket.emit('Chat', message);
+			setInputValue('');
 	  }
 	};
 
 	useEffect(() => {
-
-	const base_url: string = process.env.REACT_APP_BACKEND_URL || "https://localhost:3001";
-	
-	  const newSocket = io(base_url, {
-		withCredentials: true,
-	  });
-	  setSocket(newSocket);
-
-	/* For debug: any event received by the client will be printed in the console.*/
-	  newSocket.onAny((event:any, ...args: any[]) => {
-		console.log(event, args);
-	  });
-  
-	  /* Listen tous les messages de l'event receiveMessage */
-	  newSocket.on('receiveMessage', (message: string) => {
-		console.log("Message received");
-		setMessages((prevMessages) => [...prevMessages, message]);
-	  });
-  
-	  return () => {
-		newSocket.disconnect();
-	  };
-	}, []);
+		if (socket) {
+			/* Listen tous les messages de l'event receiveMessage */
+			socket.on('receiveMessage', (message: string) => {
+				console.log("Message received");
+				setMessages((prevMessages) => [...prevMessages, message]);
+			});
+			return () => {
+			socket.off('receiveMessage');
+			};
+		}
+	}, [socket]);
   
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 	  setInputValue(event.target.value);
@@ -71,11 +59,6 @@ function TabChat() {
 		</div>
 	  );
 
-//   return (
-//     <div>
-//        <input type="text" className="text-input" placeholder="Envoyer un message" />
-//     </div>
-//   )
 }
 
 export default TabChat

@@ -4,25 +4,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesLeft, faAnglesRight} from "@fortawesome/free-solid-svg-icons";
 import TabChannels from './TabChannels';
 import TabChat from './TabChat';
+import TabMore from './ChatElements/TabMore';
+import { Socket } from 'socket.io-client';
 
 interface Tab {
   label: string;
   content: JSX.Element;
 }
 
-const Chat = () => {
+const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<Socket | null>> }) => {
 	
 	const [isExpanded, setIsExpanded] = useState(true);
-
 	const toggleExpand = () => {
 		setIsExpanded(!isExpanded);
 	};
 
 	const [activeTab, setActiveTab] = useState(0);
 	const tabs: Tab[] = [
-		{ label: 'Channels', content: <div><TabChannels/></div> },
-		{ label: 'Chat', content: <div><TabChat/></div> },
-		{ label: 'Settings', content: <div>Content 3</div> },
+		{ label: 'Convs', content: <div><TabChannels/></div> },
+		{ label: 'Chat', content: <div><TabChat setSocket={setSocket}/></div> },
+		{ label: 'More', content: <div><TabMore /></div> },
 	];
 	const handleTabClick = (index: number) => {
 		setActiveTab(index);

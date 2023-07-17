@@ -1,27 +1,40 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { useQuery } from "@tanstack/react-query";
+import toast from 'react-hot-toast';
 import '../styles/Tab_channels.css';
+import { getAllUserChannels } from '../api/APIHandler';
+import ChannelLink from './ChatElements/ChannelLink';
 
-function TabChannels() {
-  return (
-    <div className='channels_page'>
-      <ul >
-        <h1>Joined channels</h1>
-        <br />
-        <li>Pro_Gamers</li>
-        <li>Marvel_fans</li>
-        <li>...</li>
-        <br />
-        <br />
-      </ul>
-      <ul>
-        <h1>Channels created</h1>
-        <br />
-        <li>Code_war</li>
-        <li>LifeStyle</li>
-        <li>...</li>
-      </ul>
-    </div>
+export default function TabChannels() {
+
+	const channelsQuery = useQuery({
+		queryKey: ['channels'],
+		queryFn: () => getAllUserChannels(),
+	});
+
+	useEffect(() => {	
+		if (channelsQuery.error instanceof Error){
+			toast.error('Error fetching your convos');
+		}
+		if (channelsQuery.isLoading || !channelsQuery.isSuccess){
+			toast.loading("Loading...");
+		}
+	}, [channelsQuery.error, channelsQuery.isLoading, channelsQuery.isSuccess]);
+
+	const joinedChannels = channelsQuery?.data;
+	return (
+	<div className='channels_page'>
+	  <>
+	  {
+		joinedChannels && (
+			joinedChannels.map((chan) => {
+				return (
+					<ChannelLink key={chan.id.toString()} channel={chan}/>
+				);
+		})
+		)
+	  }
+	  </>
+	</div>
   )
 }
-
-export default TabChannels
