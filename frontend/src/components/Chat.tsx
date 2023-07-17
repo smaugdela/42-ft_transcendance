@@ -1,4 +1,4 @@
-import React,  { useEffect, useState }  from 'react';
+import React,  { useState }  from 'react';
 import '../styles/Chat.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesLeft, faAnglesRight} from "@fortawesome/free-solid-svg-icons";
@@ -33,10 +33,6 @@ const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<So
 	console.log('data de merde ', data);
 	
 	const [activeConv, setActiveConv] = useState<IChannel | null>((data)? data[0] : null);
-	
-	// useEffect(() => {
-	// 	setActiveConv((data)? data[0] : null);
-	//   }, [data]);
 
 	if (status === "error"){
 		return <div>Error</div>

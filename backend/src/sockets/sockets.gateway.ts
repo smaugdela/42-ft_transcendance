@@ -58,15 +58,15 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	@SubscribeMessage('Chat')
 	async handleSendMessage(client: Socket, payload: string): Promise<void> {
 		console.log(client.data.username, ':', payload);
-		this.server.emit('receiveMessage', client.data.username + ": " + payload);
-
-		// const room = "room test";
-		// PB: on les ajoute dans la room que quand ils écrivent
-		// if (client.data.username === "euh" || client.data.username === "Marinette") {
-		// 	client.join(room); // une room étant: un chan ou un DM
-		// 	console.log(client.data.username ," has joined the room!");	
-		// }
-		// this.server.to(room).emit('receiveMessage', client.data.username + ": " + payload);
+		const splitStr: string[] = payload.split(/[ ]+/);
+		console.log('spliiiit', splitStr);
+		
+		const room = splitStr[0];
+		console.log("Room is |", room, "|");
+		const msgToTransfer = splitStr[1];
+		console.log("msg to Transfer: ", msgToTransfer);
+		
+		this.server.to(room).emit('receiveMessage', client.data.username + ": " + msgToTransfer);
 	}
 
 

@@ -4,15 +4,20 @@ import { SocketContext } from '../App';
 import { Socket } from 'socket.io-client';
 import { IChannel } from '../api/types';
 
-function TabChat({ setSocket, conv }: { setSocket: React.Dispatch<React.SetStateAction<Socket | null>>, conv: IChannel | null }) {
+function TabChat({ setSocket, conv }: { 
+	setSocket: React.Dispatch<React.SetStateAction<Socket | null>>, 
+	conv: IChannel | null }) {
 
 	const [messages, setMessages] = useState<string[]>([]);
 	const [inputValue, setInputValue] = useState('');
 	const socket = useContext(SocketContext);
 
 	const sendMessage = (message: string) => {
+		const payload: string = conv?.roomName + " " + message;
+		console.log("payload ", payload);
+		
 		if (socket) {
-			socket.emit('Chat', message);
+			socket.emit('Chat', payload);
 			setInputValue('');
 	  }
 	};
