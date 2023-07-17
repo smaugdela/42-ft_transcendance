@@ -1,13 +1,15 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { Server, Socket } from 'socket.io';
 
 const prisma = new PrismaClient();
 
-class Player {
+export class Player {
 	userId: number;
+	socketId: string;
+	username: string;
+	score: number;
 }
-class MatchClass {
+export class MatchClass {
 	matchId: number;
 	player1: Player;
 	player2: Player;
@@ -19,14 +21,14 @@ class MatchClass {
 @Injectable()
 export class SocketsService {
 
-	private server: Server;
-
-	setServer(newServer: Server) {
-		this.server = newServer;
-	}
-
 	/* key = userId, value:string = socketId */
 	public currentActiveUsers = new Map;
+
+	public queue: Player[] = [];
+
+	public matchId = 0;
+
+	public matches: MatchClass[] = [];
 
 	public registerActiveSockets(userId: number, socketId: string) {
 		this.currentActiveUsers.set(userId, socketId);
@@ -70,42 +72,62 @@ export class SocketsService {
 		}
 	}
 
-	async launchMatch(match: MatchClass) {
+	addToQueue(userId: number, username: string) {
+		const player = new Player;
+		player.userId = userId;
+		player.socketId = this.currentActiveUsers.get(userId);
+		player.username = username;
+		player.score = 0;
+		this.queue.push(player);
+	}
 
-		console.log("Server: ", this.server);
-
-		const socket1: Socket = this.getSocketByUserId(match.player1.userId);
-		const socket2: Socket = this.getSocketByUserId(match.player2.userId);
-
-		if (socket1 === undefined || socket2 === undefined) {
-			console.log("Error: socket undefined");
-			return false;
-		}
-
-		socket1.join(match.matchId.toString());
-		socket2.join(match.matchId.toString());
-		this.server.to(match.matchId.toString()).emit('match ready', match);
-
-		while (match.p1Ready === false || match.p2Ready === false) {
-
-			// Players have 20 seconds to accept the match
-			if (Date.now() - Date.parse(match.started.toString()) > 20000) {
-				this.server.to(match.matchId.toString()).emit('match canceled', match);
-				return false;
+	cleanupQueue() {
+		console.log("Queue Cleanup.")
+		for (let i = 0; i < this.queue.length;) {
+			const userId = this.queue[i].userId;
+			if (this.currentActiveUsers.get(userId) === undefined) {
+				this.queue.splice(i, 1);
+			}
+			else {
+				i++;
 			}
 		}
-
-		this.server.to(match.matchId.toString()).emit('match started', match);
-		return true;
-
+		console.log("Queue Cleanup Done.")
 	}
 
-	private getSocketBySocketId(socketId: string): Socket | undefined {
-		return this.server.sockets.sockets.get(socketId);
+	addMatch() {
+		const match = new MatchClass;
+		match.matchId = this.matchId++;
+		match.player1 = this.queue.shift();
+		match.player2 = this.queue.shift();
+		match.p1Ready = false;
+		match.p2Ready = false;
+		match.started = new Date();
+		this.matches.push(match);
+		return match;
 	}
 
-	private getSocketByUserId(userId: number): Socket | undefined {
-		const socketId = this.currentActiveUsers[userId];
-		return this.getSocketBySocketId(socketId);
+	deleteMatch(matchId: number) {
+		for (let i = 0; i < this.queue.length; i++) {
+			if (this.matches[i].matchId === matchId) {
+				this.queue.splice(i, 1);
+				return;
+			}
+		}
 	}
+
+	cleanupMatches() {
+		console.log("Matches Cleanup...")
+		for (let i = 0; i < this.matches.length;) {
+			const match = this.matches[i];
+			if (this.currentActiveUsers.get(match.player1.userId) === undefined || this.currentActiveUsers[match.player2.userId] === undefined) {
+				this.matches.splice(i, 1);
+			}
+			else {
+				i++;
+			}
+		}
+		console.log("Matches Cleanup Done.")
+	}
+
 }

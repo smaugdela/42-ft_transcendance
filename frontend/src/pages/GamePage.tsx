@@ -1,11 +1,15 @@
+import { useContext } from 'react';
+import { SocketContext } from '../App';
 import '../App.css';
-import { matchmaking } from '../api/APIHandler';
 import'../styles/GamePage.css';
 
 export default function GamePage() {
 
+	const socket = useContext(SocketContext);
+	
 	const handleMulti = () => {
-		matchmaking();
+		if (socket)
+			socket.emit('Join Queue');
 	}
 
 	return (
