@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import '../styles/Tab_Chat.css';
-import { SocketContext } from '../App';
+import '../../styles/Tab_Chat.css';
+import { SocketContext } from '../../App';
 import { Socket } from 'socket.io-client';
-import { IChannel } from '../api/types';
+import { IChannel } from '../../api/types';
 
 function TabChat({ setSocket, conv }: { 
 	setSocket: React.Dispatch<React.SetStateAction<Socket | null>>, 

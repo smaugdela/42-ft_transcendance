@@ -55,6 +55,11 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	}
 
 	/* Message à envoyer aux listeners de l'event "receiveMessage" */
+	/**
+	 * 
+	 * @param client Socket de la personne qui a envoyé un message dans le Chat
+	 * @param payload `<roomName> <messageToTransfer>`. Exemple: "RockLovers Hello comment ça va?"
+	 */
 	@SubscribeMessage('Chat')
 	async handleSendMessage(client: Socket, payload: string): Promise<void> {
 		console.log(client.data.username, ':', payload);

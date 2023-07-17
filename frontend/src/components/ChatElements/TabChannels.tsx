@@ -1,13 +1,12 @@
 import React, {  useContext } from 'react';
 import toast from 'react-hot-toast';
-import '../styles/Tab_channels.css';
-import ChannelLink from './ChatElements/ChannelLink';
-import { IChannel } from '../api/types';
+import ChannelLink from './ChannelLink';
+import { IChannel } from '../../api/types';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import '../styles/Tab_channels.css';
-import { updateUserInChannel } from '../api/APIHandler';
-import { SocketContext } from '../App';
-import { sendNotificationToServer } from "../sockets/sockets";
+import '../../styles/Tab_channels.css'
+import { updateUserInChannel } from '../../api/APIHandler';
+import { SocketContext } from '../../App';
+import { sendNotificationToServer } from "../../sockets/sockets";
 
 export default function TabChannels({ joinedChannels, setActiveConv, setActiveTab }: { 
 	joinedChannels: IChannel[] | undefined,
