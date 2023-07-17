@@ -1,35 +1,47 @@
-import React, { useEffect } from 'react';
-import { useQuery } from "@tanstack/react-query";
+import React, {  useContext } from 'react';
 import toast from 'react-hot-toast';
 import '../styles/Tab_channels.css';
-import { getAllUserChannels } from '../api/APIHandler';
 import ChannelLink from './ChatElements/ChannelLink';
+import { IChannel } from '../api/types';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import '../styles/Tab_channels.css';
+import { updateUserInChannel } from '../api/APIHandler';
+import { SocketContext } from '../App';
+import { sendNotificationToServer } from "../sockets/sockets";
 
-export default function TabChannels() {
+export default function TabChannels({ joinedChannels, setActiveConv }: { 
+	joinedChannels: IChannel[] | undefined, 
+	setActiveConv: React.Dispatch<React.SetStateAction<IChannel | null>> }) {
 
-	const channelsQuery = useQuery({
-		queryKey: ['channels'],
-		queryFn: () => getAllUserChannels(),
-	});
-
-	useEffect(() => {	
-		if (channelsQuery.error instanceof Error){
-			toast.error('Error fetching your convos');
-		}
-		if (channelsQuery.isLoading || !channelsQuery.isSuccess){
-			toast.loading("Loading...");
-		}
-	}, [channelsQuery.error, channelsQuery.isLoading, channelsQuery.isSuccess]);
-
-	const joinedChannels = channelsQuery?.data;
+		const socket = useContext(SocketContext);
+		const queryClient = useQueryClient();
+	
+		const joinChannelRequest = useMutation({
+			mutationFn: (channel: IChannel) => updateUserInChannel(channel.id, "joinedUsers", "connect"),
+			onSuccess: () => { 
+				queryClient.invalidateQueries(['channels']);
+				toast.success(`You joined the channel!`) },
+			onError: () => { toast.error('Error : cannot join channel') }
+		})
+	
+		const handleClick = (event: React.FormEvent<HTMLDivElement>, channel: IChannel) => {
+			event.preventDefault();
+			joinChannelRequest.mutate(channel);
+			if (socket && channel.roomName) {
+				sendNotificationToServer(socket, 'Create Lobby', channel.roomName);
+			}
+			setActiveConv(channel);
+		};
 	return (
-	<div className='channels_page'>
+	<div className='channels_page' >
 	  <>
 	  {
 		joinedChannels && (
 			joinedChannels.map((chan) => {
 				return (
-					<ChannelLink key={chan.id.toString()} channel={chan}/>
+					<div key={(chan.id + 1).toString()} onClick={(event) => handleClick(event, chan)}>
+						<ChannelLink key={chan.id.toString()} channel={chan}/>
+					</div>
 				);
 		})
 		)

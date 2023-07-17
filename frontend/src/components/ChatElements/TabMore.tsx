@@ -1,11 +1,10 @@
-import React, { useEffect, useContext } from 'react';
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import React, { useEffect } from 'react';
+import { useQuery} from "@tanstack/react-query";
 import toast from 'react-hot-toast';
 import '../../styles/Tab_channels.css';
 import { getAllChannels } from '../../api/APIHandler';
 import ChanCreationForm from './ChanCreationForm';
 import ChannelLink from './ChannelLink';
-import { SocketContext } from '../../App';
 
 export default function TabMore() {
 
@@ -14,14 +13,14 @@ export default function TabMore() {
 		queryFn: () => getAllChannels(),
 	});
 
-	useEffect(() => {	
-		if (channelsQuery.error instanceof Error){
-			toast.error('Error fetching your convos');
-		}
-		if (channelsQuery.isLoading || !channelsQuery.isSuccess){
-			toast.loading("Loading...");
-		}
-	}, [channelsQuery.error, channelsQuery.isLoading, channelsQuery.isSuccess]);
+	
+	if (channelsQuery.error instanceof Error){
+		toast.error('Error fetching your convos');
+	}
+	if (channelsQuery.isLoading || !channelsQuery.isSuccess){
+		toast.loading("Loading...");
+	}
+
 
 	const publicAndPrivateChans = channelsQuery?.data;
 

@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import '../styles/Tab_Chat.css';
 import { SocketContext } from '../App';
 import { Socket } from 'socket.io-client';
+import { IChannel } from '../api/types';
 
-function TabChat({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<Socket | null>> }) {
+function TabChat({ setSocket, conv }: { setSocket: React.Dispatch<React.SetStateAction<Socket | null>>, conv: IChannel | null }) {
 
 	const [messages, setMessages] = useState<string[]>([]);
 	const [inputValue, setInputValue] = useState('');
@@ -56,6 +57,7 @@ function TabChat({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction
 			/>
 			<button type="submit">Send</button>
 		  </form>
+		  <h1>{conv?.roomName}</h1>
 		</div>
 	  );
 
