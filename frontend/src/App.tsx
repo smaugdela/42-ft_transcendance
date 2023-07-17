@@ -43,11 +43,12 @@ function App() {
       <IsLoggedInContext.Provider value={isLoggedIn}>
         <Navbar theme={theme} toggleTheme={toggleTheme} setLoggedIn={setLoggedIn}/>
           <video className='videobg' autoPlay loop muted content="width=device-width, initial-scale=1.0">
-            <source src="./assets/bg-video.mp4" type='video/mp4' />
+            {/* <source src="./assets/bg-video.mp4" type='video/mp4' /> */}
           </video>
+
           <audio className="music-bg" autoPlay loop >
             <source src="./assets/derezzed.mp3" type="audio/mpeg"/>
-          </audio>
+          </audio> */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />

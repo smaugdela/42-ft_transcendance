@@ -8,36 +8,48 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('Social') // for swagger
 @Controller('social')
 export class SocialController {
-	constructor(private readonly socialService: SocialService) { }
 
-	@Post('/friend-request/:username')
-	friendRequest(@Req() req: Request, @Param('username') username: string) {
-		return this.socialService.friendRequest(req.userId, username);
-	}
+  constructor(private readonly socialService: SocialService) {}
 
-	@Post('/friend-request/:id/accept')
-	acceptRequest(@Req() req: Request, @Param('id') id: string) {
-		return this.socialService.acceptRequest(req.userId, +id);
-	}
+  @Get('/friends')
+  myFriends(@Req() req: Request){
+    return this.socialService.myFriends(req.userId);
+  }
 
-	@Post('/block/:username')
-	blockUser(@Req() req: Request, @Param('username') username: string) {
-		return this.socialService.blockUser(req.userId, username);
-	}
+  @Get('/blocked-list')
+  blockedList(@Req() req: Request){
+    return this.socialService.blockedList(req.userId);
+  }
 
-	@Delete('/block/:username')
-	removeFromBlock(@Req() req: Request, @Param('id') id: string) {
-		return this.socialService.removeFromBlock(req.userId, +id);
-	}
+  @Post('/friend-request/:username')
+  friendRequest(@Req() req: Request, @Param('username') username: string) {
+    return this.socialService.friendRequest(req.userId, username);
+  }
 
-	@Delete('/friend-request/:id/reject')
-	rejectRequest(@Req() req: Request, @Param('id') id: string) {
-		return this.socialService.rejectRequest(req.userId, +id);
-	}
+  @Post('/friend-request/:id/accept')
+  acceptRequest(@Req() req: Request, @Param('id') id: string){
+    return this.socialService.acceptRequest(req.userId, +id);
+  }
+  
+  @Post('/block/:username')
+  blockUser(@Req() req: Request, @Param('username') username: string){
+    return this.socialService.blockUser(req.userId, username);
+  }
 
-	@Delete('friends/:username')
-	removeFriend(@Req() req: Request, @Param('id') id: string) {
-		return this.socialService.removeFriend(req.userId, +id);
-	}
+  @Delete('/block/:username')
+  removeFromBlock(@Req() req: Request, @Param('id') id: string){
+    return this.socialService.removeFromBlock(req.userId, +id);
+  }
+
+  @Delete('/friend-request/:id/reject')
+  rejectRequest(@Req() req: Request, @Param('id') id: string){
+    return this.socialService.rejectRequest(req.userId, +id);
+  }
+
+  @Delete('friends/:username')
+  removeFriend(@Req() req: Request, @Param('id') id: string){
+    return this.socialService.removeFriend(req.userId, +id);
+  }
+
 
 }
