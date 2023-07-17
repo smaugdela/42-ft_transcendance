@@ -3,9 +3,15 @@ import '../App.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signUp, logIn } from "../api/APIHandler";
+import { createSocketConnexion } from '../sockets/sockets';
+import { Socket } from 'socket.io-client';
 
-// { setLoggedIn }: { setLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }
-export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }) {
+export default function Login({ setLoggedIn, setSocket }: { 
+	setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>,
+	setSocket: React.Dispatch<React.SetStateAction<Socket | null>> }) {
+	
+	// const [socket, setSocket] = useState<any>(null);
+	
 	const [nickname, setNickname] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [errorMsg, setErrorMsg] = useState<string>("");
@@ -20,6 +26,8 @@ export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<Rea
 			setLoggedIn(true);
 			setSuccessMsg("Successfully signed up! ")
 			setErrorMsg('');
+			const newSocket = createSocketConnexion();
+			setSocket(newSocket);
 			setTimeout(() => {
 				navigate('/settings');
 			}, 2000);
@@ -41,6 +49,8 @@ export default function Login({ setLoggedIn }: { setLoggedIn: React.Dispatch<Rea
 			}
 			setLoggedIn(true);
 			setErrorMsg('');
+			const newSocket = createSocketConnexion();
+			setSocket(newSocket);
 			setTimeout(() => {
 				navigate('/settings');
 			}, 1500);

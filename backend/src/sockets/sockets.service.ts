@@ -1,6 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { Socket } from 'socket.io';
 
 const prisma = new PrismaClient();
 

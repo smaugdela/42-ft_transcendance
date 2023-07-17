@@ -8,22 +8,33 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext, useEffect, ChangeEventHandler } from "react";
 import { IsLoggedInContext } from '../App';
 import { logOut, checkIfLogged } from "../api/APIHandler";
+import { createSocketConnexion } from '../sockets/sockets';
+import { SocketContext } from '../App';
+import { Socket } from 'socket.io-client';
 
-
-export default function Navbar(props: { theme: string, toggleTheme: ChangeEventHandler, setLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }) {
+export default function Navbar(props: { 
+	theme: string, 
+	toggleTheme: ChangeEventHandler, 
+	setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>,
+	setSocket: React.Dispatch<React.SetStateAction<Socket | null>> }) {
 	
 	const [sidebar, setSidebar] = useState<boolean>(false);
 	const isLoggedIn = useContext(IsLoggedInContext);
-	const { setLoggedIn } = props;
+	const socket = useContext(SocketContext);
+	const { setLoggedIn, setSocket } = props;
 	
 	useEffect( () => {
 		const fetchData = async () => {
 			const userStatus = await checkIfLogged();
 			setLoggedIn(userStatus);
+			if (isLoggedIn === true && socket === null) {
+				const newSocket = createSocketConnexion();
+				setSocket(newSocket);
+			}
 		};
 		
 		fetchData();
-	}, [setLoggedIn]);
+	}, [setLoggedIn, isLoggedIn, socket, setSocket]);
 	
 	
 	const navigate = useNavigate();
@@ -31,6 +42,9 @@ export default function Navbar(props: { theme: string, toggleTheme: ChangeEventH
 		try {
 			await logOut();
 			setLoggedIn(false);
+			if (socket) {
+				socket.disconnect();
+			}
 			setTimeout(() => {
 				navigate('/');
 			}, 1000);

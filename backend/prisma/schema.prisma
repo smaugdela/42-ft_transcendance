@@ -85,6 +85,7 @@ model Channel {
   date        DateTime  @default(now())
   type        ChanMode  @default(PUBLIC)
   password    String?
+  roomName    String    @unique
   owner       User      @relation(fields: [ownerId], references: [id], name:"owner")
   ownerId     Int
   admin       User[]    @relation("admins")
@@ -117,4 +118,5 @@ enum ChanMode {
   PUBLIC    // everyone can see and join the channel
   PRIVATE   // only users with an invite can join
   PROTECTED // only user with the password can join
+  DM        // private message 1-on-1
 }
