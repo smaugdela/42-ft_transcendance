@@ -1,43 +1,49 @@
-import { IsBoolean, IsNumber, IsOptional, IsPositive, IsString, IsNotEmpty } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsPositive, IsString, IsNotEmpty, IsEmail } from 'class-validator';
 // import { Achievement } from '@prisma/client';
 
 export class UpdateUserDto {
 	@IsOptional()
 	@IsString()
-	avatar:	string;
-	
-	@IsOptional()
-	@IsNotEmpty()
-	@IsString()
-	nickname:		string;
-
-	@IsOptional()
-	@IsString()
-	@IsNotEmpty()
-	accessToken:	string;
-
-	@IsOptional()
-	@IsString()
-	@IsNotEmpty()
-	coalition:		string;
-
-
-	@IsOptional()
-	@IsString()
-	@IsNotEmpty()
-	email:	string;
-
-	@IsOptional()
-	@IsString()
-	bio:	string;
+	avatar: string;
 
 	@IsOptional()
 	@IsNotEmpty()
 	@IsString()
-	password:		string;
+	nickname: string;
 
 	@IsOptional()
-	enabled2FA:	boolean;
+	@IsString()
+	@IsNotEmpty()
+	accessToken: string;
+
+	@IsOptional()
+	@IsString()
+	@IsNotEmpty()
+	coalition: string;
+
+
+	@IsOptional()
+	@IsString()
+	@IsNotEmpty()
+	@IsEmail()
+	email: string;
+
+	@IsOptional()
+	@IsString()
+	bio: string;
+
+	@IsOptional()
+	@IsNotEmpty()
+	@IsString()
+	password: string;
+
+	@IsOptional()
+	@IsBoolean()
+	enabled2FA: boolean;
+
+	@IsOptional()
+	@IsBoolean()
+	confirmedMail: boolean;
 
 	@IsOptional()
 	@IsNumber()

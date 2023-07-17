@@ -348,6 +348,7 @@ export function Activate2FA() {
 			<h4>Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in.</h4>
 			<input type="checkbox" id="switch" checked={userQuery.data.enabled2FA} onChange={handleChange}/>
 			<label htmlFor="switch" className="switch-label"></label>
+			<h4> Please note that you must confirm your email adress to enable 2FA. You will receive an email to do so if you change your email adress or if you activate this switch.</h4>
 			<>
 			{
 				errorMsg && 
