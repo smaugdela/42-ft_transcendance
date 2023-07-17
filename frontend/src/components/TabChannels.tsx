@@ -9,8 +9,9 @@ import { updateUserInChannel } from '../api/APIHandler';
 import { SocketContext } from '../App';
 import { sendNotificationToServer } from "../sockets/sockets";
 
-export default function TabChannels({ joinedChannels, setActiveConv }: { 
-	joinedChannels: IChannel[] | undefined, 
+export default function TabChannels({ joinedChannels, setActiveConv, setActiveTab }: { 
+	joinedChannels: IChannel[] | undefined,
+	setActiveTab: React.Dispatch<React.SetStateAction<number>> 
 	setActiveConv: React.Dispatch<React.SetStateAction<IChannel | null>> }) {
 
 		const socket = useContext(SocketContext);
@@ -31,6 +32,7 @@ export default function TabChannels({ joinedChannels, setActiveConv }: {
 				sendNotificationToServer(socket, 'Create Lobby', channel.roomName);
 			}
 			setActiveConv(channel);
+			setActiveTab(1);
 		};
 	return (
 	<div className='channels_page' >
