@@ -125,7 +125,7 @@ export async function getUserMatches(id: number): Promise<IMatch[]> {
 	const matches: IMatch[] = response.data.map((match) => ({
 		...match,
 		date: new Date(match.date),
-	  }));
+	}));
 
 	return (matches);
 }
@@ -194,7 +194,7 @@ export async function updateUserBooleanProperty(property: keyof IUser, newProper
 }
 
 export async function deleteMe(): Promise<IUser> {
-	return api.delete(`/users/me`);
+	return await api.delete(`/users/me`);
 }
 
 /* ######################*/
@@ -316,4 +316,14 @@ export async function uploadImage(file: File) {
 	} catch (error) {
 		throw new Error('Error uploading image');
 	}
+}
+
+
+/* #######################*/
+/* ######   MATCH   ######*/
+/* #######################*/
+
+export async function matchmaking() {
+	const response = await api.post('/games');
+	return response.data;
 }

@@ -12,13 +12,15 @@ import { JwtService } from '@nestjs/jwt';
 })
 
 export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect {
-	constructor(private readonly socketsService: SocketsService, private readonly jwtService: JwtService) { }
+
+	constructor(private socketsService: SocketsService, private readonly jwtService: JwtService) { }
 
 	@WebSocketServer() server: Server;
 
 	/* Attribue le nickname au socket ouvert à partir de son jwt */
 	afterInit(server: Server) {
 		server.use(usernameMiddleware(this.jwtService));
+		this.socketsService.setServer(server);
 		console.log('WS Initialized');
 	}
 
@@ -31,7 +33,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		/* Stocker tous les sockets des users actuellement connectés dans un map */
 		this.socketsService.registerActiveSockets(client.data.userId, client.id);
-	
+
 		/* TODO: regarder dans quels chans la personne est déjà et la rajouter */
 
 	}
@@ -40,11 +42,9 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	handleDisconnect(client: Socket) {
 		this.socketsService.inactiveUser(client.data.userId);
 		this.socketsService.deleteDisconnectedSockets(client.data.userId);
-		
+
 		console.log('Client disconnected:', client.data.username);
 		client.disconnect(true);
-
-
 	}
 
 	@SubscribeMessage('Create Lobby')
@@ -53,6 +53,10 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		client.join(room);
 		console.log(client.data.username ,` has joined the room ${payload}!`);	
 	}
+
+	/* ######################### */
+	/* ######### CHAT ########## */
+	/* ######################### */
 
 	/* Message à envoyer aux listeners de l'event "receiveMessage" */
 	@SubscribeMessage('Chat')
@@ -69,5 +73,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		// this.server.to(room).emit('receiveMessage', client.data.username + ": " + payload);
 	}
 
+	/* ######################### */
+	/* ######### GAMES ######### */
+	/* ######################### */
 
 }
