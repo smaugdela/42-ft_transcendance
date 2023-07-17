@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IUser } from "./types";
 
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 axios.defaults.withCredentials = true;
 
@@ -24,15 +24,15 @@ api.interceptors.response.use(
 	},
 );
 
-
 /* ######################*/
 /* ######   AUTH   ######*/
 /* ######################*/
 
+
 export async function signUp(newNickname: string, password: string): Promise<any> {
 
 	try {
-		const response = await axios.post(`${BASE_URL}/auth/signup`,
+		const response = await api.post(`${BASE_URL}/auth/signup`,
 			{
 				nickname: newNickname,
 				password: password
@@ -40,10 +40,53 @@ export async function signUp(newNickname: string, password: string): Promise<any
 			{
 				headers: {
 					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': ['http://localhost:3001', 'http://localhost:3000']
+					'Access-Control-Allow-Origin': BASE_URL,
 				},
 			},
 		);
+		return response.data;
+
+	} catch (error) {
+		throw new Error('A user with this nickname already exists');
+	}
+}
+
+
+export async function logIn(newNickname: string, password: string): Promise<any> {
+
+	try {
+		const response = await axios.post(`${BASE_URL}/auth/login`,
+			{
+				nickname: newNickname,
+				password: password
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+
+	} catch (error) {
+		if (axios.isAxiosError(error)) {
+			if (error.response && error.response.data && error.response.data.message) {
+			  if (error.response.data.message === 'No such nickname') {
+				throw new Error('No such nickname');
+			  } else {
+				throw new Error('Password does not match');
+			  }
+			}
+		  }
+		  throw new Error('An error occurred');
+		}
+}
+
+export async function logOut(): Promise<any> {
+
+	try {
+		const response = await axios.delete(`${BASE_URL}/auth/logout`);
 		return response.data;
 
 	} catch (error) {
@@ -55,6 +98,11 @@ export async function signUp(newNickname: string, password: string): Promise<any
 /* ######################*/
 /* ######   USER   ######*/
 /* ######################*/
+
+export async function checkIfLogged(): Promise<boolean> {
+	const response = await axios.get<boolean>(`${BASE_URL}/users/check`);
+	return response.data;
+}
 
 export async function fetchUsers(): Promise<IUser[]> {
 	const response = await api.get<IUser[]>(`/users`);
@@ -73,40 +121,54 @@ export async function fetchMe(): Promise<IUser> {
 
 export async function updateUserStringProperty(property: keyof IUser, newProperty: string) {
 	try {
-		console.log('property: ', property);
 		const requestBody = { [property]: newProperty };
 
 		const response = await api.patch<IUser>(
-			`/users/me`, 				// url
+			`/users/me`, 					// url
 			requestBody,					// request body
 			{								// request config object
 				headers: {
 					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': ['http://localhost:3001', 'http://localhost:3000']
+					'Access-Control-Allow-Origin': BASE_URL,
 				},
 			},
 		);
 		return response.data;
 	} catch (error) {
-		console.log('Error updating user: ', error);
+		// console.log("Error updating user string property: ", error);
+		// Handle possible exceptions from the backend accordingly! Recover the error code and eventually display the according page...
+		throw new Error('Nickname is already taken');
 	}
 }
 
-export async function deleteUserById(id: number): Promise<IUser> {
 
-	const userToDelete = await fetchUserById(id);
+export async function updateUserBooleanProperty(property: keyof IUser, newProperty: boolean) {
+	try {
+		const requestBody = { [property]: newProperty };
 
-	if (userToDelete) {
-		return api.delete(`/users/${id}`);
-	} else {
-		throw new Error('Deletion impossible: the user does not exist');
+		const response = await api.patch<IUser>(
+			`/users/me`, 					// url
+			requestBody,					// request body
+			{								// request config object
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error('Error during change of boolean user property');
 	}
+}
+
+export async function deleteMe(): Promise<IUser> {
+	return api.delete(`/users/me`);
 }
 
 /* ######################*/
 /* ######  SEARCH  ######*/
 /* ######################*/
-
 
 export async function getMeiliData(): Promise<IUser> {
 	const response = await api.get(`/search`);
@@ -115,8 +177,37 @@ export async function getMeiliData(): Promise<IUser> {
 
 
 export async function postSearchQuery(userInput: string) {
-	const response = await api.post(`/search`, {
-		searchQuery: userInput,
-	});
-	return response;
+
+	try {
+		const response = await api.post(`/search`, {
+			searchQuery: userInput,
+		});
+		return response;
+	} catch (error) {
+		throw new Error('Meilisearch: error caught during search');
+	}
+
+}
+
+/* ######################*/
+/* ###   CLOUDINARY   ###*/
+/* ######################*/
+
+export async function uploadImage(file: File) {
+	try {
+		const formData = new FormData();
+		formData.append('file', file);
+
+		const user = await fetchMe();
+
+		const response = await api.post(`/cloudinary`,
+			formData, {
+			params: {
+				id: user.id,
+			},
+		});
+		return response.data; // response.data = avatarUrl
+	} catch (error) {
+		throw new Error('Error uploading image');
+	}
 }

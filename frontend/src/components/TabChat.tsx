@@ -11,17 +11,21 @@ function TabChat() {
 	const sendMessage = (message: string) => {
 	console.log("Sending Message");
 	  if (socket) {
-		console.log("socket defined");
-		socket.emit('chatMessage', message);
+		socket.emit('sendMessage', message);
 		setInputValue('');
 	  }
 	};
-  
+
 	useEffect(() => {
-	  const newSocket = io('http://localhost:3001');
+
+		const base_url: string = process.env.REACT_APP_BACKEND_URL || "https://localhost:3001";
+	
+	  const newSocket = io(base_url, {
+		withCredentials: true,
+	  });
 	  setSocket(newSocket);
   
-	  newSocket.on('chatMessage', (message: string) => {
+	  newSocket.on('receiveMessage', (message: string) => {
 		console.log("Message received");
 		setMessages((prevMessages) => [...prevMessages, message]);
 	  });

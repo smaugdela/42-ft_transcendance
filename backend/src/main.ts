@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 // import { PrismaClient } from '@prisma/client';
-// import * as fs from 'fs';
+import * as fs from 'fs';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -35,7 +35,13 @@ async function bootstrap() {
 		return;
 	}
 
-	const app = await NestFactory.create(AppModule, { logger: console, });
+	const httpsOptions = {
+		key: fs.readFileSync(process.env.HTTPS_KEY),
+		cert: fs.readFileSync(process.env.HTTPS_CERT),
+		logger: console,
+	};
+
+	const app = await NestFactory.create(AppModule, { httpsOptions });
 
 	// Swagger config
 	const config = new DocumentBuilder()

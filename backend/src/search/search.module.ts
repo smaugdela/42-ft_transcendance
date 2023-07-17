@@ -5,7 +5,7 @@ import { UsersService } from "src/users/users.service";
 
 @Module({
 	controllers: [SearchController],
-	providers: [SearchService, UsersService]
+	providers: [SearchService, UsersService],
 })
 
-export class SearchModule {}
+export class SearchModule { }

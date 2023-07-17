@@ -11,11 +11,6 @@ services:
       - 5432:5432
     networks:
       - backend
-  # adminer:
-  #   image: adminer:4.8.1
-  #   restart: always
-  #   ports:
-  #     - 8080:8080
 
 networks:
   # frontend:

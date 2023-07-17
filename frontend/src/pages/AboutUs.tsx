@@ -26,7 +26,7 @@ const teamMembers: Member[] = [
   {
     name: 'Fahima',
     github: 'https://github.com/fahima8897',
-    image: '/assets/punk2.png',
+    image: '/assets/fahima.png',
   },
 ];
 

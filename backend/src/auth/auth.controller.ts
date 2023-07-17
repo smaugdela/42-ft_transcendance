@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Query, Res, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Res, Delete, Req, Redirect } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import AuthDto from './dto/auth.dto';
 import { Public } from './guards/public.decorator';
@@ -17,11 +17,18 @@ export class AuthController {
 	}
 
 	@Public()
+	@Get('2fa')
+	async twoFactorAuth(@Query() query, @Res({ passthrough: true }) res: Response) {
+		return this.authService.login2FA(query, res);
+	}
+
+	@Public()
 	@Post('signup')
 	signup(@Body() body: AuthDto, @Res({ passthrough: true }) res: Response) {
 		return this.authService.signup(body, res);
 	}
 
+	@Redirect(process.env.FRONTEND_URL, 302)
 	@Public()
 	@Get('42/redirect')
 	async redirect42(@Query() query, @Res({ passthrough: true }) res: Response) {
