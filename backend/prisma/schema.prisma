@@ -8,19 +8,20 @@ datasource db {
 }
 
 model User {
-  id             Int             @id @default(autoincrement())
-  createdAt      DateTime        @default(now())
-  avatar         String?         @default("/assets/avatar1.png")
-  nickname       String          @unique
-  email          String?         @unique
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  avatar         String?  @default("/assets/avatar1.png")
+  nickname       String   @unique
+  email          String?  @unique
   bio            String?
   authtype       AuthType
-  enabled2FA     Boolean?        @default(false)
-  login2FAstatus Login2FAStatus? @default(NONE)
-  id42           Int?            @unique
-  token42        String?         @unique // Is the 42 oauth token for 42 students.
+  confirmedMail  Boolean? @default(false)
+  enabled2FA     Boolean? @default(false)
+  login2FAstatus Boolean? @default(false) // Used to know if the user is in the process of logging in with 2FA (true = pending, false = not pending).
+  id42           Int?     @unique
+  token42        String?  @unique // Is the 42 oauth token for 42 students.
   password       String? // Is the password for non 42 students.
-  coalition      String?         @default("Invite")
+  coalition      String?  @default("Invite")
 
   aces     Int?     @default(0)
   score    Int?     @default(0)
@@ -111,12 +112,6 @@ model Message {
 enum AuthType {
   FORTYTWO
   LOGNPWD
-}
-
-enum Login2FAStatus {
-  NONE // No login requested
-  PENDING // User has successfully entered credentials, and must now follow the 2FA link sent by mail
-  CONFIRMED // 2FA link has been followed, user is now logged in
 }
 
 enum ChanMode {

@@ -15,6 +15,9 @@ import Home from './pages/Home';
 import GamePage from './pages/GamePage';
 import { Socket } from 'socket.io-client';
 import { Toaster } from 'react-hot-toast';
+import DoubleFA from './pages/DoubleFA';
+import Error from './pages/Error';
+import PendingPage from './pages/DoubleFAPending';
 
 export const IsLoggedInContext = React.createContext<boolean>(false);
 export const SocketContext = React.createContext<Socket | null>(null);
@@ -45,9 +48,10 @@ function App() {
       <IsLoggedInContext.Provider value={isLoggedIn}>
         <Navbar theme={theme} toggleTheme={toggleTheme} setLoggedIn={setLoggedIn} setSocket={setSocket} />
           <video className='videobg' autoPlay loop muted content="width=device-width, initial-scale=1.0">
-            <source src="./assets/bg-video.mp4" type='video/mp4' />
+            {/* <source src="./assets/bg-video.mp4" type='video/mp4' /> */}
           </video>
-          <audio className="music-bg" controls autoPlay loop >
+
+          <audio className="music-bg" autoPlay loop >
             <source src="./assets/derezzed.mp3" type="audio/mpeg"/>
           </audio>
           <Toaster/>
@@ -59,8 +63,13 @@ function App() {
             <Route path="/social" element={<Social />} />
             <Route path='/settings' element={<Settings />} />
             <Route path='/login' element={<Login setLoggedIn={setLoggedIn} setSocket={setSocket} />} />
+			      <Route path='/2fa' element={<DoubleFA/>} />
+			      <Route path='/2fa/pending' element={<PendingPage/>} />
+            <Route path='/user' element={<UserProfile />} />
+	    	    <Route path='/gamepage' element ={<GamePage/>}/>
+			      <Route path='/error/:status' element={<Error/>} />
+			      <Route path='*' element={<Error/>} />
             <Route path={`/user/:nickname`}  element={<UserProfile />} />
-			      <Route path='/gamepage' element ={<GamePage/>}/>
           </Routes>
           {
             isLoggedIn &&

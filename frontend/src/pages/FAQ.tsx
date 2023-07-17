@@ -9,16 +9,16 @@ interface FaqItem{
 
 const faqs: FaqItem[] = [
   {
-    question: 'What is Transcendence ?',
-    answer: 'Blalalalalalalalalal.',
+    question: 'What is Pong ?',
+    answer: 'Pong is one of the first computer games that ever created. This simple "tennis like" game features two paddles and a ball.',
+  },
+  {
+    question: 'How to play Pong?',
+    answer: 'The goal of this game is to defeat your opponent by being the first one to gain 10 point. A player gets a point once the opponent misses a ball. The game can be played with two human players, or one player against a computer controlled paddle.',
   },
   {
     question: 'How to block or remove a friend ?',
     answer: 'Click the name of the friend you want to remove or block. Select BLOCK or UNFRIEND, and then click to confirm.',
-  },
-  {
-    question: 'How to play ?',
-    answer: 'with your brain',
   },
   {
     question: 'Can we save the game progress?',

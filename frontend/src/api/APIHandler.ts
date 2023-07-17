@@ -20,6 +20,10 @@ api.interceptors.response.use(
 			// Redirect to the "Login" page
 			window.location.href = '/Login';
 		}
+		else if (error.response) {
+			// Redirect to the according error pages
+			window.location.href = '/Error' + error.response.status;
+		}
 		return Promise.reject(error);
 	},
 );
@@ -27,7 +31,6 @@ api.interceptors.response.use(
 /* ######################*/
 /* ######   AUTH   ######*/
 /* ######################*/
-
 
 export async function signUp(newNickname: string, password: string): Promise<any> {
 
@@ -67,20 +70,20 @@ export async function logIn(newNickname: string, password: string): Promise<any>
 				},
 			},
 		);
-		return response.data;
+		return response;
 
 	} catch (error) {
 		if (axios.isAxiosError(error)) {
 			if (error.response && error.response.data && error.response.data.message) {
-			  if (error.response.data.message === 'No such nickname') {
-				throw new Error('No such nickname');
-			  } else {
-				throw new Error('Password does not match');
-			  }
+				if (error.response.data.message === 'No such nickname') {
+					throw new Error('No such nickname');
+				} else {
+					throw new Error('Password does not match');
+				}
 			}
-		  }
-		  throw new Error('An error occurred');
 		}
+		throw new Error('An error occurred');
+	}
 }
 
 export async function logOut(): Promise<any> {
@@ -94,6 +97,16 @@ export async function logOut(): Promise<any> {
 	}
 }
 
+export async function fetch2FA(code: string, userId: string): Promise<any> {
+
+	try {
+		const response = await axios.get(`${BASE_URL}/auth/2fa?code=${code}&userId=${userId}`);
+		return response;
+
+	} catch (error) {
+		console.log("Error signup: ", error);
+	}
+}
 
 /* ######################*/
 /* ######   USER   ######*/
