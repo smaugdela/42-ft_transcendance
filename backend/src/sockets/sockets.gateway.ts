@@ -3,7 +3,6 @@ import { SocketsService } from './sockets.service';
 import { Server, Socket } from 'socket.io';
 import { usernameMiddleware } from './middleware/username.middleware';
 import { JwtService } from '@nestjs/jwt';
-import { MatchClass } from 'src/games/games.service';
 
 @WebSocketGateway({
 	cors: {
@@ -70,18 +69,4 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	/* ######### GAMES ######### */
 	/* ######################### */
 
-	@SubscribeMessage('match accepted')
-	async handleMatchAccepted(client: Socket, payload: MatchClass): Promise<void> {
-		const userId = client.data.userId;
-		if (userId === payload.player1.userId) {
-			payload.p1Ready = true;
-		}
-		else if (userId === payload.player2.userId) {
-			payload.p2Ready = true;
-		}
-		else {
-			console.log("Error: userId doesn't match any player");
-		}
-		return;
-	}
 }

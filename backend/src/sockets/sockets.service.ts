@@ -1,9 +1,20 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { MatchClass } from '../games/games.service';
 import { Server, Socket } from 'socket.io';
 
 const prisma = new PrismaClient();
+
+class Player {
+	userId: number;
+}
+class MatchClass {
+	matchId: number;
+	player1: Player;
+	player2: Player;
+	p1Ready: boolean;
+	p2Ready: boolean;
+	started: Date;
+}
 
 @Injectable()
 export class SocketsService {

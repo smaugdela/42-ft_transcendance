@@ -12,7 +12,6 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { SocketsModule } from './sockets/sockets.module';
 import { MailModule } from './mail/mail.module';
 import { SocialModule } from './social/social.module';
-import { GamesModule } from './games/games.module';
 
 
 @Module({
@@ -21,7 +20,7 @@ import { GamesModule } from './games/games.module';
 		AppService,
 		{ provide: APP_GUARD, useClass: AuthGuard, }
 	],
-	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule, CloudinaryModule, SocketsModule, SocialModule, MailModule, GamesModule],
+	imports: [UsersModule, AuthModule, JwtModule, ConfigModule.forRoot({ isGlobal: true }), SearchModule, CloudinaryModule, SocketsModule, SocialModule, MailModule],
 })
 
 export class AppModule { }
