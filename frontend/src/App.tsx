@@ -48,7 +48,7 @@ function App() {
 
           <audio className="music-bg" autoPlay loop >
             <source src="./assets/derezzed.mp3" type="audio/mpeg"/>
-          </audio> */}
+          </audio> 
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
