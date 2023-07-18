@@ -15,7 +15,17 @@ export class MatchClass {
 	player2: Player;
 	p1Ready: boolean;
 	p2Ready: boolean;
-	started: Date;
+	started: number;
+
+	p1posX: number;
+	p2posX: number;
+
+	ballX: number;
+	ballY: number;
+	ballSpeedX: number;
+	ballSpeedY: number;
+
+	lastUpdate: number;
 }
 
 @Injectable()
@@ -102,7 +112,16 @@ export class SocketsService {
 		match.player2 = this.queue.shift();
 		match.p1Ready = false;
 		match.p2Ready = false;
-		match.started = new Date();
+		match.p1posX = 0;
+		match.p2posX = 0;
+		match.ballX = 0;
+		match.ballY = 0;
+
+		// Random ball speed
+		match.ballSpeedX = Math.random() * 2 - 1;
+		match.ballSpeedY = Math.random() * 2 - 1;
+
+		match.started = Date.now();
 		this.matches.push(match);
 		return match;
 	}

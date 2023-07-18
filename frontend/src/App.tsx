@@ -18,6 +18,7 @@ import { Toaster } from 'react-hot-toast';
 import DoubleFA from './pages/DoubleFA';
 import Error from './pages/Error';
 import PendingPage from './pages/DoubleFAPending';
+import Pong from './pages/Pong';
 
 export const IsLoggedInContext = React.createContext<boolean>(false);
 export const SocketContext = React.createContext<Socket | null>(null);
@@ -62,6 +63,7 @@ function App() {
             <Route path="/aboutUs" element={<AboutUs />} />
             <Route path="/social" element={<Social />} />
             <Route path='/settings' element={<Settings />} />
+			<Route path='/pong' element={<Pong />} />
             <Route path='/login' element={<Login setLoggedIn={setLoggedIn} setSocket={setSocket} />} />
 			      <Route path='/2fa' element={<DoubleFA/>} />
 			      <Route path='/2fa/pending' element={<PendingPage/>} />

@@ -73,7 +73,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	}
 
 	/* ######################### */
-	/* ######### GAMES ######### */
+	/* ###### MATCHMAKING ###### */
 	/* ######################### */
 
 	@SubscribeMessage('Join Queue')
@@ -94,11 +94,23 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		let match;
 		if (this.socketsService.queue.length >= 2) {
 			match = this.socketsService.addMatch();
-			this.launchMatch(match);
+			const socket1: Socket = this.getSocketBySocketId(match.player1.socketId);
+			const socket2: Socket = this.getSocketBySocketId(match.player2.socketId);
+
+			if (socket1 === undefined || socket2 === undefined) {
+				console.log("Error: socket undefined");
+				return;
+			}
+
+			socket1.join(match.matchId.toString());
+			socket2.join(match.matchId.toString());
+			this.server.to(match.matchId.toString()).emit('match ready', match);
+
+			console.log("Match ready, waiting for players to accept...");
 		}
 	}
 
-	@SubscribeMessage('Accept Match')
+	@SubscribeMessage('accept match')
 	async handleAcceptMatch(client: Socket, payload: string): Promise<void> {
 		void (payload);
 
@@ -113,6 +125,64 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		} else if (match.player2.userId === userId) {
 			match.p2Ready = true;
 		}
+
+		if (match.p1Ready && match.p2Ready) {
+			this.server.to(match.matchId.toString()).emit('match started');
+			match.lastUpdate = Date.now();
+		}
+	}
+
+	@SubscribeMessage('decline match')
+	async handleDeclineMatch(client: Socket, payload: string): Promise<void> {
+		void (payload);
+
+		const userId = client.data.userId;
+
+		const match = this.getMatchByUserId(userId);
+
+		if (match === undefined) {
+			return;
+		}
+
+		this.server.to(match.matchId.toString()).emit('match canceled');
+
+		this.socketsService.deleteMatch(match.matchId);
+	}
+
+	/* ######################### */
+	/* ######### GAME ########## */
+	/* ######################### */
+
+	@SubscribeMessage('game input')
+	async handleGameInput(client: Socket, payload: string): Promise<void> {
+
+		const userId = client.data.userId;
+
+		const match = this.getMatchByUserId(userId);
+
+		if (match === undefined) {
+			return;
+		}
+
+		// If payload is not empty, actuate user state
+		if (payload !== "") {
+			switch (userId) {
+				case match.player1.userId:
+					// match.player1.input = payload;
+					break;
+				case match.player2.userId:
+					// match.player2.input = payload;
+					break;
+				default:
+					break;
+			}
+		}
+
+		// Actuate ball state here
+
+		// Send back match state to players
+		match.lastUpdate = Date.now();
+		this.server.to(match.matchId.toString()).emit('game state', match);
 	}
 
 	/* ######################### */
@@ -137,38 +207,28 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		return undefined;
 	}
 
-	private launchMatch(match: MatchClass) {
+	// Wait for players to accept the match
 
-		const socket1: Socket = this.getSocketBySocketId(match.player1.socketId);
-		const socket2: Socket = this.getSocketBySocketId(match.player2.socketId);
+	// private launchMatch(match: MatchClass) {
 
-		if (socket1 === undefined || socket2 === undefined) {
-			console.log("Error: socket undefined");
-			return false;
-		}
 
-		socket1.join(match.matchId.toString());
-		socket2.join(match.matchId.toString());
-		this.server.to(match.matchId.toString()).emit('match ready', match);
 
-		console.log("Match ready, waiting for players to accept...");
+	// 	while (match.p1Ready === false || match.p2Ready === false) {
 
-		while (match.p1Ready === false || match.p2Ready === false) {
+	// 		// Players have 20 seconds to accept the match
+	// 		if (Date.now() - Date.parse(match.started.toString()) > 20000) {
+	// 			this.server.to(match.matchId.toString()).emit('match canceled', match);
+	// 			this.socketsService.deleteMatch(match.matchId);
+	// 			console.log("Match canceled.");
+	// 			console.log("Match: ", match);
+	// 			return false;
+	// 		}
 
-			// Players have 20 seconds to accept the match
-			if (Date.now() - Date.parse(match.started.toString()) > 20000) {
-				this.server.to(match.matchId.toString()).emit('match canceled', match);
-				this.socketsService.deleteMatch(match.matchId);
-				console.log("Match canceled.");
-				console.log("Match: ", match);
-				return false;
-			}
+	// 	}
 
-		}
-
-		this.server.to(match.matchId.toString()).emit('match started', match);
-		console.log("Match started.");
-		return true;
-	}
+	// 	this.server.to(match.matchId.toString()).emit('match started', match);
+	// 	console.log("Match started.");
+	// 	return true;
+	// }
 
 }

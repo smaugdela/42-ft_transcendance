@@ -2,15 +2,62 @@ import { useContext } from 'react';
 import { SocketContext } from '../App';
 import '../App.css';
 import'../styles/GamePage.css';
+import { toast } from 'react-hot-toast';
 
 export default function GamePage() {
 
 	const socket = useContext(SocketContext);
-	
+
+	socket?.on('match ready', () => {
+		// Spawn a toast with a timer of 20 seconds and a button to accept the match
+		const duration = 20000; // 20 seconds
+		
+		const handleAcceptMatch = () => {
+			socket?.emit('accept match');
+			toast.dismiss('matchmaking');
+		};
+
+		setTimeout(() => {
+			toast.dismiss('matchmaking');
+			socket?.emit('decline match');
+		}, duration);
+
+		const acceptButton = (
+			<button className="toast-button" onClick={handleAcceptMatch} data-text="ACCEPT">ACCEPT
+			</button>
+		);
+
+		toast.success(<span>Match found!{acceptButton}</span>, {
+			id: 'matchmaking',
+			icon: '🎉',
+			position: 'bottom-center',
+			duration: duration,
+		});
+	});
+
+	socket?.on('match canceled', () => {
+		toast.error('Players not ready in time.', {
+			id: 'matchmaking',
+			icon: '❌',
+			position: 'bottom-center',
+			duration: 3000,
+		});
+	});
+
+	socket?.on('match started', () => {
+		// Redirect to the game page
+		toast.dismiss('matchmaking');
+		window.location.href = '/pong';
+	});
+
 	const handleMulti = () => {
 		if (socket)
 			socket.emit('Join Queue');
-	}
+		toast.loading('Searching for a match...', {
+			id: 'matchmaking',
+			position: 'bottom-center',
+		});
+	};
 
 	return (
         <div id="play-screen2">
