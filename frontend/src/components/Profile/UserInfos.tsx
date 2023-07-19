@@ -1,10 +1,11 @@
 import "../../styles/UserProfile.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPlus, faBan, faComment } from '@fortawesome/free-solid-svg-icons';
+import { faUserPlus, faBan } from '@fortawesome/free-solid-svg-icons';
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { fetchMe } from "../../api/APIHandler";
 import { IUser } from "../../api/types";
+import MessageUserBtn from "./MessageUserBtn";
 
 export default function UserInfos( { user } : {user: IUser}) {
 	
@@ -12,10 +13,7 @@ export default function UserInfos( { user } : {user: IUser}) {
 	const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' } as const;
 	const creationDate = new Date(user.createdAt).toLocaleDateString('en-US', options);
 
-	const userQuery : UseQueryResult<IUser>= useQuery({ 
-		queryKey: ['user'], 	 				
-		queryFn: () => fetchMe		
-	});
+	const userQuery : UseQueryResult<IUser>= useQuery({ queryKey: ['user'], queryFn: () => fetchMe });
 
 	useEffect(() => {
 	  /* Si la personne connectée est la personne dont on affiche le profil */
@@ -43,7 +41,7 @@ export default function UserInfos( { user } : {user: IUser}) {
 				<>
 					<button><FontAwesomeIcon icon={faUserPlus} /></button>
 					<button><FontAwesomeIcon icon={faBan} /></button>
-					<button><FontAwesomeIcon icon={faComment} /></button>
+					<MessageUserBtn loggedInUser={userQuery.data} userToContact={user} />
 				</>
 			}
 			<h5>Member since {creationDate}</h5>

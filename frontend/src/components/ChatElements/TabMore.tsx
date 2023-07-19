@@ -7,20 +7,16 @@ import ChanCreationForm from './ChanCreationForm';
 import { IChannel } from '../../api/types';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import '../../styles/Tab_channels.css'
-import { updateUserInChannel } from '../../api/APIHandler';
+import { updateMeInChannel } from '../../api/APIHandler';
 import ChannelLink from './ChannelLink';
 
 export default function TabMore() {
 
-	const channelsQuery = useQuery({
-		queryKey: ['allChannels'],
-		queryFn: () => getAllChannels(),
-	});
-
+	const channelsQuery = useQuery({queryKey: ['allChannels'], queryFn: () => getAllChannels()});
 	const queryClient = useQueryClient();
 	
 		const joinChannelRequest = useMutation({
-			mutationFn: (channel: IChannel) => updateUserInChannel(channel.id, "joinedUsers", "connect"),
+			mutationFn: (channel: IChannel) => updateMeInChannel(channel.id, "joinedUsers", "connect"),
 			onSuccess: () => { 
 				queryClient.invalidateQueries(['channels']);
 				toast.success(`You joined the channel!`) 

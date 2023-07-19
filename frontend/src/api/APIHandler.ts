@@ -20,10 +20,10 @@ api.interceptors.response.use(
 			// Redirect to the "Login" page
 			window.location.href = '/Login';
 		}
-		else if (error.response) {
-			// Redirect to the according error pages
-			window.location.href = '/Error' + error.response.status;
-		}
+		// else if (error.response) {
+		// 	// Redirect to the according error pages
+		// 	window.location.href = '/Error' + error.response.status;
+		// }
 		return Promise.reject(error);
 	},
 );
@@ -249,7 +249,7 @@ export async function createChannel(roomName: string, password: string, type: st
 	}
 }
 
-export async function updateUserInChannel(channelId: number, groupToInsert: string, action: string) {
+export async function updateMeInChannel(channelId: number, groupToInsert: string, action: string) {
 	try {
 		const user = await fetchMe();
 		const response = await api.post(`/chat/channel/${channelId}`,
@@ -269,7 +269,47 @@ export async function updateUserInChannel(channelId: number, groupToInsert: stri
 	} catch (error) {
 		throw new Error('Error: cannot join this channel');
 	}
+}
 
+export async function updateUserInChannel(userId: number, channelId: number, groupToInsert: string, action: string) {
+	try {
+		const response = await api.post(`/chat/channel/${channelId}`,
+			{
+				groupToInsert,
+				action,
+				userId: userId,
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error('Error: cannot join this channel');
+	}
+}
+
+/**
+ * @description Find the convo, and if it doesn't exist, create it and join both users to it
+ * @param roomName Name of the conversation (Syntax: senderNickname + ' ' + receiverNickname)
+ * @param contactedUserId Id of the person you're trying to message
+ * @returns the channel of the conversation (DM)
+ */
+export async function manageDirectMessages(roomName: string, contactedUserId: number): Promise<IChannel> {
+	
+	try {
+        let conv: IChannel = await getOneChannelByName(roomName);
+        if (!conv) {
+            conv = await createChannel(roomName, "", 'DM'); // Using '' for password for DM type
+        }
+        await updateUserInChannel(contactedUserId, conv.id, 'joinedUsers', 'connect' );
+        return conv;
+    } catch (error) {
+        throw new Error('Error: cannot establish this personal convo');
+    }
 }
 
 /* ######################*/

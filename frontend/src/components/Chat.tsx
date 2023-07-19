@@ -30,7 +30,6 @@ const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<So
 	
 	// Récupérer les chans qu'on a!!!
 	const { data, status } = useQuery(['channels'], getAllUserChannels);
-	console.log('data de merde ', data);
 	
 	const [activeConv, setActiveConv] = useState<IChannel | null>((data)? data[0] : null);
 
