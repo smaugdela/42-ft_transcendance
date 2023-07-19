@@ -83,10 +83,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		const userId = client.data.userId;
 		const username = client.data.username;
 
-
 		// Add user to queue
 		this.socketsService.addToQueue(userId, username);
-		console.log(username, " joined the queue");
 
 		// Check if there is a match to launch
 		this.socketsService.cleanupQueue();
@@ -94,8 +92,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		let match;
 		if (this.socketsService.queue.length >= 2) {
 			match = this.socketsService.addMatch();
-			const socket1: Socket = this.getSocketBySocketId(match.player1.socketId);
-			const socket2: Socket = this.getSocketBySocketId(match.player2.socketId);
+			const socket1: Socket = this.getSocketByUserId(match.player1.userId);
+			const socket2: Socket = this.getSocketByUserId(match.player2.userId);
 
 			if (socket1 === undefined || socket2 === undefined) {
 				console.log("Error: socket undefined");
@@ -116,19 +114,22 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		const userId = client.data.userId;
 
+		console.log(client.data.username, "accepted the match");
+
 		const match = this.getMatchByUserId(userId);
 		if (match === undefined) {
 			console.log("Error: match undefined");
 			return;
 		} else if (match.player1.userId === userId) {
-			match.p1Ready = true;
+			match.player1.ready = true;
 		} else if (match.player2.userId === userId) {
-			match.p2Ready = true;
+			match.player2.ready = true;
 		}
 
-		if (match.p1Ready && match.p2Ready) {
+		if (match.player1.ready && match.player2.ready) {
 			this.server.to(match.matchId.toString()).emit('match started');
 			match.lastUpdate = Date.now();
+			console.log("Match started");
 		}
 	}
 
@@ -137,6 +138,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		void (payload);
 
 		const userId = client.data.userId;
+
+		console.log(client.data.username, "declined the match");
 
 		const match = this.getMatchByUserId(userId);
 
@@ -194,7 +197,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	}
 
 	private getSocketByUserId(userId: number): Socket | undefined {
-		const socketId = this.socketsService.currentActiveUsers[userId];
+		const socketId = this.socketsService.currentActiveUsers.get(userId);
 		return this.getSocketBySocketId(socketId);
 	}
 
@@ -211,9 +214,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 	// private launchMatch(match: MatchClass) {
 
-
-
-	// 	while (match.p1Ready === false || match.p2Ready === false) {
+	// 	while (match.player1.ready === false || match.player2.ready === false) {
 
 	// 		// Players have 20 seconds to accept the match
 	// 		if (Date.now() - Date.parse(match.started.toString()) > 20000) {

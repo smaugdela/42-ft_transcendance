@@ -5,17 +5,17 @@ const prisma = new PrismaClient();
 
 export class Player {
 	userId: number;
-	socketId: string;
 	username: string;
 	score: number;
+	ready: boolean;
 }
+
 export class MatchClass {
 	matchId: number;
+	started: number;
+
 	player1: Player;
 	player2: Player;
-	p1Ready: boolean;
-	p2Ready: boolean;
-	started: number;
 
 	p1posX: number;
 	p2posX: number;
@@ -47,7 +47,7 @@ export class SocketsService {
 
 	public deleteDisconnectedSockets(client: number) {
 		this.currentActiveUsers.delete(client);
-		console.log("Apres déco, nb de users en ligne: ", this.currentActiveUsers.size);
+		// console.log("Apres déco, nb de users en ligne: ", this.currentActiveUsers.size);
 	}
 
 	async activeUser(userId: number) {
@@ -83,12 +83,22 @@ export class SocketsService {
 	}
 
 	addToQueue(userId: number, username: string) {
+
+		for (let i = 0; i < this.queue.length; i++) {
+			if (this.queue[i].userId === userId) {
+				console.log("User already in queue.");
+				return;
+			}
+		}
+
 		const player = new Player;
 		player.userId = userId;
-		player.socketId = this.currentActiveUsers.get(userId);
 		player.username = username;
 		player.score = 0;
 		this.queue.push(player);
+
+		console.log(username, " joined the queue");
+
 	}
 
 	cleanupQueue() {
@@ -102,7 +112,6 @@ export class SocketsService {
 				i++;
 			}
 		}
-		console.log("Queue Cleanup Done.")
 	}
 
 	addMatch() {
@@ -110,8 +119,8 @@ export class SocketsService {
 		match.matchId = this.matchId++;
 		match.player1 = this.queue.shift();
 		match.player2 = this.queue.shift();
-		match.p1Ready = false;
-		match.p2Ready = false;
+		match.player1.ready = false;
+		match.player2.ready = false;
 		match.p1posX = 0;
 		match.p2posX = 0;
 		match.ballX = 0;
@@ -130,23 +139,23 @@ export class SocketsService {
 		for (let i = 0; i < this.queue.length; i++) {
 			if (this.matches[i].matchId === matchId) {
 				this.queue.splice(i, 1);
+				console.log("Match #", matchId, " deleted.");
 				return;
 			}
 		}
 	}
 
 	cleanupMatches() {
-		console.log("Matches Cleanup...")
+		console.log("Matches Cleanup.")
 		for (let i = 0; i < this.matches.length;) {
 			const match = this.matches[i];
-			if (this.currentActiveUsers.get(match.player1.userId) === undefined || this.currentActiveUsers[match.player2.userId] === undefined) {
+			if (this.currentActiveUsers.get(match.player1.userId) === undefined || this.currentActiveUsers.get(match.player2.userId) === undefined) {
 				this.matches.splice(i, 1);
 			}
 			else {
 				i++;
 			}
 		}
-		console.log("Matches Cleanup Done.")
 	}
 
 }

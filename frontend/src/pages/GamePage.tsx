@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SocketContext } from '../App';
 import '../App.css';
 import'../styles/GamePage.css';
@@ -7,14 +8,17 @@ import { toast } from 'react-hot-toast';
 export default function GamePage() {
 
 	const socket = useContext(SocketContext);
+	const navigate = useNavigate();
 
 	socket?.on('match ready', () => {
 		// Spawn a toast with a timer of 20 seconds and a button to accept the match
 		const duration = 20000; // 20 seconds
-		
+
 		const handleAcceptMatch = () => {
 			socket?.emit('accept match');
 			toast.dismiss('matchmaking');
+			// Redirect to the game page using useNavigate() from react-router-dom
+			navigate('/pong');
 		};
 
 		setTimeout(() => {
@@ -42,17 +46,14 @@ export default function GamePage() {
 			position: 'bottom-center',
 			duration: 3000,
 		});
-	});
-
-	socket?.on('match started', () => {
-		// Redirect to the game page
-		toast.dismiss('matchmaking');
-		window.location.href = '/pong';
+		navigate('/');
 	});
 
 	const handleMulti = () => {
 		if (socket)
 			socket.emit('Join Queue');
+		else
+			console.log('Socket is null');
 		toast.loading('Searching for a match...', {
 			id: 'matchmaking',
 			position: 'bottom-center',

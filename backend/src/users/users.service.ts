@@ -27,7 +27,7 @@ export class UsersService {
 			})
 				.then(user => {
 					if (user) {
-						console.log(user);
+						// console.log(user);
 						return true;
 					}
 					return false;
@@ -46,7 +46,7 @@ export class UsersService {
 			include: {
 				achievements: true,
 				matchAsP1: true,
-				matchAsP2: true, 
+				matchAsP2: true,
 				joinedChans: true,
 			},
 		});

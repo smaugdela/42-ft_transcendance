@@ -18,7 +18,7 @@ import { Toaster } from 'react-hot-toast';
 import DoubleFA from './pages/DoubleFA';
 import Error from './pages/Error';
 import PendingPage from './pages/DoubleFAPending';
-import Pong from './pages/Pong';
+import { Pong } from './pages/Pong';
 
 export const IsLoggedInContext = React.createContext<boolean>(false);
 export const SocketContext = React.createContext<Socket | null>(null);
