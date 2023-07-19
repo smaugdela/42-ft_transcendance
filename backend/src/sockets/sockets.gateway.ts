@@ -44,7 +44,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		console.log('Client disconnected:', client.data.username);
 		client.disconnect(true);
 
-
 	}
 
 	@SubscribeMessage('Create Lobby')
@@ -63,15 +62,18 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	@SubscribeMessage('Chat')
 	async handleSendMessage(client: Socket, payload: string): Promise<void> {
 		console.log(client.data.username, ':', payload);
-		const splitStr: string[] = payload.split(/[ ]+/);
+		const splitStr: string[] = payload.split('  ');
 		console.log('spliiiit', splitStr);
 		
-		const room = splitStr[0];
+		const action = splitStr[0];
+		const room = splitStr[1];
 		console.log("Room is |", room, "|");
-		const msgToTransfer = splitStr[1];
+		const msgToTransfer = splitStr[2];
 		console.log("msg to Transfer: ", msgToTransfer);
 		
-		this.server.to(room).emit('receiveMessage', client.data.username + ": " + msgToTransfer);
+		if (action === "/msg") {
+			this.server.to(room).emit('receiveMessage', client.data.username + ": " + msgToTransfer);
+		}
 	}
 
 

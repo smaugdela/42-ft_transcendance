@@ -13,7 +13,7 @@ function TabChat({ setSocket, conv }: {
 	const socket = useContext(SocketContext);
 
 	const sendMessage = (message: string) => {
-		const payload: string = conv?.roomName + " " + message;
+		const payload: string = "/msg  " + conv?.roomName + "  " + message;
 		console.log("payload ", payload);
 		
 		if (socket) {
