@@ -11,22 +11,22 @@ const teamMembers: Member[] = [
   {
     name: 'Simon',
     github: 'https://github.com/smaugdela',
-    image: '/assets/keanu.png',
+    image: '/assets/simon.jpg',
   },
   {
     name: 'Anna',
     github: 'https://github.com/ajealcat',
-    image: '/assets/punk3.png',
+    image: '/assets/anna.jpg',
   },
   {
     name: 'Marine',
     github: 'https://github.com/marineks',
-    image: '/assets/punk1.png',
+    image: '/assets/marine.jpg',
   },
   {
     name: 'Fahima',
     github: 'https://github.com/fahima8897',
-    image: '/assets/fahima.png',
+    image: '/assets/fahima2.jpg',
   },
 ];
 
