@@ -1,6 +1,28 @@
-<p>Nice to see you {{ name }}!</p>
-<p>Please click below to login.</p>
-<p>Please note this link will only be valid for 10 minutes.</p>
+<head><style>
+body{
+ height: 440px;
+    width: 400px;
+    background-color: rgba(255,255,255,0.13);
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 30px 30px;
+
+}
+
+.mail-type{
+	font-family: 'Courier New', Courier, monospace;
+}
+</style></head>
+
+<p className="mail-type">Nice to see you {{ name }}!</p>
+<p>For more safety, our website use a two-factor authentification.</p>
 <p>
-	<a href="{{ url }}">Confirm</a>
+	<a href="{{ url }}">Please click here to login.</a>
 </p>
+<p>This link will only be valid for 10 minutes.</p>
