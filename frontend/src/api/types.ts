@@ -63,3 +63,13 @@ export interface IChannel {
 	kickedUsers : IUser[]; 
 	mutedUsers  : IUser[]; 
 }
+
+export interface IMessage {
+	id: number;
+	date: Date;
+	from: number;
+	to: number;
+	content: string;
+	channel: IChannel;
+	channelId: number;
+}

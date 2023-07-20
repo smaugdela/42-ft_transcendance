@@ -102,7 +102,7 @@ model Message {
   id          Int       @id @default(autoincrement())
   date        DateTime  @default(now())
   from        Int       // user id de l'expéditeur (pas socket car ils changent!)
-  to          Int       // user id du destinataire
+  to          String    // nom de la room
   content     String
   channel     Channel   @relation(fields: [channelId], references: [id], name: "messages")
   channelId   Int

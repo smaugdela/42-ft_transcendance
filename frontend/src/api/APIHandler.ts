@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IMatch, IUser, IChannel } from "./types";
+import { IMatch, IUser, IChannel, IMessage } from "./types";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -310,6 +310,55 @@ export async function manageDirectMessages(roomName: string, contactedUserId: nu
     } catch (error) {
         throw new Error('Error: cannot establish this personal convo');
     }
+}
+
+/**
+ * 
+ * @param from The sender id
+ * @param to The recipient, aka roomName of a Channel
+ * @param content The sender's message
+ * @param channelId Number id of the conversation
+ * @returns the newly-created message
+ */
+export async function createMessage(channel: IChannel, content: string): Promise<IMessage> {
+
+	try {
+		const { roomName, id } = channel;
+		const user = await fetchMe();
+		const response = await api.post(`/chat/message`,
+			{
+				from: user.id,
+				to: roomName,
+				content: content,
+				channelId: id
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error("API: Could not store message");
+	}
+}
+
+export async function getAllMsgsofChannel(channelId: number): Promise<IMessage[]> {
+	try {
+		return api.get(`/chat/messages/${channelId}`);
+	} catch (error) {
+		throw new Error("API: Could not retrieve messages");
+	}
+}
+
+export async function deleteAllMsgsofChannel(channelId: number) {
+	try {
+		return api.delete(`/chat/messages/${channelId}`);
+	} catch (error) {
+		throw new Error("API: Error during deletion of messages");
+	}
 }
 
 /* ######################*/

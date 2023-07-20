@@ -12,7 +12,8 @@ import { JwtService } from '@nestjs/jwt';
 })
 
 export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect {
-	constructor(private readonly socketsService: SocketsService, private readonly jwtService: JwtService) { }
+	constructor(private readonly socketsService: SocketsService, 
+				private readonly jwtService: JwtService) { }
 
 	@WebSocketServer() server: Server;
 

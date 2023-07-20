@@ -11,8 +11,8 @@ export class CreateMessageDto {
 	from: number;
 
 	@IsNotEmpty()
-	@IsNumber()
-	to: number;
+	@IsString()
+	to: string;
 
 	@IsNotEmpty()
 	@IsString()
