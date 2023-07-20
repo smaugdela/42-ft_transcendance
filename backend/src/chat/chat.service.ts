@@ -4,7 +4,8 @@ import { UpdateChannelDto } from './dto/update-channel.dto';
 import { PrismaClient, Prisma } from '@prisma/client';
 import * as argon from 'argon2';
 import { UsersService } from 'src/users/users.service';
-import { ChanMode } from '@prisma/client';
+import { ChanMode, Message } from '@prisma/client';
+import { CreateMessageDto } from './dto/create-message.dto';
 
 const hashingConfig = {
 	parallelism: 1,
@@ -237,6 +238,37 @@ export class ChatService {
 			data:  {
 				[groupToInsert]: { [action]: { id: userId } },
 			}
+		});
+	}
+
+
+	// Messages
+	// create a message and add it to the list
+	async createMessage(body: CreateMessageDto): Promise<Message> {
+		const { from, to, content, channelId } = body;
+		
+		return await prisma.message.create({
+			data: {
+				from,
+				to,
+				content,
+				channel: { connect: { id: channelId } },
+			},
+		});
+	}
+
+	// get all messages
+	async getAllMessagesForChannel(channelId: number): Promise<Message[]> {
+		return await prisma.message.findMany({
+			where: { channelId },
+			orderBy: { date: 'asc' },
+		});
+	}
+
+	// delete all messages
+	async deleteAllMessagesForChannel(channelId: number) {
+		return await prisma.message.deleteMany({
+			where: { channelId },
 		});
 	}
 }

@@ -1,13 +1,18 @@
 import { Controller, Body, Get, Post, Patch, Delete, Param } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { CreateChannelDto } from './dto/create-channel.dto';
-import { ApiTags } from "@nestjs/swagger";
 import { UpdateChannelDto } from './dto/update-channel.dto';
+import { CreateMessageDto } from './dto/create-message.dto';
+import { ApiTags } from "@nestjs/swagger";
 
 @ApiTags('Chat')
 @Controller('chat')
 export class ChatController {
 	constructor(private readonly chatService: ChatService) { }
+
+	/* ###################### */
+	/* ###    CHANNELS    ### */
+	/* ###################### */
 
 	/* ### CREATE ### */	
 	@Post('channel')
@@ -70,11 +75,28 @@ export class ChatController {
 		return this.chatService.updateUserinChannel(+id, body);
 	}
 
-	// ou message à ajouter
-
 	/* ### DELETE ### */	
 	@Delete('channel/:id')
 	removeMe(@Param('id') id: string) {
 		return this.chatService.deleteOneChannel(+id);
+	}
+
+	/* ###################### */
+	/* ###    MESSAGES    ### */
+	/* ###################### */
+
+	@Post('message')
+	createMessage(@Body() body: CreateMessageDto) {
+		return this.chatService.createMessage(body);
+	}
+
+	@Get('messages/:id')
+	getAllMessages(@Param('id') id: string) {
+		return this.chatService.getAllMessagesForChannel(+id);
+	}
+
+	@Delete('messages/:id')
+	deleteAllMessages(@Param('id') id: string) {
+		return this.chatService.deleteAllMessagesForChannel(+id);
 	}
 }
