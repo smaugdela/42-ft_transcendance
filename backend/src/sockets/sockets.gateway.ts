@@ -33,6 +33,23 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		/* Stocker tous les sockets des users actuellement connectés dans un map */
 		this.socketsService.registerActiveSockets(client.data.userId, client.id);
 
+		/* Reconnecter le client à son match s'il en avait un en cours */
+		this.socketsService.cleanupMatches();
+		const match = this.getMatchByUserId(client.data.userId);
+		if (match !== undefined) {
+			client.join(match.matchId.toString());
+			switch (client.data.userId) {
+				case match.player1.userId:
+					match.player1.ready = true;
+					break;
+				case match.player2.userId:
+					match.player2.ready = true;
+					break;
+				default:
+					break;
+			}
+			console.log("Client reconnected to match: ", match.matchId);
+		}
 		/* TODO: regarder dans quels chans la personne est déjà et la rajouter */
 
 	}
@@ -41,6 +58,30 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	handleDisconnect(client: Socket) {
 		this.socketsService.inactiveUser(client.data.userId);
 		this.socketsService.deleteDisconnectedSockets(client.data.userId);
+
+		// Tell the match the user has disconnected
+		const match = this.getMatchByUserId(client.data.userId);
+		if (match !== undefined) {
+			switch (client.data.userId) {
+				case match.player1.userId:
+					match.player1.ready = false;
+					break;
+				case match.player2.userId:
+					match.player2.ready = false;
+					break;
+				default:
+					break;
+			}
+		}
+
+		// Remove user from queue if they were in it
+		for (let i = 0; i < this.socketsService.queue.length; i++) {
+			if (this.socketsService.queue[i].userId === client.data.userId) {
+				this.socketsService.queue.splice(i, 1);
+				console.log("User removed from queue.");
+				break;
+			}
+		}
 
 		console.log('Client disconnected:', client.data.username);
 		client.disconnect(true);
@@ -87,7 +128,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		this.socketsService.addToQueue(userId, username);
 
 		// Check if there is a match to launch
-		this.socketsService.cleanupQueue();
 		this.socketsService.cleanupMatches();
 		let match;
 		if (this.socketsService.queue.length >= 2) {
@@ -164,6 +204,20 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		const match = this.getMatchByUserId(userId);
 
 		if (match === undefined) {
+			return;
+		}
+
+		// If one of the players is not ready, do not actuate game state (Pause)
+		if (match.player1.ready === false || match.player2.ready === false) {
+
+			// If the match has been paused for more than 10 seconds (unresponsive player), cancel it.
+			if (Date.now() - match.lastUpdate > 10000) {
+				this.server.to(match.matchId.toString()).emit('match canceled');
+				this.socketsService.deleteMatch(match.matchId);
+				return;
+			}
+
+			this.server.to(match.matchId.toString()).emit('game state', match);
 			return;
 		}
 

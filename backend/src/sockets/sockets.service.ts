@@ -101,20 +101,8 @@ export class SocketsService {
 
 	}
 
-	cleanupQueue() {
-		console.log("Queue Cleanup.")
-		for (let i = 0; i < this.queue.length;) {
-			const userId = this.queue[i].userId;
-			if (this.currentActiveUsers.get(userId) === undefined) {
-				this.queue.splice(i, 1);
-			}
-			else {
-				i++;
-			}
-		}
-	}
-
 	addMatch() {
+
 		const match = new MatchClass;
 		match.matchId = this.matchId++;
 		match.player1 = this.queue.shift();
@@ -145,14 +133,18 @@ export class SocketsService {
 		}
 	}
 
+	endMatch(matchId: number) {
+		// TODO: update score in db, and graciously end the match
+		void (matchId);
+	}
+
 	cleanupMatches() {
 		console.log("Matches Cleanup.")
 		for (let i = 0; i < this.matches.length;) {
 			const match = this.matches[i];
-			if (this.currentActiveUsers.get(match.player1.userId) === undefined || this.currentActiveUsers.get(match.player2.userId) === undefined) {
-				this.matches.splice(i, 1);
-			}
-			else {
+			if ((match.player1.ready === false || match.player2.ready === false) && (Date.now() - match.started > 10000)) {
+				this.deleteMatch(match.matchId);
+			} else {
 				i++;
 			}
 		}

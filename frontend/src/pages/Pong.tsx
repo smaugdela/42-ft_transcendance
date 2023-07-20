@@ -54,6 +54,8 @@ export function Pong() {
 
 	const socket = useContext(SocketContext);
 	const navigate = useNavigate();
+	let running = true;
+	void running;
 
 	socket?.on('match started', () => {
 		// Launch the logic for the game
@@ -68,6 +70,7 @@ export function Pong() {
 
 	socket?.on('match canceled', () => {
 		console.log('Match canceled');
+		running = false;
 		toast.error('Players not ready in time.', {
 			id: 'matchmaking',
 			icon: '❌',
@@ -86,12 +89,22 @@ export function Pong() {
 
 	useEffect(() => {
 		// Your game logic and update loop can go here
-		// This is just a static rendering example
+
+		const fps = 30;
+
+		// Send the game input to the backend once every 'fps' ticks
+		const tick = Date.now();
+		if (Date.now() - tick >= 1/fps)
+		{
+			socket?.emit('game input', {
+				// Game input
+			});
+		}
 
 	return () => {
 		// Cleanup if needed
 	  };
-	}, []);
+	}, [socket]);
 
 	return (
 	  <Stage width={800} height={600} options={{ backgroundColor: 0x000000 }}>
