@@ -347,7 +347,8 @@ export async function createMessage(channel: IChannel, content: string): Promise
 
 export async function getAllMsgsofChannel(channelId: number): Promise<IMessage[]> {
 	try {
-		return api.get(`/chat/messages/${channelId}`);
+		const response =  await api.get(`/chat/messages/${channelId}`);
+		return response.data;
 	} catch (error) {
 		throw new Error("API: Could not retrieve messages");
 	}

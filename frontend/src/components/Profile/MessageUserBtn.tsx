@@ -47,7 +47,6 @@ export default function MessageUserBtn( { loggedInUser, userToContact} : {
 
 	if (data === undefined) {
 		console.log("data undefined");
-		
 	}
 
 	return (

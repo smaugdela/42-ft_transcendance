@@ -3,8 +3,8 @@ import '../../styles/Tab_Chat.css';
 import { SocketContext } from '../../App';
 import { Socket } from 'socket.io-client';
 import { IChannel } from '../../api/types';
-import { useMutation } from '@tanstack/react-query';
-import { createMessage } from '../../api/APIHandler';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { createMessage, getAllMsgsofChannel } from '../../api/APIHandler';
 
 function TabChat({ setSocket, conv }: { 
 	setSocket: React.Dispatch<React.SetStateAction<Socket | null>>, 
@@ -13,7 +13,18 @@ function TabChat({ setSocket, conv }: {
 	const [messages, setMessages] = useState<string[]>([]);
 	const [inputValue, setInputValue] = useState('');
 	const socket = useContext(SocketContext);
-		
+	
+	const { data } = useQuery({
+		queryKey: ['messages', conv.id],
+		queryFn: () => getAllMsgsofChannel(conv.id),
+	});
+
+	useEffect(() => {
+		if (data) {
+			setMessages(data.map((message) => message.content));
+		}
+	}, [data]);
+	
 	const storeMessage = useMutation((message: string) => createMessage(conv, message));
 
 	const sendMessage = (message: string) => {
