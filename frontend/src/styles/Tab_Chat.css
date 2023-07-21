@@ -1,11 +1,70 @@
-.text-input {
-    position: absolute;
-    top: 500px;
-    margin: 20px;
-    width: 70%;
-    height: 30px;
-    padding: 5px;
-    font-size: 16px;
-    border: none;
-    border-radius: 3px;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Licorice&family=Open+Sans&family=Share+Tech&display=swap');
+
+
+/* .convo__card {
+	background-color: white;
+} */
+
+.convo__card * {
+	text-align: left;
+	font-family: 'Open Sans', sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+.convo__header {
+	background-color: rgb(63, 89, 118);
+	padding: 1em 0.4em;
+}
+
+.convo__header_title {
+	display: flex;
+	justify-content: space-between;
+}
+
+#convo__name {
+	color: black;
+}
+
+.convo__bottom {
+	position: fixed;
+	width: 100%;
+	bottom: 28%;
+	background-color: rgb(63, 89, 118);
+	padding: 1em;
+}
+
+#convo__form {
+	/* position: fixed;
+	width: 90%; */
+	text-align: center;
+	/* bottom: 30%; */
+	display: flex;
+	gap: 4px;
+	/* margin-left: 1.3em; */
+}
+
+.one__msg {
+	margin: 1em;
+	display: flex;
+	gap: 3px;
+}
+
+.one__msg_info {
+	display: flex;
+	flex-direction: column;
+}
+
+.one__msg_header {
+	display: flex;
+	gap: 5px;
+	align-items: center;
+	color: white;
+}
+
+.one__msg_content {
+	background-color: rgb(210, 224, 224);
+	padding: 5px;
+	border-radius: 10px;
+	margin-top: 1px;
+}
