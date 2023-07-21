@@ -1,33 +1,39 @@
 import "../../styles/UserProfile.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from '@fortawesome/free-solid-svg-icons';
-import { useContext} from "react";
+import { useState, useEffect, useContext} from "react";
 import { manageDirectMessages } from "../../api/APIHandler";
 import { IUser } from "../../api/types";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import '../../styles/Tab_channels.css';
 import toast from 'react-hot-toast';
-import { SocketContext } from '../../App';
+import { SocketContext, ChatStatusContext } from "../../context/contexts";
 import { sendNotificationToServer } from '../../sockets/sockets';
-// setActiveTab: React.Dispatch<React.SetStateAction<number>> 
-// setActiveConv: React.Dispatch<React.SetStateAction<IChannel | null>> 
 
-export default function MessageUserBtn( { loggedInUser, userToContact} : { 
-	loggedInUser: IUser, 
-	userToContact : IUser,
+export default function MessageUserBtn( { loggedInUser, userToContact} : { loggedInUser: string, userToContact : IUser}) {
 	
-}) {
-
-	const roomName = loggedInUser.nickname + ' ' + userToContact.nickname;
-	
+	const { setActiveTab, setActiveConv, setIsExpanded } = useContext(ChatStatusContext);
+	const [roomName, setRoomName] = useState<string>('');
 	const socket = useContext(SocketContext);
 	const queryClient = useQueryClient();
-
-	const { data, mutate } = useMutation({
+	
+	useEffect(() => {
+		if (loggedInUser !== undefined) {
+			setRoomName(loggedInUser + ' ' + userToContact.nickname);
+		}	
+	}, [loggedInUser, userToContact.nickname])
+	
+	const { mutate } = useMutation({
 		mutationFn: () => manageDirectMessages(roomName, userToContact.id),
-		onSuccess: () => {
+		onSuccess: (data) => {
 			queryClient.invalidateQueries(['channels']);
-			toast.success("You can now talk to the other person!");
+			if (socket && data) {
+				sendNotificationToServer(socket, 'Create Lobby', data?.roomName);
+				setActiveConv(data);
+				setActiveTab(1);
+				setIsExpanded(true);
+				toast.success("You can now talk to the other person!");
+			}
 		},
 		onError: () => { toast.error('Error during creation: channel name already in use') }
 	})
@@ -35,19 +41,12 @@ export default function MessageUserBtn( { loggedInUser, userToContact} : {
 	// Creates conv if not existant, join both users and displays chat with conv on right tab
 	const handleClick = (event: React.FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		mutate();
-		if (socket && data?.roomName) {
-			console.log(data?.roomName);
+		if (roomName) {
+			console.log("je mutate");
 			
-			sendNotificationToServer(socket, 'Create Lobby', data?.roomName);
+			mutate();
 		}
-		// setActiveConv(channel);
-		// setActiveTab(1);
 	};
-
-	if (data === undefined) {
-		console.log("data undefined");
-	}
 
 	return (
 		<>
