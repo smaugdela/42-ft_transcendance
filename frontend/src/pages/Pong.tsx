@@ -4,52 +4,6 @@ import { SocketContext } from "../App";
 import { Stage, Graphics } from "@pixi/react";
 import toast from "react-hot-toast";
 
-// export default function Pong() {
-
-// 	// Here will be the frontend logic for the game
-	
-// 	const socket = useContext(SocketContext);
-
-// 	socket?.on('game state', () => {
-// 		// Update the game state
-// 	});
-
-// 	let tick = Date.now();
-
-// 	while (true) {
-// 		// Send the game input to the backend once every 30 ticks
-
-// 		if (Date.now() - tick >= 1/30)
-// 		{
-// 			tick = Date.now();
-// 			socket?.emit('game input', {
-// 				// Game input
-// 			});
-// 		}
-
-// 		return (
-// 			<div>
-// 				<h1>Pong</h1>
-// 			</div>
-// 		);
-// 	}
-// }
-
-// socket?.on('match started', () => {
-// 	// Redirect to the game page
-// 	toast.dismiss('matchmaking');
-// 	navigate('/pong');
-// });
-
-// socket?.on('match canceled', () => {
-// 	toast.error('Players not ready in time.', {
-// 		id: 'matchmaking',
-// 		icon: '❌',
-// 		position: 'bottom-center',
-// 		duration: 3000,
-// 	});
-// });
-
 export function Pong() {
 
 	const socket = useContext(SocketContext);
@@ -69,20 +23,23 @@ export function Pong() {
 	});
 
 	socket?.on('match canceled', () => {
+
 		console.log('Match canceled');
 		running = false;
-		toast.error('Players not ready in time.', {
+
+		toast.error('Player disconnected.', {
 			id: 'matchmaking',
 			icon: '❌',
 			position: 'bottom-center',
-			duration: 1000,
+			duration: 2000,
 		});
-		// Wait 1 second
+
 		setTimeout(() => {
+			// Redirect to the home page
 			toast.dismiss('matchmaking');
-		}, 1000);
-		// Redirect to the home page
-		navigate('/');
+			navigate('/');
+		}, 2500);
+
 	});
 
 	socket?.emit('accept match');

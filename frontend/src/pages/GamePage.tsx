@@ -10,32 +10,16 @@ export default function GamePage() {
 	const navigate = useNavigate();
 
 	socket?.on("match ready", () => {
-			// Spawn a toast with a timer of 10 seconds and a button to accept the match
-			const duration = 10000; // 10 seconds
+			const duration = 2500; // 2.5 seconds
 
-			const handleAcceptMatch = () => {
-				clearTimeout(id);
-				toast.dismiss("matchmaking");
-				socket.off("match canceled");
-				navigate("/pong");
-			};
-
-			const id = setTimeout(() => {
+			setTimeout(() => {
 				// Only send "match declined" if the match is still in the waiting state
-				toast.dismiss("matchmaking");
-				socket?.emit("decline match");
-			}, duration + 10);
+				// toast.dismiss("matchmaking");
+				socket.off("match ready");
+				navigate("/pong");
+			}, duration + 500);
 
-			const acceptButton = (
-				<button className="toast-button" onClick={handleAcceptMatch} data-text="ACCEPT">
-					ACCEPT
-				</button>
-			);
-
-			toast.success(
-				<span>
-					Match found!{acceptButton}
-				</span>,
+			toast.success("Match found! Redirecting to game...",
 				{
 					id: "matchmaking",
 					icon: "🎉",
@@ -46,20 +30,25 @@ export default function GamePage() {
 		}
 	);
 
-	socket?.on("match canceled", () => {
-		toast.error("Players not ready in time.", {
-			id: "matchmaking",
-			icon: "❌",
-			position: "bottom-center",
-			duration: 3000,
-		});
-		navigate("/");
-	});
+	const leaveQueueButton = (
+		<button
+			className="button3"
+			onClick={() => {
+				socket?.emit("Leave Queue");
+				toast.success("Left queue.", {
+					id: "matchmaking",
+					position: "bottom-center",
+					duration: 3000,
+				});
+			}}>
+			Cancel
+		</button>
+	);
 
 	const handleMulti = () => {
 		if (socket) {
 			socket.emit("Join Queue");
-			toast.loading("Searching for a match...", {
+			toast.loading(<span>Searching for a match... {leaveQueueButton} </span>, {
 				id: "matchmaking",
 				position: "bottom-center",
 			});

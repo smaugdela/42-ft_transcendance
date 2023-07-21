@@ -173,23 +173,20 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		}
 	}
 
-	@SubscribeMessage('decline match')
-	async handleDeclineMatch(client: Socket, payload: string): Promise<void> {
+	@SubscribeMessage('Leave Queue')
+	async handleLeaveQueue(client: Socket, payload: string): Promise<void> {
 		void (payload);
 
 		const userId = client.data.userId;
 
-		console.log(client.data.username, "declined the match");
-
-		const match = this.getMatchByUserId(userId);
-
-		if (match === undefined) {
-			return;
+		// Remove user from queue
+		for (let i = 0; i < this.socketsService.queue.length; i++) {
+			if (this.socketsService.queue[i].userId === userId) {
+				this.socketsService.queue.splice(i, 1);
+				console.log("User removed from queue.");
+				break;
+			}
 		}
-
-		this.server.to(match.matchId.toString()).emit('match canceled');
-
-		this.socketsService.deleteMatch(match.matchId);
 	}
 
 	/* ######################### */
