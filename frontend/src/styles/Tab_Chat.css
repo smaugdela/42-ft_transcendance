@@ -44,6 +44,12 @@
 	/* margin-left: 1.3em; */
 }
 
+.convo__messages {
+	overflow: scroll;
+	height: auto;
+	max-height: 650px;
+}
+
 .one__msg {
 	margin: 1em;
 	display: flex;
