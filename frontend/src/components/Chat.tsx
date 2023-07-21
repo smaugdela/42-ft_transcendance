@@ -1,5 +1,6 @@
-import React,  { useState }  from 'react';
+import React,  { useContext }  from 'react';
 import '../styles/Chat.css';
+import '../styles/Tab_channels.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesLeft, faAnglesRight} from "@fortawesome/free-solid-svg-icons";
 import TabChannels from './ChatElements/TabChannels';
@@ -7,9 +8,8 @@ import TabChat from './ChatElements/TabChat';
 import TabMore from './ChatElements/TabMore';
 import { Socket } from 'socket.io-client';
 import { useQuery } from "@tanstack/react-query";
-import '../styles/Tab_channels.css';
 import { getAllUserChannels } from '../api/APIHandler';
-import { IChannel } from '../api/types';
+import { ChatStatusContext } from '../context/contexts';
 
 interface Tab {
   label: string;
@@ -17,9 +17,10 @@ interface Tab {
 }
 
 const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<Socket | null>> }) => {
-	
-	const [isExpanded, setIsExpanded] = useState(true);
-	const [activeTab, setActiveTab] = useState(0);
+
+	const { data, status } = useQuery(['channels'], getAllUserChannels);
+	const { activeTab, setActiveTab, activeConv, isExpanded, setIsExpanded } = useContext(ChatStatusContext);
+
 	const toggleExpand = () => {
 		setIsExpanded(!isExpanded);
 	};
@@ -28,11 +29,6 @@ const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<So
 		setActiveTab(index);
 	};
 	
-	// Récupérer les chans qu'on a!!!
-	const { data, status } = useQuery(['channels'], getAllUserChannels);
-	
-	const [activeConv, setActiveConv] = useState<IChannel | null>((data)? data[0] : null);
-
 	if (status === "error"){
 		return <div>Error</div>
 	}
@@ -41,7 +37,7 @@ const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<So
 	}
 	
 	var tabs: Tab[] = [
-				 { label: 'Convs', content: <div><TabChannels joinedChannels={data} setActiveTab={setActiveTab} setActiveConv={setActiveConv} /></div> },
+				 { label: 'Convs', content: <div><TabChannels joinedChannels={data}/></div> },
 	activeConv ? { label: 'Chat', content: <div><TabChat setSocket={setSocket} conv={activeConv}/></div> } : { label: 'Chat', content: <div>Join convos to see the chat!</div> },
 				 { label: 'More', content: <div><TabMore /></div> },
 	];

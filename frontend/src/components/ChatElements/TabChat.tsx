@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import '../../styles/Tab_Chat.css';
-import { SocketContext } from '../../App';
+import { SocketContext } from '../../context/contexts';
 import { Socket } from 'socket.io-client';
 import { IChannel } from '../../api/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -64,6 +64,7 @@ function TabChat({ setSocket, conv }: {
 
 	return (
 		<div>
+		  <h1>{conv?.roomName}</h1>
 		  <ul>
 			{messages.map((message, index) => (
 			  <li key={index}>{message}</li>
@@ -78,7 +79,7 @@ function TabChat({ setSocket, conv }: {
 			/>
 			<button type="submit">Send</button>
 		  </form>
-		  <h1>{conv?.roomName}</h1>
+		 
 		</div>
 	  );
 

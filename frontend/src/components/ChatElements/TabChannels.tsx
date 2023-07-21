@@ -2,24 +2,21 @@ import React, {  useContext } from 'react';
 import ChannelLink from './ChannelLink';
 import { IChannel } from '../../api/types';
 import '../../styles/Tab_channels.css'
-import { SocketContext } from '../../App';
+import { SocketContext, ChatStatusContext } from '../../context/contexts';
 import { sendNotificationToServer } from "../../sockets/sockets";
 
-export default function TabChannels({ joinedChannels, setActiveConv, setActiveTab }: { 
-	joinedChannels: IChannel[] | undefined,
-	setActiveTab: React.Dispatch<React.SetStateAction<number>> 
-	setActiveConv: React.Dispatch<React.SetStateAction<IChannel | null>> }) {
+export default function TabChannels({ joinedChannels }: { joinedChannels: IChannel[] | undefined }) {
+	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
+	const socket = useContext(SocketContext);
 
-		const socket = useContext(SocketContext);
-	
-		const handleClick = (event: React.FormEvent<HTMLDivElement>, channel: IChannel) => {
-			event.preventDefault();
-			if (socket && channel.roomName) {
-				sendNotificationToServer(socket, 'Create Lobby', channel.roomName);
-			}
-			setActiveConv(channel);
-			setActiveTab(1);
-		};
+	const handleClick = (event: React.FormEvent<HTMLDivElement>, channel: IChannel) => {
+		event.preventDefault();
+		if (socket && channel.roomName) {
+			sendNotificationToServer(socket, 'Create Lobby', channel.roomName);
+		}
+		setActiveConv(channel);
+		setActiveTab(1);
+	};
 
 	return (
 	<div className='channels_page' >
