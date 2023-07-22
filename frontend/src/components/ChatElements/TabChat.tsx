@@ -8,17 +8,20 @@ import { OneMessage } from './OneMessage';
 
 function TabChat({ conv }: { conv: IChannel }) {
 		
-	const convName: string = (conv.type === 'DM') ? conv.roomName.replace(' ', ' , ').trim() : conv.roomName;
 	const [messages, setMessages] = useState<IMessage[]>([]);
 	const [inputValue, setInputValue] = useState<string>('');
 	const socket = useContext(SocketContext);
+	const convName: string = (conv.type === 'DM') ? conv.roomName.replace(' ', ' , ').trim() : conv.roomName;
 	
+	// Queries pour récupérer les messages du channel, ou pour créer un message
+	const { data: newMessage, mutate} = useMutation((message: string) => createMessage(conv, message));
 	const { data } = useQuery({
 		queryKey: ['messages', conv.id],
 		queryFn: () => getAllMsgsofChannel(conv.id),
 		refetchInterval: 100,
 	});
 
+	// A l'arrivée sur le chat, faire défiler les messages jusqu'aux plus récents (bas de la fenêtre)
 	useEffect(() => {
 		var scroll = document.getElementById("convo__messages");
 		if (scroll) {
@@ -26,14 +29,14 @@ function TabChat({ conv }: { conv: IChannel }) {
 		}
 	}, []);
 
+	// Avec les messages récupérés avec la query, je les attribue au setteur qui servira à les afficher
 	useEffect(() => {
 		if (data) {
 			setMessages(data);
 		}
 	}, [data]);
 	
-	const { data: IMessages, mutate} = useMutation((message: string) => createMessage(conv, message));
-
+	// Fonction pour envoyer son msg au serveur, pour être transféré aux destinataires
 	const sendMessage = (message: string) => {
 		const payload: string = "/msg  " + conv?.roomName + "  " + message;
 		console.log("payload ", payload);
@@ -44,12 +47,13 @@ function TabChat({ conv }: { conv: IChannel }) {
 	  }
 	};
 
+	// Si la connexion est assurée, récupère tous les messages qui nous sont envoyés
 	useEffect(() => {
 		if (socket) {
 			/* Listen tous les messages de l'event receiveMessage */
 			socket.on('receiveMessage', (message: IMessage) => {
 				console.log("Message received");
-				if (IMessages && data) {
+				if (newMessage && data) {
 					setMessages([...data, message]);
 				}
 			});
@@ -57,12 +61,9 @@ function TabChat({ conv }: { conv: IChannel }) {
 			socket.off('receiveMessage');
 			};
 		}
-	}, [socket, mutate, data, IMessages, messages]);
-  
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-	  setInputValue(event.target.value);
-	};
+	}, [socket, mutate, data, newMessage, messages]);
 
+	// Quand on appuie sur entrée, créé un IMessage avec nos données et l'envoie
 	const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>, message:string) => {
 	  event.preventDefault();
 	  mutate(message);
@@ -96,7 +97,7 @@ function TabChat({ conv }: { conv: IChannel }) {
 					<input
 					type="text"
 					value={inputValue}
-					onChange={handleInputChange}
+					onChange={(event) => setInputValue(event.target.value)}
 					placeholder="Type Here"
 					/>
 					<button type="submit">Send</button>
