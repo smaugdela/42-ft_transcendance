@@ -327,7 +327,7 @@ export async function createMessage(channel: IChannel, content: string): Promise
 		const user = await fetchMe();
 		const response = await api.post(`/chat/message`,
 			{
-				from: user.id,
+				fromId: user.id,
 				to: roomName,
 				content: content,
 				channelId: id

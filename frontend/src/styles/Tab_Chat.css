@@ -45,9 +45,10 @@
 }
 
 .convo__messages {
-	overflow: scroll;
+	overflow: auto;
 	height: auto;
-	max-height: 650px;
+	/* min-height: 645px; */
+	max-height: 630px;
 }
 
 .one__msg {
@@ -66,6 +67,12 @@
 	gap: 5px;
 	align-items: center;
 	color: white;
+}
+
+.one__msg_avatar {
+	height: 2em;
+	width: auto;
+	border-radius: 50%;
 }
 
 .one__msg_content {

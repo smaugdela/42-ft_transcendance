@@ -7,6 +7,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { createMessage, getAllMsgsofChannel } from '../../api/APIHandler';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquarePlus, faGamepad, faBan, faPersonWalkingArrowRight, faCommentSlash } from "@fortawesome/free-solid-svg-icons";
+import { log } from 'console';
 
 
 function TabChat({ setSocket, conv }: { 
@@ -80,6 +81,7 @@ function TabChat({ setSocket, conv }: {
 		return date;
 	}
 	
+	
 	return (
 		<div className='convo__card'>
 			<div className='convo__header'>
@@ -93,10 +95,12 @@ function TabChat({ setSocket, conv }: {
 			{
 				testMsg.map((message, index) => (
 					<div key={index + 2} className="one__msg" >
-						<div className="one__msg_avatar"><img src="" alt="Avatar"/></div>
+						<div className="one__msg_avatar_container">
+							<img src={message.from.avatar} className='one__msg_avatar' alt="Avatar"/>
+						</div>
 						<div className="one__msg_info">
 							<div key={index + 1} className='one__msg_header'>
-								<h4>{message.from}</h4>
+								<h4>{message.from.nickname}</h4>
 								<h6>{getDate(message)}</h6>
 								<FontAwesomeIcon icon={faSquarePlus} />
 								<FontAwesomeIcon icon={faGamepad} />

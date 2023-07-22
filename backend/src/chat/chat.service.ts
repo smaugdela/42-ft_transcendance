@@ -245,11 +245,11 @@ export class ChatService {
 	// Messages
 	// create a message and add it to the list
 	async createMessage(body: CreateMessageDto): Promise<Message> {
-		const { from, to, content, channelId } = body;
+		const { fromId, to, content, channelId } = body;
 		
 		return await prisma.message.create({
 			data: {
-				from,
+				from: { connect: {id: fromId}},
 				to,
 				content,
 				channel: { connect: { id: channelId } },
@@ -262,6 +262,7 @@ export class ChatService {
 		return await prisma.message.findMany({
 			where: { channelId },
 			orderBy: { date: 'asc' },
+			include: { from: true }
 		});
 	}
 

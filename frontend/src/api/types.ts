@@ -67,7 +67,8 @@ export interface IChannel {
 export interface IMessage {
 	id: number;
 	date: Date;
-	from: number;
+	from: IUser;
+	fromId: number;
 	to: number;
 	content: string;
 	channel: IChannel;

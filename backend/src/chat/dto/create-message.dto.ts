@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString, IsNumber, Length } from "class-validator";
+import { IsNotEmpty, IsString, IsNumber, Length, IsOptional } from "class-validator";
+import { User } from "@prisma/client";
 
 export class CreateMessageDto {
 
@@ -6,9 +7,12 @@ export class CreateMessageDto {
 	@IsNumber()
 	channelId: number;
 
+	@IsOptional()
+	from: User;
+
 	@IsNotEmpty()
 	@IsNumber()
-	from: number;
+	fromId: number;
 
 	@IsNotEmpty()
 	@IsString()
