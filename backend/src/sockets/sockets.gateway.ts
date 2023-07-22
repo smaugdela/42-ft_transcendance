@@ -54,9 +54,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		console.log(client.data.username ,` has joined the room ${payload}!`);	
 	}
 
-	/* Message à envoyer aux listeners de l'event "receiveMessage" */
 	/**
-	 * 
+	 * @description Message à envoyer aux listeners de l'event "receiveMessage"
 	 * @param client Socket de la personne qui a envoyé un message dans le Chat
 	 * @param payload `<roomName> <messageToTransfer>`. Exemple: "RockLovers Hello comment ça va?"
 	 */
@@ -64,16 +63,19 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	async handleSendMessage(client: Socket, payload: string): Promise<void> {
 		console.log(client.data.username, ':', payload);
 		const splitStr: string[] = payload.split('  ');
-		console.log('spliiiit', splitStr);
 		
 		const action = splitStr[0];
 		const room = splitStr[1];
-		console.log("Room is |", room, "|");
 		const msgToTransfer = splitStr[2];
-		console.log("msg to Transfer: ", msgToTransfer);
 		
 		if (action === "/msg") {
-			this.server.to(room).emit('receiveMessage', client.data.username + ": " + msgToTransfer);
+			const message = {
+				date: new Date(),
+				from: client.data.username,
+				fromId: client.data.userId,
+				content: msgToTransfer,
+			};
+			this.server.to(room).emit('receiveMessage', message);
 		}
 	}
 

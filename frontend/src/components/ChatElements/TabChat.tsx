@@ -53,8 +53,6 @@ function TabChat({ setSocket, conv }: {
 				console.log("Message received");
 				if (IMessages && data) {
 					setTestMsg([...data, message]);
-					console.log("new testMSg should have new msg", testMsg);
-					
 				}
 			});
 			return () => {
@@ -81,8 +79,9 @@ function TabChat({ setSocket, conv }: {
 
 	const getDate = (message: IMessage) => {
 		const options: Intl.DateTimeFormatOptions = { weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit' } as const;
-		const date = message.date.toLocaleDateString('en-US', options);
-		return date;
+		const date = (typeof message.date === 'string') ? new Date(message.date) : message.date;
+		const formattedDate = date.toLocaleDateString('en-US', options);
+		return formattedDate;
 	}
 	
 	return (
@@ -105,7 +104,12 @@ function TabChat({ setSocket, conv }: {
 							<div key={index + 1} className='one__msg_header'>
 								<h4>{message.from.nickname}</h4>
 								<h6>{getDate(message)}</h6>
-								<AdminOptions />
+								{
+									conv.type !== 'DM' &&
+									<>
+										<AdminOptions channel={conv}/>
+									</>
+								}
 							</div>
 							<p className="one__msg_content" key={index}>{message.content}</p>
 						</div>
@@ -130,22 +134,3 @@ function TabChat({ setSocket, conv }: {
 }
 
 export default TabChat
-
-
-// messages.map((message, index) => (
-				// 	<div key={index + 2} className="one__msg" >
-				// 		<div className="one__msg_avatar"><img src="" alt="Avatar"/></div>
-				// 		<div className="one__msg_info">
-				// 			<div key={index + 1} className='one__msg_header'>
-				// 				<h4>Name of the person</h4>
-				// 				<h6>Date of the message</h6>
-				// 				<FontAwesomeIcon icon={faSquarePlus} />
-				// 				<FontAwesomeIcon icon={faGamepad} />
-				// 				<FontAwesomeIcon icon={faBan} />
-				// 				<FontAwesomeIcon icon={faPersonWalkingArrowRight} />
-				// 				<FontAwesomeIcon icon={faCommentSlash} />
-				// 			</div>
-				// 			<p className="one__msg_content" key={index}>{message}</p>
-				// 		</div>
-				// 	</div>
-				// ))
