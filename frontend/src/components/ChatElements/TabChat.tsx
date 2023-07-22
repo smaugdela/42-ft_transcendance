@@ -26,13 +26,13 @@ function TabChat({ setSocket, conv }: {
 		if (scroll) {
 			scroll.scrollTop = scroll.scrollHeight;
 		}
-	});
+	}, []);
 
 	useEffect(() => {
 		if (data) {
 			setTestMsg(data);
 		}
-	}, [data, conv]);
+	}, [data]);
 	
 	const { data: IMessages, mutate} = useMutation((message: string) => createMessage(conv, message));
 
