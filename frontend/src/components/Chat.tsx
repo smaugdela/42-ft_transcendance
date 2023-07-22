@@ -38,7 +38,7 @@ const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<So
 	
 	var tabs: Tab[] = [
 				 { label: 'Convs', content: <div><TabChannels joinedChannels={data}/></div> },
-	activeConv ? { label: 'Chat', content: <div><TabChat setSocket={setSocket} conv={activeConv}/></div> } : { label: 'Chat', content: <div>Join convos to see the chat!</div> },
+	activeConv ? { label: 'Chat', content: <div><TabChat conv={activeConv}/></div> } : { label: 'Chat', content: <div>Join convos to see the chat!</div> },
 				 { label: 'More', content: <div><TabMore /></div> },
 	];
 
