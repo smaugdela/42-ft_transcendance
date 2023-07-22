@@ -1,18 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import '../../styles/Tab_Chat.css';
 import { SocketContext } from '../../context/contexts';
-import { Socket } from 'socket.io-client';
 import { IChannel, IMessage } from '../../api/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createMessage, getAllMsgsofChannel } from '../../api/APIHandler';
 import {AdminOptions} from './AdminOptions';
 
-function TabChat({ setSocket, conv }: { 
-	setSocket: React.Dispatch<React.SetStateAction<Socket | null>>, 
-	conv: IChannel }) {
-
+function TabChat({ conv }: { conv: IChannel }) {
+		
+	const convName: string = (conv.type === 'DM') ? conv.roomName.replace(' ', ' , ').trim() : conv.roomName;
 	const [testMsg, setTestMsg] = useState<IMessage[]>([]);
-	const [inputValue, setInputValue] = useState('');
+	const [inputValue, setInputValue] = useState<string>('');
 	const socket = useContext(SocketContext);
 	
 	const { data } = useQuery({
@@ -88,7 +86,7 @@ function TabChat({ setSocket, conv }: {
 		<div className='convo__card'>
 			<div className='convo__header'>
 				<div className='convo__header_title'>
-					<h1 id="convo__name">{conv?.roomName}</h1>
+					<h1 id="convo__name">{convName}</h1>
 					<button>Leave Conversation</button>
 				</div>
 				<p>{conv?.joinedUsers.length} member(s), {conv?.admin.length} admin(s) </p>

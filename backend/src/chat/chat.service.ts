@@ -65,6 +65,7 @@ export class ChatService {
 			where: { id },
 			include: { 
 				admin: true,
+				owner: true,
 				joinedUsers: true,
 				bannedUsers: true, 
 				kickedUsers: true,
@@ -79,6 +80,7 @@ export class ChatService {
 			where: { roomName },
 			include: { 
 				admin: true,
+				owner: true,
 				joinedUsers: true,
 				bannedUsers: true, 
 				kickedUsers: true,

@@ -50,6 +50,7 @@ export class UsersService {
 				joinedChans: {
 					include: {
 						admin: true,
+						owner: true,
 						joinedUsers: true,
 						bannedUsers: true, 
 						kickedUsers: true,
