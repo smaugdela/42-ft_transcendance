@@ -5,17 +5,13 @@ import { Socket } from 'socket.io-client';
 import { IChannel, IMessage } from '../../api/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createMessage, getAllMsgsofChannel } from '../../api/APIHandler';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquarePlus, faGamepad, faBan, faPersonWalkingArrowRight, faCommentSlash } from "@fortawesome/free-solid-svg-icons";
-import { log } from 'console';
-
+import {AdminOptions} from './AdminOptions';
 
 function TabChat({ setSocket, conv }: { 
 	setSocket: React.Dispatch<React.SetStateAction<Socket | null>>, 
 	conv: IChannel }) {
 
 	const [testMsg, setTestMsg] = useState<IMessage[]>([]);
-	// const [messages, setMessages] = useState<string[]>([]);
 	const [inputValue, setInputValue] = useState('');
 	const socket = useContext(SocketContext);
 	
@@ -26,9 +22,14 @@ function TabChat({ setSocket, conv }: {
 	});
 
 	useEffect(() => {
-		
+		var scroll = document.getElementById("convo__messages");
+		if (scroll) {
+			scroll.scrollTop = scroll.scrollHeight;
+		}
+	});
+
+	useEffect(() => {
 		if (data) {
-			// setMessages(data.map((message) => message.content));
 			setTestMsg(data);
 		}
 	}, [data, conv]);
@@ -50,7 +51,6 @@ function TabChat({ setSocket, conv }: {
 			/* Listen tous les messages de l'event receiveMessage */
 			socket.on('receiveMessage', (message: IMessage) => {
 				console.log("Message received");
-				// setMessages((prevMessages) => [...prevMessages, message]);
 				if (IMessages && data) {
 					setTestMsg([...data, message]);
 					console.log("new testMSg should have new msg", testMsg);
@@ -66,21 +66,24 @@ function TabChat({ setSocket, conv }: {
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 	  setInputValue(event.target.value);
 	};
-  
+
 	const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>, message:string) => {
 	  event.preventDefault();
 	  mutate(message);
 	  if (inputValue.trim() !== '') {
 		sendMessage(inputValue);
 	  }
+	  var scroll = document.getElementById("convo__messages");
+	  if (scroll) {
+		  scroll.scrollTop = scroll.scrollHeight;
+	  }
 	};
 
 	const getDate = (message: IMessage) => {
-		const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const;
+		const options: Intl.DateTimeFormatOptions = { weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit' } as const;
 		const date = message.date.toLocaleDateString('en-US', options);
 		return date;
 	}
-	
 	
 	return (
 		<div className='convo__card'>
@@ -91,7 +94,7 @@ function TabChat({ setSocket, conv }: {
 				</div>
 				<p>{conv?.joinedUsers.length} member(s), {conv?.admin.length} admin(s) </p>
 			</div>
-			<div className='convo__messages'>
+			<div id='convo__messages'>
 			{
 				testMsg.map((message, index) => (
 					<div key={index + 2} className="one__msg" >
@@ -102,11 +105,7 @@ function TabChat({ setSocket, conv }: {
 							<div key={index + 1} className='one__msg_header'>
 								<h4>{message.from.nickname}</h4>
 								<h6>{getDate(message)}</h6>
-								<FontAwesomeIcon icon={faSquarePlus} />
-								<FontAwesomeIcon icon={faGamepad} />
-								<FontAwesomeIcon icon={faBan} />
-								<FontAwesomeIcon icon={faPersonWalkingArrowRight} />
-								<FontAwesomeIcon icon={faCommentSlash} />
+								<AdminOptions />
 							</div>
 							<p className="one__msg_content" key={index}>{message.content}</p>
 						</div>

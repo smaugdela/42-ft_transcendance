@@ -35,26 +35,33 @@
 }
 
 #convo__form {
-	/* position: fixed;
-	width: 90%; */
 	text-align: center;
-	/* bottom: 30%; */
 	display: flex;
 	gap: 4px;
-	/* margin-left: 1.3em; */
 }
 
-.convo__messages {
-	overflow: auto;
+#convo__messages {
+	overflow: scroll;
+	overflow-x:hidden;
+	overflow-anchor: none;
 	height: auto;
-	/* min-height: 645px; */
 	max-height: 630px;
+	/* min-height: 645px; */
+}
+
+#convo__messages * {
+	overflow-anchor: none;
+}
+
+#convo__messages_anchor {
+	overflow-anchor: auto;
+	height: 1px;
 }
 
 .one__msg {
 	margin: 1em;
 	display: flex;
-	gap: 3px;
+	gap: 5px;
 }
 
 .one__msg_info {
