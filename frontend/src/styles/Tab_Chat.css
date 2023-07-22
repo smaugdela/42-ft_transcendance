@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Licorice&family=Open+Sans&family=Share+Tech&display=swap');
 
+/* ********************************/
+/* ***       TabChat PAGE       ***/
+/* ********************************/
 
 /* .convo__card {
 	background-color: white;
@@ -58,10 +61,23 @@
 	height: 1px;
 }
 
+/* ********************************/
+/* ***   OneMessage COMPONENT   ***/
+/* ********************************/
+
 .one__msg {
 	margin: 1em;
 	display: flex;
 	gap: 5px;
+}
+
+.one__msg_me {
+	margin: 1em;
+	display: flex;
+	gap: 5px;
+	flex-direction: row-reverse;
+	justify-content: right;
+	align-items: right;
 }
 
 .one__msg_info {
@@ -83,8 +99,28 @@
 }
 
 .one__msg_content {
+	background-color: rgb(126, 147, 167);
+	padding: 5px;
+	border-radius: 10px;
+	margin-top: 1px;
+}
+
+.one__msg_content_me {
 	background-color: rgb(210, 224, 224);
 	padding: 5px;
 	border-radius: 10px;
 	margin-top: 1px;
+	
+}
+
+.options__icon {
+	color: white;
+	height: 23px;
+	width: auto;
+}
+
+.options__icon:hover {
+	color: rgb(118, 167, 197);
+	height: 28px;
+	width: auto;
 }

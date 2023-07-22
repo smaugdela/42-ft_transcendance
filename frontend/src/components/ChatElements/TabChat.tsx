@@ -4,12 +4,12 @@ import { SocketContext } from '../../context/contexts';
 import { IChannel, IMessage } from '../../api/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createMessage, getAllMsgsofChannel } from '../../api/APIHandler';
-import {AdminOptions} from './AdminOptions';
+import { OneMessage } from './OneMessage';
 
 function TabChat({ conv }: { conv: IChannel }) {
 		
 	const convName: string = (conv.type === 'DM') ? conv.roomName.replace(' ', ' , ').trim() : conv.roomName;
-	const [testMsg, setTestMsg] = useState<IMessage[]>([]);
+	const [messages, setMessages] = useState<IMessage[]>([]);
 	const [inputValue, setInputValue] = useState<string>('');
 	const socket = useContext(SocketContext);
 	
@@ -28,7 +28,7 @@ function TabChat({ conv }: { conv: IChannel }) {
 
 	useEffect(() => {
 		if (data) {
-			setTestMsg(data);
+			setMessages(data);
 		}
 	}, [data]);
 	
@@ -50,14 +50,14 @@ function TabChat({ conv }: { conv: IChannel }) {
 			socket.on('receiveMessage', (message: IMessage) => {
 				console.log("Message received");
 				if (IMessages && data) {
-					setTestMsg([...data, message]);
+					setMessages([...data, message]);
 				}
 			});
 			return () => {
 			socket.off('receiveMessage');
 			};
 		}
-	}, [socket, mutate, data, IMessages, testMsg]);
+	}, [socket, mutate, data, IMessages, messages]);
   
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 	  setInputValue(event.target.value);
@@ -74,13 +74,6 @@ function TabChat({ conv }: { conv: IChannel }) {
 		  scroll.scrollTop = scroll.scrollHeight;
 	  }
 	};
-
-	const getDate = (message: IMessage) => {
-		const options: Intl.DateTimeFormatOptions = { weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit' } as const;
-		const date = (typeof message.date === 'string') ? new Date(message.date) : message.date;
-		const formattedDate = date.toLocaleDateString('en-US', options);
-		return formattedDate;
-	}
 	
 	return (
 		<div className='convo__card'>
@@ -93,25 +86,8 @@ function TabChat({ conv }: { conv: IChannel }) {
 			</div>
 			<div id='convo__messages'>
 			{
-				testMsg.map((message, index) => (
-					<div key={index + 2} className="one__msg" >
-						<div className="one__msg_avatar_container">
-							<img src={message.from.avatar} className='one__msg_avatar' alt="Avatar"/>
-						</div>
-						<div className="one__msg_info">
-							<div key={index + 1} className='one__msg_header'>
-								<h4>{message.from.nickname}</h4>
-								<h6>{getDate(message)}</h6>
-								{
-									conv.type !== 'DM' &&
-									<>
-										<AdminOptions channel={conv}/>
-									</>
-								}
-							</div>
-							<p className="one__msg_content" key={index}>{message.content}</p>
-						</div>
-					</div>
+				messages.map((message, index) => (
+					<OneMessage conv={conv} message={message} index={index} />
 				))
 			}
 			</div>
