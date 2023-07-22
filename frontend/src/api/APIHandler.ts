@@ -267,7 +267,7 @@ export async function updateMeInChannel(channelId: number, groupToInsert: string
 		);
 		return response.data;
 	} catch (error) {
-		throw new Error('Error: cannot join this channel');
+		throw new Error(`Error: cannot ${action} to ${groupToInsert} in channel ${channelId}`);
 	}
 }
 

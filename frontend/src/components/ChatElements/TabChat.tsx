@@ -5,13 +5,13 @@ import { IChannel, IMessage } from '../../api/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createMessage, getAllMsgsofChannel } from '../../api/APIHandler';
 import { OneMessage } from './OneMessage';
+import { TabChatHeader } from './TabChatHeader';
 
 function TabChat({ conv }: { conv: IChannel }) {
 		
 	const [messages, setMessages] = useState<IMessage[]>([]);
 	const [inputValue, setInputValue] = useState<string>('');
 	const socket = useContext(SocketContext);
-	const convName: string = (conv.type === 'DM') ? conv.roomName.replace(' ', ' , ').trim() : conv.roomName;
 	
 	// Queries pour récupérer les messages du channel, ou pour créer un message
 	const { data: newMessage, mutate} = useMutation((message: string) => createMessage(conv, message));
@@ -78,13 +78,7 @@ function TabChat({ conv }: { conv: IChannel }) {
 	
 	return (
 		<div className='convo__card'>
-			<div className='convo__header'>
-				<div className='convo__header_title'>
-					<h1 id="convo__name">{convName}</h1>
-					<button>Leave Conversation</button>
-				</div>
-				<p>{conv?.joinedUsers.length} member(s), {conv?.admin.length} admin(s) </p>
-			</div>
+			<TabChatHeader conv={conv} />
 			<div id='convo__messages'>
 			{
 				messages.map((message, index) => (
