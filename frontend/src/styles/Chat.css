@@ -11,7 +11,7 @@
   
   .chat.collapsed {
     width:400px;
-    transform: translateX(300px);
+    transform: translateX(410px);
   }
   
   .chat.expanded {
