@@ -1,3 +1,4 @@
+import '../../styles/Tab_Chat.css';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,17 +30,17 @@ export function AdminOptions({ channel }: { channel: IChannel}) {
 	}
 	return (
 	<>
-		<FontAwesomeIcon icon={faGamepad} />
+		<FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} />
 		{
 			enableOptions === true &&
 			<>
-			<FontAwesomeIcon icon={faSquarePlus} onClick={handleClick}/>
+			<FontAwesomeIcon className='options__icon' title="Click to see more" icon={faSquarePlus} onClick={handleClick}/>
 			{
 				toggleDisplay === true && 
 				<>
-					<FontAwesomeIcon icon={faBan} />
-					<FontAwesomeIcon icon={faPersonWalkingArrowRight} />
-					<FontAwesomeIcon icon={faCommentSlash} />
+					<FontAwesomeIcon className='options__icon' title="Ban" icon={faBan} />
+					<FontAwesomeIcon className='options__icon' title="Kick" icon={faPersonWalkingArrowRight} />
+					<FontAwesomeIcon className='options__icon' title="Mute" icon={faCommentSlash} />
 				</>
 			}
 			</>

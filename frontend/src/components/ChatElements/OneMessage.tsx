@@ -4,6 +4,7 @@ import { IChannel, IMessage } from "../../api/types";
 import {AdminOptions} from './AdminOptions';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const getDate = (message: IMessage) => {
 	const options: Intl.DateTimeFormatOptions = { weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit' } as const;
@@ -33,7 +34,9 @@ export function OneMessage({ conv, message, index } :
 	return (
 	<div key={index + 2} className={`${isMe === true ? 'one__msg' : 'one__msg_me'}`} >
 		<div className="one__msg_avatar_container">
-			<img src={message.from.avatar} className='one__msg_avatar' alt="Avatar"/>
+			<Link to={`/user/${message.from.nickname}`} >
+			<img src={message.from.avatar} title="See profile" className='one__msg_avatar' alt="Avatar"/>
+			</Link >
 		</div>
 		<div className='one__msg_info'>
 			<div key={index + 1} className='one__msg_header'>
@@ -44,9 +47,9 @@ export function OneMessage({ conv, message, index } :
 		</div>
 		{
 			conv.type !== 'DM' && isMe === true && 
+			conv.admin.filter((admin) => admin.nickname === userMe?.nickname).length === 1 && 
 			<AdminOptions channel={conv}/>
 		}
 	</div>
-
 	);
 }
