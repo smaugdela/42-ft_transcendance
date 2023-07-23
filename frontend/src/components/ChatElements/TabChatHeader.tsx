@@ -9,9 +9,7 @@ import { ChatStatusContext } from "../../context/contexts";
 export function TabChatHeader({ conv }: { conv: IChannel}) {
 
 	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
-	const convName: string = (conv.type === 'DM') ? 
-								conv.roomName.replace(' ', ' , ').trim() 
-								: conv.roomName;
+	const convName: string = (conv.type === 'DM') ? conv.roomName.replace(' ', ' , ').trim() : conv.roomName;
 	const queryClient = useQueryClient();
 
 	const leaveChannelRequest = useMutation({

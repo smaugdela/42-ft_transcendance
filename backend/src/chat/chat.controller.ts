@@ -81,6 +81,11 @@ export class ChatController {
 		return this.chatService.deleteOneChannel(+id);
 	}
 
+	@Delete('channel/leave/:id')
+	deleteUserinChannel(@Param('id') id: string, @Body() body: UpdateChannelDto) {
+		return this.chatService.deleteUserinChannel(+id, body);
+	}
+
 	/* ###################### */
 	/* ###    MESSAGES    ### */
 	/* ###################### */
