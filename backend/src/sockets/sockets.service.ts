@@ -17,8 +17,8 @@ export class MatchClass {
 	player1: Player;
 	player2: Player;
 
-	p1posX: number;
-	p2posX: number;
+	p1posY: number;
+	p2posY: number;
 
 	ballX: number;
 	ballY: number;
@@ -109,14 +109,25 @@ export class SocketsService {
 		match.player2 = this.queue.shift();
 		match.player1.ready = false;
 		match.player2.ready = false;
-		match.p1posX = 0;
-		match.p2posX = 0;
+		match.p1posY = 0;
+		match.p2posY = 0;
 		match.ballX = 0;
 		match.ballY = 0;
 
-		// Random ball speed
-		match.ballSpeedX = Math.random() * 2 - 1;
-		match.ballSpeedY = Math.random() * 2 - 1;
+		// Random ball speed between 0.1 and 0.3
+		match.ballSpeedX = Math.random() * 0.2 + 0.1;
+		match.ballSpeedY = Math.random() * 0.2 + 0.1;
+		// ballSpeedX should not be null
+		if (match.ballSpeedX < 0.1) {
+			match.ballSpeedX = 0.1;
+		}
+		// Randomize ball direction
+		if (Math.random() > 0.5) {
+			match.ballSpeedX *= -1;
+		}
+		if (Math.random() > 0.5) {
+			match.ballSpeedY *= -1;
+		}
 
 		match.started = Date.now();
 		this.matches.push(match);

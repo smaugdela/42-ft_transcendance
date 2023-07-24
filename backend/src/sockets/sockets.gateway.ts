@@ -167,7 +167,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		}
 
 		if (match.player1.ready && match.player2.ready) {
-			this.server.to(match.matchId.toString()).emit('match started');
+			// this.server.to(match.matchId.toString()).emit('match started');
+			client.emit('match started', +client.data.userId);
 			match.lastUpdate = Date.now();
 			console.log("Match started");
 		}
@@ -194,7 +195,12 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	/* ######################### */
 
 	@SubscribeMessage('game input')
-	async handleGameInput(client: Socket, payload: string): Promise<void> {
+	async handleGameInput(client: Socket, payload: any): Promise<void> {
+
+		const paddleSpeed = 1; // in total height per second
+		const paddleLength = 100; // in pixels
+		const paddleWidth = 10; // in pixels
+		const ballRadius = 10; // in pixels
 
 		const userId = client.data.userId;
 
@@ -218,15 +224,21 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			return;
 		}
 
+		const delta = (Date.now() - match.lastUpdate) / 1000; // in seconds
+
 		// If payload is not empty, actuate user state
-		if (payload !== "") {
+		if (payload) {
 			switch (userId) {
 				case match.player1.userId:
-					// match.player1.input = payload;
-					break;
+					{
+						// Set player 1 paddle position
+						break;
+					}
 				case match.player2.userId:
-					// match.player2.input = payload;
-					break;
+					{
+						// Set player 2 paddle position
+						break;
+					}
 				default:
 					break;
 			}
@@ -234,9 +246,24 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		// Actuate ball state here
 
-		// Send back match state to players
+		// Check collisions first
+		if (match.ballY + (match.ballSpeedY * delta) < -1 || match.ballY + (match.ballSpeedY * delta) > 1) {
+			match.ballSpeedY *= -1;
+		}
+		if (match.ballX + (match.ballSpeedX * delta) < -1 || match.ballX + (match.ballSpeedX * delta) > 1) {
+			match.ballSpeedX *= -1;
+		}
+
+		match.ballX += match.ballSpeedX * delta;
+		match.ballY += match.ballSpeedY * delta;
+
 		match.lastUpdate = Date.now();
-		this.server.to(match.matchId.toString()).emit('game state', match);
+
+		// Send match state to both players
+		// this.server.to(match.matchId.toString()).emit('game state', match);
+
+		// Send match state to only one player
+		client.emit('game state', match);
 	}
 
 	/* ######################### */
@@ -260,27 +287,5 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		}
 		return undefined;
 	}
-
-	// Wait for players to accept the match
-
-	// private launchMatch(match: MatchClass) {
-
-	// 	while (match.player1.ready === false || match.player2.ready === false) {
-
-	// 		// Players have 20 seconds to accept the match
-	// 		if (Date.now() - Date.parse(match.started.toString()) > 20000) {
-	// 			this.server.to(match.matchId.toString()).emit('match canceled', match);
-	// 			this.socketsService.deleteMatch(match.matchId);
-	// 			console.log("Match canceled.");
-	// 			console.log("Match: ", match);
-	// 			return false;
-	// 		}
-
-	// 	}
-
-	// 	this.server.to(match.matchId.toString()).emit('match started', match);
-	// 	console.log("Match started.");
-	// 	return true;
-	// }
 
 }

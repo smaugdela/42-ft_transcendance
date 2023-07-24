@@ -19,6 +19,8 @@ import DoubleFA from './pages/DoubleFA';
 import Error from './pages/Error';
 import PendingPage from './pages/DoubleFAPending';
 import { Pong } from './pages/Pong';
+import { AppProvider } from '@pixi/react';
+import * as PIXI from 'pixi.js';
 
 export const IsLoggedInContext = React.createContext<boolean>(false);
 export const SocketContext = React.createContext<Socket | null>(null);
@@ -41,6 +43,12 @@ function App() {
     localStorage.setItem('theme', newTheme);
   };
 
+  const app = new PIXI.Application({
+	width: 800,
+	height: 600,
+	backgroundColor: 0x1099bb,
+	//   resizeTo: window,
+	});
 
   return (
     <div id='app' className={`App ${theme}`}>
@@ -56,6 +64,7 @@ function App() {
             <source src="./assets/derezzed.mp3" type="audio/mpeg"/>
           </audio>
           <Toaster/>
+		<AppProvider value = {app}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
@@ -73,6 +82,7 @@ function App() {
 			      <Route path='*' element={<Error/>} />
             <Route path={`/user/:nickname`}  element={<UserProfile />} />
           </Routes>
+		</AppProvider>
           {
             isLoggedIn &&
             <Chat setSocket={setSocket}/>
