@@ -168,7 +168,10 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		if (match.player1.ready && match.player2.ready) {
 			// this.server.to(match.matchId.toString()).emit('match started');
-			client.emit('match started', +client.data.userId);
+			const socket1: Socket = this.getSocketByUserId(match.player1.userId);
+			const socket2: Socket = this.getSocketByUserId(match.player2.userId);
+			socket1.emit('match started', true);
+			socket2.emit('match started', false);
 			match.lastUpdate = Date.now();
 			console.log("Match started");
 		}
@@ -195,12 +198,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	/* ######################### */
 
 	@SubscribeMessage('game input')
-	async handleGameInput(client: Socket, payload: any): Promise<void> {
-
-		const paddleSpeed = 1; // in total height per second
-		const paddleLength = 100; // in pixels
-		const paddleWidth = 10; // in pixels
-		const ballRadius = 10; // in pixels
+	async handleGameInput(client: Socket, payload: number): Promise<void> {
 
 		const userId = client.data.userId;
 
@@ -232,11 +230,13 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				case match.player1.userId:
 					{
 						// Set player 1 paddle position
+						match.p1posY = payload;
 						break;
 					}
 				case match.player2.userId:
 					{
 						// Set player 2 paddle position
+						match.p2posY = payload;
 						break;
 					}
 				default:
@@ -247,12 +247,30 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		// Actuate ball state here
 
 		// Check collisions first
-		if (match.ballY + (match.ballSpeedY * delta) < -1 || match.ballY + (match.ballSpeedY * delta) > 1) {
+		if (match.ballY + (match.ballSpeedY * delta) - this.socketsService.gameConstants.ballRadius < 0 || match.ballY + (match.ballSpeedY * delta) + this.socketsService.gameConstants.ballRadius > this.socketsService.gameConstants.height) {
 			match.ballSpeedY *= -1;
 		}
-		if (match.ballX + (match.ballSpeedX * delta) < -1 || match.ballX + (match.ballSpeedX * delta) > 1) {
-			match.ballSpeedX *= -1;
+		if (match.ballX + (match.ballSpeedX * delta) - this.socketsService.gameConstants.ballRadius - this.socketsService.gameConstants.paddleWidth < 0) {
+			if (match.ballY > match.p1posY && match.ballY < match.p1posY + this.socketsService.gameConstants.paddleLength) {
+				// It bounces on the paddle
+				match.ballSpeedX *= -1.8;
+			}
+			else {
+				match.ballSpeedX *= -0.5;
+				match.player2.score += 1;
+			}
 		}
+		else if (match.ballX + (match.ballSpeedX * delta) + this.socketsService.gameConstants.ballRadius + this.socketsService.gameConstants.paddleWidth > this.socketsService.gameConstants.width) {
+			if (match.ballY > match.p2posY && match.ballY < match.p2posY + this.socketsService.gameConstants.paddleLength) {
+				// It bounces on the paddle
+				match.ballSpeedX *= -1.8;
+			}
+			else {
+				match.ballSpeedX *= -0.5;
+				match.player1.score += 1;
+			}
+		}
+
 
 		match.ballX += match.ballSpeedX * delta;
 		match.ballY += match.ballSpeedY * delta;

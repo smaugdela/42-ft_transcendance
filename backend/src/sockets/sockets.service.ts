@@ -31,6 +31,15 @@ export class MatchClass {
 @Injectable()
 export class SocketsService {
 
+	public gameConstants = {
+		width: 800, // in pixels
+		height: 600, // in pixels
+		// paddleSpeed: 100, // in pixels per second
+		paddleLength: 100, // in pixels
+		paddleWidth: 10, // in pixels
+		ballRadius: 10, // in pixels
+	};
+
 	/* key = userId, value:string = socketId */
 	public currentActiveUsers = new Map;
 
@@ -109,17 +118,17 @@ export class SocketsService {
 		match.player2 = this.queue.shift();
 		match.player1.ready = false;
 		match.player2.ready = false;
-		match.p1posY = 0;
-		match.p2posY = 0;
-		match.ballX = 0;
-		match.ballY = 0;
+		match.p1posY = (this.gameConstants.height / 2) - (this.gameConstants.paddleLength / 2);
+		match.p2posY = (this.gameConstants.height / 2) - (this.gameConstants.paddleLength / 2);
+		match.ballX = this.gameConstants.width / 2;
+		match.ballY = this.gameConstants.height / 2;
 
-		// Random ball speed between 0.1 and 0.3
-		match.ballSpeedX = Math.random() * 0.2 + 0.1;
-		match.ballSpeedY = Math.random() * 0.2 + 0.1;
+		// Random ball speed between 30 and 100
+		match.ballSpeedX = Math.random() * 70 + 30;
+		match.ballSpeedY = Math.random() * 70 + 30;
 		// ballSpeedX should not be null
-		if (match.ballSpeedX < 0.1) {
-			match.ballSpeedX = 0.1;
+		if (match.ballSpeedX < 30) {
+			match.ballSpeedX = 30;
 		}
 		// Randomize ball direction
 		if (Math.random() > 0.5) {

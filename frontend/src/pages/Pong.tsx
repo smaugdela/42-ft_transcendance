@@ -1,34 +1,50 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SocketContext } from "../App";
-import { Stage, Graphics, AppConsumer, useApp } from "@pixi/react";
+import { Stage, Graphics, AppConsumer, useApp, Text, Container } from "@pixi/react";
 import toast from "react-hot-toast";
 import { Ticker } from "pixi.js";
+import * as PIXI from "pixi.js";
+import "../styles/Pong.css"
 
 export function Pong() {
 	const socket = useContext(SocketContext);
 	const navigate = useNavigate();
-	const [running, setRunning] = useState(true);
-	const fps = 30;
+	// const [running, setRunning] = useState(true);
+	const fps = 60;
+	const sps = 20;
 	const width = 800;
 	const height = 600;
+	const paddleSpeed = 400;
 	const paddleLength = 100;
 	const paddleWidth = 10;
 	const ballRadius = 10;
-	let userId = -1;
+	let lastTime = useRef(Date.now());
+	let lastCall = useRef(Date.now());
+
+	const [leftUser, setLeftUser] = useState(true);
 
 	const [gameState, setGameState] = useState({
 		leftPaddleY: height / 2,
 		rightPaddleY: height / 2,
 		ballX: width / 2,
 		ballY: height / 2,
+		ballSpeedX: 0,
+		ballSpeedY: 0,
+		p1Score: 0,
+		p2Score: 0,
+		p1Username: "",
+		p2Username: "",
 	});
 
 	const [rightPaddle, setRightPaddle] = useState(gameState.rightPaddleY);
 	const [leftPaddle, setLeftPaddle] = useState(gameState.leftPaddleY);
+	const [downKeyPressed, setDownKeyPressed] = useState(false);
+	const [upKeyPressed, setUpKeyPressed] = useState(false);
 
 	const app = useApp();
-	
+	void app;
+
 	useEffect(() => {
 		socket?.emit("accept match");
 	}, [socket]);
@@ -37,29 +53,19 @@ export function Pong() {
 
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key === "ArrowUp") {
-				setGameInput((prevInput) => ({
-					...prevInput,
-					up: true,
-				}));
+				event.preventDefault();
+				setUpKeyPressed(true);					
 			} else if (event.key === "ArrowDown") {
-				setGameInput((prevInput) => ({
-					...prevInput,
-					down: true,
-				}));
+				event.preventDefault();
+				setDownKeyPressed(true);
 			}
 		};
 
 		const handleKeyUp = (event: KeyboardEvent) => {
 			if (event.key === "ArrowUp") {
-				setGameInput((prevInput) => ({
-					...prevInput,
-					up: false,
-				}));
+				setUpKeyPressed(false);
 			} else if (event.key === "ArrowDown") {
-				setGameInput((prevInput) => ({
-					...prevInput,
-					down: false,
-				}));
+				setDownKeyPressed(false);
 			}
 		};
 
@@ -72,16 +78,113 @@ export function Pong() {
 			window.removeEventListener("keydown", handleKeyDown);
 			window.removeEventListener("keyup", handleKeyUp);
 		};
-	}, [socket, gameInput]);
+
+	}, [upKeyPressed, downKeyPressed] );
 
 	useEffect(() => {
 		// Game update loop with PixiJS ticker
-		const gameLoop = (delta: number) => {
-			// Your game logic and update loop can go here
-			// For example, update the game state, move objects, etc.
+		const gameLoop = () => {
+			// Calculate delta time
+			const now = Date.now();
+			const delta = (now - lastTime.current) / 1000; // In seconds
 
-			// Send the game input to the backend
-			socket?.emit("game input", gameInput);
+			// Update paddle position
+			switch (leftUser) {
+				case true:
+				{
+					if (upKeyPressed && leftPaddle > 0) {
+						setLeftPaddle(leftPaddle - (paddleSpeed * delta));
+					}
+					// else if (upKeyPressed) {
+					// 	setLeftPaddle(0);
+					// }
+
+					if (downKeyPressed && leftPaddle < height - paddleLength) {
+						setLeftPaddle(leftPaddle + (paddleSpeed * delta));
+					}
+					// else if (downKeyPressed) {
+					// 	setLeftPaddle(height - paddleLength);
+					// }
+					break;
+				}
+				case false:
+				{
+					if (upKeyPressed && rightPaddle > 0) {
+						setRightPaddle(rightPaddle - (paddleSpeed * delta));
+					}
+					// else if (upKeyPressed) {
+					// 	setRightPaddle(0);
+					// }
+
+					if (downKeyPressed && rightPaddle < height - paddleLength) {
+						setRightPaddle(rightPaddle + (paddleSpeed * delta));
+					}
+					// else if (downKeyPressed) {
+					// 	setRightPaddle(height - paddleLength);
+					// }
+					break;
+				}
+				default:
+					break;
+			}
+
+			if (leftPaddle < 0) {
+				setLeftPaddle(0);
+			} else if (leftPaddle > height - paddleLength) {
+				setLeftPaddle(height - paddleLength);
+			}
+			if (rightPaddle < 0) {
+				setRightPaddle(0);
+			} else if (rightPaddle > height - paddleLength) {
+				setRightPaddle(height - paddleLength);
+			}
+
+			// Actuate ball state here
+
+			// Check collisions first
+			if (gameState.ballY + (gameState.ballSpeedY * delta) - ballRadius < 0 || gameState.ballY + (gameState.ballSpeedY * delta) + ballRadius > height) {
+				gameState.ballSpeedY *= -1;
+			}
+			if (gameState.ballX + (gameState.ballSpeedX * delta) - ballRadius - paddleWidth < 0) {
+				if (gameState.ballY > gameState.leftPaddleY && gameState.ballY < gameState.leftPaddleY + paddleLength) {
+					// It bounces on the paddle
+					gameState.ballSpeedX *= -1.8;
+				}
+				else {
+					gameState.ballSpeedX *= -0.5;
+				}
+			}
+			else if (gameState.ballX + (gameState.ballSpeedX * delta) + ballRadius + paddleWidth > width) {
+				if (gameState.ballY > gameState.rightPaddleY && gameState.ballY < gameState.rightPaddleY + paddleLength) {
+					// It bounces on the paddle
+					gameState.ballSpeedX *= -1.8;
+				}
+				else {
+					gameState.ballSpeedX *= -0.5;
+				}
+			}
+
+			gameState.ballX += gameState.ballSpeedX * delta;
+			gameState.ballY += gameState.ballSpeedY * delta;
+
+			// Send the game input to the backend every sps tick
+			if (now - lastCall.current >= 1 / sps)
+			{
+				switch (leftUser){
+					case true:
+						socket?.emit("game input", leftPaddle);
+						break;
+					case false:
+						socket?.emit("game input", rightPaddle);
+						break;
+					default:
+						break;
+				}
+				lastCall.current = now;
+			}
+
+			// Update the last time
+			lastTime.current = now;
 		};
 
 		// Add the game loop to the PixiJS ticker
@@ -92,24 +195,36 @@ export function Pong() {
 		return () => {
 			Ticker.shared.remove(gameLoop);
 		};
-	}, [socket, gameInput]);
+	}, [socket, leftPaddle, rightPaddle, leftUser, upKeyPressed, downKeyPressed, gameState]);
 
 	// Update game state whenever new data arrives from the server
 	useEffect(() => {
 		socket?.on("game state", (matchClass: any) => {
 			// Update the game state and convert the data to the correct format
 			setGameState({
-				leftPaddleY: matchClass.p1posY * (height / 2) + height / 2,
-				rightPaddleY: matchClass.p2posY * (height / 2) + height / 2,
-				ballX: matchClass.ballX * (width / 2) + width / 2,
-				ballY: matchClass.ballY * (height / 2) + height / 2,
+				leftPaddleY: matchClass.leftPaddleY,
+				rightPaddleY: matchClass.rightPaddleY,
+				ballX: matchClass.ballX,
+				ballY: matchClass.ballY,
+				ballSpeedX: matchClass.ballSpeedX,
+				ballSpeedY: matchClass.ballSpeedY,
+				p1Score: matchClass.player1.score,
+				p2Score: matchClass.player2.score,
+				p1Username: matchClass.player1.username,
+				p2Username: matchClass.player2.username,
 			});
 		});
 
 		// Log when the match starts and get payload
-		socket?.on("match started", (payload: number) => {
-			userId = payload;
-			console.log("Match started");
+		socket?.on("match started", (payload: boolean) => {
+
+			setLeftUser(payload);
+
+			// if (leftUser)
+			// 	console.log("Match started, left user");
+			// else
+			// 	console.log("Match started, right user");
+
 			toast.success("FIGHT ON!", {
 				id: "matchmaking",
 				icon: "🎉",
@@ -121,7 +236,7 @@ export function Pong() {
 		// Handle match cancellation
 		socket?.on("match canceled", () => {
 			console.log("Match canceled");
-			setRunning(false);
+			// setRunning(false);
 
 			toast.error("Player disconnected.", {
 				id: "matchmaking",
@@ -136,16 +251,110 @@ export function Pong() {
 				navigate("/");
 			}, 2500);
 		});
-	}, [socket, navigate]);
+	}, [socket, navigate, leftUser]);
 
 	return (
 		<AppConsumer>
 			{(app) => (
+				<div className="pong-terrain">
 				<Stage
 					width={width}
 					height={height}
 					options={{ backgroundColor: 0x000000 /*, backgroundAlpha: 0.5 */}}
 				>
+					<Container>
+					{/* Render a dashed line in the middle of the terrain */}
+					<Graphics
+						draw={(graphics) => {
+							graphics.lineStyle(5, 0xffffff, 1, 0.5, true); // White color, 5px width, 50% alpha, 50% spacing
+							graphics.moveTo(width / 2, 0); // Start at the top middle
+							graphics.lineTo(width / 2, height); // Draw a line to the bottom middle
+						}}
+					/>
+
+					{leftUser && <><Graphics
+								draw={(graphics) => {
+									graphics.lineStyle(paddleWidth, 0xff0000, 0.8, 0.5); // White color
+									graphics.moveTo(0, 0); // Start at the top left corner
+									graphics.lineTo(0, height); // Draw a line to the top right corner
+								}}
+							/>
+							<Graphics
+								draw={(graphics) => {
+									graphics.lineStyle(paddleWidth, 0x00ff00, 0.8, 0.5); // White color
+									graphics.moveTo(width, 0); // Start at the top left corner
+									graphics.lineTo(width, height); // Draw a line to the top right corner
+								}}
+						/></>
+					}
+					{!leftUser && <><Graphics
+								draw={(graphics) => {
+									graphics.lineStyle(paddleWidth, 0x00ff00, 0.8, 0.5); // White color
+									graphics.moveTo(0, 0); // Start at the top left corner
+									graphics.lineTo(0, height); // Draw a line to the top right corner
+								}}
+							/>
+							<Graphics
+								draw={(graphics) => {
+									graphics.lineStyle(paddleWidth, 0xff0000, 0.8, 0.5); // White color
+									graphics.moveTo(width, 0); // Start at the top left corner
+									graphics.lineTo(width, height); // Draw a line to the top right corner
+								}}
+						/></>
+					}
+
+					{/* Write the usernames on the terrain */}
+					<Text
+						text={gameState.p1Username + " " + gameState.p1Score}
+						anchor={0.5}
+						x={width / 4}
+						y={height / 10}
+						style={
+						new PIXI.TextStyle({
+							align: 'center',
+							fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+							fontSize: 30,
+							fontWeight: 'normal',
+							fill: ['#ffffff'], // gradient
+							// stroke: '#01d27e',
+							// strokeThickness: 5,
+							// letterSpacing: 20,
+							// dropShadow: true,
+							// dropShadowColor: '#ccced2',
+							// dropShadowBlur: 4,
+							// dropShadowAngle: Math.PI / 6,
+							// dropShadowDistance: 6,
+							wordWrap: true,
+							wordWrapWidth: width / 4,
+						})
+						}
+					/>
+					<Text
+						text={gameState.p2Username + " " + gameState.p2Score}
+						anchor={0.5}
+						x={width * 3 / 4}
+						y={height / 10}
+						style={
+						new PIXI.TextStyle({
+							align: 'center',
+							fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+							fontSize: 30,
+							fontWeight: 'normal',
+							fill: ['#ffffff'], // gradient
+							// stroke: '#01d27e',
+							// strokeThickness: 5,
+							// letterSpacing: 20,
+							// dropShadow: true,
+							// dropShadowColor: '#ccced2',
+							// dropShadowBlur: 4,
+							// dropShadowAngle: Math.PI / 6,
+							// dropShadowDistance: 6,
+							wordWrap: true,
+							wordWrapWidth: width / 4,
+						})
+						}
+					/>
+
 					{/* Render the ball */}
 					<Graphics
 						x={0} // X position for the ball
@@ -160,7 +369,7 @@ export function Pong() {
 
 					{/* Render the paddles */}
 					<Graphics
-						x={30} // X position for the left paddle
+						x={0} // X position for the left paddle
 						y={gameState.leftPaddleY} // Y position for the left paddle
 						draw={(graphics) => {
 							graphics.beginFill(0xffffff); // White color
@@ -169,7 +378,7 @@ export function Pong() {
 						}}
 					/>
 					<Graphics
-						x={760} // X position for the right paddle
+						x={width - paddleWidth} // X position for the right paddle
 						y={gameState.rightPaddleY} // Y position for the right paddle
 						draw={(graphics) => {
 							graphics.beginFill(0xffffff); // White color
@@ -188,7 +397,9 @@ export function Pong() {
 							graphics.lineTo(width, height); // Draw a line to the bottom right corner
 						}}
 					/>
+					</Container>
 				</Stage>
+			</div>
 			)}
 		</AppConsumer>
 	);
