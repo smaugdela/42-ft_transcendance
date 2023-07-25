@@ -10,7 +10,7 @@ interface FaqItem{
 const faqs: FaqItem[] = [
   {
     question: 'What is Transcendence ?',
-    answer: 'Blalalalalalalalalal.',
+    answer: 'Transcendence is the final project of the common-core of the school 42-Paris. The purpose of this project is to create a website with a pong game including all matchmaking, ranking, and chat features.',
   },
   {
     question: 'How to block or remove a friend ?',
@@ -18,23 +18,15 @@ const faqs: FaqItem[] = [
   },
   {
     question: 'How to play ?',
-    answer: 'with your brain',
+    answer: 'With your brain.',
   },
   {
-    question: 'Can we save the game progress?',
-    answer: 'srhshshshshshs',
+    question: 'How to create a chat channel ?',
+    answer: 'Go PM Marine.',
   },
   {
-    question: 'Blabloubli ?',
-    answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra lorem eu dolor rhoncus, at scelerisque ligula gravida. Sed porta id mi sit amet convallis. Etiam iaculis massa sit amet lacus blandit sodales. Nulla ultrices velit a diam placerat congue. Pellentesque iaculis, ipsum quis eleifend dapibus, est dui eleifend ante, quis fermentum mi ligula quis nisl. Ut et ex dui. Integer id venenatis quam.',
-  },
-  {
-    question: 'Booba ?',
-    answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra lorem eu dolor rhoncus, at scelerisque ligula gravida. Sed porta id mi sit amet convallis. Etiam iaculis massa sit amet lacus blandit sodales. Nulla ultrices velit a diam placerat congue. Pellentesque iaculis, ipsum quis eleifend dapibus, est dui eleifend ante, quis fermentum mi ligula quis nisl. Ut et ex dui. Integer id venenatis quam.',
-  },
-  {
-    question: 'Pong pong pong ?',
-    answer: 'Poing ping.',
+    question: 'How to use the two-factor authentification ?',
+    answer: 'Simply by adding your email in the settings.',
   },
 ];
 

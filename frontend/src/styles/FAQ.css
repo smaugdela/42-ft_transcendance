@@ -1,12 +1,11 @@
 .background_faq{
-    width: 90%;
+    width: 100%;
     margin: auto;
 }
 .faq{
     display: flex;
-    padding-top: 200px ;
-    padding-bottom: 200px;
-    height: 1240px;
+    padding-top: 10% ;
+    padding-bottom: 10%;
     flex-direction: column;
     justify-content: center;
     size-adjust: auto;
