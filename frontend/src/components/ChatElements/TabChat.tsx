@@ -82,7 +82,7 @@ function TabChat({ conv }: { conv: IChannel }) {
 			<div id='convo__messages'>
 			{
 				messages.map((message, index) => (
-					<OneMessage conv={conv} message={message} index={index} />
+					<OneMessage conv={conv} message={message} index={index} key={index}/>
 				))
 			}
 			</div>

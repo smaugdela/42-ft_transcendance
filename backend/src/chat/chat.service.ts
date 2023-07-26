@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
-import { PrismaClient, Prisma, User, Channel } from '@prisma/client';
+import { PrismaClient, Prisma,  Channel } from '@prisma/client';
 import * as argon from 'argon2';
 import { UsersService } from 'src/users/users.service';
 import { ChanMode, Message } from '@prisma/client';
