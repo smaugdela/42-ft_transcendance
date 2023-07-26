@@ -256,8 +256,9 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				match.ballSpeedX *= -1.8;
 			}
 			else {
-				match.ballSpeedX *= -0.5;
+				// GOAL!
 				match.player2.score += 1;
+				this.resetMatch(match);
 			}
 		}
 		else if (match.ballX + (match.ballSpeedX * delta) + this.socketsService.gameConstants.ballRadius + this.socketsService.gameConstants.paddleWidth > this.socketsService.gameConstants.width) {
@@ -266,11 +267,11 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				match.ballSpeedX *= -1.8;
 			}
 			else {
-				match.ballSpeedX *= -0.5;
+				// GOAL!
 				match.player1.score += 1;
+				this.resetMatch(match);
 			}
 		}
-
 
 		match.ballX += match.ballSpeedX * delta;
 		match.ballY += match.ballSpeedY * delta;
@@ -278,10 +279,10 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		match.lastUpdate = Date.now();
 
 		// Send match state to both players
-		// this.server.to(match.matchId.toString()).emit('game state', match);
+		this.server.to(match.matchId.toString()).emit('game state', match);
 
 		// Send match state to only one player
-		client.emit('game state', match);
+		// client.emit('game state', match);
 	}
 
 	/* ######################### */
@@ -304,6 +305,26 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			}
 		}
 		return undefined;
+	}
+
+	private resetMatch(match: MatchClass): void {
+
+		match.ballX = this.socketsService.gameConstants.width / 2;
+		match.ballY = this.socketsService.gameConstants.height / 2;
+
+		// horizontal ball speed is non null
+		match.ballSpeedX = 90;
+		// Random vertical ball speed between 10 and 100
+		match.ballSpeedY = Math.random() * 90 + 10;
+		// Randomize ball direction
+		if (Math.random() > 0.5) {
+			match.ballSpeedX *= -1;
+		}
+		if (Math.random() > 0.5) {
+			match.ballSpeedY *= -1;
+		}
+
+		match.lastUpdate = Date.now();
 	}
 
 }

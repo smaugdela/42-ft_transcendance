@@ -12,7 +12,7 @@ export function Pong() {
 	const navigate = useNavigate();
 	// const [running, setRunning] = useState(true);
 	const fps = 60;
-	const sps = 20;
+	const sps = 10;
 	const width = 800;
 	const height = 600;
 	const paddleSpeed = 400;
@@ -37,8 +37,6 @@ export function Pong() {
 		p2Username: "",
 	});
 
-	const [rightPaddle, setRightPaddle] = useState(gameState.rightPaddleY);
-	const [leftPaddle, setLeftPaddle] = useState(gameState.leftPaddleY);
 	const [downKeyPressed, setDownKeyPressed] = useState(false);
 	const [upKeyPressed, setUpKeyPressed] = useState(false);
 
@@ -54,7 +52,7 @@ export function Pong() {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key === "ArrowUp") {
 				event.preventDefault();
-				setUpKeyPressed(true);					
+				setUpKeyPressed(true);
 			} else if (event.key === "ArrowDown") {
 				event.preventDefault();
 				setDownKeyPressed(true);
@@ -73,6 +71,8 @@ export function Pong() {
 		window.addEventListener("keydown", handleKeyDown);
 		window.addEventListener("keyup", handleKeyUp);
 
+		console.log("event listeners added");
+
 		// Clean up event listeners on component unmount
 		return () => {
 			window.removeEventListener("keydown", handleKeyDown);
@@ -84,6 +84,7 @@ export function Pong() {
 	useEffect(() => {
 		// Game update loop with PixiJS ticker
 		const gameLoop = () => {
+
 			// Calculate delta time
 			const now = Date.now();
 			const delta = (now - lastTime.current) / 1000; // In seconds
@@ -92,51 +93,44 @@ export function Pong() {
 			switch (leftUser) {
 				case true:
 				{
-					if (upKeyPressed && leftPaddle > 0) {
-						setLeftPaddle(leftPaddle - (paddleSpeed * delta));
+					if (upKeyPressed && gameState.leftPaddleY > 0) {
+						// setLeftPaddle(leftPaddle - (paddleSpeed * delta));
+						gameState.leftPaddleY -= (paddleSpeed * delta);
 					}
-					// else if (upKeyPressed) {
-					// 	setLeftPaddle(0);
-					// }
 
-					if (downKeyPressed && leftPaddle < height - paddleLength) {
-						setLeftPaddle(leftPaddle + (paddleSpeed * delta));
+					if (downKeyPressed && gameState.leftPaddleY < height - paddleLength) {
+						// setLeftPaddle(leftPaddle + (paddleSpeed * delta));
+						gameState.leftPaddleY += (paddleSpeed * delta);
 					}
-					// else if (downKeyPressed) {
-					// 	setLeftPaddle(height - paddleLength);
-					// }
 					break;
 				}
 				case false:
 				{
-					if (upKeyPressed && rightPaddle > 0) {
-						setRightPaddle(rightPaddle - (paddleSpeed * delta));
+					if (upKeyPressed && gameState.rightPaddleY > 0) {
+						// setRightPaddle(rightPaddle - (paddleSpeed * delta));
+						gameState.rightPaddleY -= (paddleSpeed * delta);
 					}
-					// else if (upKeyPressed) {
-					// 	setRightPaddle(0);
-					// }
 
-					if (downKeyPressed && rightPaddle < height - paddleLength) {
-						setRightPaddle(rightPaddle + (paddleSpeed * delta));
+					if (downKeyPressed && gameState.rightPaddleY < height - paddleLength) {
+						// setRightPaddle(rightPaddle + (paddleSpeed * delta));
+						gameState.rightPaddleY += (paddleSpeed * delta);
 					}
-					// else if (downKeyPressed) {
-					// 	setRightPaddle(height - paddleLength);
-					// }
 					break;
 				}
 				default:
 					break;
 			}
 
-			if (leftPaddle < 0) {
-				setLeftPaddle(0);
-			} else if (leftPaddle > height - paddleLength) {
-				setLeftPaddle(height - paddleLength);
+			// Check paddle bounds
+			if (gameState.leftPaddleY < 0) {
+				gameState.leftPaddleY = 0;
+			} else if (gameState.leftPaddleY > height - paddleLength) {
+				gameState.leftPaddleY = height - paddleLength;
 			}
-			if (rightPaddle < 0) {
-				setRightPaddle(0);
-			} else if (rightPaddle > height - paddleLength) {
-				setRightPaddle(height - paddleLength);
+			if (gameState.rightPaddleY < 0) {
+				gameState.rightPaddleY = 0;
+			} else if (gameState.rightPaddleY > height - paddleLength) {
+				gameState.rightPaddleY = height - paddleLength;
 			}
 
 			// Actuate ball state here
@@ -172,10 +166,10 @@ export function Pong() {
 			{
 				switch (leftUser){
 					case true:
-						socket?.emit("game input", leftPaddle);
+						socket?.emit("game input", gameState.leftPaddleY);
 						break;
 					case false:
-						socket?.emit("game input", rightPaddle);
+						socket?.emit("game input", gameState.rightPaddleY);
 						break;
 					default:
 						break;
@@ -195,15 +189,15 @@ export function Pong() {
 		return () => {
 			Ticker.shared.remove(gameLoop);
 		};
-	}, [socket, leftPaddle, rightPaddle, leftUser, upKeyPressed, downKeyPressed, gameState]);
+	}, [socket, leftUser, upKeyPressed, downKeyPressed, gameState]);
 
 	// Update game state whenever new data arrives from the server
 	useEffect(() => {
 		socket?.on("game state", (matchClass: any) => {
 			// Update the game state and convert the data to the correct format
 			setGameState({
-				leftPaddleY: matchClass.leftPaddleY,
-				rightPaddleY: matchClass.rightPaddleY,
+				leftPaddleY: matchClass.p1posY,
+				rightPaddleY: matchClass.p2posY,
 				ballX: matchClass.ballX,
 				ballY: matchClass.ballY,
 				ballSpeedX: matchClass.ballSpeedX,
@@ -219,11 +213,6 @@ export function Pong() {
 		socket?.on("match started", (payload: boolean) => {
 
 			setLeftUser(payload);
-
-			// if (leftUser)
-			// 	console.log("Match started, left user");
-			// else
-			// 	console.log("Match started, right user");
 
 			toast.success("FIGHT ON!", {
 				id: "matchmaking",
@@ -372,6 +361,7 @@ export function Pong() {
 						x={0} // X position for the left paddle
 						y={gameState.leftPaddleY} // Y position for the left paddle
 						draw={(graphics) => {
+							graphics.clear();
 							graphics.beginFill(0xffffff); // White color
 							graphics.drawRect(0, 0, paddleWidth, paddleLength); // Paddle dimensions
 							graphics.endFill();
@@ -381,6 +371,7 @@ export function Pong() {
 						x={width - paddleWidth} // X position for the right paddle
 						y={gameState.rightPaddleY} // Y position for the right paddle
 						draw={(graphics) => {
+							graphics.clear();
 							graphics.beginFill(0xffffff); // White color
 							graphics.drawRect(0, 0, paddleWidth, paddleLength); // Paddle dimensions
 							graphics.endFill();

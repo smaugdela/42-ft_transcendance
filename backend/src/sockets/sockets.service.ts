@@ -123,13 +123,10 @@ export class SocketsService {
 		match.ballX = this.gameConstants.width / 2;
 		match.ballY = this.gameConstants.height / 2;
 
-		// Random ball speed between 30 and 100
-		match.ballSpeedX = Math.random() * 70 + 30;
-		match.ballSpeedY = Math.random() * 70 + 30;
-		// ballSpeedX should not be null
-		if (match.ballSpeedX < 30) {
-			match.ballSpeedX = 30;
-		}
+		// horizontal ball speed is non null
+		match.ballSpeedX = 90;
+		// Random vertical ball speed between 10 and 100
+		match.ballSpeedY = Math.random() * 90 + 10;
 		// Randomize ball direction
 		if (Math.random() > 0.5) {
 			match.ballSpeedX *= -1;
