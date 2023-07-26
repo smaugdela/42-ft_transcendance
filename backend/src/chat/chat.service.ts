@@ -174,6 +174,9 @@ export class ChatService {
 	}
 	
 	async deleteOneChannel(id: number) {
+		// on delete tous ses messages
+		await this.deleteAllMessagesForChannel(id);
+		
 		// On delete le channel
 		const result = await prisma.channel.delete({
 			where: { id }
@@ -269,9 +272,6 @@ export class ChatService {
 				owner: true,
 			},
 		});
-		console.log("______________________________________");
-		
-		console.log("owner: ", channel.ownerId, " et user: ", userId);
 		
 		// par défaut, on déconnecte la personne des joined Users
 		await prisma.channel.update({
@@ -296,17 +296,10 @@ export class ChatService {
 			},
 		});
 
-		console.log("channel after refresh", refreshedChannel);
-		
 		// Si la personne est owner, ça transfère l'ownership
 		if (refreshedChannel.ownerId === userId) {
 			// Transfert à la personne la plus ancienne des admins
-			console.log("Je suis dedans, c'est un owner!");
-			
-			// console.log("refreshedChannel joinedUserss: ", refreshedChannel?.joinedUsers);
-			// console.log("refreshedChannel joinedUserss.len: ", refreshedChannel?.joinedUsers.length);
 			if (refreshedChannel?.admin.length > 0) {
-				
 				const newOwnerId: number = refreshedChannel?.admin[0].id;
 				return await prisma.channel.update({
 					where: { id: refreshedChannel.id },
@@ -314,8 +307,6 @@ export class ChatService {
 				})
 			} // Sinon transfert à la personne la plus ancienne des joinedUsers
 			else if (refreshedChannel?.joinedUsers.length > 0) {
-				console.log("joined: ", refreshedChannel?.joinedUsers);
-				
 				const newOwnerId: number = refreshedChannel?.joinedUsers[0].id;
 				return await prisma.channel.update({
 					where: { id: refreshedChannel.id },
@@ -328,9 +319,7 @@ export class ChatService {
 				})
 			} // Si après il n'y a plus personne, on delete le chan
 			else {
-				console.log("what on erase???");
-				
-				// return await this.deleteOneChannel(refreshedChannel.id);
+				return await this.deleteOneChannel(refreshedChannel.id);
 			}
 		}
 	}
