@@ -269,50 +269,72 @@ export class ChatService {
 				owner: true,
 			},
 		});
+		console.log("______________________________________");
+		
 		console.log("owner: ", channel.ownerId, " et user: ", userId);
 		
 		// par défaut, on déconnecte la personne des joined Users
 		await prisma.channel.update({
 			where: { id: channel.id },
-			data : {
-				joinedUsers: { disconnect: { id: userId } },
-			}
+			data : { joinedUsers: { disconnect: { id: userId } } }
 		})
 
+		// si la personne est admin, on l'enlève de la liste des admins!
+		if (channel.admin.some(member => member.id === userId)) {
+			await prisma.channel.update({
+				where: { id: channel.id },
+				data : { admin: { disconnect: { id: userId } } }
+			})
+		}
+
+		const refreshedChannel = await prisma.channel.findUnique({
+			where: { id: channelId },
+			include: { 
+				admin: true,
+				joinedUsers: true,
+				owner: true,
+			},
+		});
+
+		console.log("channel after refresh", refreshedChannel);
+		
 		// Si la personne est owner, ça transfère l'ownership
-		if (channel.ownerId === userId) {
+		if (refreshedChannel.ownerId === userId) {
 			// Transfert à la personne la plus ancienne des admins
 			console.log("Je suis dedans, c'est un owner!");
 			
-			if (channel?.admin.length > 1) {
-				const newOwnerId: number = channel?.admin[1].id;
+			// console.log("refreshedChannel joinedUserss: ", refreshedChannel?.joinedUsers);
+			// console.log("refreshedChannel joinedUserss.len: ", refreshedChannel?.joinedUsers.length);
+			if (refreshedChannel?.admin.length > 0) {
+				
+				const newOwnerId: number = refreshedChannel?.admin[0].id;
 				return await prisma.channel.update({
-					where: { id: channel.id },
-					data : {
-						owner: { connect: { id: newOwnerId } },
-						admin: { disconnect: { id: userId } },
-					}
+					where: { id: refreshedChannel.id },
+					data : { owner: { connect: { id: newOwnerId } } }
 				})
 			} // Sinon transfert à la personne la plus ancienne des joinedUsers
-			else if (channel?.joinedUsers.length > 1) {
-				const newOwnerId: number = channel?.joinedUsers[1].id;
+			else if (refreshedChannel?.joinedUsers.length > 0) {
+				console.log("joined: ", refreshedChannel?.joinedUsers);
+				
+				const newOwnerId: number = refreshedChannel?.joinedUsers[0].id;
 				return await prisma.channel.update({
-					where: { id: channel.id },
+					where: { id: refreshedChannel.id },
 					data : {
 						owner: { connect: { id: newOwnerId } },
 						admin: { 
-							disconnect: { id: userId },
 							connect: { id: newOwnerId }
 						},
 					}
 				})
 			} // Si après il n'y a plus personne, on delete le chan
 			else {
-				return await this.deleteOneChannel(channel.id);
+				console.log("what on erase???");
+				
+				// return await this.deleteOneChannel(refreshedChannel.id);
 			}
 		}
 	}
-	
+
 	// Code pour du isBan, isKicked , etc :
 	// const isOwner: boolean = channel[groupToInsert]?.some((member: User) => member.id === userId);
 	// if (isOwner) {
@@ -327,7 +349,7 @@ export class ChatService {
 	// create a message and add it to the list
 	async createMessage(body: CreateMessageDto): Promise<Message> {
 		const { fromId, to, content, channelId } = body;
-		
+
 		return await prisma.message.create({
 			data: {
 				from: { connect: {id: fromId}},
