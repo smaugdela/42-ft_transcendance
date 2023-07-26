@@ -96,12 +96,14 @@ export class SocialService {
 		  // Supprimer l'ami de la liste d'amis de l'utilisateur actuel
 		  await prisma.user.update({
 			where: { id: userId },
-			data: {
-			  	friendsList: {disconnect: {nickname: username}},
-				friendsRelation: {disconnect: {nickname: username}
-			  },
-			},
+			data: {friendsList: {disconnect: {nickname: username}},},
 		  });
+
+		  // Supprimer l'ami bloqué de ses relations
+			await prisma.user.update({
+				where: { nickname: username },
+				data: {friendsList: {disconnect:{nickname: username},},},
+			});
 		
 		  // Ajouter l'ami à la liste de blocage de l'utilisateur actuel
 		  return prisma.user.update({
@@ -115,39 +117,7 @@ export class SocialService {
 			},
 		  });
 		}
-		
-		
-		// await prisma.user.update(
-		// 	{
-		// 		where: { id: userId },
-		// 		data: {
-		// 			pendingList: {
-		// 				disconnect: { nickname: username }
-		// 			}
-		// 		}
-		// 	}
-		// )
-		// await prisma.user.update(
-		// 	{
-		// 		where: { id: userId },
-		// 		data: {
-		// 			friendsList: {
-		// 				disconnect: { nickname: username }
-		// 			}
-		// 		}
-		// 	}
-		// )
-		// return await prisma.user.update(
-		// 	{
-		// 		where: { id: userId },
-		// 		data: {
-		// 			blockList: {
-		// 				connect: { nickname: username }
-		// 			}
-		// 		}
-		// 	}
-		// );
-	// }
+
 
 	async removeFromBlock(userId: number, id: number) {
 		return await prisma.user.update(
@@ -156,16 +126,6 @@ export class SocialService {
 				data: { blockList: {disconnect: { id: id }}}
 			}
 		);
-		// return await prisma.user.update(
-		// 	{
-		// 		where: { id: userId },
-		// 		data: {
-		// 			friendsList: {
-		// 				connect: { id: id }
-		// 			}
-		// 		}
-		// 	}
-		// );
 	}
 
 	async rejectRequest(userId: number, id: number) {
@@ -185,12 +145,9 @@ export class SocialService {
 		return await prisma.user.update(
 			{
 				where: { id: userId },
-				data: {
-					friendsList: {
-						disconnect: { id: id }
-					}
-				}
+				data: {friendsList: {disconnect: { id: id }}},
 			}
 		);
+
 	}
 }
