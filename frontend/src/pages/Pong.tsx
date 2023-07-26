@@ -10,7 +10,6 @@ import "../styles/Pong.css"
 export function Pong() {
 	const socket = useContext(SocketContext);
 	const navigate = useNavigate();
-	// const [running, setRunning] = useState(true);
 	const fps = 60;
 	const sps = 10;
 	const width = 800;
@@ -19,6 +18,7 @@ export function Pong() {
 	const paddleLength = 100;
 	const paddleWidth = 10;
 	const ballRadius = 10;
+	const maxBallSpeed = 1000;
 	let lastTime = useRef(Date.now());
 	let lastCall = useRef(Date.now());
 
@@ -137,25 +137,39 @@ export function Pong() {
 
 			// Check collisions first
 			if (gameState.ballY + (gameState.ballSpeedY * delta) - ballRadius < 0 || gameState.ballY + (gameState.ballSpeedY * delta) + ballRadius > height) {
-				gameState.ballSpeedY *= -1;
+				gameState.ballSpeedY *= -1.05;
 			}
 			if (gameState.ballX + (gameState.ballSpeedX * delta) - ballRadius - paddleWidth < 0) {
 				if (gameState.ballY > gameState.leftPaddleY && gameState.ballY < gameState.leftPaddleY + paddleLength) {
 					// It bounces on the paddle
 					gameState.ballSpeedX *= -1.8;
-				}
-				else {
-					gameState.ballSpeedX *= -0.5;
+					gameState.ballSpeedY *= 1.2;
+				} else {
+					gameState.ballSpeedX = 0;
+					gameState.ballSpeedY = 0;
 				}
 			}
 			else if (gameState.ballX + (gameState.ballSpeedX * delta) + ballRadius + paddleWidth > width) {
 				if (gameState.ballY > gameState.rightPaddleY && gameState.ballY < gameState.rightPaddleY + paddleLength) {
 					// It bounces on the paddle
 					gameState.ballSpeedX *= -1.8;
+					gameState.ballSpeedY *= 1.2;
+				} else {
+					gameState.ballSpeedX = 0;
+					gameState.ballSpeedY = 0;
 				}
-				else {
-					gameState.ballSpeedX *= -0.5;
-				}
+			}
+
+			// Speed limits
+			if (gameState.ballSpeedX > maxBallSpeed) {
+				gameState.ballSpeedX = maxBallSpeed;
+			} else if (gameState.ballSpeedX < -maxBallSpeed) {
+				gameState.ballSpeedX = -maxBallSpeed;
+			}
+			if (gameState.ballSpeedY > maxBallSpeed) {
+				gameState.ballSpeedY = maxBallSpeed;
+			} else if (gameState.ballSpeedY < -maxBallSpeed) {
+				gameState.ballSpeedY = -maxBallSpeed;
 			}
 
 			gameState.ballX += gameState.ballSpeedX * delta;
@@ -240,6 +254,38 @@ export function Pong() {
 				navigate("/");
 			}, 2500);
 		});
+
+		// Handle match end
+		socket?.on("match win", (payload: string) => {
+			toast.success("You win!", {
+				id: "matchmaking",
+				icon: "🎉",
+				position: "bottom-center",
+				duration: 3000,
+			});
+
+			setTimeout(() => {
+				// Redirect to profile page
+				toast.dismiss("matchmaking");
+				navigate("/user/" + payload);
+			}, 2500);
+		});
+
+		socket?.on("match lose", (payload: string) => {
+			toast.error("You lose.", {
+				id: "matchmaking",
+				icon: "❌",
+				position: "bottom-center",
+				duration: 3000,
+			});
+
+			setTimeout(() => {
+				// Redirect to profile page
+				toast.dismiss("matchmaking");
+				navigate("/user/" + payload);
+			}, 2500);
+		});
+
 	}, [socket, navigate, leftUser]);
 
 	return (
@@ -304,7 +350,7 @@ export function Pong() {
 							fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
 							fontSize: 30,
 							fontWeight: 'normal',
-							fill: ['#ffffff'], // gradient
+							fill: ['#ffffff', '#eeeeff'], // gradient
 							// stroke: '#01d27e',
 							// strokeThickness: 5,
 							// letterSpacing: 20,
@@ -329,7 +375,7 @@ export function Pong() {
 							fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
 							fontSize: 30,
 							fontWeight: 'normal',
-							fill: ['#ffffff'], // gradient
+							fill: ['#ffffff', '#eeeeff'], // gradient
 							// stroke: '#01d27e',
 							// strokeThickness: 5,
 							// letterSpacing: 20,
@@ -388,6 +434,7 @@ export function Pong() {
 							graphics.lineTo(width, height); // Draw a line to the bottom right corner
 						}}
 					/>
+
 					</Container>
 				</Stage>
 			</div>

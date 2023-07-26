@@ -4,6 +4,9 @@ import { Server, Socket } from 'socket.io';
 import { usernameMiddleware } from './middleware/username.middleware';
 import { JwtService } from '@nestjs/jwt';
 import { MatchClass } from './sockets.service';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 @WebSocketGateway({
 	cors: {
@@ -173,6 +176,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			socket1.emit('match started', true);
 			socket2.emit('match started', false);
 			match.lastUpdate = Date.now();
+			match.player1.lastUpdate = Date.now();
+			match.player2.lastUpdate = Date.now();
 			console.log("Match started");
 		}
 	}
@@ -208,6 +213,16 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			return;
 		}
 
+		// Check if one of the players has disconnected for more than 3 seconds
+		if (Date.now() - match.player1.lastUpdate > 3000) {
+			this.server.to(match.matchId.toString()).emit('match canceled');
+			this.socketsService.deleteMatch(match.matchId);
+			return;
+		}
+		if (Date.now() - match.player2.lastUpdate > 3000) {
+			match.player2.ready = false;
+		}
+
 		// If one of the players is not ready, do not actuate game state (Pause)
 		if (match.player1.ready === false || match.player2.ready === false) {
 
@@ -218,7 +233,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				return;
 			}
 
-			this.server.to(match.matchId.toString()).emit('game state', match);
+			this.server.to(match.matchId.toString()).emit('game state', match, "pause");
+			match.lastUpdate = Date.now();
 			return;
 		}
 
@@ -248,29 +264,53 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		// Check collisions first
 		if (match.ballY + (match.ballSpeedY * delta) - this.socketsService.gameConstants.ballRadius < 0 || match.ballY + (match.ballSpeedY * delta) + this.socketsService.gameConstants.ballRadius > this.socketsService.gameConstants.height) {
-			match.ballSpeedY *= -1;
+			match.ballSpeedY *= -1.05;
 		}
 		if (match.ballX + (match.ballSpeedX * delta) - this.socketsService.gameConstants.ballRadius - this.socketsService.gameConstants.paddleWidth < 0) {
 			if (match.ballY > match.p1posY && match.ballY < match.p1posY + this.socketsService.gameConstants.paddleLength) {
 				// It bounces on the paddle
 				match.ballSpeedX *= -1.8;
+				match.ballSpeedY *= 1.2;
 			}
 			else {
 				// GOAL!
 				match.player2.score += 1;
 				this.resetMatch(match);
+				if (match.player2.score >= this.socketsService.gameConstants.winScore) {
+					match.ballSpeedX = 0;
+					match.ballSpeedY = 0;
+					this.endMatch(match);
+				}
 			}
 		}
 		else if (match.ballX + (match.ballSpeedX * delta) + this.socketsService.gameConstants.ballRadius + this.socketsService.gameConstants.paddleWidth > this.socketsService.gameConstants.width) {
 			if (match.ballY > match.p2posY && match.ballY < match.p2posY + this.socketsService.gameConstants.paddleLength) {
 				// It bounces on the paddle
 				match.ballSpeedX *= -1.8;
+				match.ballSpeedY *= 1.2;
 			}
 			else {
 				// GOAL!
 				match.player1.score += 1;
 				this.resetMatch(match);
+				if (match.player1.score >= this.socketsService.gameConstants.winScore) {
+					match.ballSpeedX = 0;
+					match.ballSpeedY = 0;
+					this.endMatch(match);
+				}
 			}
+		}
+
+		// Speed limits
+		if (match.ballSpeedX > this.socketsService.gameConstants.maxBallSpeed) {
+			match.ballSpeedX = this.socketsService.gameConstants.maxBallSpeed;
+		} else if (match.ballSpeedX < -this.socketsService.gameConstants.maxBallSpeed) {
+			match.ballSpeedX = -this.socketsService.gameConstants.maxBallSpeed;
+		}
+		if (match.ballSpeedY > this.socketsService.gameConstants.maxBallSpeed) {
+			match.ballSpeedY = this.socketsService.gameConstants.maxBallSpeed;
+		} else if (match.ballSpeedY < -this.socketsService.gameConstants.maxBallSpeed) {
+			match.ballSpeedY = -this.socketsService.gameConstants.maxBallSpeed;
 		}
 
 		match.ballX += match.ballSpeedX * delta;
@@ -283,6 +323,18 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		// Send match state to only one player
 		// client.emit('game state', match);
+
+		// Upadte player last call
+		switch (userId) {
+			case match.player1.userId:
+				match.player1.lastUpdate = Date.now();
+				break;
+			case match.player2.userId:
+				match.player2.lastUpdate = Date.now();
+				break;
+			default:
+				break;
+		}
 	}
 
 	/* ######################### */
@@ -327,4 +379,70 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		match.lastUpdate = Date.now();
 	}
 
+	private async endMatch(match: MatchClass): Promise<void> {
+
+		const socket1: Socket = this.getSocketByUserId(match.player1.userId);
+		const socket2: Socket = this.getSocketByUserId(match.player2.userId);
+
+		if (socket1 === undefined || socket2 === undefined) {
+			console.log("Error: socket undefined");
+			this.server.to(match.matchId.toString()).emit('match canceled');
+			this.socketsService.deleteMatch(match.matchId);
+			return;
+		}
+
+		if (match.player1.score > match.player2.score && match.player1.score >= this.socketsService.gameConstants.winScore) {
+			socket1.emit('match win', match.player1.username);
+			socket2.emit('match lose', match.player2.username);
+		} else if (match.player2.score > match.player1.score && match.player2.score >= this.socketsService.gameConstants.winScore) {
+			socket1.emit('match lose', match.player1.username);
+			socket2.emit('match win', match.player2.username);
+		} else {
+			this.server.to(match.matchId.toString()).emit('match canceled');
+			this.socketsService.deleteMatch(match.matchId);
+		}
+
+		const winner = await prisma.user.findUnique({
+			where: {
+				id: match.player1.score > match.player2.score ? match.player1.userId : match.player2.userId
+			}
+		});
+
+		const loser = await prisma.user.findUnique({
+			where: {
+				id: match.player1.score < match.player2.score ? match.player1.userId : match.player2.userId
+			}
+		});
+
+		const matchDb = await prisma.match.create({
+			data: {
+				mode: "1v1",
+				duration: Date.now() - match.started,
+				winnerId: winner.id,
+				loserId: loser.id,
+				scoreWinner: match.player1.score > match.player2.score ? match.player1.score : match.player2.score,
+				scoreLoser: match.player1.score < match.player2.score ? match.player1.score : match.player2.score,
+			}
+		});
+
+		await prisma.match.update({
+			where: {
+				id: matchDb.id,
+			},
+			data: {
+				winner: {
+					connect: {
+						id: winner.id,
+					},
+				},
+				loser: {
+					connect: {
+						id: loser.id,
+					},
+				},
+			}
+		});
+
+		return;
+	}
 }

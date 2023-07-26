@@ -50,6 +50,7 @@ export default function GamePage() {
 			socket.emit("Join Queue");
 			toast.loading(<span>Searching for a match... {leaveQueueButton} </span>, {
 				id: "matchmaking",
+				icon: "🔍",
 				position: "bottom-center",
 			});
 		} else {

@@ -8,6 +8,7 @@ export class Player {
 	username: string;
 	score: number;
 	ready: boolean;
+	lastUpdate: number;
 }
 
 export class MatchClass {
@@ -34,10 +35,11 @@ export class SocketsService {
 	public gameConstants = {
 		width: 800, // in pixels
 		height: 600, // in pixels
-		// paddleSpeed: 100, // in pixels per second
 		paddleLength: 100, // in pixels
 		paddleWidth: 10, // in pixels
 		ballRadius: 10, // in pixels
+		maxBallSpeed: 1000, // in pixels per second
+		winScore: 10, // in points
 	};
 
 	/* key = userId, value:string = socketId */
