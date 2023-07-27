@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, User, Channel } from '@prisma/client';
 import * as argon from 'argon2';
 import { UsersService } from 'src/users/users.service';
-import { ChanMode } from '@prisma/client';
+import { ChanMode, Message } from '@prisma/client';
+import { CreateMessageDto } from './dto/create-message.dto';
 
 const hashingConfig = {
 	parallelism: 1,
@@ -46,6 +47,7 @@ export class ChatService {
 				where: { id: ownerId },
 				data: {
 					ownerChans: { connect: { id: createdChannel.id } },
+					adminsChans: { connect: { id: createdChannel.id } },
 					joinedChans: { connect: { id: createdChannel.id } },
 				},
 			});
@@ -64,6 +66,7 @@ export class ChatService {
 			where: { id },
 			include: { 
 				admin: true,
+				owner: true,
 				joinedUsers: true,
 				bannedUsers: true, 
 				kickedUsers: true,
@@ -78,6 +81,7 @@ export class ChatService {
 			where: { roomName },
 			include: { 
 				admin: true,
+				owner: true,
 				joinedUsers: true,
 				bannedUsers: true, 
 				kickedUsers: true,
@@ -237,6 +241,116 @@ export class ChatService {
 			data:  {
 				[groupToInsert]: { [action]: { id: userId } },
 			}
+		});
+	}
+
+	async findUserRoleInChannel(channel: Channel, body: UpdateChannelDto) {
+		const { userId, groupToInsert } = body;
+
+		// On enregistre tous les groupes auxquels appartient le User
+		const membershipChecks = new Map;
+		for (const role  of groupToInsert) {
+			const memberList = channel[role as keyof Channel];
+
+			if (Array.isArray(memberList)) {
+				const isMember: boolean = memberList.some((member) => member.id === userId);
+				membershipChecks.set(role, isMember);
+			}
+		}
+	}
+
+	async deleteUserinChannel(channelId: number, body: UpdateChannelDto) {
+		const { userId } = body;
+		const channel = await prisma.channel.findUnique({
+			where: { id: channelId },
+			include: { 
+				admin: true,
+				joinedUsers: true,
+				owner: true,
+			},
+		});
+		console.log("owner: ", channel.ownerId, " et user: ", userId);
+		
+		// par défaut, on déconnecte la personne des joined Users
+		await prisma.channel.update({
+			where: { id: channel.id },
+			data : {
+				joinedUsers: { disconnect: { id: userId } },
+			}
+		})
+
+		// Si la personne est owner, ça transfère l'ownership
+		if (channel.ownerId === userId) {
+			// Transfert à la personne la plus ancienne des admins
+			console.log("Je suis dedans, c'est un owner!");
+			
+			if (channel?.admin.length > 1) {
+				const newOwnerId: number = channel?.admin[1].id;
+				return await prisma.channel.update({
+					where: { id: channel.id },
+					data : {
+						owner: { connect: { id: newOwnerId } },
+						admin: { disconnect: { id: userId } },
+					}
+				})
+			} // Sinon transfert à la personne la plus ancienne des joinedUsers
+			else if (channel?.joinedUsers.length > 1) {
+				const newOwnerId: number = channel?.joinedUsers[1].id;
+				return await prisma.channel.update({
+					where: { id: channel.id },
+					data : {
+						owner: { connect: { id: newOwnerId } },
+						admin: { 
+							disconnect: { id: userId },
+							connect: { id: newOwnerId }
+						},
+					}
+				})
+			} // Si après il n'y a plus personne, on delete le chan
+			else {
+				return await this.deleteOneChannel(channel.id);
+			}
+		}
+	}
+	
+	// Code pour du isBan, isKicked , etc :
+	// const isOwner: boolean = channel[groupToInsert]?.some((member: User) => member.id === userId);
+	// if (isOwner) {
+	// 	await prisma.channel.update({
+	// 		where: { id: channel.id },
+	// 		data:  {
+	// 			[groupToInsert]: { [action]: { id: userId } },
+	// 		}
+	// }
+
+	// Messages
+	// create a message and add it to the list
+	async createMessage(body: CreateMessageDto): Promise<Message> {
+		const { fromId, to, content, channelId } = body;
+		
+		return await prisma.message.create({
+			data: {
+				from: { connect: {id: fromId}},
+				to,
+				content,
+				channel: { connect: { id: channelId } },
+			},
+		});
+	}
+
+	// get all messages
+	async getAllMessagesForChannel(channelId: number): Promise<Message[]> {
+		return await prisma.message.findMany({
+			where: { channelId },
+			orderBy: { date: 'asc' },
+			include: { from: true }
+		});
+	}
+
+	// delete all messages
+	async deleteAllMessagesForChannel(channelId: number) {
+		return await prisma.message.deleteMany({
+			where: { channelId },
 		});
 	}
 }

@@ -3,7 +3,7 @@ import { fetchMe,  checkIfLogged } from "../api/APIHandler";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from 'react-router-dom';
 import { useEffect } from "react";
-import { IsLoggedInContext } from '../App';
+import { IsLoggedInContext } from "../context/contexts";
 import { useContext } from "react";
 
 export default function Avatar( {setLoggedIn }: {setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>}) {

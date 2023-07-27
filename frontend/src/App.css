@@ -66,11 +66,11 @@ body {
     z-index: -10;
 }
 
-/* .music-bg{
+.music-bg{
 	position: fixed;
 	top: 100px;
 	z-index: -100;
-} */
+}
 
 #main-content {
 	width : 100%;

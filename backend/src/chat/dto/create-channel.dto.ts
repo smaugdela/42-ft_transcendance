@@ -14,7 +14,7 @@ export class CreateChannelDto {
 
 	@IsString()
 	@IsNotEmpty()
-	@Length(2, 11)
+	@Length(2, 30)
 	roomName: string;
 
 	@IsOptional()

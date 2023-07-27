@@ -46,6 +46,8 @@ model User {
   kickedFromChans Channel[] @relation("kicked")
   mutedInChans    Channel[] @relation("muted")
 
+  messages    Message[] @relation("messages")
+
   matchAsP1 Match[] @relation("winner")
   matchAsP2 Match[] @relation("loser")
 
@@ -99,13 +101,15 @@ model Channel {
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
-  date      DateTime @default(now())
-  from      Int // socket id de l'expéditeur
-  to        Int // socket id du destinataire
-  content   String
-  channel   Channel  @relation(fields: [channelId], references: [id], name: "messages")
-  channelId Int
+
+  id          Int       @id @default(autoincrement())
+  date        DateTime  @default(now())
+  from        User      @relation(fields: [fromId], references: [id], name: "messages")
+  fromId      Int
+  to          String    // nom de la room
+  content     String
+  channel     Channel   @relation(fields: [channelId], references: [id], name: "messages")
+  channelId   Int
 
   @@map("messages")
 }

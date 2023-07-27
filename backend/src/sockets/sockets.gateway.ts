@@ -15,7 +15,6 @@ const prisma = new PrismaClient();
 	}
 })
 export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect {
-
 	constructor(private socketsService: SocketsService, private readonly jwtService: JwtService) { }
 
 	@WebSocketServer() server: Server;
@@ -96,24 +95,33 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		client.join(room);
 		console.log(client.data.username, ` has joined the room ${payload}!`);
 	}
-
 	/* ######################### */
 	/* ######### CHAT ########## */
 	/* ######################### */
 
-	/* Message à envoyer aux listeners de l'event "receiveMessage" */
+	/**
+	 * @description Message à envoyer aux listeners de l'event "receiveMessage"
+	 * @param client Socket de la personne qui a envoyé un message dans le Chat
+	 * @param payload `<roomName> <messageToTransfer>`. Exemple: "RockLovers Hello comment ça va?"
+	 */
 	@SubscribeMessage('Chat')
 	async handleSendMessage(client: Socket, payload: string): Promise<void> {
 		console.log(client.data.username, ':', payload);
-		this.server.emit('receiveMessage', client.data.username + ": " + payload);
-
-		// const room = "room test";
-		// PB: on les ajoute dans la room que quand ils écrivent
-		// if (client.data.username === "euh" || client.data.username === "Marinette") {
-		// 	client.join(room); // une room étant: un chan ou un DM
-		// 	console.log(client.data.username ," has joined the room!");	
-		// }
-		// this.server.to(room).emit('receiveMessage', client.data.username + ": " + payload);
+		const splitStr: string[] = payload.split('  ');
+		
+		const action = splitStr[0];
+		const room = splitStr[1];
+		const msgToTransfer = splitStr[2];
+		
+		if (action === "/msg") {
+			const message = {
+				date: new Date(),
+				from: client.data.username,
+				fromId: client.data.userId,
+				content: msgToTransfer,
+			};
+			this.server.to(room).emit('receiveMessage', message);
+		}
 	}
 
 	/* ######################### */
