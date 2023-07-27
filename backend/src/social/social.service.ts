@@ -1,45 +1,47 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSocialDto } from './dto/create-social.dto';
 import { UpdateSocialDto } from './dto/update-social.dto';
-// import { PrismaClient } from '@prisma/client';
+import { NotFoundException } from '@nestjs/common';
 import { PrismaClient, User } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 @Injectable()
 export class SocialService {
-	async myFriends(userId: number) {
+	async myFriends(userId: number)
+	{
 		const user   = await prisma.user.findUnique(
-			{
-				where : {id: userId},
-				include: { friendsList: true },
-			}
+		{
+			where : {id: userId},
+			include: { friendsList: true },
+		}
 		)
-		if (user) {
+		if (user) 
 			return user.friendsList;
-		  }
 		  
-		  return null;
+		return null;
 	}
 
-	async blockedList(userId: number){
+	async blockedList(userId: number)
+	{
 		const user = await prisma.user.findUnique(
-			{
-				where : {id: userId},
-				include: { blockList: true},
-			}
+		{
+			where : {id: userId},
+			include: { blockList: true},
+		}
 		)
 		if (user)
 			return user.blockList;
 		return null;
 	}
 
-	async pendingList(userId: number){
+	async pendingList(userId: number)
+	{
 		const user = await prisma.user.findUnique(
-			{
-				where : {id: userId},
-				include: { pendingList: true},
-			}
+		{
+			where : {id: userId},
+			include: { pendingList: true},
+		}
 		)
 		if (user)
 			return user.pendingList;
@@ -47,79 +49,71 @@ export class SocialService {
 	}
 
 
-	async friendRequest(userId: number, username: string) {
-		return await prisma.user.update(
-			{
-				where: { id: userId },
-				data: {
-					pendingList: {
-						connect: { nickname: username }
-					}
-				}
-			}
+	async friendRequest(userId: number, username: string) 
+	{
+		const friend = await prisma.user.findUnique(
+		{
+			where: { nickname: username },
+			include: { pendingList: true },
+		}
+		);
+		if (!friend) {throw new NotFoundException('Friend not found.');}
+		return prisma.user.update(
+		{
+			where: { id: friend.id },
+			data: { pendingList: {connect: { id: userId },},},
+		}
 		);
 	}
 
-	async acceptRequest(userId: number, id: number) {
+	async acceptRequest(userId: number, id: number) 
+	{
 		await prisma.user.update(
 			{
 				where: { id: userId },
-				data: {
-					pendingList: {
-						disconnect: { id: id }
-					}
-				}
+				data: {pendingList: {disconnect: { id: id }}}
 			}
 		)
 		return await prisma.user.update(
 			{
 				where: { id: userId },
-				data: {
-					friendsList: {
-						connect: { id: id }
-					}
-				}
+				data: { friendsList: { connect: { id: id }}}
 			}
 		);
 	}
 
-	async blockUser(userId: number, username: string) {
+	async blockUser(userId: number, username: string) 
+	{
 		  // Vérifier si l'ami existe
-		  const friendToBlock = await prisma.user.findUnique({
-			where: { nickname: username },
-		  });
+		const friendToBlock = await prisma.user.findUnique(
+		{where: { nickname: username },});
+		if (!friendToBlock) {throw new Error(`User '${username}' not found`);}
 		
-		  if (!friendToBlock) {
-			throw new Error(`User '${username}' not found`);
-		  }
-		
-		  // Supprimer l'ami de la liste d'amis de l'utilisateur actuel
-		  await prisma.user.update({
+		// Supprimer l'ami de la liste d'amis de l'utilisateur actuel
+		await prisma.user.update(
+		{
 			where: { id: userId },
 			data: {friendsList: {disconnect: {nickname: username}},},
-		  });
+		});
 
-		  // Supprimer l'ami bloqué de ses relations
-			await prisma.user.update({
-				where: { nickname: username },
-				data: {friendsList: {disconnect:{nickname: username},},},
-			});
-		
-		  // Ajouter l'ami à la liste de blocage de l'utilisateur actuel
-		  return prisma.user.update({
+		// Supprimer l'ami bloqué de ses relations
+		await prisma.user.update(
+		{
+			where: { nickname: username },
+			data: {friendsList: {disconnect:{nickname: username},},},
+		});
+
+		// Ajouter l'ami à la liste de blocage de l'utilisateur actuel
+		return prisma.user.update(
+		{
 			where: { id: userId },
-			data: {
-			  blockList: {
-				connect: {
-				  nickname: username,
-				},
-			  },
-			},
-		  });
-		}
+			data: {blockList: {connect: {nickname: username,},},},
+		});
+	}
 
 
-	async removeFromBlock(userId: number, id: number) {
+	async removeFromBlock(userId: number, id: number) 
+	{
 		return await prisma.user.update(
 			{
 				where: { id: userId },
@@ -128,25 +122,23 @@ export class SocialService {
 		);
 	}
 
-	async rejectRequest(userId: number, id: number) {
+	async rejectRequest(userId: number, id: number) 
+	{
 		return await prisma.user.update(
-			{
-				where: { id: userId },
-				data: {
-					pendingList: {
-						disconnect: { id: id }
-					}
-				}
-			}
+		{
+			where: { id: userId },
+			data: {pendingList: {disconnect: { id: id }}}
+		}
 		);
 	}
 
-	async removeFriend(userId: number, id: number) {
+	async removeFriend(userId: number, id: number) 
+	{
 		return await prisma.user.update(
-			{
-				where: { id: userId },
-				data: {friendsList: {disconnect: { id: id }}},
-			}
+		{
+			where: { id: userId },
+			data: {friendsList: {disconnect: { id: id }}},
+		}
 		);
 
 	}
