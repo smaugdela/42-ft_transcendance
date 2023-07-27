@@ -93,6 +93,14 @@ export class SocketsService {
 		}
 	}
 
+	createPlayer(userId: number, username: string) {
+		const player = new Player;
+		player.userId = userId;
+		player.username = username;
+		player.score = 0;
+		return player;
+	}
+
 	addToQueue(userId: number, username: string) {
 
 		for (let i = 0; i < this.queue.length; i++) {
@@ -102,22 +110,29 @@ export class SocketsService {
 			}
 		}
 
-		const player = new Player;
-		player.userId = userId;
-		player.username = username;
-		player.score = 0;
+		const player = this.createPlayer(userId, username);
 		this.queue.push(player);
 
 		console.log(username, " joined the queue");
 
 	}
 
-	addMatch() {
+	addMatch(player1: Player = undefined, player2: Player = undefined) {
 
 		const match = new MatchClass;
 		match.matchId = this.matchId++;
-		match.player1 = this.queue.shift();
-		match.player2 = this.queue.shift();
+
+		if (player1 === undefined) {
+			match.player1 = this.queue.shift();
+		} else {
+			match.player1 = player1;
+		}
+		if (player2 === undefined) {
+			match.player2 = this.queue.shift();
+		} else {
+			match.player2 = player2;
+		}
+
 		match.player1.ready = false;
 		match.player2.ready = false;
 		match.p1posY = (this.gameConstants.height / 2) - (this.gameConstants.paddleLength / 2);
