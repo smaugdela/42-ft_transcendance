@@ -86,7 +86,7 @@ export class AuthService {
 				return res.redirect(process.env.FRONTEND_URL + '/2fa/pending');
 			}
 
-			console.log("User 42 logged in: ", userDb);
+			console.log("User 42 logged in: ", userDb.nickname);
 
 			await this.generateToken(userDb.id, res);
 
@@ -261,7 +261,7 @@ export class AuthService {
 			// delete newUser.password;	// Temporary solution, should not be used permanently.
 
 			// log the created user
-			console.log('New standard user created: ', newUser);
+			console.log('New standard user created: ', newUser.nickname);
 
 			await this.generateToken(newUser.id, res);
 

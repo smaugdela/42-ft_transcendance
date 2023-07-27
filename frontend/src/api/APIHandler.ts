@@ -224,7 +224,7 @@ export async function getAllChannels(): Promise<IChannel[]> {
 }
 
 export async function createChannel(roomName: string, password: string, type: string)
-: Promise<IChannel> {
+	: Promise<IChannel> {
 	try {
 		const user = await fetchMe();
 		const userId = user.id;
@@ -415,10 +415,7 @@ export async function uploadImage(file: File) {
 
 
 /* #######################*/
-/* ######   MATCH   ######*/
+/* ######   GAME   #######*/
 /* #######################*/
 
-export async function matchmaking() {
-	const response = await api.post('/games');
-	return response.data;
-}
+
