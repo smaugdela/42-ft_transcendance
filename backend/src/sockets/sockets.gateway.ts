@@ -10,14 +10,16 @@ import { JwtService } from '@nestjs/jwt';
 		credentials: true,
 	}
 })
+
 export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect {
-	constructor(private readonly socketsService: SocketsService, private readonly jwtService: JwtService) { }
+	constructor(private socketsService: SocketsService, private readonly jwtService: JwtService) { }
 
 	@WebSocketServer() server: Server;
 
 	/* Attribue le nickname au socket ouvert à partir de son jwt */
 	afterInit(server: Server) {
 		server.use(usernameMiddleware(this.jwtService));
+		this.socketsService.setServer(server);
 		console.log('WS Initialized');
 	}
 
@@ -30,7 +32,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		/* Stocker tous les sockets des users actuellement connectés dans un map */
 		this.socketsService.registerActiveSockets(client.data.userId, client.id);
-	
+
 		/* TODO: regarder dans quels chans la personne est déjà et la rajouter */
 
 	}
@@ -39,28 +41,48 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	handleDisconnect(client: Socket) {
 		this.socketsService.inactiveUser(client.data.userId);
 		this.socketsService.deleteDisconnectedSockets(client.data.userId);
-		
+
 		console.log('Client disconnected:', client.data.username);
 		client.disconnect(true);
-
-
-
-
 	}
 
-	/* Message à envoyer aux listeners de l'event "receiveMessage" */
-	@SubscribeMessage('sendMessage')
+	@SubscribeMessage('Create Lobby')
+	async handleLobbyCreation(client: Socket, payload: string): Promise<void> {
+		const room = payload;
+		client.join(room);
+		console.log(client.data.username ,` has joined the room ${payload}!`);	
+	}
+	/* ######################### */
+	/* ######### CHAT ########## */
+	/* ######################### */
+
+	/**
+	 * @description Message à envoyer aux listeners de l'event "receiveMessage"
+	 * @param client Socket de la personne qui a envoyé un message dans le Chat
+	 * @param payload `<roomName> <messageToTransfer>`. Exemple: "RockLovers Hello comment ça va?"
+	 */
+	@SubscribeMessage('Chat')
 	async handleSendMessage(client: Socket, payload: string): Promise<void> {
 		console.log(client.data.username, ':', payload);
-		this.server.emit('receiveMessage', client.data.username + ": " + payload);
-
-
-
-		/* Private message */
-
-
-
+		const splitStr: string[] = payload.split('  ');
+		
+		const action = splitStr[0];
+		const room = splitStr[1];
+		const msgToTransfer = splitStr[2];
+		
+		if (action === "/msg") {
+			const message = {
+				date: new Date(),
+				from: client.data.username,
+				fromId: client.data.userId,
+				content: msgToTransfer,
+			};
+			this.server.to(room).emit('receiveMessage', message);
+		}
 	}
 
+	/* ######################### */
+	/* ######### GAMES ######### */
+	/* ######################### */
 
 }

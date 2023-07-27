@@ -13,12 +13,13 @@ const faqs: FaqItem[] = [
     answer: 'Transcendence is the final project of the common-core of the school 42-Paris. The purpose of this project is to create a website with a pong game including all matchmaking, ranking, and chat features.',
   },
   {
-    question: 'How to block or remove a friend ?',
-    answer: 'Click the name of the friend you want to remove or block. Select BLOCK or UNFRIEND, and then click to confirm.',
+    question: 'How to play Pong?',
+    answer: 'The goal of this game is to defeat your opponent by being the first one to gain 10 point. A player gets a point once the opponent misses a ball. The game can be played with two human players, or one player against a computer controlled paddle.',
   },
   {
-    question: 'How to play ?',
-    answer: 'With your brain.',
+
+    question: 'How to block or remove a friend ?',
+    answer: 'Click the name of the friend you want to remove or block. Select BLOCK or UNFRIEND, and then click to confirm.',
   },
   {
     question: 'How to create a chat channel ?',

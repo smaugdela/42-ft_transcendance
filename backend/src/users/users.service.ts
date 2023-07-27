@@ -46,7 +46,18 @@ export class UsersService {
 			include: {
 				achievements: true,
 				matchAsP1: true,
-				matchAsP2: true,
+				matchAsP2: true, 
+				joinedChans: {
+					include: {
+						admin: true,
+						owner: true,
+						joinedUsers: true,
+						bannedUsers: true, 
+						kickedUsers: true,
+						mutedUsers: true,
+						messages: true
+					}
+				},
 			},
 		});
 	}
