@@ -2,19 +2,27 @@ import React, { useContext, useEffect, useState } from 'react';
 import '../../styles/Tab_Chat.css';
 import { SocketContext } from '../../context/contexts';
 import { IChannel, IMessage } from '../../api/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createMessage, getAllMsgsofChannel } from '../../api/APIHandler';
 import { OneMessage } from './OneMessage';
 import { TabChatHeader } from './TabChatHeader';
+import toast from 'react-hot-toast';
 
 function TabChat({ conv }: { conv: IChannel }) {
 		
 	const [messages, setMessages] = useState<IMessage[]>([]);
 	const [inputValue, setInputValue] = useState<string>('');
 	const socket = useContext(SocketContext);
-	
+	const queryClient = useQueryClient();
+
 	// Queries pour récupérer les messages du channel, ou pour créer un message
-	const { data: newMessage, mutate} = useMutation((message: string) => createMessage(conv, message));
+	const { data: newMessage, mutate} = useMutation({
+		mutationFn: (message: string) => createMessage(conv, message),
+		onSuccess: () => {
+			queryClient.invalidateQueries(['channels']);
+		},
+		onError: () => toast.error('Message not sent: retry')
+	});
 	const { data } = useQuery({
 		queryKey: ['messages', conv.id],
 		queryFn: () => getAllMsgsofChannel(conv.id),

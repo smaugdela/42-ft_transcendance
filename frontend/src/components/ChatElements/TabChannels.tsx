@@ -1,4 +1,4 @@
-import React, {  useContext } from 'react';
+import React, {  useContext, useEffect } from 'react';
 import ChannelLink from './ChannelLink';
 import { IChannel } from '../../api/types';
 import '../../styles/Tab_channels.css'
@@ -24,6 +24,7 @@ export default function TabChannels({ joinedChannels }: { joinedChannels: IChann
 	  {
 		joinedChannels && (
 			joinedChannels.map((chan) => {
+				
 				return (
 					<div key={(chan.id + 1).toString()} onClick={(event) => handleClick(event, chan)}>
 						<ChannelLink key={chan.id.toString()} 

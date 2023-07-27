@@ -93,7 +93,26 @@ export class ChatService {
 
 	async getAllUserChannels(id: number) {
 		const user = await this.usersService.findMe(id);
-		return user.joinedChans;
+		const userChannels = await prisma.channel.findMany({
+			where: {
+				joinedUsers: {
+					some: {
+						id: user.id
+					}
+				},
+			},
+			include: { 
+				admin: true,
+				owner: true,
+				joinedUsers: true,
+				bannedUsers: true, 
+				kickedUsers: true,
+				mutedUsers: true,
+				messages: true,
+			},
+			orderBy: [ { lastUpdated: 'desc' } ],
+		});
+		return userChannels;
 	
 	}
 
@@ -338,6 +357,11 @@ export class ChatService {
 	// create a message and add it to the list
 	async createMessage(body: CreateMessageDto): Promise<Message> {
 		const { fromId, to, content, channelId } = body;
+
+		await prisma.channel.update({
+			where: { id: channelId },
+			data: { lastUpdated: new Date() },
+		});
 
 		return await prisma.message.create({
 			data: {

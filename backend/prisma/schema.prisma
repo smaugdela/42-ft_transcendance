@@ -85,6 +85,7 @@ model Match {
 model Channel {
   id          Int       @id @default(autoincrement())
   date        DateTime  @default(now())
+  lastUpdated DateTime  @default(now())
   type        ChanMode  @default(PUBLIC)
   password    String?
   roomName    String    @unique
