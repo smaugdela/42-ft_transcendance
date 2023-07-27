@@ -30,9 +30,9 @@ const VerificationPage = () => {
             }, 2000); // Delay before redirecting to the home page (2 seconds)
           } else {
             // Handle the case when the code is not valid
-            console.log('Code verification failed');
 			setIsSuccess(false);
 			setIsLoading(false);
+            console.log('Code verification failed');
           }
         } catch (error) {
           console.log('Error occurred during code verification', error);

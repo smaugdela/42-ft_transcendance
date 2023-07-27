@@ -143,18 +143,13 @@ export class SocketsService {
 	}
 
 	deleteMatch(matchId: number) {
-		for (let i = 0; i < this.queue.length; i++) {
+		for (let i = 0; i < this.matches.length; i++) {
 			if (this.matches[i].matchId === matchId) {
-				this.queue.splice(i, 1);
+				this.matches.splice(i, 1);
 				console.log("Match #", matchId, " deleted.");
 				return;
 			}
 		}
-	}
-
-	endMatch(matchId: number) {
-		// TODO: update score in db, and graciously end the match
-		void (matchId);
 	}
 
 	cleanupMatches() {
@@ -162,6 +157,8 @@ export class SocketsService {
 		for (let i = 0; i < this.matches.length;) {
 			const match = this.matches[i];
 			if ((match.player1.ready === false || match.player2.ready === false) && (Date.now() - match.started > 10000)) {
+				this.deleteMatch(match.matchId);
+			} else if ((Date.now() - match.player1.lastUpdate > 3000) || (Date.now() - match.player2.lastUpdate > 3000)) {
 				this.deleteMatch(match.matchId);
 			} else {
 				i++;

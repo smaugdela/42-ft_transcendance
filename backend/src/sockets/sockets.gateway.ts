@@ -108,11 +108,11 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	async handleSendMessage(client: Socket, payload: string): Promise<void> {
 		console.log(client.data.username, ':', payload);
 		const splitStr: string[] = payload.split('  ');
-		
+
 		const action = splitStr[0];
 		const room = splitStr[1];
 		const msgToTransfer = splitStr[2];
-		
+
 		if (action === "/msg") {
 			const message = {
 				date: new Date(),
