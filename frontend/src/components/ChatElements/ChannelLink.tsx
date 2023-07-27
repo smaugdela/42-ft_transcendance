@@ -1,35 +1,29 @@
+import { useQuery } from '@tanstack/react-query';
 import { IChannel } from "../../api/types";
-import toast from 'react-hot-toast';
-import React, { useContext } from 'react';
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import '../../styles/Tab_channels.css';
-import { updateUserInChannel } from '../../api/APIHandler';
-import { SocketContext } from '../../App';
-import { sendNotificationToServer } from "../../sockets/sockets";
+import { fetchMe } from "../../api/APIHandler";
+import { useState, useEffect } from "react";
 
 export default function ChannelLink({ channel }: { channel: IChannel }) {
-	const socket = useContext(SocketContext);
-	const queryClient = useQueryClient();
 
-	const joinChannelRequest = useMutation({
-		mutationFn: () => updateUserInChannel(channel.id, "joinedUsers", "connect"),
-		onSuccess: () => { 
-			queryClient.invalidateQueries(['channels']);
-			toast.success(`You joined the channel!`) },
-		onError: () => { toast.error('Error : cannot join channel') }
-	})
+	const [convName, setConvName] = useState<string>(channel.roomName);
+	const {data, error, isLoading, isSuccess } = useQuery({queryKey: ['user'], queryFn: fetchMe});
 
-	const handleClick = (event: React.FormEvent<HTMLDivElement>) => {
-		event.preventDefault();
-		joinChannelRequest.mutate();
-		if (socket && channel.roomName) {
-			sendNotificationToServer(socket, 'Create Lobby', channel.roomName);
+	useEffect(() => {
+		if (channel.type === 'DM' && data) {
+			setConvName(channel.roomName.replace(data?.nickname, '').trim());
 		}
-	};
+	}, [data, channel.type, channel.roomName]);
 	
+	if (error) {
+		return <div>Error</div>
+	}
+	if (isLoading || !isSuccess) {
+		return <div>Loading...</div>
+	}
 	return (
-		<div className="channel-link-card" onClick={handleClick}>
-			<h3>{channel.roomName} ({channel.type})</h3>
+		<div  className="channel-link-card" >
+			<h3>{convName} ({channel.type})</h3>
 			<p>Last message...</p>
 		</div>
 	);

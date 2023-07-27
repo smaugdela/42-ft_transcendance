@@ -6,10 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext, useEffect, ChangeEventHandler } from "react";
-import { IsLoggedInContext } from '../App';
+import { IsLoggedInContext, SocketContext } from '../context/contexts';
 import { logOut, checkIfLogged } from "../api/APIHandler";
 import { createSocketConnexion } from '../sockets/sockets';
-import { SocketContext } from '../App';
 import { Socket } from 'socket.io-client';
 
 export default function Navbar(props: { 
