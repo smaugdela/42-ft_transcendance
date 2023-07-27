@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SocketContext } from "../App";
+import { SocketContext } from "../context/contexts";
 import { Stage, Graphics, AppConsumer, useApp, Text, Container } from "@pixi/react";
 import toast from "react-hot-toast";
 import { Ticker } from "pixi.js";
