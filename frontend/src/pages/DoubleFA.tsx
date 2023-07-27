@@ -53,7 +53,7 @@ const VerificationPage = () => {
   return (
     <div className="DoubleFA">
 		<div className="background"/>
-		<form className="connection-form">
+		<form className="little-form">
 			{isLoading && <p>Loading...</p>}
 			{!isLoading && isSuccess && <p>Verification successful! You will be redirected shortly to homepage.</p>}
 			{!isLoading && !isSuccess && <p>Verification failed, please try again.</p>}

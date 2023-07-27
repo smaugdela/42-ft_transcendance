@@ -1,6 +1,67 @@
-<p>Nice to see you {{ name }}!</p>
-<p>Please click below to login.</p>
-<p>Please note this link will only be valid for 10 minutes.</p>
+<head>
+<style>
+	body{
+background-color: transparent;
+	font-family: 'Helvetica', sans serif;
+}
+
+.container {
+ 	height: 200px;
+    width: 400px;
+    background-color: rgba(24, 46, 65, 0.7);
+	top: 50%;
+    left: 50%;
+    position: absolute;
+        transform: translate(-50%,-50%);
+    border-radius: 10px;
+	box-shadow:
+		0 0 7px #efefef,
+		0 0 10px #efefef,
+		0 0 20px rgb(60, 116, 166),
+		0 0 42px rgb(60, 116, 166),
+		0 0 77px rgb(60, 116, 166);    
+	padding: 30px 30px;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+}
+
+p {
+    color: rgb(226, 226, 229); 
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
+    font-size: 20px; 
+    margin-bottom: 10px;
+}
+
+.titlep{
+    margin-top:5px;
+    font-size:30px;
+	text-align: center;
+}
+a {
+    display:block;
+    text-align:center;
+    color: rgb(60, 116, 166);
+    text-decoration:none;
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+<p class="titlep">Nice to see you {{ name }}!</p>
+<p>For more safety, our website use a two-factor authentification.</p>
 <p>
-	<a href="{{ url }}">Confirm</a>
+	<a href="{{ url }}"> >> Please click here to login << </a>
 </p>
+<p>This link will only be valid for 10 minutes.</p>
+</div>
+</body>
