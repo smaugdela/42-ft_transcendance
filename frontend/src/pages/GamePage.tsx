@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SocketContext } from '../App';
+import { SocketContext } from '../context/contexts'; 
 import '../App.css';
 import'../styles/GamePage.css';
 import { toast } from 'react-hot-toast';

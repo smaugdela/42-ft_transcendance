@@ -1,11 +1,14 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SocketContext } from "../App";
+import { SocketContext } from '../context/contexts'; 
 import { Stage, Graphics, AppConsumer, useApp, Text, Container } from "@pixi/react";
 import toast from "react-hot-toast";
 import { Ticker } from "pixi.js";
 import * as PIXI from "pixi.js";
+import { BlurFilter } from "@pixi/filter-blur"
 import "../styles/Pong.css"
+import { GlowFilter } from "@pixi/filter-glow";
+
 
 export function Pong() {
 	const socket = useContext(SocketContext);
@@ -17,7 +20,7 @@ export function Pong() {
 	const paddleSpeed = 400;
 	const paddleLength = 100;
 	const paddleWidth = 10;
-	const ballRadius = 10;
+	const ballRadius = 5;
 	const maxBallSpeed = 1000;
 	let lastTime = useRef(Date.now());
 	let lastCall = useRef(Date.now());
@@ -285,7 +288,6 @@ export function Pong() {
 				navigate("/user/" + payload);
 			}, 2500);
 		});
-
 	}, [socket, navigate, leftUser]);
 
 	return (
@@ -295,7 +297,7 @@ export function Pong() {
 				<Stage
 					width={width}
 					height={height}
-					options={{ backgroundColor: 0x000000 /*, backgroundAlpha: 0.5 */}}
+					options={{ backgroundColor: 0x182e41 , backgroundAlpha: 0.5 }}
 				>
 					<Container>
 					{/* Render a dashed line in the middle of the terrain */}
@@ -304,39 +306,49 @@ export function Pong() {
 							graphics.lineStyle(5, 0xffffff, 1, 0.5, true); // White color, 5px width, 50% alpha, 50% spacing
 							graphics.moveTo(width / 2, 0); // Start at the top middle
 							graphics.lineTo(width / 2, height); // Draw a line to the bottom middle
-						}}
-					/>
+						    graphics.filters = [new GlowFilter({
+								color: 0xffffff, // Couleur du glow (même que la bordure)
+								distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
+								outerStrength: 4, // Force du glow à l'extérieur de la forme
+								innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
+							  })];
+							}}
+						  />
 
-					{leftUser && <><Graphics
+					{/* {leftUser && <><Graphics
 								draw={(graphics) => {
 									graphics.lineStyle(paddleWidth, 0xff0000, 0.8, 0.5); // White color
 									graphics.moveTo(0, 0); // Start at the top left corner
 									graphics.lineTo(0, height); // Draw a line to the top right corner
-								}}
+									graphics.filters = [new BlurFilter(8, 1)]; // Le premier paramètre (8) contrôle le flou (plus la valeur est grande, plus le glow est étendu)
+									}}
 							/>
 							<Graphics
 								draw={(graphics) => {
 									graphics.lineStyle(paddleWidth, 0x00ff00, 0.8, 0.5); // White color
 									graphics.moveTo(width, 0); // Start at the top left corner
 									graphics.lineTo(width, height); // Draw a line to the top right corner
-								}}
+								 	graphics.filters = [new BlurFilter(8, 1)]; // Le premier paramètre (8) contrôle le flou (plus la valeur est grande, plus le glow est étendu)
+									
+									}}
 						/></>
-					}
-					{!leftUser && <><Graphics
+					} */}
+					 <Graphics // sides lines
 								draw={(graphics) => {
-									graphics.lineStyle(paddleWidth, 0x00ff00, 0.8, 0.5); // White color
+									graphics.lineStyle(paddleWidth, 0x182e41, 0.8, 0.5); // White color
 									graphics.moveTo(0, 0); // Start at the top left corner
 									graphics.lineTo(0, height); // Draw a line to the top right corner
-								}}
-							/>
-							<Graphics
-								draw={(graphics) => {
-									graphics.lineStyle(paddleWidth, 0xff0000, 0.8, 0.5); // White color
 									graphics.moveTo(width, 0); // Start at the top left corner
-									graphics.lineTo(width, height); // Draw a line to the top right corner
-								}}
-						/></>
-					}
+									graphics.lineTo(width, height); // Draw a line to the top right corne
+									}}
+									filters={[new GlowFilter({
+										distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
+										outerStrength: 4, // Force du glow à l'extérieur de la forme
+										innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
+										color: 0x182e41, // Couleur du glow (même que la couleur de la balle)
+									  })]}
+						/>
+
 
 					{/* Write the usernames on the terrain */}
 					<Text
@@ -347,10 +359,11 @@ export function Pong() {
 						style={
 						new PIXI.TextStyle({
 							align: 'center',
-							fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+							fontFamily: '"Bruno Ace SC", cursive',
 							fontSize: 30,
 							fontWeight: 'normal',
-							fill: ['#ffffff', '#eeeeff'], // gradient
+							fill: gameState.p1Score <= gameState.p2Score ? '0xff0000' : '0x01d27e', // Rouge pour le joueur 1, Vert pour le joueur 2
+							// fill: ['#ffffff', '#eeeeff'], // gradient
 							// stroke: '#01d27e',
 							// strokeThickness: 5,
 							// letterSpacing: 20,
@@ -363,6 +376,12 @@ export function Pong() {
 							wordWrapWidth: width / 4,
 						})
 						}
+						filters={[new GlowFilter({
+							distance: 5, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
+							outerStrength: 2, // Force du glow à l'extérieur du texte
+							innerStrength: 0, // Force du glow à l'intérieur du texte (0 signifie aucun glow intérieur)
+							color: 0xffffff, // Couleur du glow (choisissez une couleur néon appropriée)
+						  })]}
 					/>
 					<Text
 						text={gameState.p2Username + " " + gameState.p2Score}
@@ -372,10 +391,10 @@ export function Pong() {
 						style={
 						new PIXI.TextStyle({
 							align: 'center',
-							fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+							fontFamily: '"Bruno Ace SC", cursive',
 							fontSize: 30,
 							fontWeight: 'normal',
-							fill: ['#ffffff', '#eeeeff'], // gradient
+							fill: gameState.p1Score <= gameState.p2Score ? '0x01d27e' : '0xff0000', // Rouge pour le joueur 1, Vert pour							// fill: ['#ffffff', '#eeeeff'], // gradient
 							// stroke: '#01d27e',
 							// strokeThickness: 5,
 							// letterSpacing: 20,
@@ -388,18 +407,36 @@ export function Pong() {
 							wordWrapWidth: width / 4,
 						})
 						}
+						filters={[new GlowFilter({
+							distance: 5, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
+							outerStrength: 2, // Force du glow à l'extérieur du texte
+							innerStrength: 0, // Force du glow à l'intérieur du texte (0 signifie aucun glow intérieur)
+							color: 0xffffff, // Couleur du glow (choisissez une couleur néon appropriée)
+						  })]}
 					/>
 
 					{/* Render the ball */}
 					<Graphics
 						x={0} // X position for the ball
 						y={0} // Y position for the ball
+						
 						draw={(graphics) => {
+							// graphics.clear();
+							// graphics.beginFill(0xff00ff); // Red color
+							// graphics.drawCircle(gameState.ballX, gameState.ballY, ballRadius); // Ball radius
+							// graphics.endFill();
+							const ballRadiusWithGlow = ballRadius + 2; // Ajoutons un rayon supplémentaire pour le glow
 							graphics.clear();
-							graphics.beginFill(0xff0000); // Red color
-							graphics.drawCircle(gameState.ballX, gameState.ballY, ballRadius); // Ball radius
+							graphics.beginFill(0x51eff5); // bleu pour la balle
+							graphics.drawCircle(gameState.ballX, gameState.ballY, ballRadiusWithGlow); // Dessiner un cercle avec le glow
 							graphics.endFill();
-						}}
+						  }}
+						  filters={[new GlowFilter({
+							distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
+							outerStrength: 4, // Force du glow à l'extérieur de la forme
+							innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
+							color: 0xffffff, // Couleur du glow (même que la couleur de la balle)
+						  })]}
 					/>
 
 					{/* Render the paddles */}
@@ -410,8 +447,14 @@ export function Pong() {
 							graphics.clear();
 							graphics.beginFill(0xffffff); // White color
 							graphics.drawRect(0, 0, paddleWidth, paddleLength); // Paddle dimensions
+							graphics.filters = [new GlowFilter({
+								color: 0xffffff, // Couleur du glow (même que la bordure)
+								distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
+								outerStrength: 2, // Force du glow à l'extérieur de la forme
+								innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
+							  })];
 							graphics.endFill();
-						}}
+							}}
 					/>
 					<Graphics
 						x={width - paddleWidth} // X position for the right paddle
@@ -420,8 +463,14 @@ export function Pong() {
 							graphics.clear();
 							graphics.beginFill(0xffffff); // White color
 							graphics.drawRect(0, 0, paddleWidth, paddleLength); // Paddle dimensions
+							graphics.filters = [new GlowFilter({
+								color: 0xffffff, // Couleur du glow (même que la bordure)
+								distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
+								outerStrength: 2, // Force du glow à l'extérieur de la forme
+								innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
+							  })];
 							graphics.endFill();
-						}}
+							}}
 					/>
 
 					{/* Render the arena contour as two lines above and below the terrain */}
@@ -432,8 +481,14 @@ export function Pong() {
 							graphics.lineTo(width, 0); // Draw a line to the top right corner
 							graphics.moveTo(0, height); // Start at the bottom left corner
 							graphics.lineTo(width, height); // Draw a line to the bottom right corner
-						}}
-					/>
+							graphics.filters = [new GlowFilter({
+								color: 0xffffff, // Couleur du glow (même que la bordure)
+								distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
+								outerStrength: 4, // Force du glow à l'extérieur de la forme
+								innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
+							  })];
+							}}
+						  />
 
 					</Container>
 				</Stage>
