@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { MailService } from 'src/mail/mail.service';
 import { sleep } from 'pactum';
+import { SocketsService } from 'src/sockets/sockets.service';
 
 const hashingConfig = {
 	parallelism: 1,
@@ -17,7 +18,7 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class AuthService {
-	constructor(private readonly jwtService: JwtService, private mailService: MailService) { }
+	constructor(private readonly jwtService: JwtService, private mailService: MailService, private socketsService: SocketsService) { }
 
 	async redirect42(@Query() query, @Res({ passthrough: true }) res: Response) {
 
@@ -285,13 +286,8 @@ export class AuthService {
 		// Delete jwt from cookies.
 		res.clearCookie('jwt');
 
-		// We inform everyone that the user is now inactive via websockets.
-		// const userDb = await prisma.user.findUnique({
-		// 	where: {
-		// 		id: userId,
-		// 	}
-		// });
-		// this.webSocketGateway.server.emit('inactivity', userDb.nickname);
+		// Close socket connection.
+		this.socketsService.currentActiveUsers.get(userId).disconnect(true);
 
 		return "Successfully logged out.";
 	}

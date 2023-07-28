@@ -1,10 +1,13 @@
 import '../../styles/Tab_Chat.css';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquarePlus, faGamepad, faBan, faPersonWalkingArrowRight, faCommentSlash } from "@fortawesome/free-solid-svg-icons";
 import { fetchMe } from '../../api/APIHandler';
 import { IChannel } from '../../api/types';
+import toast from 'react-hot-toast';
+import { SocketContext } from '../../context/contexts';
+import { Socket } from 'socket.io-client';
 
 export function AdminOptions({ channel }: { channel: IChannel}) {
 	const [enableOptions, setEnableOptions] = useState<boolean>(false);
@@ -22,6 +25,17 @@ export function AdminOptions({ channel }: { channel: IChannel}) {
 		setToggleDisplay(!toggleDisplay);
 	}
 
+	const socket = useContext(SocketContext);
+
+	const handleInvitation = () => {
+
+		console.log('Invite to game');
+
+		socket?.emit('invite match', /* Insert the username of the user you want to invite here */);
+
+		toast.success('Invitation sent');
+	}
+
 	if (userQuery.error) {
 		return <div>Error</div>
 	}
@@ -30,7 +44,7 @@ export function AdminOptions({ channel }: { channel: IChannel}) {
 	}
 	return (
 	<>
-		<FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} />
+		<FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} onClick={handleInvitation}/>
 		{
 			enableOptions === true &&
 			<>

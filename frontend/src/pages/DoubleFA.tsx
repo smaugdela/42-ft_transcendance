@@ -27,6 +27,7 @@ const VerificationPage = () => {
 			setIsLoading(false);
             setTimeout(() => {
               navigate('/');
+			  window.location.reload();
             }, 2000); // Delay before redirecting to the home page (2 seconds)
           } else {
             // Handle the case when the code is not valid
