@@ -7,7 +7,6 @@ import { fetchMe } from '../../api/APIHandler';
 import { IChannel } from '../../api/types';
 import toast from 'react-hot-toast';
 import { SocketContext } from '../../context/contexts';
-import { Socket } from 'socket.io-client';
 
 export function AdminOptions({ channel }: { channel: IChannel}) {
 	const [enableOptions, setEnableOptions] = useState<boolean>(false);

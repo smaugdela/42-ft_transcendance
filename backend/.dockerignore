@@ -1,0 +1,13 @@
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+dist
+# *.pem
+meilisearch
+.env
+# .env.docker
+.env_template
+Makefile
+.eslintrc.js
+README.md

@@ -6,7 +6,6 @@ import AuthDto from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { MailService } from 'src/mail/mail.service';
-import { sleep } from 'pactum';
 import { SocketsService } from 'src/sockets/sockets.service';
 
 const hashingConfig = {
@@ -147,7 +146,6 @@ export class AuthService {
 	async login2FA(@Query() query, @Res({ passthrough: true }) res: Response) {
 		const code = query.code;
 		const id: number = +query.userId;
-		sleep(1000);
 		try {
 			if (await this.mailService.Confirmation2FA(id, code)) {
 				const user = await prisma.user.update({
