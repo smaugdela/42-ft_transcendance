@@ -19,10 +19,12 @@ import DoubleFA from './pages/DoubleFA';
 import Error from './pages/Error';
 import PendingPage from './pages/DoubleFAPending';
 import { Pong } from './pages/Pong';
+import { CustomPong } from "./pages/CustomPong";
 import { AppProvider } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 import { IsLoggedInContext, SocketContext, ChatStatusContext } from './context/contexts';
 import { IChannel } from './api/types';
+
 
 function App() {
 
@@ -80,6 +82,7 @@ function App() {
             <Route path="/social" element={<Social />} />
             <Route path='/settings' element={<Settings />} />
 			<Route path='/pong' element={<Pong />} />
+      <Route path='/custompong' element={<CustomPong />} />
             <Route path='/login' element={<Login setLoggedIn={setLoggedIn} setSocket={setSocket} />} />
 			<Route path='/2fa' element={<DoubleFA/>} />
 			<Route path='/2fa/pending' element={<PendingPage/>} />

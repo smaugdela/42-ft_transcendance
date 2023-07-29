@@ -39,7 +39,7 @@ export class SocketsService {
 		height: 600, // in pixels
 		paddleLength: 100, // in pixels
 		paddleWidth: 10, // in pixels
-		ballRadius: 10, // in pixels
+		ballRadius: 5, // in pixels
 		maxBallSpeed: 1000, // in pixels per second
 		winScore: 10, // in points
 	};

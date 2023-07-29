@@ -1,16 +1,22 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SocketContext } from "../context/contexts";
+import { SocketContext } from '../context/contexts'; 
 import { Stage, Graphics, AppConsumer, useApp, Text, Container } from "@pixi/react";
 import toast from "react-hot-toast";
 import { Ticker } from "pixi.js";
 import * as PIXI from "pixi.js";
 import { BlurFilter } from "@pixi/filter-blur"
-import "../styles/Pong.css"
+import "../styles/CustomPong.css"
 import { GlowFilter } from "@pixi/filter-glow";
 
 
-export function Pong() {
+//
+//                                 -------------------------------------
+//                                = !!!         CUSTOM MODE        !!!  =
+//                                 -------------------------------------
+//
+
+export function CustomPong() {
 	const socket = useContext(SocketContext);
 	const navigate = useNavigate();
 	const fps = 60;
@@ -97,10 +103,12 @@ export function Pong() {
 				case true:
 				{
 					if (upKeyPressed && gameState.leftPaddleY > 0) {
+						// setLeftPaddle(leftPaddle - (paddleSpeed * delta));
 						gameState.leftPaddleY -= (paddleSpeed * delta);
 					}
 
 					if (downKeyPressed && gameState.leftPaddleY < height - paddleLength) {
+						// setLeftPaddle(leftPaddle + (paddleSpeed * delta));
 						gameState.leftPaddleY += (paddleSpeed * delta);
 					}
 					break;
@@ -108,10 +116,12 @@ export function Pong() {
 				case false:
 				{
 					if (upKeyPressed && gameState.rightPaddleY > 0) {
+						// setRightPaddle(rightPaddle - (paddleSpeed * delta));
 						gameState.rightPaddleY -= (paddleSpeed * delta);
 					}
 
 					if (downKeyPressed && gameState.rightPaddleY < height - paddleLength) {
+						// setRightPaddle(rightPaddle + (paddleSpeed * delta));
 						gameState.rightPaddleY += (paddleSpeed * delta);
 					}
 					break;
@@ -144,7 +154,6 @@ export function Pong() {
 					gameState.ballSpeedX *= -1.8;
 					gameState.ballSpeedY *= 1.2;
 				} else {
-					// Goal
 					gameState.ballSpeedX = 0;
 					gameState.ballSpeedY = 0;
 				}
@@ -155,7 +164,6 @@ export function Pong() {
 					gameState.ballSpeedX *= -1.8;
 					gameState.ballSpeedY *= 1.2;
 				} else {
-					// Goal
 					gameState.ballSpeedX = 0;
 					gameState.ballSpeedY = 0;
 				}
@@ -295,7 +303,7 @@ export function Pong() {
 				<Stage
 					width={width}
 					height={height}
-					options={{ backgroundColor: 0x182e41 , backgroundAlpha: 0.5 }}
+					options={{ backgroundColor: 0xef9dfa , backgroundAlpha: 0.5 }}
 				>
 					<Container>
 					{/* Render a dashed line in the middle of the terrain */}
@@ -333,7 +341,7 @@ export function Pong() {
 					} */}
 					 <Graphics // sides lines
 								draw={(graphics) => {
-									graphics.lineStyle(paddleWidth, 0x182e41, 0.8, 0.5); // White color
+									graphics.lineStyle(paddleWidth, 0xfad9ff, 0.8, 0.5); // pink color
 									graphics.moveTo(0, 0); // Start at the top left corner
 									graphics.lineTo(0, height); // Draw a line to the top right corner
 									graphics.moveTo(width, 0); // Start at the top left corner
@@ -343,7 +351,7 @@ export function Pong() {
 										distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 										outerStrength: 4, // Force du glow à l'extérieur de la forme
 										innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
-										color: 0x182e41, // Couleur du glow (même que la couleur de la balle)
+										color: 0xfad9ff, // Couleur du glow (même que la couleur de la balle)
 									  })]}
 						/>
 
@@ -415,8 +423,9 @@ export function Pong() {
 
 					{/* Render the ball */}
 					<Graphics
-						x={0}
-						y={0}
+						x={0} // X position for the ball
+						y={0} // Y position for the ball
+						
 						draw={(graphics) => {
 							// graphics.clear();
 							// graphics.beginFill(0xff00ff); // Red color
@@ -438,8 +447,8 @@ export function Pong() {
 
 					{/* Render the paddles */}
 					<Graphics
-						x={0}
-						y={gameState.leftPaddleY}
+						x={0} // X position for the left paddle
+						y={gameState.leftPaddleY} // Y position for the left paddle
 						draw={(graphics) => {
 							graphics.clear();
 							graphics.beginFill(0xffffff); // White color
@@ -454,8 +463,8 @@ export function Pong() {
 							}}
 					/>
 					<Graphics
-						x={width - paddleWidth}
-						y={gameState.rightPaddleY}
+						x={width - paddleWidth} // X position for the right paddle
+						y={gameState.rightPaddleY} // Y position for the right paddle
 						draw={(graphics) => {
 							graphics.clear();
 							graphics.beginFill(0xffffff); // White color
