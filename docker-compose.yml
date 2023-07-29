@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+
+  database:
+    image: postgres:15.3-alpine
+    container_name: postgres
+    restart: unless-stopped
+    env_file:
+      - ./database/.env.docker
+    # ports:
+    #   - 5432:5432
+    networks:
+      - transcendance
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  backend:
+    container_name: backend
+    depends_on:
+      - database
+    restart: unless-stopped
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3001
+    networks:
+      - transcendance
+
+  frontend:
+    container_name: frontend
+    depends_on:
+      - database
+      - backend
+    restart: unless-stopped
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 443:443
+    networks:
+      - transcendance
+
+networks:
+  transcendance:
+    driver: bridge
+
+volumes:
+  postgres:
+    driver: local
+    driver_opts:
+      type: none
+      device: '${PWD}/data'
+      o: bind
+
+# ADD MEILISEARCH

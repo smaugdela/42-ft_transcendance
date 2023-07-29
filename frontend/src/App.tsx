@@ -84,12 +84,12 @@ function App() {
 			<Route path='/pong' element={<Pong />} />
       <Route path='/custompong' element={<CustomPong />} />
             <Route path='/login' element={<Login setLoggedIn={setLoggedIn} setSocket={setSocket} />} />
-			      <Route path='/2fa' element={<DoubleFA/>} />
-			      <Route path='/2fa/pending' element={<PendingPage/>} />
+			<Route path='/2fa' element={<DoubleFA/>} />
+			<Route path='/2fa/pending' element={<PendingPage/>} />
             <Route path='/user' element={<UserProfile />} />
-	    	    <Route path='/gamepage' element ={<GamePage/>}/>
-			      <Route path='/error/:status' element={<Error/>} />
-			      <Route path='*' element={<Error/>} />
+	    	<Route path='/gamepage' element ={<GamePage/>}/>
+			<Route path='/error/:status' element={<Error/>} />
+			<Route path='*' element={<Error/>} />
             <Route path={`/user/:nickname`}  element={<UserProfile />} />
           </Routes>
 		</AppProvider>

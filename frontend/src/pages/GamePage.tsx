@@ -9,14 +9,18 @@ export default function GamePage() {
 	const socket = useContext(SocketContext);
 	const navigate = useNavigate();
 
-	socket?.on("match ready", () => {
+	socket?.on("match ready", (mode: string) => {
 			const duration = 2500; // 2.5 seconds
 
 			setTimeout(() => {
 				// Only send "match declined" if the match is still in the waiting state
 				// toast.dismiss("matchmaking");
 				socket.off("match ready");
-				navigate("/pong");
+				if (mode === "Custom") {
+					navigate("/pongCustom");
+				} else {
+					navigate("/pong");
+				}
 			}, duration + 500);
 
 			toast.success("Match found! Redirecting to game...",
@@ -45,10 +49,23 @@ export default function GamePage() {
 		</button>
 	);
 
-	const handleMulti = () => {
+	const handleCustom = () => {
 		if (socket) {
-			socket.emit("Join Queue");
-			toast.loading(<span>Searching for a match... {leaveQueueButton} </span>, {
+			socket.emit("Join Queue", "Custom");
+			toast.loading(<span>Looking for a custom match... {leaveQueueButton} </span>, {
+				id: "matchmaking",
+				icon: "🔍",
+				position: "bottom-center",
+			});
+		} else {
+			console.log("Socket is null");
+		}
+	};
+
+	const handleClassic = () => {
+		if (socket) {
+			socket.emit("Join Queue", "Classic");
+			toast.loading(<span>Looking for a classic match... {leaveQueueButton} </span>, {
 				id: "matchmaking",
 				icon: "🔍",
 				position: "bottom-center",
@@ -60,10 +77,10 @@ export default function GamePage() {
 
 	return (
 		<div id="play-screen2">
-			<button className="button1" data-text="MODE SOLO">
+			<button className="button1" onClick={handleClassic} data-text="MODE CLASSIC">
 				MODE SOLO
 			</button>
-			<button className="button2" onClick={handleMulti} data-text="MODE MULTI">
+			<button className="button2" onClick={handleCustom} data-text="MODE CUSTOM">
 				MODE MULTI
 			</button>
 		</div>

@@ -1,9 +1,11 @@
 import axios from "axios";
 import { IMatch, IUser, IChannel, IMessage } from "./types";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 axios.defaults.withCredentials = true;
+
 
 /* ######################*/
 /* ##   INTERCEPTORS   ##*/
@@ -16,14 +18,17 @@ const api = axios.create({
 api.interceptors.response.use(
 	(response) => response,
 	(error) => {
+		const Navigate = useNavigate();
 		if (error.response && error.response.status === 401) {
 			// Redirect to the "Login" page
-			window.location.href = '/Login';
+			// window.location.href = '/Login';
+			Navigate('/Login');
 		}
-		// else if (error.response) {
-		// 	// Redirect to the according error pages
-		// 	window.location.href = '/Error' + error.response.status;
-		// }
+		else if (error.response) {
+			// Redirect to the according error pages
+			// window.location.href = '/Error/' + error.response.status;
+			Navigate('/Error/' + error.response.status);
+		}
 		return Promise.reject(error);
 	},
 );
@@ -292,6 +297,21 @@ export async function updateUserInChannel(userId: number, channelId: number, gro
 	}
 }
 
+export async function leaveChannel(userId: number, channelId: number) {
+	try {
+		const response = await api.delete(`/chat/channel/leave/${channelId}`,
+		{
+			data: {userId},
+		});
+		return response.data;
+	} catch (error) {
+		throw new Error("Error: An error occured while you were leaving this channel.")
+	}
+}
+
+
+
+
 /**
  * @description Find the convo, and if it doesn't exist, create it and join both users to it
  * @param roomName Name of the conversation (Syntax: senderNickname + ' ' + receiverNickname)
@@ -299,17 +319,17 @@ export async function updateUserInChannel(userId: number, channelId: number, gro
  * @returns the channel of the conversation (DM)
  */
 export async function manageDirectMessages(roomName: string, contactedUserId: number): Promise<IChannel> {
-	
+
 	try {
-        let conv: IChannel = await getOneChannelByName(roomName);
-        if (!conv) {
-            conv = await createChannel(roomName, "", 'DM'); // Using '' for password for DM type
-        }
-        await updateUserInChannel(contactedUserId, conv.id, 'joinedUsers', 'connect' );
-        return conv;
-    } catch (error) {
-        throw new Error('Error: cannot establish this personal convo');
-    }
+		let conv: IChannel = await getOneChannelByName(roomName);
+		if (!conv) {
+			conv = await createChannel(roomName, "", 'DM'); // Using '' for password for DM type
+		}
+		await updateUserInChannel(contactedUserId, conv.id, 'joinedUsers', 'connect');
+		return conv;
+	} catch (error) {
+		throw new Error('Error: cannot establish this personal convo');
+	}
 }
 
 /**
@@ -347,11 +367,11 @@ export async function createMessage(channel: IChannel, content: string): Promise
 
 export async function getAllMsgsofChannel(channelId: number): Promise<IMessage[]> {
 	try {
-		const response =  await api.get(`/chat/messages/${channelId}`);
+		const response = await api.get(`/chat/messages/${channelId}`);
 		const messages: IMessage[] = response.data.map((message: IMessage) => ({
 			...message,
 			date: new Date(message.date),
-		  }));
+		}));
 
 		return messages;
 	} catch (error) {
