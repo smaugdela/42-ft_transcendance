@@ -12,7 +12,7 @@ import ChannelLink from './ChannelLink';
 
 export default function TabMore() {
 
-	const channelsQuery = useQuery({queryKey: ['allChannels'], queryFn: () => getAllChannels()});
+	const channelsQuery = useQuery({queryKey: ['channels'], queryFn: () => getAllChannels()});
 	const queryClient = useQueryClient();
 	
 		const joinChannelRequest = useMutation({

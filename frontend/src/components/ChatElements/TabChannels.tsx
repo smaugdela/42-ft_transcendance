@@ -24,6 +24,7 @@ export default function TabChannels({ joinedChannels }: { joinedChannels: IChann
 	  {
 		joinedChannels && (
 			joinedChannels.map((chan) => {
+				
 				return (
 					<div key={(chan.id + 1).toString()} onClick={(event) => handleClick(event, chan)}>
 						<ChannelLink key={chan.id.toString()} 

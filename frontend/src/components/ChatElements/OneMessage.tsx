@@ -23,7 +23,7 @@ export function OneMessage({ conv, message, index } :
 		if (userMe?.nickname !== message.from.nickname) {
 			setIsMe(true)
 		}
-	}, [userMe, message.from, setIsMe])
+	}, [userMe, message.from, setIsMe, conv])
 	
 	if (error) {
 		<div>Error while sending your message. Please retry.</div>
@@ -48,7 +48,7 @@ export function OneMessage({ conv, message, index } :
 		{
 			conv.type !== 'DM' && isMe === true && 
 			conv.admin.filter((admin) => admin.nickname === userMe?.nickname).length === 1 && 
-			<AdminOptions channel={conv}/>
+			<AdminOptions channelName={conv.roomName}  userTalking={message.from}/>
 		}
 	</div>
 	);
