@@ -13,7 +13,7 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 	const [enableOptions, setEnableOptions] = useState<boolean>(false);
 	const [toggleDisplay, setToggleDisplay] = useState<boolean>(false);
 	const userQuery = useQuery({ queryKey: ['user'], queryFn: fetchMe });
-	const { data: channel, error, isLoading, isSuccess }= useQuery({ 
+	const { data: channel }= useQuery({ 
 		queryKey: ['channels', channelName], 
 		queryFn: () => getOneChannelByName(channelName) 
 	});
