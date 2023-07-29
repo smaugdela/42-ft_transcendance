@@ -8,7 +8,6 @@ import { IChannel, IUser } from '../../api/types';
 import toast from 'react-hot-toast';
 
 // TODO: refetch le channel dans ce component, grâce à un id passé pour que ça s'update
-// ou alors get le groupe susvisé pour savoir son état en temps réel
 export function AdminOptions({ channelName, userTalking }: { channelName: string, userTalking: IUser}) {
 	const [enableOptions, setEnableOptions] = useState<boolean>(false);
 	const [toggleDisplay, setToggleDisplay] = useState<boolean>(false);
