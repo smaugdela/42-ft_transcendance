@@ -288,7 +288,42 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		} catch (error) {
 			console.log(error);
 		}
+	}
 
+	@SubscribeMessage('decline match invitation')
+	async handleDeclineMatchInvitation(client: Socket, username2: string): Promise<void> {
+
+		try {
+			const userId1 = client.data.userId;
+			const username1 = client.data.username;
+
+			const socket = this.getSocketByUserId(userId1);
+			if (socket === undefined) {
+				console.log("Error: socket undefined");
+				return;
+			}
+
+			const user2 = await prisma.user.findUnique({
+				where: {
+					nickname: username2
+				}
+			});
+			if (!user2) {
+				console.log("Error: user not found");
+				return;
+			}
+
+			const userId2 = user2.id;
+			const socket2 = this.getSocketByUserId(userId2);
+			if (socket2 === undefined) {
+				console.log("Error: socket undefined");
+				return;
+			}
+
+			socket2.emit('match invitation declined', username1);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	/* ######################### */

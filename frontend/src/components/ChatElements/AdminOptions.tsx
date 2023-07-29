@@ -46,10 +46,14 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 
 		console.log('Invite to game');
 
-		socket?.emit('invite match', /* Insert the username of the user you want to invite here */);
+		socket?.emit('invite match', userTalking.nickname);
 
 		toast.success('Invitation sent');
-  }
+	}
+
+	socket?.on('match invitation declined', (nickname: string) => {
+		toast.error(`${nickname} declined your invitation.`);
+	});
 
 	const handleRole = (group: keyof IChannel) => {
 		if (channel) {
@@ -68,6 +72,7 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 				toast.success(`${userTalking.nickname} has been removed from this role.`);
 			}
 		}
+	}
 
 	if (userQuery.error) {
 		return <div>Error</div>

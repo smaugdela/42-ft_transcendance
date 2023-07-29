@@ -78,10 +78,10 @@ export default function GamePage() {
 	return (
 		<div id="play-screen2">
 			<button className="button1" onClick={handleClassic} data-text="MODE CLASSIC">
-				MODE SOLO
+				CLASSIC MODE
 			</button>
 			<button className="button2" onClick={handleCustom} data-text="MODE CUSTOM">
-				MODE MULTI
+				CUSTOM MODE
 			</button>
 		</div>
 	);
