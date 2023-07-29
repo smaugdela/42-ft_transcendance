@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 export class Player {
 	userId: number;
+	mode: string;
 	username: string;
 	score: number;
 	ready: boolean;
@@ -14,6 +15,7 @@ export class Player {
 export class MatchClass {
 	matchId: number;
 	started: number;
+	mode: string;
 
 	player1: Player;
 	player2: Player;
@@ -93,34 +95,37 @@ export class SocketsService {
 		}
 	}
 
-	createPlayer(userId: number, username: string) {
+	createPlayer(userId: number, username: string, mode: string) {
 		const player = new Player;
 		player.userId = userId;
+		player.mode = mode;
 		player.username = username;
 		player.score = 0;
 		return player;
 	}
 
-	addToQueue(userId: number, username: string) {
+	addToQueue(userId: number, username: string, mode: string): number {
 
 		for (let i = 0; i < this.queue.length; i++) {
 			if (this.queue[i].userId === userId) {
 				console.log("User already in queue.");
-				return;
+				return i;
 			}
 		}
 
-		const player = this.createPlayer(userId, username);
+		const player = this.createPlayer(userId, username, mode);
 		this.queue.push(player);
 
 		console.log(username, " joined the queue");
 
+		return this.queue.length - 1;
 	}
 
-	addMatch(player1: Player = undefined, player2: Player = undefined) {
+	addMatch(mode = "Classic", player1: Player = undefined, player2: Player = undefined) {
 
 		const match = new MatchClass;
 		match.matchId = this.matchId++;
+		match.mode = mode;
 
 		if (player1 === undefined) {
 			match.player1 = this.queue.shift();

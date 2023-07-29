@@ -95,6 +95,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		client.join(room);
 		console.log(client.data.username, ` has joined the room ${payload}!`);
 	}
+
 	/* ######################### */
 	/* ######### CHAT ########## */
 	/* ######################### */
@@ -129,33 +130,45 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	/* ######################### */
 
 	@SubscribeMessage('Join Queue')
-	async handleJoinQueue(client: Socket, payload: string): Promise<void> {
-		void (payload);
+	async handleJoinQueue(client: Socket, mode: string): Promise<void> {
 
 		const userId = client.data.userId;
 		const username = client.data.username;
 
 		// Add user to queue
-		this.socketsService.addToQueue(userId, username);
+		const myIndex = this.socketsService.addToQueue(userId, username, mode);
 
 		// Check if there is a match to launch
 		this.socketsService.cleanupMatches();
 		let match;
-		if (this.socketsService.queue.length >= 2) {
-			match = this.socketsService.addMatch();
-			const socket1: Socket = this.getSocketByUserId(match.player1.userId);
-			const socket2: Socket = this.getSocketByUserId(match.player2.userId);
+		let userAtIndex;
+		for (let i = 0; i < this.socketsService.queue.length;) {
 
-			if (socket1 === undefined || socket2 === undefined) {
-				console.log("Error: socket undefined");
-				return;
+			userAtIndex = this.socketsService.queue[i];
+
+			if (userAtIndex.userId !== userId && userAtIndex.mode === mode) {
+
+				const player1 = this.socketsService.queue.splice(i, 1)[0];
+				const player2 = this.socketsService.queue.splice(myIndex, 1)[0];
+
+				match = this.socketsService.addMatch(mode, player1, player2);
+				const socket1: Socket = this.getSocketByUserId(match.player1.userId);
+				const socket2: Socket = this.getSocketByUserId(match.player2.userId);
+
+				if (socket1 === undefined || socket2 === undefined) {
+					console.log("Error: socket undefined");
+					return;
+				}
+
+				socket1.join(match.matchId.toString());
+				socket2.join(match.matchId.toString());
+				this.server.to(match.matchId.toString()).emit('match ready', match.mode);
+
+				console.log("Match ready, waiting for players to accept...");
+
+			} else {
+				i++;
 			}
-
-			socket1.join(match.matchId.toString());
-			socket2.join(match.matchId.toString());
-			this.server.to(match.matchId.toString()).emit('match ready', match);
-
-			console.log("Match ready, waiting for players to accept...");
 		}
 	}
 
@@ -206,6 +219,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		}
 	}
 
+	// Only Classic Mode for now
 	@SubscribeMessage('invite match')
 	async inviteMatch(client: Socket, username: string): Promise<void> {
 
@@ -230,6 +244,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		socket.emit('match invitation', client.data.username);
 	}
 
+	// Only Classic Mode for now
 	@SubscribeMessage('accept match invitation')
 	async handleAcceptMatchInvitation(client: Socket, username2: string): Promise<void> {
 
@@ -261,10 +276,10 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			}
 
 			// Create a match with the two players
-			const player1 = this.socketsService.createPlayer(userId1, username1);
-			const player2 = this.socketsService.createPlayer(userId2, username2);
+			const player1 = this.socketsService.createPlayer(userId1, username1, "Classic");
+			const player2 = this.socketsService.createPlayer(userId2, username2, "Classic");
 
-			const match = this.socketsService.addMatch(player1, player2);
+			const match = this.socketsService.addMatch("Classic", player1, player2);
 			socket.join(match.matchId.toString());
 			socket2.join(match.matchId.toString());
 			this.server.to(match.matchId.toString()).emit('match ready', match);
@@ -480,6 +495,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			} else {
 				this.server.to(match.matchId.toString()).emit('match canceled');
 				this.socketsService.deleteMatch(match.matchId);
+				return;
 			}
 
 			// Check if it is an ace
@@ -514,7 +530,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			// Store the match result in db
 			const matchDb = await prisma.match.create({
 				data: {
-					mode: "Classic",
+					mode: match.mode,
 					duration: Date.now() - match.started,
 					winnerId: winner.id,
 					loserId: loser.id,
