@@ -52,6 +52,7 @@ export interface IMatch {
 export interface IChannel {
 	id: number;
 	date: Date;
+	lastUpdated: Date;
 	type: string;
 	password: string;
 	roomName: string;

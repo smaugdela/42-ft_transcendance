@@ -33,7 +33,7 @@ export default function ChanCreationForm() {
 		onSuccess: () => { 
 			queryClient.invalidateQueries(['channels']);
 			toast.success(`Your channel ${channelName} was successfully created!`) },
-		onError: () => { toast.error('Error during creation: channel name already in use') }
+		onError: () => { toast.error('Error during creation of channel') }
 	})
 
 	// Pour créer le channel et faire la connexion websocket

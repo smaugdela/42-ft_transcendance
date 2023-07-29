@@ -297,6 +297,21 @@ export async function updateUserInChannel(userId: number, channelId: number, gro
 	}
 }
 
+export async function leaveChannel(userId: number, channelId: number) {
+	try {
+		const response = await api.delete(`/chat/channel/leave/${channelId}`,
+		{
+			data: {userId},
+		});
+		return response.data;
+	} catch (error) {
+		throw new Error("Error: An error occured while you were leaving this channel.")
+	}
+}
+
+
+
+
 /**
  * @description Find the convo, and if it doesn't exist, create it and join both users to it
  * @param roomName Name of the conversation (Syntax: senderNickname + ' ' + receiverNickname)

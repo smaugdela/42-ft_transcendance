@@ -18,7 +18,10 @@ interface Tab {
 
 const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<Socket | null>> }) => {
 
-	const { data, status } = useQuery(['channels'], getAllUserChannels);
+	const { data, status } = useQuery({
+		queryKey: ['channels'], 
+		queryFn: getAllUserChannels
+	});
 	const { activeTab, setActiveTab, activeConv, isExpanded, setIsExpanded } = useContext(ChatStatusContext);
 
 	const toggleExpand = () => {

@@ -84,21 +84,23 @@ model Match {
 }
 
 model Channel {
-    id          Int       @id @default(autoincrement())
-    date        DateTime  @default(now())
-    type        ChanMode  @default(PUBLIC)
-    password    String?
-    roomName    String    @unique
-    owner       User      @relation(fields: [ownerId], references: [id], name: "owner")
-    ownerId     Int
-    admin       User[]    @relation("admins")
-    joinedUsers User[]    @relation("joined")
-    bannedUsers User[]    @relation("banned")
-    kickedUsers User[]    @relation("kicked")
-    mutedUsers  User[]    @relation("muted")
-    messages    Message[] @relation("messages")
 
-    @@map("channels")
+  id          Int       @id @default(autoincrement())
+  date        DateTime  @default(now())
+  lastUpdated DateTime  @default(now())
+  type        ChanMode  @default(PUBLIC)
+  password    String?
+  roomName    String    @unique
+  owner       User      @relation(fields: [ownerId], references: [id], name: "owner")
+  ownerId     Int
+  admin       User[]    @relation("admins")
+  joinedUsers User[]    @relation("joined")
+  bannedUsers User[]    @relation("banned")
+  kickedUsers User[]    @relation("kicked")
+  mutedUsers  User[]    @relation("muted")
+  messages    Message[] @relation("messages")
+
+  @@map("channels")
 }
 
 model Message {
