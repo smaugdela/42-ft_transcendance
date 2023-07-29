@@ -1,5 +1,5 @@
 # Base image (alpine is lighter and more secure)
-FROM node:18-alpine As build
+FROM node:18-alpine
 
 # Set the working directory
 WORKDIR /usr/src/app

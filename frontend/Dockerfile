@@ -1,0 +1,40 @@
+# Base Image
+FROM node:18-alpine As builder
+
+# Set the working directory
+WORKDIR /usr/src/app
+
+# Copy the package.json and package-lock.json files, and attribute them to the node user
+COPY --chown=node:node package*.json ./
+
+# Install the dependencies to generate the ad-hoc package-lock.json file.
+RUN npm ci --legacy-peer-deps
+
+# Copy the rest of the files
+COPY --chown=node:node . .
+
+# Copy the env file reserved for docker as .env
+COPY --chown=node:node .env.docker .env
+
+# Run the build command which creates the production bundle
+RUN npm run build
+
+# Optimise the node_modules directory
+RUN npm ci --legacy-peer-deps --only=production && npm cache clean --force
+
+# Use nginx as server
+FROM nginx:1.24.0-alpine
+
+# Copy assets from the builder
+COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Set NODE_ENV environment variable
+ENV NODE_ENV production
+
+# Set the correct user
+# USER www-data
+
+CMD ["nginx", "-g", "daemon off;"]
