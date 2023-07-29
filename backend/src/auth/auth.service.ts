@@ -285,7 +285,8 @@ export class AuthService {
 		res.clearCookie('jwt');
 
 		// Close socket connection.
-		this.socketsService.currentActiveUsers.get(userId).disconnect(true);
+		const socket = this.socketsService.currentActiveUsers.get(userId);
+		socket?.disconnect(true);
 
 		return "Successfully logged out.";
 	}

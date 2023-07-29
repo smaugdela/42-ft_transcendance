@@ -1,6 +1,5 @@
 import axios from "axios";
 import { IMatch, IUser, IChannel, IMessage } from "./types";
-import { useNavigate } from "react-router-dom";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -16,18 +15,21 @@ const api = axios.create({
 });
 
 api.interceptors.response.use(
-	(response) => response,
+	(response) => {
+		console.log('Response was received');
+		return response;
+	},
 	(error) => {
-		const Navigate = useNavigate();
+		// const Navigate = useNavigate();
 		if (error.response && error.response.status === 401) {
 			// Redirect to the "Login" page
-			// window.location.href = '/Login';
-			Navigate('/Login');
+			window.location.href = '/Login';
+			// Navigate('/Login');
 		}
 		else if (error.response) {
 			// Redirect to the according error pages
-			// window.location.href = '/Error/' + error.response.status;
-			Navigate('/Error/' + error.response.status);
+			window.location.href = '/Error/' + error.response.status;
+			// Navigate('/Error/' + error.response.status);
 		}
 		return Promise.reject(error);
 	},
@@ -300,9 +302,9 @@ export async function updateUserInChannel(userId: number, channelId: number, gro
 export async function leaveChannel(userId: number, channelId: number) {
 	try {
 		const response = await api.delete(`/chat/channel/leave/${channelId}`,
-		{
-			data: {userId},
-		});
+			{
+				data: { userId },
+			});
 		return response.data;
 	} catch (error) {
 		throw new Error("Error: An error occured while you were leaving this channel.")

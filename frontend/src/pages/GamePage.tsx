@@ -17,7 +17,7 @@ export default function GamePage() {
 				// toast.dismiss("matchmaking");
 				socket.off("match ready");
 				if (mode === "Custom") {
-					navigate("/pongCustom");
+					navigate("/custompong");
 				} else {
 					navigate("/pong");
 				}

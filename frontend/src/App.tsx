@@ -82,7 +82,7 @@ function App() {
             <Route path="/social" element={<Social />} />
             <Route path='/settings' element={<Settings />} />
 			<Route path='/pong' element={<Pong />} />
-      <Route path='/custompong' element={<CustomPong />} />
+      		<Route path='/custompong' element={<CustomPong />} />
             <Route path='/login' element={<Login setLoggedIn={setLoggedIn} setSocket={setSocket} />} />
 			<Route path='/2fa' element={<DoubleFA/>} />
 			<Route path='/2fa/pending' element={<PendingPage/>} />
