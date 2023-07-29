@@ -1,88 +1,90 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  avatar         String?  @default("/assets/avatar1.png")
-  nickname       String   @unique
-  email          String?  @unique
-  bio            String?
-  authtype       AuthType
-  confirmedMail  Boolean? @default(false)
-  enabled2FA     Boolean? @default(false)
-  login2FAstatus Boolean? @default(false) // Used to know if the user is in the process of logging in with 2FA (true = pending, false = not pending).
-  id42           Int?     @unique
-  token42        String?  @unique // Is the 42 oauth token for 42 students.
-  password       String? // Is the password for non 42 students.
-  coalition      String?  @default("Invite")
+    id             Int      @id @default(autoincrement())
+    createdAt      DateTime @default(now())
+    avatar         String?  @default("/assets/avatar1.png")
+    nickname       String   @unique
+    email          String?  @unique
+    bio            String?
+    authtype       AuthType
+    confirmedMail  Boolean? @default(false)
+    enabled2FA     Boolean? @default(false)
+    login2FAstatus Boolean? @default(false) // Used to know if the user is in the process of logging in with 2FA (true = pending, false = not pending).
+    id42           Int?     @unique
+    token42        String?  @unique // Is the 42 oauth token for 42 students.
+    password       String? // Is the password for non 42 students.
+    coalition      String?  @default("Invite")
 
-  aces     Int?     @default(0)
-  score    Int?     @default(0)
-  rank     Int?     @default(0)
-  isActive Boolean? @default(false)
+    aces  Int? @default(0)
+    score Int? @default(0)
+    rank  Int? @default(0)
 
-  friendsList     User[] @relation("friends")
-  friendsRelation User[] @relation("friends") // Used to store the many-to-many relation.
+    isActive Boolean? @default(false)
 
-  blockList   User[] @relation("blocked")
-  blockedFrom User[] @relation("blocked") // Used to store the many-to-many relation.
+    friendsList     User[] @relation("friends")
+    friendsRelation User[] @relation("friends") // Used to store the many-to-many relation.
 
-  pendingList User[] @relation("pendings")
-  pendingFrom User[] @relation("pendings") // Used to store the many-to-many relation.
+    blockList   User[] @relation("blocked")
+    blockedFrom User[] @relation("blocked") // Used to store the many-to-many relation.
 
-  achievements Achievement[]
+    pendingList User[] @relation("pendings")
+    pendingFrom User[] @relation("pendings") // Used to store the many-to-many relation.
 
-  ownerChans      Channel[] @relation("owner")
-  adminsChans     Channel[] @relation("admins")
-  bannedChans     Channel[] @relation("banned")
-  joinedChans     Channel[] @relation("joined")
-  kickedFromChans Channel[] @relation("kicked")
-  mutedInChans    Channel[] @relation("muted")
+    achievements Achievement[]
 
-  messages    Message[] @relation("messages")
+    ownerChans      Channel[] @relation("owner")
+    adminsChans     Channel[] @relation("admins")
+    bannedChans     Channel[] @relation("banned")
+    joinedChans     Channel[] @relation("joined")
+    kickedFromChans Channel[] @relation("kicked")
+    mutedInChans    Channel[] @relation("muted")
 
-  matchAsP1 Match[] @relation("winner")
-  matchAsP2 Match[] @relation("loser")
+    messages Message[] @relation("messages")
 
-  @@map("users")
+    matchAsP1 Match[] @relation("winner")
+    matchAsP2 Match[] @relation("loser")
+
+    @@map("users")
 }
 
 model Achievement {
-  id          Int       @id @default(autoincrement())
-  title       String
-  icon        String
-  description String
-  date        DateTime?
-  fullfilled  Boolean   @default(false)
-  user        User      @relation(fields: [userId], references: [id])
-  userId      Int
+    id          Int       @id @default(autoincrement())
+    title       String
+    icon        String
+    description String
+    date        DateTime?
+    fullfilled  Boolean   @default(false)
+    user        User      @relation(fields: [userId], references: [id])
+    userId      Int
 
-  @@map("achievements")
+    @@map("achievements")
 }
 
 model Match {
-  id          Int      @id @default(autoincrement())
-  date        DateTime @default(now())
-  mode        String
-  duration    Int
-  winner      User     @relation(fields: [winnerId], references: [id], name: "winner")
-  winnerId    Int
-  scoreWinner Int
-  loser       User     @relation(fields: [loserId], references: [id], name: "loser")
-  loserId     Int
-  scoreLoser  Int
+    id          Int      @id @default(autoincrement())
+    date        DateTime @default(now())
+    mode        String
+    duration    Int
+    winner      User     @relation(fields: [winnerId], references: [id], name: "winner")
+    winnerId    Int
+    scoreWinner Int
+    loser       User     @relation(fields: [loserId], references: [id], name: "loser")
+    loserId     Int
+    scoreLoser  Int
 
-  @@map("matches")
+    @@map("matches")
 }
 
 model Channel {
+
   id          Int       @id @default(autoincrement())
   date        DateTime  @default(now())
   lastUpdated DateTime  @default(now())
@@ -102,27 +104,26 @@ model Channel {
 }
 
 model Message {
+    id        Int      @id @default(autoincrement())
+    date      DateTime @default(now())
+    from      User     @relation(fields: [fromId], references: [id], name: "messages")
+    fromId    Int
+    to        String // nom de la room
+    content   String
+    channel   Channel  @relation(fields: [channelId], references: [id], name: "messages")
+    channelId Int
 
-  id          Int       @id @default(autoincrement())
-  date        DateTime  @default(now())
-  from        User      @relation(fields: [fromId], references: [id], name: "messages")
-  fromId      Int
-  to          String    // nom de la room
-  content     String
-  channel     Channel   @relation(fields: [channelId], references: [id], name: "messages")
-  channelId   Int
-
-  @@map("messages")
+    @@map("messages")
 }
 
 enum AuthType {
-  FORTYTWO
-  LOGNPWD
+    FORTYTWO
+    LOGNPWD
 }
 
 enum ChanMode {
-  PUBLIC // everyone can see and join the channel
-  PRIVATE // only users with an invite can join
-  PROTECTED // only user with the password can join
-  DM // private message 1-on-1
+    PUBLIC // everyone can see and join the channel
+    PRIVATE // only users with an invite can join
+    PROTECTED // only user with the password can join
+    DM // private message 1-on-1
 }

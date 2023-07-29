@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 export class Player {
 	userId: number;
+	mode: string;
 	username: string;
 	score: number;
 	ready: boolean;
@@ -14,6 +15,7 @@ export class Player {
 export class MatchClass {
 	matchId: number;
 	started: number;
+	mode: string;
 
 	player1: Player;
 	player2: Player;
@@ -93,31 +95,49 @@ export class SocketsService {
 		}
 	}
 
-	addToQueue(userId: number, username: string) {
+	createPlayer(userId: number, username: string, mode: string) {
+		const player = new Player;
+		player.userId = userId;
+		player.mode = mode;
+		player.username = username;
+		player.score = 0;
+		return player;
+	}
+
+	addToQueue(userId: number, username: string, mode: string): number {
 
 		for (let i = 0; i < this.queue.length; i++) {
 			if (this.queue[i].userId === userId) {
 				console.log("User already in queue.");
-				return;
+				return i;
 			}
 		}
 
-		const player = new Player;
-		player.userId = userId;
-		player.username = username;
-		player.score = 0;
+		const player = this.createPlayer(userId, username, mode);
 		this.queue.push(player);
 
 		console.log(username, " joined the queue");
 
+		return this.queue.length - 1;
 	}
 
-	addMatch() {
+	addMatch(mode = "Classic", player1: Player = undefined, player2: Player = undefined) {
 
 		const match = new MatchClass;
 		match.matchId = this.matchId++;
-		match.player1 = this.queue.shift();
-		match.player2 = this.queue.shift();
+		match.mode = mode;
+
+		if (player1 === undefined) {
+			match.player1 = this.queue.shift();
+		} else {
+			match.player1 = player1;
+		}
+		if (player2 === undefined) {
+			match.player2 = this.queue.shift();
+		} else {
+			match.player2 = player2;
+		}
+
 		match.player1.ready = false;
 		match.player2.ready = false;
 		match.p1posY = (this.gameConstants.height / 2) - (this.gameConstants.paddleLength / 2);
@@ -143,18 +163,13 @@ export class SocketsService {
 	}
 
 	deleteMatch(matchId: number) {
-		for (let i = 0; i < this.queue.length; i++) {
+		for (let i = 0; i < this.matches.length; i++) {
 			if (this.matches[i].matchId === matchId) {
-				this.queue.splice(i, 1);
+				this.matches.splice(i, 1);
 				console.log("Match #", matchId, " deleted.");
 				return;
 			}
 		}
-	}
-
-	endMatch(matchId: number) {
-		// TODO: update score in db, and graciously end the match
-		void (matchId);
 	}
 
 	cleanupMatches() {
@@ -162,6 +177,8 @@ export class SocketsService {
 		for (let i = 0; i < this.matches.length;) {
 			const match = this.matches[i];
 			if ((match.player1.ready === false || match.player2.ready === false) && (Date.now() - match.started > 10000)) {
+				this.deleteMatch(match.matchId);
+			} else if ((Date.now() - match.player1.lastUpdate > 3000) || (Date.now() - match.player2.lastUpdate > 3000)) {
 				this.deleteMatch(match.matchId);
 			} else {
 				i++;

@@ -1,5 +1,6 @@
 import '../../styles/Tab_Chat.css';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { SocketContext } from '../../context/contexts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquarePlus, faGamepad, faBan, faPersonWalkingArrowRight, faCommentSlash } from "@fortawesome/free-solid-svg-icons";
@@ -39,6 +40,17 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 		setToggleDisplay(!toggleDisplay);
 	}
 
+	const socket = useContext(SocketContext);
+
+	const handleInvitation = () => {
+
+		console.log('Invite to game');
+
+		socket?.emit('invite match', /* Insert the username of the user you want to invite here */);
+
+		toast.success('Invitation sent');
+  }
+
 	const handleRole = (group: keyof IChannel) => {
 		if (channel) {
 			// Est-ce que le user est dans ce rôle?
@@ -56,7 +68,6 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 				toast.success(`${userTalking.nickname} has been removed from this role.`);
 			}
 		}
-	}
 
 	if (userQuery.error) {
 		return <div>Error</div>
@@ -66,7 +77,7 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 	}
 	return (
 	<>
-		<FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} />
+		<FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} onClick={handleInvitation}/>
 		{
 			enableOptions === true &&
 			<>
