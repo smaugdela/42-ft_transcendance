@@ -173,10 +173,13 @@ export class AuthService {
 				salt: buf
 			});
 
+			const avatarpath = "/assets/avatar" + Math.floor((Math.random() * 2.99) + 1) + ".png";
+			console.log(avatarpath);
 			// save the new user in the db
 			const newUser = await prisma.user.create({
 				data: {
 					nickname: body.nickname,
+					avatar: avatarpath,
 					password: hash,
 					authtype: AuthType.LOGNPWD,
 					coalition: "Invite",
