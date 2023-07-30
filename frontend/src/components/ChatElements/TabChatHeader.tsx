@@ -33,8 +33,6 @@ export function TabChatHeader({ conv }: { conv: IChannel}) {
 	const handleClick = (event: React.FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		if (user) {
-			console.log("id du user chat: ", user.id);
-			
 			leaveChannelRequest.mutate(user);
 			setActiveTab(0);
 			setActiveConv(null);

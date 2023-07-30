@@ -1,18 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import '../../styles/Tab_Chat.css';
-import { SocketContext } from '../../context/contexts';
+import { ChatStatusContext, SocketContext } from '../../context/contexts';
 import { IChannel, IMessage, IUser } from '../../api/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createMessage, getAllMsgsofChannel } from '../../api/APIHandler';
+import { createMessage, getAllMsgsofChannel, leaveChannel } from '../../api/APIHandler';
 import { OneMessage } from './OneMessage';
 import { TabChatHeader } from './TabChatHeader';
 import toast from 'react-hot-toast';
 
 function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
-		
+
 	const [messages, setMessages] = useState<IMessage[]>([]);
 	const [inputValue, setInputValue] = useState<string>('');
 	const [isMuted, setIsMuted] = useState<boolean>(false);
+	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
 	const socket = useContext(SocketContext);
 	const queryClient = useQueryClient();
 
@@ -30,6 +31,14 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 		refetchInterval: 100,
 	});
 
+	const leaveChannelRequest = useMutation({
+		mutationFn: ([user, channelId]: [IUser, number]) => leaveChannel(user.id, channelId),
+		onSuccess: () => { 
+			queryClient.invalidateQueries(['channels']);
+		},
+		onError: () => { toast.error(`Error : someone tried to make you quit the channel but cannot`) }
+	});
+
 	// A l'arrivée sur le chat, faire défiler les messages jusqu'aux plus récents (bas de la fenêtre)
 	useEffect(() => {
 		var scroll = document.getElementById("convo__messages");
@@ -38,16 +47,35 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 		}
 	}, []);
 
-	// Avec les messages récupérés avec la query, je les attribue au setteur qui servira à les afficher
-	// je regarde aussi si la personne a le droit de parler
+	// je regarde aussi si la personne a le droit de parler ou juste d'être là
 	useEffect(() => {
 		if (loggedUser && conv.mutedUsers.some((member) => member.id === loggedUser.id)) {
 			setIsMuted(true);
 		}
+		if (loggedUser && conv.kickedUsers.some((member) => member.id === loggedUser.id)) {
+			leaveChannelRequest.mutate([loggedUser, conv.id]);
+			toast(`You have been kicked from this channel (${conv.roomName})!`, {
+				icon: '👏',
+			  }); 
+			setActiveTab(0);
+			setActiveConv(null);
+		}
+		if (loggedUser && conv.bannedUsers.some((member) => member.id === loggedUser.id)) {
+			leaveChannelRequest.mutate([loggedUser, conv.id]);
+			toast(`You have been banned from this channel (${conv.roomName})!`, {
+				icon: '👏',
+			  }); 
+			setActiveTab(0);
+			setActiveConv(null);
+		}
+	}, [loggedUser, conv, setIsMuted,setActiveConv, setActiveTab, leaveChannelRequest]);
+
+	// Avec les messages récupérés avec la query, je les attribue au setteur qui servira à les afficher
+	useEffect(() => {
 		if (data) {
 			setMessages(data);
 		}
-	}, [data, loggedUser, conv.mutedUsers, setIsMuted]);
+	}, [data]);
 	
 	// Fonction pour envoyer son msg au serveur, pour être transféré aux destinataires
 	const sendMessage = (message: string) => {

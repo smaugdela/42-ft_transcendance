@@ -257,7 +257,6 @@ export class ChatService {
 	async updateUserinChannel(channelId: number, body: UpdateChannelDto) {
 		const {userId, groupToInsert, action } = body;
 		// TODO: si chan protected, vérifier que password donné match!!!
-		// TODO: si kick/ban/mute/admin, vérifier les droits!!! 
 		return await prisma.channel.update({
 			where: { id: channelId },
 			data:  {
@@ -289,6 +288,7 @@ export class ChatService {
 				admin: true,
 				joinedUsers: true,
 				owner: true,
+				kickedUsers: true
 			},
 		});
 		
@@ -303,6 +303,14 @@ export class ChatService {
 			await prisma.channel.update({
 				where: { id: channel.id },
 				data : { admin: { disconnect: { id: userId } } }
+			})
+		}
+
+		// si la personne est kicked, on l'enlève de la liste des kicked users!
+		if (channel.kickedUsers.some(member => member.id === userId)) {
+			await prisma.channel.update({
+				where: { id: channel.id },
+				data : { kickedUsers: { disconnect: { id: userId } } }
 			})
 		}
 
@@ -342,16 +350,6 @@ export class ChatService {
 			}
 		}
 	}
-
-	// Code pour du isBan, isKicked , etc :
-	// const isOwner: boolean = channel[groupToInsert]?.some((member: User) => member.id === userId);
-	// if (isOwner) {
-	// 	await prisma.channel.update({
-	// 		where: { id: channel.id },
-	// 		data:  {
-	// 			[groupToInsert]: { [action]: { id: userId } },
-	// 		}
-	// }
 
 	// Messages
 	// create a message and add it to the list

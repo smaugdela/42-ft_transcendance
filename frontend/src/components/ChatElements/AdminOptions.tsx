@@ -7,7 +7,6 @@ import { fetchMe, getOneChannelByName, updateUserInChannel } from '../../api/API
 import { IChannel, IUser } from '../../api/types';
 import toast from 'react-hot-toast';
 
-// TODO: refetch le channel dans ce component, grâce à un id passé pour que ça s'update
 export function AdminOptions({ channelName, userTalking }: { channelName: string, userTalking: IUser}) {
 	const [enableOptions, setEnableOptions] = useState<boolean>(false);
 	const [toggleDisplay, setToggleDisplay] = useState<boolean>(false);
@@ -17,7 +16,7 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 		queryFn: () => getOneChannelByName(channelName) 
 	});
 	const queryClient = useQueryClient();
-
+	
 	useEffect(() => {
 		if (channel) {
 			const isAdmin = channel.admin.filter((admin) => admin.nickname === userQuery.data?.nickname);
