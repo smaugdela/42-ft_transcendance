@@ -1,16 +1,19 @@
 import '../../styles/Tab_Chat.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquarePlus, faGamepad, faBan, faPersonWalkingArrowRight, faCommentSlash } from "@fortawesome/free-solid-svg-icons";
-import { fetchMe, getOneChannelByName, updateUserInChannel } from '../../api/APIHandler';
+import { fetchMe, getOneChannelByName, updateUserInChannel, createMessage } from '../../api/APIHandler';
 import { IChannel, IUser } from '../../api/types';
 import toast from 'react-hot-toast';
+import { handleRequestFromUser } from '../../sockets/sockets';
+import { SocketContext } from '../../context/contexts';
 
 export function AdminOptions({ channelName, userTalking }: { channelName: string, userTalking: IUser}) {
 	const [enableOptions, setEnableOptions] = useState<boolean>(false);
 	const [toggleDisplay, setToggleDisplay] = useState<boolean>(false);
 	const userQuery = useQuery({ queryKey: ['user'], queryFn: fetchMe });
+	const socket = useContext(SocketContext);
 	const { data: channel }= useQuery({ 
 		queryKey: ['channels', channelName], 
 		queryFn: () => getOneChannelByName(channelName) 
@@ -24,8 +27,8 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 				setEnableOptions(true);
 			}
 		}
-		
 	}, [channel, channel?.admin, userQuery.data, channel?.bannedUsers, channel?.kickedUsers, channel?.mutedUsers, channel?.joinedUsers]);
+	
 	const addToGroup = useMutation({
 		mutationFn: ([group, action, channelId]: string[]) => updateUserInChannel(userTalking.id, Number(channelId), group, action),
 		onSuccess: () => { 
@@ -37,6 +40,21 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 	const handleClick = () => {
 		setToggleDisplay(!toggleDisplay);
 	}
+	const createInfoMessage = useMutation({
+		mutationFn: ([channel, message]: [IChannel, string]) => createMessage(channel, message),
+		onSuccess: () => {
+			queryClient.invalidateQueries(['channels']);
+		},
+		onError: () => toast.error('Message not sent: retry'),
+	});
+
+	const sendInfo = (group: string) => {
+		if (socket) {
+			const msg: string = handleRequestFromUser(socket, group, channelName, userTalking.nickname);
+			if (channel)
+				createInfoMessage.mutate([channel, msg]);
+		}
+	};
 
 	const handleRole = (group: keyof IChannel) => {
 		if (channel) {
@@ -49,6 +67,9 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 				// Si c'est pas le cas, on l'ajoute
 				addToGroup.mutate([group, "connect", String(channel?.id)]);
 				toast.success(`${userTalking.nickname}'s role has been added!`);
+				sendInfo(group);
+				console.log("jai send l'info");
+				
 			} else {
 				// Sinon, on l'enlève
 				addToGroup.mutate([group, "disconnect", String(channel?.id)]);

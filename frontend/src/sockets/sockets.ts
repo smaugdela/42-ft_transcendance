@@ -21,3 +21,39 @@ export function sendNotificationToServer(socket: Socket, event: string, payload:
 		socket.emit(event, payload);
   }
 };
+
+/**
+ * @abstract Special handling for MUTE/KICK/BAN/ADMIN requests
+ * @param socket connexion du client avec notre serveur
+ * @param payload <Action <Concerned user's nickname>. Ex: '/mute  Joe'
+ */
+export function handleRequestFromUser(socket: Socket, group: string, channelName: string, userTalking: string) {
+	var action: string;
+	var info: string;
+		switch (group) {
+			case "bannedUsers":
+				action = "/ban";
+				info = `#INFO# ${userTalking} has been banned from this channel.`
+				break;
+			case "kickedUsers":
+				action = "/kick";
+				info = `#INFO# ${userTalking} has been kicked from this channel.`
+				break;
+			case "mutedUsers":
+				action = "/mute";
+				info = `#INFO# ${userTalking} has been muted in this channel.`
+				break;
+			case "admin":
+				action = "/admin";
+				info = `#INFO# ${userTalking} was made Admin of this channel!`
+				break;
+			default:
+				action = "/msg";
+				info = `#INFO# ${userTalking} is quoted in this channel.`
+		}
+	const payload: string = action + "  " + channelName + "  " + userTalking;
+	console.log("Info payload ", payload);
+	
+	sendNotificationToServer(socket, 'Chat', payload);
+	return (info);
+}

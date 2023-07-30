@@ -6,7 +6,6 @@ import { faAnglesLeft, faAnglesRight} from "@fortawesome/free-solid-svg-icons";
 import TabChannels from './ChatElements/TabChannels';
 import TabChat from './ChatElements/TabChat';
 import TabMore from './ChatElements/TabMore';
-import { Socket } from 'socket.io-client';
 import { useQuery } from "@tanstack/react-query";
 import { getAllUserChannels, fetchMe } from '../api/APIHandler';
 import { ChatStatusContext } from '../context/contexts';
@@ -16,7 +15,7 @@ interface Tab {
   content: JSX.Element;
 }
 
-const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<Socket | null>> }) => {
+const Chat = () => {
 	const {data: userMe, status: statusMe } = useQuery({queryKey: ['user'], queryFn: fetchMe});
 
 	const { data, status } = useQuery({

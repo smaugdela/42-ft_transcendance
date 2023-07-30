@@ -32,9 +32,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		/* Stocker tous les sockets des users actuellement connectés dans un map */
 		this.socketsService.registerActiveSockets(client.data.userId, client.id);
-
-		/* TODO: regarder dans quels chans la personne est déjà et la rajouter */
-
 	}
 
 	/* Indique dans le User scheme qu'il est inactif et le déconnecte */
@@ -52,6 +49,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		client.join(room);
 		console.log(client.data.username ,` has joined the room ${payload}!`);	
 	}
+
 	/* ######################### */
 	/* ######### CHAT ########## */
 	/* ######################### */
@@ -76,6 +74,15 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				from: client.data.username,
 				fromId: client.data.userId,
 				content: msgToTransfer,
+			};
+			this.server.to(room).emit('receiveMessage', message);
+		}
+		if (action === '/mute' || action === '/kick' || action === '/ban' || action === '/admin') {
+			const message = {
+				date: new Date(),
+				from: client.data.username,
+				fromId: client.data.userId,
+				content: `${action}  ${msgToTransfer}`,
 			};
 			this.server.to(room).emit('receiveMessage', message);
 		}

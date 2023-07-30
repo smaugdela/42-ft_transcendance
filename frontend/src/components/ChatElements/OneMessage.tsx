@@ -31,6 +31,19 @@ export function OneMessage({ conv, message, index } :
 	if (isLoading || !isSuccess || userMe === undefined) {
 		<div>Fetching your message...</div>
 	}
+
+	if (message.content.startsWith('#INFO# ') === true) {
+
+		const content = message.content.replace('#INFO# ', '');
+		return (
+			<div key={index + 2} className='one__msg_role'>
+					<div key={index + 1} className='one__msg_header_info'>
+						<h6>Initiated by: {message.from.nickname} on {getDate(message)}</h6>
+					</div>
+					<p className='one_msg_announcement' key={index}>{content}</p>
+			</div>
+		);
+	}
 	return (
 	<div key={index + 2} className={`${isMe === true ? 'one__msg' : 'one__msg_me'}`} >
 		<div className="one__msg_avatar_container">

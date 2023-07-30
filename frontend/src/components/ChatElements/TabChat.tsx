@@ -93,8 +93,10 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 		if (socket) {
 			/* Listen tous les messages de l'event receiveMessage */
 			socket.on('receiveMessage', (message: IMessage) => {
-				console.log("Message received");
-				if (newMessage && data) {
+				console.log("Message received", message);
+				if (data) {
+					console.log('je suis la');
+					
 					setMessages([...data, message]);
 				}
 			});

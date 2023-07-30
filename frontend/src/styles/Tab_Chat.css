@@ -124,3 +124,27 @@
 	height: 28px;
 	width: auto;
 }
+
+/* Variante OneMessage pour infos sur rôle */
+.one__msg_role {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+	margin: 15px 0;
+}
+
+.one__msg_header_info {
+	font-size: 1.2rem;
+	color: rgb(105, 105, 105);
+}
+
+.one_msg_announcement {
+	font-style: italic;
+	background-color: rgb(53, 61, 131);
+	color: white;
+	padding: 10px;
+	border-radius: 10px;
+	margin-top: 1px;
+}
