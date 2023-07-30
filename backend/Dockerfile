@@ -31,8 +31,11 @@ ENV NODE_ENV production
 # Running `npm ci` removes the existing node_modules directory and passing in --only=production ensures that only the production dependencies are installed. This ensures that the node_modules directory is as optimized as possible
 RUN npm ci --only=production && npm cache clean --force
 
+COPY --chown=node:node ./startup.sh ./startup.sh
+
 # User should not be root for security reasons
 USER node
 
 # Start the server
-CMD [ "node", "dist/main.js" ]
+# CMD [ "node", "dist/main.js" ]
+CMD [ "sh", "startup.sh"]

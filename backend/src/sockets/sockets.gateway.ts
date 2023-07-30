@@ -10,7 +10,9 @@ const prisma = new PrismaClient();
 
 @WebSocketGateway({
 	cors: {
-		origin: process.env.FRONTEND_URL,
+		// origin: process.env.FRONTEND_URL,
+		// origin: 'https://localhost',
+		origin: 'https://' + process.env.FRONTEND_HOST,
 		credentials: true,
 	}
 })

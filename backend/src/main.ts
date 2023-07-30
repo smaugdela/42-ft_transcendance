@@ -63,7 +63,9 @@ async function bootstrap() {
 
 	app.enableCors({
 		credentials: true,
-		origin: process.env.FRONTEND_URL,
+		// origin: process.env.FRONTEND_URL,
+		// origin: ['https://localhost:3000', 'https://localhost:443', 'https://frontend:3000', 'https://frontend:443', 'http://frontend:3000', 'http://frontend:443', 'http://localhost:3000', 'http://localhost:443'],
+		origin: "https://" + process.env.FRONTEND_HOST,
 	});
 
 	await app.listen(port);

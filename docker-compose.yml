@@ -11,6 +11,7 @@ services:
     # ports:
     #   - 5432:5432
     networks:
+      # - backend
       - transcendance
     volumes:
       - postgres:/var/lib/postgresql/data
@@ -26,6 +27,7 @@ services:
     ports:
       - 3001:3001
     networks:
+      # - backend
       - transcendance
 
   frontend:
@@ -45,6 +47,8 @@ services:
 networks:
   transcendance:
     driver: bridge
+  # backend:
+  #   driver: bridge
 
 volumes:
   postgres:
