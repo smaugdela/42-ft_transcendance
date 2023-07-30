@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import '../../styles/Tab_Chat.css';
 import { SocketContext } from '../../context/contexts';
-import { IChannel, IMessage } from '../../api/types';
+import { IChannel, IMessage, IUser } from '../../api/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createMessage, getAllMsgsofChannel } from '../../api/APIHandler';
 import { OneMessage } from './OneMessage';
 import { TabChatHeader } from './TabChatHeader';
 import toast from 'react-hot-toast';
 
-function TabChat({ conv }: { conv: IChannel }) {
+function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 		
 	const [messages, setMessages] = useState<IMessage[]>([]);
 	const [inputValue, setInputValue] = useState<string>('');
+	const [isMuted, setIsMuted] = useState<boolean>(false);
 	const socket = useContext(SocketContext);
 	const queryClient = useQueryClient();
 
@@ -38,11 +39,15 @@ function TabChat({ conv }: { conv: IChannel }) {
 	}, []);
 
 	// Avec les messages récupérés avec la query, je les attribue au setteur qui servira à les afficher
+	// je regarde aussi si la personne a le droit de parler
 	useEffect(() => {
+		if (loggedUser && conv.mutedUsers.some((member) => member.id === loggedUser.id)) {
+			setIsMuted(true);
+		}
 		if (data) {
 			setMessages(data);
 		}
-	}, [data]);
+	}, [data, loggedUser, conv.mutedUsers, setIsMuted]);
 	
 	// Fonction pour envoyer son msg au serveur, pour être transféré aux destinataires
 	const sendMessage = (message: string) => {
@@ -94,20 +99,25 @@ function TabChat({ conv }: { conv: IChannel }) {
 				))
 			}
 			</div>
-			<div className='convo__bottom'>
-				<form id="convo__form" onSubmit={(event) => handleFormSubmit(event, inputValue)}>
-					<input
-					type="text"
-					value={inputValue}
-					onChange={(event) => setInputValue(event.target.value)}
-					placeholder="Type Here"
-					/>
-					<button type="submit">Send</button>
-				</form>
-			</div>
+			{
+				isMuted === false &&
+				<div className='convo__bottom'>
+					<form id="convo__form" onSubmit={(event) => handleFormSubmit(event, inputValue)}>
+						<input
+						type="text"
+						value={inputValue}
+						onChange={(event) => setInputValue(event.target.value)}
+						placeholder="Type Here"
+						/>
+						<button type="submit">Send</button>
+					</form>
+				</div>
+			}
+			{
+				isMuted === true && <div className="convo__bottom">You're not allowed to speak here! (muted)</div>
+			}
 	</div>
 	  );
-
 }
 
 export default TabChat
