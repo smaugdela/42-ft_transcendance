@@ -28,6 +28,11 @@ export class MatchClass {
 	ballSpeedX: number;
 	ballSpeedY: number;
 
+	powerUp: boolean;
+	powerUpX: number;
+	powerUpY: number;
+	
+
 	lastUpdate: number;
 }
 
@@ -42,6 +47,7 @@ export class SocketsService {
 		ballRadius: 5, // in pixels
 		maxBallSpeed: 1000, // in pixels per second
 		winScore: 10, // in points
+		powerUpRadius: 20, // in pixel
 	};
 
 	/* key = userId, value:string = socketId */
@@ -101,6 +107,7 @@ export class SocketsService {
 		player.mode = mode;
 		player.username = username;
 		player.score = 0;
+		player.powerup = false;
 		return player;
 	}
 
@@ -126,7 +133,7 @@ export class SocketsService {
 		const match = new MatchClass;
 		match.matchId = this.matchId++;
 		match.mode = mode;
-
+		
 		if (player1 === undefined) {
 			match.player1 = this.queue.shift();
 		} else {
@@ -137,13 +144,21 @@ export class SocketsService {
 		} else {
 			match.player2 = player2;
 		}
-
+		
 		match.player1.ready = false;
 		match.player2.ready = false;
 		match.p1posY = (this.gameConstants.height / 2) - (this.gameConstants.paddleLength / 2);
 		match.p2posY = (this.gameConstants.height / 2) - (this.gameConstants.paddleLength / 2);
 		match.ballX = this.gameConstants.width / 2;
 		match.ballY = this.gameConstants.height / 2;
+
+		// Power up config
+		if (mode === "Classic")
+			match.powerUp = false;
+		else
+			match.powerUp = true;
+		match.powerUpX = Math.random() * (this.gameConstants.width / 2) + (this.gameConstants.width / 4);
+		match.powerUpY = Math.random() * this.gameConstants.height;
 
 		// horizontal ball speed is non null
 		match.ballSpeedX = 90;
