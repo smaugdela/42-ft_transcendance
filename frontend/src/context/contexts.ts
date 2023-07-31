@@ -16,7 +16,7 @@ export interface ChatStatusType {
 	setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const ChatStatusContext = createContext<ChatStatusType>({
+export const ChatStatusContext: React.Context<ChatStatusType> = createContext<ChatStatusType>({
 	activeTab: 0,
 	setActiveTab: () => {},
 	activeConv: null,

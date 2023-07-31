@@ -3,7 +3,7 @@ import '../../styles/Tab_Chat.css';
 import { ChatStatusContext, SocketContext } from '../../context/contexts';
 import { IChannel, IMessage, IUser } from '../../api/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createMessage, getAllMsgsofChannel, leaveChannel } from '../../api/APIHandler';
+import { createMessage, getAllMsgsofChannel, getOneChannelByName, leaveChannel } from '../../api/APIHandler';
 import { OneMessage } from './OneMessage';
 import { TabChatHeader } from './TabChatHeader';
 import toast from 'react-hot-toast';
@@ -17,8 +17,14 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 	const socket = useContext(SocketContext);
 	const queryClient = useQueryClient();
 
+	// obligée de requery le chan pour avoir ses MàJs....
+	const { data: channel } = useQuery({ 
+		queryKey: ['channels', conv.roomName], 
+		queryFn: () => getOneChannelByName(conv.roomName) 
+	});
+
 	// Queries pour récupérer les messages du channel, ou pour créer un message
-	const { data: newMessage, mutate} = useMutation({
+	const { mutate } = useMutation({
 		mutationFn: (message: string) => createMessage(conv, message),
 		onSuccess: () => {
 			queryClient.invalidateQueries(['channels']);
@@ -49,26 +55,28 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 
 	// je regarde aussi si la personne a le droit de parler ou juste d'être là
 	useEffect(() => {
-		if (loggedUser && conv.mutedUsers.some((member) => member.id === loggedUser.id)) {
-			setIsMuted(true);
+		if (channel) {
+			if (loggedUser && channel?.mutedUsers.some((member) => member.id === loggedUser.id)) {
+				setIsMuted(true);
+			}
+			if (loggedUser && channel.kickedUsers.some((member) => member.id === loggedUser.id)) {
+				leaveChannelRequest.mutate([loggedUser, channel.id]);
+				toast(`You have been kicked from this channel (${channel.roomName})!`, {
+					icon: '👏',
+				  }); 
+				setActiveTab(0);
+				setActiveConv(null);
+			}
+			if (loggedUser && channel.bannedUsers.some((member) => member.id === loggedUser.id)) {
+				leaveChannelRequest.mutate([loggedUser, channel.id]);
+				toast(`You have been banned from this channel (${channel.roomName})!`, {
+					icon: '👏',
+				  }); 
+				setActiveTab(0);
+				setActiveConv(null);
+			}
 		}
-		if (loggedUser && conv.kickedUsers.some((member) => member.id === loggedUser.id)) {
-			leaveChannelRequest.mutate([loggedUser, conv.id]);
-			toast(`You have been kicked from this channel (${conv.roomName})!`, {
-				icon: '👏',
-			  }); 
-			setActiveTab(0);
-			setActiveConv(null);
-		}
-		if (loggedUser && conv.bannedUsers.some((member) => member.id === loggedUser.id)) {
-			leaveChannelRequest.mutate([loggedUser, conv.id]);
-			toast(`You have been banned from this channel (${conv.roomName})!`, {
-				icon: '👏',
-			  }); 
-			setActiveTab(0);
-			setActiveConv(null);
-		}
-	}, [loggedUser, conv, setIsMuted,setActiveConv, setActiveTab, leaveChannelRequest]);
+	}, [channel, leaveChannelRequest, loggedUser, setActiveConv, setActiveTab]);
 
 	// Avec les messages récupérés avec la query, je les attribue au setteur qui servira à les afficher
 	useEffect(() => {
@@ -93,18 +101,18 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 		if (socket) {
 			/* Listen tous les messages de l'event receiveMessage */
 			socket.on('receiveMessage', (message: IMessage) => {
-				console.log("Message received", message);
 				if (data) {
-					console.log('je suis la');
+					console.log('je suis la data receive message');
 					
 					setMessages([...data, message]);
 				}
 			});
+
 			return () => {
 			socket.off('receiveMessage');
 			};
 		}
-	}, [socket, mutate, data, newMessage, messages]);
+	}, [socket, mutate, data]);
 
 	// Quand on appuie sur entrée, créé un IMessage avec nos données et l'envoie
 	const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>, message:string) => {
@@ -115,6 +123,8 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 	  }
 	  var scroll = document.getElementById("convo__messages");
 	  if (scroll) {
+		console.log("scrooool: ", scroll);
+		
 		  scroll.scrollTop = scroll.scrollHeight;
 	  }
 	};
