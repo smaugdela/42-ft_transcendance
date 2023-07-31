@@ -18,8 +18,13 @@ import { Toaster } from 'react-hot-toast';
 import DoubleFA from './pages/DoubleFA';
 import Error from './pages/Error';
 import PendingPage from './pages/DoubleFAPending';
+import { Pong } from './pages/Pong';
+import { CustomPong } from "./pages/CustomPong";
+import { AppProvider } from '@pixi/react';
+import * as PIXI from 'pixi.js';
 import { IsLoggedInContext, SocketContext, ChatStatusContext } from './context/contexts';
 import { IChannel } from './api/types';
+
 
 function App() {
 
@@ -46,6 +51,13 @@ function App() {
     localStorage.setItem('theme', newTheme);
   };
 
+  const app = new PIXI.Application({
+	width: 800,
+	height: 600,
+	backgroundColor: 0x1099bb,
+	//   resizeTo: window,
+	});
+
   return (
     <div id='app' className={`App ${theme}`}>
       <section id="main-content">
@@ -61,6 +73,7 @@ function App() {
             <source src="./assets/derezzed.mp3" type="audio/mpeg"/>
           </audio>
           <Toaster/>
+		<AppProvider value = {app}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
@@ -68,15 +81,18 @@ function App() {
             <Route path="/aboutUs" element={<AboutUs />} />
             <Route path="/social" element={<Social />} />
             <Route path='/settings' element={<Settings />} />
+			<Route path='/pong' element={<Pong />} />
+      		<Route path='/custompong' element={<CustomPong />} />
             <Route path='/login' element={<Login setLoggedIn={setLoggedIn} setSocket={setSocket} />} />
-			      <Route path='/2fa' element={<DoubleFA/>} />
-			      <Route path='/2fa/pending' element={<PendingPage/>} />
+			<Route path='/2fa' element={<DoubleFA/>} />
+			<Route path='/2fa/pending' element={<PendingPage/>} />
             <Route path='/user' element={<UserProfile />} />
-	    	    <Route path='/gamepage' element ={<GamePage/>}/>
-			      <Route path='/error/:status' element={<Error/>} />
-			      <Route path='*' element={<Error/>} />
+	    	<Route path='/gamepage' element ={<GamePage/>}/>
+			<Route path='/error/:status' element={<Error/>} />
+			<Route path='*' element={<Error/>} />
             <Route path={`/user/:nickname`}  element={<UserProfile />} />
           </Routes>
+		</AppProvider>
           {
             isLoggedIn &&
             <Chat/>
