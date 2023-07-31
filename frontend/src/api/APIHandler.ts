@@ -242,3 +242,111 @@ export async function uploadImage(file: File) {
 		throw new Error('Error uploading image');
 	}
 }
+
+
+
+/* ######################*/
+/* ###     SOCIAL     ###*/
+/* ######################*/
+
+export async function getMyFriends(): Promise<IUser> {
+	try{
+		const response = await axios.get(`${BASE_URL}/social/friends`);
+		return response.data;
+	} catch (error) {
+		console.log("Error getMyFriends: ", error);
+		throw error; // Rejette la promesse avec l'erreur d'origine pour la gestion des erreurs par l'appelant
+	}
+}
+
+export async function getBlockerFriends(): Promise<IUser> {
+	try{
+		const response = await axios.get(`${BASE_URL}/social/blocked-list`);
+		return response.data;
+	} catch (error) {
+		console.log("Error getBlockerFriends: ", error);
+		throw error; 
+	}
+}
+
+export async function getPendingList(): Promise<IUser> {
+	try{
+		const response = await axios.get(`${BASE_URL}/social/pending-list`);
+		return response.data;
+	} catch (error) {
+		console.log("Error getPendingList: ", error);
+		throw error; 
+	}
+}
+
+export async function RemoveFromBlock(id : number): Promise<IUser> {
+
+	try {
+		const response = await axios.delete(`${BASE_URL}/social/block/${id}`);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error RemoveFromBlock: ", error);
+		throw error; 
+	}
+}
+
+export async function RejectFriendRequest(id : number): Promise<IUser> {
+
+	try {
+		const response = await axios.delete(`${BASE_URL}/social/friend-request/${id}/reject`);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error RejectFriendRequest: ", error);
+		throw error; 
+	}
+}
+
+export async function RemoveFriend(id : number): Promise<IUser> {
+
+	try {
+		const response = await axios.delete(`${BASE_URL}/social/friends/${id}`);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error RemoveFriend: ", error);
+		throw error; 
+	}
+}
+
+export async function AcceptFriendRequest(id : number): Promise<IUser> {
+
+	try {
+		const response = await axios.post(`${BASE_URL}/social/friend-request/${id}/accept`);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error AcceptFriendRequest: ", error);
+		throw error; 
+	}
+}
+
+export async function FriendRequest(username: string): Promise<IUser> {
+
+	try {
+		const response = await axios.post(`${BASE_URL}/social/friend-request/${username}`);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error FriendRequest: ", error);
+		throw error; 
+	}
+}
+
+export async function BlockUser(username: string): Promise<IUser> {
+
+	try {
+		const response = await axios.post(`${BASE_URL}/social/block/${username}`);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error BlockUser: ", error);
+		throw error; 
+	}
+}

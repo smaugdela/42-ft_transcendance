@@ -55,6 +55,4 @@ export class SocialController {
   removeFriend(@Req() req: Request, @Param('id') id: string){
     return this.socialService.removeFriend(req.userId, +id);
   }
-
-
 }

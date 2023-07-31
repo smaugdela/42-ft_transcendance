@@ -74,10 +74,20 @@ export class SocialService {
 				data: {pendingList: {disconnect: { id: id }}}
 			}
 		)
+		await prisma.user.update(
+			{
+				where: { id: id },
+				include: { friendsList : true },
+				data: { friendsList: { connect: { id: userId }}}
+			}
+		);
 		return await prisma.user.update(
 			{
 				where: { id: userId },
-				data: { friendsList: { connect: { id: id }}}
+				include: { friendsList : true },
+				data: { 
+					friendsList: { connect: { id: id }}
+			}
 			}
 		);
 	}
