@@ -217,7 +217,7 @@ export async function getAllUserChannels(): Promise<IChannel[]> {
 	return response.data;
 }
 
-export async function getAllChannels(): Promise<IChannel[]> {
+export async function getNonJoinedChannels(): Promise<IChannel[]> {
 	const user = await fetchMe();
 	const response = await api.get<IChannel[]>(`/chat/channels/more/${user.id}`);
 	return response.data;
@@ -246,6 +246,25 @@ export async function createChannel(roomName: string, password: string, type: st
 
 	} catch (error) {
 		throw new Error('A channel with this name already exists');
+	}
+}
+
+export async function updateChannelProperties(channelId: number, property: keyof IChannel, newValue: string) {
+	try {
+		const response = await api.patch(`/chat/channel/${channelId}/update`,
+			{
+				[ property ] : newValue
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error('An error occured during the update of this channel.');
 	}
 }
 

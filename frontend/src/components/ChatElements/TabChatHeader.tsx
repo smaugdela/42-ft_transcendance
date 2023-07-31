@@ -5,6 +5,7 @@ import '../../styles/Tab_Chat.css';
 import { fetchMe, leaveChannel } from "../../api/APIHandler";
 import toast from 'react-hot-toast';
 import { ChatStatusContext } from "../../context/contexts";
+import { ChannelTitle } from "./ChannelTitle";
 
 export function TabChatHeader({ conv }: { conv: IChannel}) {
 
@@ -42,7 +43,8 @@ export function TabChatHeader({ conv }: { conv: IChannel}) {
 	return (
 	<div className='convo__header'>
 		<div className='convo__header_title'>
-			<h1 id="convo__name">{convName}</h1>
+			{/* <h1 id="convo__name">{convName}</h1> */}
+			<ChannelTitle conv={conv} initialName={convName} />
 			<button onClick={handleClick}>Leave Conversation</button>
 		</div>
 		<p>{conv?.joinedUsers.length} member(s), {conv?.admin.length} admin(s) </p>
