@@ -13,9 +13,6 @@ RUN npm ci --legacy-peer-deps
 # Copy the rest of the files
 COPY --chown=node:node . .
 
-# Copy the env file reserved for docker as .env
-COPY --chown=node:node .env.docker .env
-
 # Run the build command which creates the production bundle
 RUN npm run build
 

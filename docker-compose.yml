@@ -7,7 +7,7 @@ services:
     container_name: postgres
     restart: unless-stopped
     env_file:
-      - ./database/.env.docker
+      - .env.docker
     # ports:
     #   - 5432:5432
     networks:
@@ -21,6 +21,8 @@ services:
     depends_on:
       - database
     restart: unless-stopped
+    env_file:
+      - .env.docker
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -36,6 +38,8 @@ services:
       - database
       - backend
     restart: unless-stopped
+    env_file:
+      - .env.docker
     build:
       context: ./frontend
       dockerfile: Dockerfile

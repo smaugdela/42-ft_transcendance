@@ -13,9 +13,6 @@ RUN npm ci
 # Copy the rest of the files
 COPY --chown=node:node . .
 
-# Copy the env file reserved for docker as .env
-COPY --chown=node:node .env.docker .env
-
 # Initialise prisma
 RUN npx prisma generate
 
@@ -25,8 +22,6 @@ RUN npm run build
 # Set NODE_ENV environment variable
 ENV NODE_ENV production
 
-# # Install the dependencies to generate the ad-hoc package-lock.json file.
-# RUN npm i
 
 # Running `npm ci` removes the existing node_modules directory and passing in --only=production ensures that only the production dependencies are installed. This ensures that the node_modules directory is as optimized as possible
 RUN npm ci --only=production && npm cache clean --force
