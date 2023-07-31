@@ -251,7 +251,7 @@ export async function uploadImage(file: File) {
 
 export async function getMyFriends(): Promise<IUser> {
 	try{
-		const response = await axios.get(`${BASE_URL}/social/friends`);
+		const response = await api.get(`/social/friends`);
 		return response.data;
 	} catch (error) {
 		console.log("Error getMyFriends: ", error);
@@ -261,7 +261,7 @@ export async function getMyFriends(): Promise<IUser> {
 
 export async function getBlockerFriends(): Promise<IUser> {
 	try{
-		const response = await axios.get(`${BASE_URL}/social/blocked-list`);
+		const response = await api.get(`/social/blocked-list`);
 		return response.data;
 	} catch (error) {
 		console.log("Error getBlockerFriends: ", error);
@@ -282,7 +282,7 @@ export async function getPendingList(): Promise<IUser> {
 export async function RemoveFromBlock(id : number): Promise<IUser> {
 
 	try {
-		const response = await axios.delete(`${BASE_URL}/social/block/${id}`);
+		const response = await api.delete(`/social/block/${id}`);
 		return response.data;
 
 	} catch (error) {
@@ -294,7 +294,7 @@ export async function RemoveFromBlock(id : number): Promise<IUser> {
 export async function RejectFriendRequest(id : number): Promise<IUser> {
 
 	try {
-		const response = await axios.delete(`${BASE_URL}/social/friend-request/${id}/reject`);
+		const response = await api.delete(`/social/friend-request/${id}/reject`);
 		return response.data;
 
 	} catch (error) {
@@ -306,7 +306,7 @@ export async function RejectFriendRequest(id : number): Promise<IUser> {
 export async function RemoveFriend(id : number): Promise<IUser> {
 
 	try {
-		const response = await axios.delete(`${BASE_URL}/social/friends/${id}`);
+		const response = await api.delete(`/social/friends/${id}`);
 		return response.data;
 
 	} catch (error) {
@@ -318,7 +318,7 @@ export async function RemoveFriend(id : number): Promise<IUser> {
 export async function AcceptFriendRequest(id : number): Promise<IUser> {
 
 	try {
-		const response = await axios.post(`${BASE_URL}/social/friend-request/${id}/accept`);
+		const response = await api.post(`/social/friend-request/${id}/accept`);
 		return response.data;
 
 	} catch (error) {
@@ -330,7 +330,7 @@ export async function AcceptFriendRequest(id : number): Promise<IUser> {
 export async function FriendRequest(username: string): Promise<IUser> {
 
 	try {
-		const response = await axios.post(`${BASE_URL}/social/friend-request/${username}`);
+		const response = await api.post(`/social/friend-request/${username}`);
 		return response.data;
 
 	} catch (error) {
@@ -342,7 +342,7 @@ export async function FriendRequest(username: string): Promise<IUser> {
 export async function BlockUser(username: string): Promise<IUser> {
 
 	try {
-		const response = await axios.post(`${BASE_URL}/social/block/${username}`);
+		const response = await api.post(`/social/block/${username}`);
 		return response.data;
 
 	} catch (error) {

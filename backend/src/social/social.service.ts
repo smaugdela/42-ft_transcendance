@@ -94,9 +94,10 @@ export class SocialService {
 
 	async blockUser(userId: number, username: string) 
 	{
-		  // Vérifier si l'ami existe
+		// Vérifier si l'ami existe
 		const friendToBlock = await prisma.user.findUnique(
 		{where: { nickname: username },});
+		
 		if (!friendToBlock) {throw new Error(`User '${username}' not found`);}
 		
 		// Supprimer l'ami de la liste d'amis de l'utilisateur actuel
@@ -110,7 +111,7 @@ export class SocialService {
 		await prisma.user.update(
 		{
 			where: { nickname: username },
-			data: {friendsList: {disconnect:{nickname: username},},},
+			data: {friendsList: {disconnect:{id: userId},},},
 		});
 
 		// Ajouter l'ami à la liste de blocage de l'utilisateur actuel
@@ -144,12 +145,18 @@ export class SocialService {
 
 	async removeFriend(userId: number, id: number) 
 	{
+		await prisma.user.update(
+		{
+			where: { id: id },
+			include: { friendsList : true },
+			data: { friendsList: { disconnect: { id: userId }}}
+		}
+		);
 		return await prisma.user.update(
 		{
 			where: { id: userId },
 			data: {friendsList: {disconnect: { id: id }}},
 		}
 		);
-
 	}
 }
