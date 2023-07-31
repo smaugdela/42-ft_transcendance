@@ -1,10 +1,11 @@
 import "../styles/Social.css"
-import { IUser, users } from "../data";
+// import { IUser, users } from "../data";
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus, faBan, faEnvelope} from '@fortawesome/free-solid-svg-icons';
-import { postSearchQuery } from "../api/APIHandler";
-
+import { AcceptFriendRequest, fetchMe, postSearchQuery } from "../api/APIHandler";
+import { useQuery } from "@tanstack/react-query";
+import { IUser } from "../api/types";
 export function SearchBar() {
 
 	const [userInput, setUserInput] = useState("");
@@ -55,7 +56,11 @@ export function SearchBar() {
 }
 
 export function DisplayConnections( props: { profilesToDisplay : IUser[] }) {
-	
+	// const acceptRequest = useMutation({ mutationFn: (id: number) => AcceptFriendRequest(id)});
+
+	// const handleacceptRequest = () => {
+	// 	acceptRequest.mutate(id);
+	// }
 	const displayProfiles = props.profilesToDisplay.map(profile => {
 		return <div key={profile.id} className="profile">
 					<div className="img-container">
@@ -68,6 +73,10 @@ export function DisplayConnections( props: { profilesToDisplay : IUser[] }) {
 						<h5>{profile.nickname}</h5>
 						<div><FontAwesomeIcon icon={faBan} /></div>
 						<div><FontAwesomeIcon icon={faEnvelope} /></div>
+						{/* // quand le group c'est pending: tu affiches la croix ou le v
+						{
+							<div><FontAwesomeIcon icon={faCheck} onClick={handleacceptRequest}/></div>
+						} */}
 					</div>
 		</div>
 	})
@@ -80,12 +89,9 @@ export function DisplayConnections( props: { profilesToDisplay : IUser[] }) {
  
 export function Social() {
 
-	const loggedUser: IUser = users.filter( user => user.isLogged === true)[0];
-	
-	const allFriends:		IUser[] = loggedUser.friendsList;
-	const activeFriends:	IUser[]	= allFriends.filter(friend => friend.isActive === true);
-	const blocked:			IUser[]	= loggedUser.blockList;
-	const pendingRequests:	IUser[]	= loggedUser.pendingList;
+	const [groupToDisplay, setGroupToDisplay] = useState<IUser[]>([]);
+	const { data: loggedUser, error, isLoading, isSuccess } = useQuery({ queryKey: ['user'], queryFn: fetchMe});
+		
 	
 	const [buttonStates, setButtonStates] = useState({
 		allFriends: false,
@@ -94,29 +100,51 @@ export function Social() {
 		pendingRequests: false,
 	  });
 
-	const [groupToDisplay, setGroupToDisplay] = useState(allFriends);
 
 	useEffect( () => {
+		if (activeFriends|| allFriends || blocked || pendingRequests) {
 
-		switch (groupToDisplay) {
-			case activeFriends:
-				setGroupToDisplay(activeFriends);
-				break;
-			case allFriends:
-				setGroupToDisplay(allFriends);
-				break;
-			case blocked:
-				setGroupToDisplay(blocked);
-				break;
-			case pendingRequests:
-				setGroupToDisplay(pendingRequests);
-				break;
-			default:
-				break;
+			switch (groupToDisplay) {
+				case activeFriends:
+					setGroupToDisplay(activeFriends);
+					break;
+				case allFriends:
+					setGroupToDisplay(allFriends);
+					break;
+				case blocked:
+					setGroupToDisplay(blocked);
+					break;
+				case pendingRequests:
+					setGroupToDisplay(pendingRequests);
+					break;
+					default:
+						break;
+					}
+					
+				}
+			},[groupToDisplay]);
+			
+	useEffect( () => {
+		if (allFriends) {
+
+			setGroupToDisplay(allFriends);
 		}
+	});
 
-		},[groupToDisplay, allFriends, activeFriends, blocked, pendingRequests]);
-		
+	if (error) {
+		return <div>Error</div>;
+	}
+	if (isLoading || !isSuccess) {
+		return <div>Loading...</div>;
+	}
+
+	const allFriends:		IUser[] = loggedUser?.friendsList;
+	const activeFriends:	IUser[] = allFriends?.filter(friend => friend.isActive === true);
+	const blocked:			IUser[] = loggedUser?.blockList;
+	const pendingRequests:	IUser[] = loggedUser?.pendingList;
+
+	
+
 	const handleClick = (group: IUser[], id: string) => {
 		setGroupToDisplay(group);
 		setButtonStates({
@@ -127,7 +155,6 @@ export function Social() {
 			[id]: true,
 		});
 	}
-
 	return (
 		<div  id="social-dashboard">
 			<SearchBar />
@@ -153,9 +180,12 @@ export function Social() {
 					Pending requests
 				</button>
 			</div>
-			<DisplayConnections
-				profilesToDisplay={groupToDisplay}
-			/>
+			{
+				groupToDisplay !== undefined &&
+				<DisplayConnections
+					profilesToDisplay={groupToDisplay}
+				/>
+			}
 		</div>
 	);
 };

@@ -271,7 +271,7 @@ export async function getBlockerFriends(): Promise<IUser> {
 
 export async function getPendingList(): Promise<IUser> {
 	try{
-		const response = await axios.get(`${BASE_URL}/social/pending-list`);
+		const response = await api.get(`/social/pending-list`);
 		return response.data;
 	} catch (error) {
 		console.log("Error getPendingList: ", error);
