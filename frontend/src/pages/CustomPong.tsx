@@ -29,7 +29,7 @@ export function CustomPong() {
 	const ballRadius = 5;
 	const powerUpRadius = 20;
 	const maxBallSpeed = 1000;
-	const imageTexture = Texture.from('./assets/reverse.png');
+	const TextureReverse = Texture.from('./assets/reverse.png');
 	let lastTime = useRef(Date.now());
 	let lastCall = useRef(Date.now());
 
@@ -94,7 +94,7 @@ export function CustomPong() {
 			window.removeEventListener("keyup", handleKeyUp);
 		};
 
-	}, [upKeyPressed, downKeyPressed] );
+	}, [] );
 
 	useEffect(() => {
 		// Game update loop with PixiJS ticker
@@ -125,18 +125,17 @@ export function CustomPong() {
 				}
 				case false:
 				{
-					console.log("coucou");
 					if (upKeyPressed /*&& gameState.rightPaddleY > 0*/) {
 						if (gameState.powerUpOn)
-							gameState.leftPaddleY += (paddleSpeed * delta);
+							gameState.rightPaddleY += (paddleSpeed * delta);
 						else
-							gameState.leftPaddleY -= (paddleSpeed * delta);
+							gameState.rightPaddleY -= (paddleSpeed * delta);
 					}
 					if (downKeyPressed /*&& gameState.rightPaddleY < height - paddleLength*/) {
 						if (gameState.powerUpOn)
-							gameState.leftPaddleY -= (paddleSpeed * delta);
+							gameState.rightPaddleY -= (paddleSpeed * delta);
 						else
-							gameState.leftPaddleY += (paddleSpeed * delta);
+							gameState.rightPaddleY += (paddleSpeed * delta);
 					}
 					break;
 				}
@@ -373,12 +372,12 @@ export function CustomPong() {
 									  })]}
 						/>
 
-					{gameState.powerUp && <Sprite texture={imageTexture}
+					{gameState.powerUp && <Sprite texture={TextureReverse}
 						x={gameState.powerUpX}
 						y={gameState.powerUpY}
 						width={powerUpRadius * 2}
 						height={powerUpRadius * 2}
-						rotation={(Date.now() % 1000) / 1000}
+						rotation={(Date.now() / 1000)}
 						anchor={0.5}
 					/>}
 
