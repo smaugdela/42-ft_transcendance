@@ -367,7 +367,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		}
 
 		const delta = (Date.now() - match.lastUpdate) / 1000; // in seconds
-
+	
 		// If payload is not empty, actuate user state
 		if (payload) {
 			switch (userId) {
@@ -451,20 +451,25 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			if (distance < this.socketsService.gameConstants.ballRadius + this.socketsService.gameConstants.powerUpRadius)
 			{
 				match.powerUp = false;
-				switch (match.ballSpeedX < 0)
-				{
-					case true:
-						// Player2 gets a powerup
-						break;
-					case false:
-						// Player1 gets a powerup
-						break;
-					default:
-						break;
-				}
+				match.powerUpOn = true;
+				match.powerUpDate = Date.now();
+				
+				// switch (match.ballSpeedX < 0)
+				// {
+				// 	case true:
+				// 		match.powerUpOn = true;
+				// 		match.powerUpDate = Date.now();
+				// 		// Player2 gets a powerup
+				// 		break;
+				// 	case false:
+				// 		match.powerUpOn = true;
+				// 		match.powerUpDate = Date.now();
+				// 		break;
+				// 	default:
+				// 		break;
+				// }
 			}
 		}
-
 		match.lastUpdate = Date.now();
 
 		// Send match state to both players
@@ -524,6 +529,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		if (Math.random() > 0.5) {
 			match.ballSpeedY *= -1;
 		}
+		match.powerUpOn = false;
 
 		// Regenerate powerup
 		const scoreTotal = match.player1.score + match.player2.score;

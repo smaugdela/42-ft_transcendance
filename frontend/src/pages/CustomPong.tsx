@@ -49,6 +49,7 @@ export function CustomPong() {
 		powerUp: true,
 		powerUpX: width / 2,
 		powerUpY: height / 2,
+		powerUpOn: false,
 	});
 
 	const [downKeyPressed, setDownKeyPressed] = useState(false);
@@ -107,27 +108,35 @@ export function CustomPong() {
 			switch (leftUser) {
 				case true:
 				{
-					if (upKeyPressed && gameState.leftPaddleY > 0) {
-						// setLeftPaddle(leftPaddle - (paddleSpeed * delta));
-						gameState.leftPaddleY -= (paddleSpeed * delta);
+					if (upKeyPressed /*&& gameState.leftPaddleY > 0*/) {
+						if (gameState.powerUpOn)
+							gameState.leftPaddleY += (paddleSpeed * delta);
+						else
+							gameState.leftPaddleY -= (paddleSpeed * delta);
 					}
 
-					if (downKeyPressed && gameState.leftPaddleY < height - paddleLength) {
-						// setLeftPaddle(leftPaddle + (paddleSpeed * delta));
-						gameState.leftPaddleY += (paddleSpeed * delta);
+					if (downKeyPressed /*&& gameState.leftPaddleY < height - paddleLength*/) {
+						if (gameState.powerUpOn)
+							gameState.leftPaddleY -= (paddleSpeed * delta);
+						else
+							gameState.leftPaddleY += (paddleSpeed * delta);
 					}
 					break;
 				}
 				case false:
 				{
-					if (upKeyPressed && gameState.rightPaddleY > 0) {
-						// setRightPaddle(rightPaddle - (paddleSpeed * delta));
-						gameState.rightPaddleY -= (paddleSpeed * delta);
+					console.log("coucou");
+					if (upKeyPressed /*&& gameState.rightPaddleY > 0*/) {
+						if (gameState.powerUpOn)
+							gameState.leftPaddleY += (paddleSpeed * delta);
+						else
+							gameState.leftPaddleY -= (paddleSpeed * delta);
 					}
-
-					if (downKeyPressed && gameState.rightPaddleY < height - paddleLength) {
-						// setRightPaddle(rightPaddle + (paddleSpeed * delta));
-						gameState.rightPaddleY += (paddleSpeed * delta);
+					if (downKeyPressed /*&& gameState.rightPaddleY < height - paddleLength*/) {
+						if (gameState.powerUpOn)
+							gameState.leftPaddleY -= (paddleSpeed * delta);
+						else
+							gameState.leftPaddleY += (paddleSpeed * delta);
 					}
 					break;
 				}
@@ -237,6 +246,7 @@ export function CustomPong() {
 				powerUp: matchClass.powerUp,
 				powerUpX: matchClass.powerUpX,
 				powerUpY: matchClass.powerUpY,
+				powerUpOn: matchClass.powerUpOn,
 			});
 		});
 
@@ -311,7 +321,7 @@ export function CustomPong() {
 				<Stage
 					width={width}
 					height={height}
-					options={{ backgroundColor: 0xef9dfa , backgroundAlpha: 0.75 }}
+					options={{ backgroundColor: 0x3d2f4d , backgroundAlpha: 0.5 }}
 				>
 					<Container>
 					{/* Render a dashed line in the middle of the terrain */}
@@ -402,7 +412,7 @@ export function CustomPong() {
 							distance: 5, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 							outerStrength: 2, // Force du glow à l'extérieur du texte
 							innerStrength: 0, // Force du glow à l'intérieur du texte (0 signifie aucun glow intérieur)
-							color: 0xffffff, // Couleur du glow (choisissez une couleur néon appropriée)
+							color: 0x18141c,
 						  })]}
 					/>
 					<Text
@@ -433,7 +443,7 @@ export function CustomPong() {
 							distance: 5, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 							outerStrength: 2, // Force du glow à l'extérieur du texte
 							innerStrength: 0, // Force du glow à l'intérieur du texte (0 signifie aucun glow intérieur)
-							color: 0xffffff, // Couleur du glow (choisissez une couleur néon appropriée)
+							color: 0x18141c,
 						  })]}
 					/>
 

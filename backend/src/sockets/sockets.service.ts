@@ -29,8 +29,10 @@ export class MatchClass {
 	ballSpeedY: number;
 
 	powerUp: boolean;
+	powerUpOn: boolean;
 	powerUpX: number;
 	powerUpY: number;
+	powerUpDate: number;
 	
 
 	lastUpdate: number;
@@ -107,7 +109,6 @@ export class SocketsService {
 		player.mode = mode;
 		player.username = username;
 		player.score = 0;
-		player.powerup = false;
 		return player;
 	}
 
@@ -151,7 +152,8 @@ export class SocketsService {
 		match.p2posY = (this.gameConstants.height / 2) - (this.gameConstants.paddleLength / 2);
 		match.ballX = this.gameConstants.width / 2;
 		match.ballY = this.gameConstants.height / 2;
-
+		match.powerUpOn = false;
+		match.powerUpDate = 0;
 		// Power up config
 		if (mode === "Classic")
 			match.powerUp = false;
