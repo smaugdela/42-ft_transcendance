@@ -1,10 +1,9 @@
 import '../../styles/Tab_Chat.css';
-
 import React, { useEffect, useState, useContext } from 'react';
 // import { SocketContext } from '../../context/contexts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquarePlus, faBan, faPersonWalkingArrowRight, faCommentSlash } from "@fortawesome/free-solid-svg-icons";
+import { faSquarePlus, faBan, faPersonWalkingArrowRight, faCommentSlash, faUserShield } from "@fortawesome/free-solid-svg-icons";
 import { fetchMe, getOneChannelByName, updateUserInChannel, createMessage } from '../../api/APIHandler';
 import { IChannel, IUser } from '../../api/types';
 import toast from 'react-hot-toast';
@@ -84,7 +83,7 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 				(channel[group] as IUser[]).some((member: IUser) => member.id === userTalking.id)
 				: false;
 	
-			if (!userInGroup) {
+			if (!userInGroup && userTalking.id !== channel.ownerId) {
 				// Si c'est pas le cas, on l'ajoute
 				addToGroup.mutate([group, "connect", String(channel?.id)]);
 				toast.success(`${userTalking.nickname}'s role has been added!`);
@@ -93,8 +92,12 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 				
 			} else {
 				// Sinon, on l'enlève
-				addToGroup.mutate([group, "disconnect", String(channel?.id)]);
-				toast.success(`${userTalking.nickname} has been removed from this role.`);
+				if (userTalking.id !== channel.ownerId) {
+					addToGroup.mutate([group, "disconnect", String(channel?.id)]);
+					toast.success(`${userTalking.nickname} has been removed from this role.`);
+				} else {
+					toast.error(`Can't do that to ${userTalking.nickname}, as the owner of this channel!`)
+				}
 			}
 		}
 	}
@@ -114,6 +117,7 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 			{
 				toggleDisplay === true && 
 				<>
+					<FontAwesomeIcon className='options__icon' title="Make admin" icon={faUserShield} onClick={() => handleRole("admin")} />
 					<FontAwesomeIcon className='options__icon' title="Ban" icon={faBan} onClick={() => handleRole("bannedUsers")}/>
 					<FontAwesomeIcon className='options__icon' title="Kick" icon={faPersonWalkingArrowRight} onClick={() => handleRole("kickedUsers")}/>
 					<FontAwesomeIcon className='options__icon' title="Mute" icon={faCommentSlash} onClick={() => handleRole("mutedUsers")}/>

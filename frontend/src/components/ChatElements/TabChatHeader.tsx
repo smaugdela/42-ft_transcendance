@@ -8,6 +8,14 @@ import { ChatStatusContext } from "../../context/contexts";
 import { ChannelTitle } from "./ChannelTitle";
 import { ChannelType } from "./ChannelType";
 
+const getDate = (channel : IChannel) => {
+	const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'numeric', day: 'numeric'} as const;
+	const date = (typeof channel.date === 'string') ? new Date(channel.date) : channel.date;
+	const formattedDate = date.toLocaleDateString('en-US', options);
+	return formattedDate;
+}
+
+
 export function TabChatHeader({ conv }: { conv: IChannel}) {
 
 	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
@@ -47,6 +55,7 @@ export function TabChatHeader({ conv }: { conv: IChannel}) {
 			<ChannelTitle conv={conv} initialName={convName} />
 			<button onClick={handleClick}>Leave Conversation</button>
 		</div>
+		<p>Channel created by <b>{conv?.owner.nickname}</b> on {getDate(conv)}</p>
 		<p>{conv?.joinedUsers.length} member(s), {conv?.admin.length} admin(s) </p>
 		<ChannelType channelId={conv?.id} loggedUser={user}/>
 		</div>

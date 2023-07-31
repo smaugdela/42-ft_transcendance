@@ -87,17 +87,18 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		client.disconnect(true);
 	}
 
+	
+	/* ######################### */
+	/* ######### CHAT ########## */
+	/* ######################### */
+	
 	@SubscribeMessage('Create Lobby')
 	async handleLobbyCreation(client: Socket, payload: string): Promise<void> {
 		const room = payload;
 		client.join(room);
 		console.log(client.data.username, ` has joined the room ${payload}!`);
 	}
-
-	/* ######################### */
-	/* ######### CHAT ########## */
-	/* ######################### */
-
+	
 	/**
 	 * @description Message à envoyer aux listeners de l'event "receiveMessage"
 	 * @param client Socket de la personne qui a envoyé un message dans le Chat
