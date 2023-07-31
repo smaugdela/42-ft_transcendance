@@ -1,6 +1,7 @@
-.env
+.env*
 .vscode/
 *.pem
+.DS_Store
 
 # React Component Preview
 previewConfig.json

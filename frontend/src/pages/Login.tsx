@@ -71,7 +71,7 @@ export default function Login({ setLoggedIn, setSocket }: {
 			<form  className="connection-form">
 
 			<label className="login_label" htmlFor="username">Username</label>
-			<input onChange={(event) => {setNickname(event.target.value)}} type="text" placeholder="Email or Phone" id="username" />
+			<input onChange={(event) => {setNickname(event.target.value)}} type="text" placeholder="username" id="username" />
 
 			<label  className="login_label" htmlFor="password">Password</label>
 			<input onChange={(event) => {setPassword(event.target.value)}} type="password" placeholder="Password" id="password" />

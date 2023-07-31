@@ -1,5 +1,8 @@
 import '../../styles/Tab_Chat.css';
+
 import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+// import { SocketContext } from '../../context/contexts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquarePlus, faBan, faPersonWalkingArrowRight, faCommentSlash } from "@fortawesome/free-solid-svg-icons";
@@ -55,6 +58,25 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 				createInfoMessage.mutate([channel, msg]);
 		}
 	};
+
+	//const socket = useContext(SocketContext); // déjà déclaré ligne 19
+
+	/* const handleInvitation = () => {
+
+		console.log('Invite to game');
+
+		socket?.emit('invite match', userTalking.nickname);
+
+		toast.success('Invitation sent');
+	}
+
+	socket?.on('match invitation declined', (nickname: string) => {
+		toast.error(`${nickname} declined your invitation.`);
+	});
+  
+  // Le fontawesome est dans oneMessage, faudra juste rajouter le onClick!
+  <FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} onClick={handleInvitation}/>
+  */
 
 	const handleRole = (group: keyof IChannel) => {
 		if (channel) {

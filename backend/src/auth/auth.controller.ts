@@ -19,7 +19,6 @@ export class AuthController {
 	@Public()
 	@Get('2fa')
 	async twoFactorAuth(@Query() query, @Res({ passthrough: true }) res: Response) {
-		console.log("Query Code obtained: ", query.code);
 		return this.authService.login2FA(query, res);
 	}
 
