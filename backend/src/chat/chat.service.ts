@@ -254,6 +254,14 @@ export class ChatService {
 		});
 	}
 
+	// RoomName: string, Type: ChanMode ('PUBLIC' 'PRIVATE' 'PROTECTED' 'DM')
+	async updateChannelProperties(channelId: number, updateChannelDto: Prisma.ChannelUpdateInput) {
+		return await prisma.channel.update({
+			where: { id: channelId },
+			data: updateChannelDto,
+		});
+	}
+
 	async updateUserinChannel(channelId: number, body: UpdateChannelDto) {
 		const {userId, groupToInsert, action } = body;
 		// TODO: si chan protected, vérifier que password donné match!!!

@@ -42,11 +42,9 @@ export function ChannelTitle({ conv, initialName } : { conv: IChannel, initialNa
 	};
 
 	const handleInputKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-		if (event.key === "Enter") {
+		if (event.key === "Enter" && newTitle !== initialName && newTitle !== '') {
 			setIsEditing(false);
-			if (newTitle !== initialName) {
-				updateChannel.mutate(newTitle);
-			}
+			updateChannel.mutate(newTitle);
 		}
 	};
 
