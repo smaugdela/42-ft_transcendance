@@ -31,10 +31,7 @@ export function ChannelType({ channelId, loggedUser } : { channelId: number, log
 	useEffect(() => {
 		if (channel && channel.ownerId === loggedUser.id) {
 			setIsEnabled(true);
-			console.log(isEditing);
-			
 		}
-		
 	}, [channel, loggedUser.id])
 	
 	if (error) {
@@ -94,7 +91,7 @@ export function ChannelType({ channelId, loggedUser } : { channelId: number, log
 						<button onClick={handleInputKeyPress}>Confirm change</button>
 						</>
 					) : (
-						<p  onClick={() => setIsEditing(true)}>Mode: {channel.type} <FontAwesomeIcon icon={faPencil} /></p>
+						<p  onClick={() => setIsEditing(true)}>Mode: {chanType} <FontAwesomeIcon icon={faPencil} /></p>
 					)
 				}
 					
