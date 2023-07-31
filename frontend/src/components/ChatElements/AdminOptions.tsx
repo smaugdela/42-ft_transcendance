@@ -2,7 +2,7 @@ import '../../styles/Tab_Chat.css';
 import React, { useEffect, useState, useContext } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquarePlus, faGamepad, faBan, faPersonWalkingArrowRight, faCommentSlash } from "@fortawesome/free-solid-svg-icons";
+import { faSquarePlus, faBan, faPersonWalkingArrowRight, faCommentSlash } from "@fortawesome/free-solid-svg-icons";
 import { fetchMe, getOneChannelByName, updateUserInChannel, createMessage } from '../../api/APIHandler';
 import { IChannel, IUser } from '../../api/types';
 import toast from 'react-hot-toast';
@@ -86,7 +86,6 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 	}
 	return (
 	<>
-		<FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} />
 		{
 			enableOptions === true &&
 			<>

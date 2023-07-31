@@ -1,4 +1,6 @@
 import '../../styles/Tab_Chat.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import { fetchMe } from "../../api/APIHandler";
 import { IChannel, IMessage } from "../../api/types";
 import {AdminOptions} from './AdminOptions';
@@ -58,6 +60,10 @@ export function OneMessage({ conv, message, index } :
 			</div>
 			<p className={`${isMe === true ? 'one__msg_content' : 'one__msg_content_me'}`} key={index}>{message.content}</p>
 		</div>
+		{
+			isMe === true &&
+			<FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} />
+		}
 		{
 			conv.type !== 'DM' && isMe === true && 
 			conv.admin.filter((admin) => admin.nickname === userMe?.nickname).length === 1 && 
