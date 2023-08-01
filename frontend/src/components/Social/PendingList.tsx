@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import "../../styles/Social.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus, faBan, faUserXmark} from '@fortawesome/free-solid-svg-icons';
-import { acceptFriendRequest, blockUser } from "../../api/APIHandler";
+import { acceptFriendRequest, rejectFriendRequest, blockUser } from "../../api/APIHandler";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { IUser } from "../../api/types";
 
@@ -20,6 +20,12 @@ export function PendingList( props: { profilesToDisplay : IUser[], userIsSuccess
 			queryClient.invalidateQueries(['user']);	
 		}
 	});
+    const rejectRequest = useMutation({ 
+		mutationFn: (id: number) => rejectFriendRequest(id),
+		onSuccess: () => {
+			queryClient.invalidateQueries(['user']);	
+		}
+	});
 	useEffect(() => {
 		if (props.userIsSuccess) {
 		  queryClient.invalidateQueries(['user']); // Refetch the user data if the userIsSuccess prop changes
@@ -28,6 +34,9 @@ export function PendingList( props: { profilesToDisplay : IUser[], userIsSuccess
 
 	const handleacceptRequest = (id: number) => {
 		acceptRequest.mutate(id);
+	}
+    const handlerejectRequest = (id: number) => {
+		rejectRequest.mutate(id);
 	}
     const handleblockuser = (nickname: string) => {
 		blockuser.mutate(nickname);
@@ -43,7 +52,7 @@ export function PendingList( props: { profilesToDisplay : IUser[], userIsSuccess
 					<div className="profile_infos">
 						<h5>{profile.nickname}</h5>
 						<div><FontAwesomeIcon icon={faUserPlus} onClick={() =>handleacceptRequest(profile.id)}/></div>
-						<div><FontAwesomeIcon icon={faUserXmark} /></div>
+						<div><FontAwesomeIcon icon={faUserXmark} onClick={() =>handlerejectRequest(profile.id)}/></div>
                         <div><FontAwesomeIcon icon={faBan} onClick={() =>handleblockuser(profile.nickname)}/></div>					</div>
 		</div>
 	})

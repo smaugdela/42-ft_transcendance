@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import "../../styles/Social.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPlus, faBan, faUserXmark, faXmark} from '@fortawesome/free-solid-svg-icons';
-import { blockUser } from "../../api/APIHandler";
+import { faXmark} from '@fortawesome/free-solid-svg-icons';
+import { removeFromBlock } from "../../api/APIHandler";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { IUser } from "../../api/types";
 
 export function BlockedUser( props: { profilesToDisplay : IUser[], userIsSuccess: boolean }) {
 	const queryClient = useQueryClient();
-	const blockuser = useMutation({ 
-		mutationFn: (nickname: string) => blockUser(nickname),
+	const removefromblock = useMutation({ 
+		mutationFn: (id: number) => removeFromBlock(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries(['user']);	
 		}
@@ -20,8 +20,8 @@ export function BlockedUser( props: { profilesToDisplay : IUser[], userIsSuccess
 		}
 	  }, [props.userIsSuccess]);
 
-	const handleblockuser = (nickname: string) => {
-		blockuser.mutate(nickname);
+	const handleremovefromblock = (id: number) => {
+		removefromblock.mutate(id);
 	}
 	const displayProfiles = props.profilesToDisplay.map(profile => {
 		return <div key={profile.id} className="profile">
@@ -33,7 +33,7 @@ export function BlockedUser( props: { profilesToDisplay : IUser[], userIsSuccess
 					</div>
 					<div className="profile_infos">
 						<h5>{profile.nickname}</h5>
-						<div><FontAwesomeIcon icon={faXmark} onClick={() =>handleblockuser(profile.nickname)}/></div>
+						<div><FontAwesomeIcon icon={faXmark} onClick={() =>handleremovefromblock(profile.id)}/></div>
 					</div>
 		</div>
 	})

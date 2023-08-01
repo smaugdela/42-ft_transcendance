@@ -101,21 +101,22 @@ export function SearchBar() {
  
 export function Social() {
 
+	const [groupToDisplay, setGroupToDisplay] = useState<IUser[]>([]);
+
 	const [activeList, setActiveList] = useState<string | null>(null);
 	const queryClient = useQueryClient();
-	// const [groupToDisplay, setGroupToDisplay] = useState<IUser[]>([]);
 	const { data: loggedUser, error, isLoading, isSuccess } = useQuery({ queryKey: ['user'], queryFn: fetchMe});
 	
-	const handleClick = (listType: string) => {
+	const handleClickcomponent = (listType: string) => {
 		setActiveList(listType); // Update the active list when a button is clicked
 	  };
 
-	// const [buttonStates, setButtonStates] = useState({
-	// 	allFriends: false,
-	// 	activeFriends: false,
-	// 	blocked: false,
-	// 	pendingRequests: false,
-	//   });
+	const [buttonStates, setButtonStates] = useState({
+		// allFriends: false,
+		activeFriends: false,
+		// blocked: false,
+		// pendingRequests: false,
+	  });
 
 
 	// useEffect( () => {
@@ -150,24 +151,24 @@ export function Social() {
 
 	
 
-	// const allFriends:		IUser[] = loggedUser?.friendsList || [];
-	// const activeFriends:	IUser[] = allFriends?.filter(friend => friend.isActive === true) || [];
+	const allFriends:		IUser[] = loggedUser?.friendsList || [];
+	const activeFriends:	IUser[] = allFriends?.filter(friend => friend.isActive === true) || [];
 	// const blocked:			IUser[] = loggedUser?.blockList || [];
 	// const pendingRequests:	IUser[] = loggedUser?.pendingList || [];
 
 	
 
-	// const handleClick = (group: IUser[] | undefined, id: string) => {
-	// 	setGroupToDisplay(group || []);
-	// 	console.log(loggedUser);
-	// 	setButtonStates({
-	// 		allFriends: false,
-	// 		activeFriends: false,
-	// 		blocked: false,
-	// 		pendingRequests: false,
-	// 		[id]: true,
-	// 	});
-	// }
+	const handleClick = (group: IUser[] | undefined, id: string) => {
+		setGroupToDisplay(group || []);
+		console.log(loggedUser);
+		setButtonStates({
+			// allFriends: false,
+			activeFriends: false,
+			// blocked: false,
+			// pendingRequests: false,
+			[id]: true,
+		});
+	}
 
 	if (error) {
 		return <div>Error</div>;
@@ -183,36 +184,38 @@ export function Social() {
 				<button 
 					// onClick={ () => handleClick(allFriends, "allFriends")}
 					// className={buttonStates.allFriends ? "clicked-btn" : "btn"}>
-					onClick={() => handleClick('allFriends')} className={activeList === 'allFriends' ? 'clicked-btn' : 'btn'}>
+					onClick={() => handleClickcomponent('allFriends')} className={activeList === 'allFriends' ? 'clicked-btn' : 'btn'}>
 					All friends
 				</button>
 				<button 
-					// onClick={ () => handleClick(activeFriends, "activeFriends")}
-					// className={buttonStates.activeFriends ? "clicked-btn" : "btn"}>
-					onClick={() => handleClick('activeFriends')} className={activeList === 'activeFriends' ? 'clicked-btn' : 'btn'}>
+					onClick={ () => handleClick(activeFriends, "activeFriends")}
+					className={buttonStates.activeFriends ? "clicked-btn" : "btn"}>
+					 {/* onClick={() => handleClick(activeFriends, "activeFriends")} className={activeList === 'activeFriends' ? 'clicked-btn' : 'btn'}>  */}
 					Active friends
 				</button>
 				<button 
 					// onClick={ () => handleClick(blocked, "blocked")}
 					// className={buttonStates.blocked ? "clicked-btn" : "btn"}>
-					onClick={() => handleClick('blocked')} className={activeList === 'blocked' ? 'clicked-btn' : 'btn'}>
+					onClick={() => handleClickcomponent('blocked')} className={activeList === 'blocked' ? 'clicked-btn' : 'btn'}>
 					Blocked users
 				</button>
 				<button 
 					// onClick={ () => handleClick(pendingRequests, "pendingRequests")}
 					// className={buttonStates.pendingRequests ? "clicked-btn" : "btn"}>
-					onClick={() => handleClick('pendingRequests')} className={activeList === 'pendingRequests' ? 'clicked-btn' : 'btn'}>
+					onClick={() => handleClickcomponent('pendingRequests')} className={activeList === 'pendingRequests' ? 'clicked-btn' : 'btn'}>
 					Pending requests
 				</button>
 			</div>
 				{activeList === 'allFriends' && <AllFriends profilesToDisplay={loggedUser.friendsList} userIsSuccess={isSuccess}/>}
 				{activeList === 'pendingRequests' && <PendingList profilesToDisplay={loggedUser.pendingList} userIsSuccess={isSuccess}/>}
-				{activeList === 'blocked' && <BlockedUser profilesToDisplay={loggedUser.blockList} userIsSuccess={isSuccess}/>
+				{activeList === 'blocked' && <BlockedUser profilesToDisplay={loggedUser.blockList} userIsSuccess={isSuccess}/>}
+
+				{/* {activeList === 'activeFriends' && <DisplayConnections profilesToDisplay={loggedUser.friendsList.filter((friend) => friend.isActive === true)} />}  */}
 				
-				// groupToDisplay.length > 0 && (<DisplayConnections profilesToDisplay={groupToDisplay}/>)
-				// isSuccess && <DisplayConnections profilesToDisplay={groupToDisplay} userIsSuccess={isSuccess} />
-				// {activeList === 'activeFriends' && <DisplayConnections profilesToDisplay={loggedUser.friendsList.filter((friend) => friend.isActive === true)} />}
-			}
+				 {/* groupToDisplay.length > 0 && (<DisplayConnections profilesToDisplay={groupToDisplay}/>)
+				 isSuccess && <DisplayConnections profilesToDisplay={groupToDisplay} userIsSuccess={isSuccess} /> */}
+				
+	
     </div>
   );
 
