@@ -15,7 +15,7 @@ export class Player {
 export class MatchClass {
 	matchId: number;
 	started: number;
-	mode: string;
+	mode: string;	// Classic ou Custom
 
 	player1: Player;
 	player2: Player;

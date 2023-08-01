@@ -13,14 +13,12 @@ RUN npm ci --legacy-peer-deps
 # Copy the rest of the files
 COPY --chown=node:node . .
 
-# Copy the env file reserved for docker as .env
-COPY --chown=node:node .env.docker .env
-
 # Run the build command which creates the production bundle
 RUN npm run build
 
 # Optimise the node_modules directory
-RUN npm ci --legacy-peer-deps --only=production && npm cache clean --force
+# RUN npm ci --legacy-peer-deps --only=production && npm cache clean --force
+RUN npm ci --legacy-peer-deps --omit=dev
 
 # Use nginx as server
 FROM nginx:1.24.0-alpine
@@ -42,4 +40,5 @@ ENV NODE_ENV production
 # Set the correct user
 # USER www-data
 
+# CMD [ "npx", "serve", "build" ]
 CMD ["nginx", "-g", "daemon off;"]

@@ -7,12 +7,13 @@ import { MatchClass } from './sockets.service';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
+const corsConfig = {
+	origin: process.env.DOCKER && process.env.DOCKER === "true" ? "http://" + process.env.FRONTEND_HOST : process.env.FRONTEND_URL,
+	credentials: true,
+};
 
 @WebSocketGateway({
-	cors: {
-		origin: process.env.FRONTEND_URL,
-		credentials: true,
-	}
+	cors: corsConfig,
 })
 export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect {
 	constructor(private socketsService: SocketsService, private readonly jwtService: JwtService) { }

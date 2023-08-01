@@ -5,18 +5,21 @@ const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 axios.defaults.withCredentials = true;
 
-
 /* ######################*/
 /* ##   INTERCEPTORS   ##*/
 /* ######################*/
 
 const api = axios.create({
 	baseURL: BASE_URL,
+	withCredentials: true,
+	headers: {
+		'Access-Control-Allow-Origin': BASE_URL,
+	},
 });
 
 api.interceptors.response.use(
 	(response) => {
-		// console.log('Response was received');
+
 		return response;
 	},
 	(error) => {
@@ -60,7 +63,6 @@ export async function signUp(newNickname: string, password: string): Promise<any
 		throw new Error('A user with this nickname already exists');
 	}
 }
-
 
 export async function logIn(newNickname: string, password: string): Promise<any> {
 
