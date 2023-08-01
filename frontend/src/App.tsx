@@ -60,6 +60,14 @@ function App() {
 		//   resizeTo: window,
 	});
 
+
+	function closeChat(event: Event) {
+		event.stopPropagation();
+		setIsExpanded(!isExpanded);
+	  }
+
+	document.body.ondblclick = closeChat;
+
   return (
 	<div id='app' className={`App ${theme}`}>
 		<section id="main-content">
