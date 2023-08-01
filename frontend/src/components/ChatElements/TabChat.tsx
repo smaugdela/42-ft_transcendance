@@ -12,8 +12,9 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 
 	const [messages, setMessages] = useState<IMessage[]>([]);
 	const [inputValue, setInputValue] = useState<string>('');
-	const [isMuted, setIsMuted] = useState<boolean>(false);
 	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
+	const [isMuted, setIsMuted] = useState<boolean>(false);
+	// const { isMuted, setIsMuted, muteExpiration, setMuteExpiration } = useContext(MuteContext);
 	const socket = useContext(SocketContext);
 	const queryClient = useQueryClient();
 
@@ -45,6 +46,14 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 		onError: () => { toast.error(`Error : someone tried to make you quit the channel but cannot`) }
 	});
 
+	// const changeRole = useMutation({
+	// 	mutationFn: ([group, action, channelId]: string[]) => updateUserInChannel(loggedUser.id, Number(channelId), group, action),
+	// 	onSuccess: () => { 
+	// 		queryClient.invalidateQueries(['channels']);
+	// 	},
+	// 	onError: () => { toast.error(`Error : cannot switch back your role.`) }
+	// });
+
 	// A l'arrivée sur le chat, faire défiler les messages jusqu'aux plus récents (bas de la fenêtre)
 	useEffect(() => {
 		var scroll = document.getElementById("convo__messages");
@@ -59,6 +68,26 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 			if (loggedUser && channel?.mutedUsers.some((member) => member.id === loggedUser.id)) {
 				setIsMuted(true);
 			}
+		}
+	}, [channel, loggedUser]);
+
+	useEffect(() => {
+		if (channel) {
+			// if (loggedUser && channel?.mutedUsers.some((member) => member.id === loggedUser.id)) {
+			// 	// setIsMuted(true);
+			// 	console.log("TabChat mute expiration : ", muteExpiration);
+			// 	const isMutedExpired = muteExpiration !== null && Date.now() > muteExpiration;
+  			// 	if (isMuted === true && isMutedExpired) {
+			// 		console.log("la fin arrive");
+					
+			// 		changeRole.mutate(["mutedUsers", "disconnect", String(channel?.id)]);
+			// 		setIsMuted(false);
+			// 		setMuteExpiration(null);
+			// 		console.log("not muted anymore for ", loggedUser.nickname);
+					
+			// 		toast.success("You're not muted anymore!");
+			// 	}
+			// }
 			if (loggedUser && channel.kickedUsers.some((member) => member.id === loggedUser.id)) {
 				leaveChannelRequest.mutate([loggedUser, channel.id]);
 				toast(`You have been kicked from this channel (${channel.roomName})!`, {
@@ -123,8 +152,7 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 	  }
 	  var scroll = document.getElementById("convo__messages");
 	  if (scroll) {
-		console.log("scrooool: ", scroll);
-		
+		// console.log("scrooool: ", scroll);
 		  scroll.scrollTop = scroll.scrollHeight;
 	  }
 	};
@@ -154,7 +182,8 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 				</div>
 			}
 			{
-				isMuted === true && <div className="convo__bottom">You're not allowed to speak here! (muted)</div>
+				isMuted === true && 
+				<div className="convo__bottom">You're not allowed to speak here! (muted)</div>
 			}
 	</div>
 	  );

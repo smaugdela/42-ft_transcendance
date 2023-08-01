@@ -14,6 +14,7 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 	const [enableOptions, setEnableOptions] = useState<boolean>(false);
 	const [toggleDisplay, setToggleDisplay] = useState<boolean>(false);
 	const userQuery = useQuery({ queryKey: ['user'], queryFn: fetchMe });
+	// const { setIsMuted, muteExpiration, setMuteExpiration } = useContext(MuteContext);
 	const socket = useContext(SocketContext);
 	const { data: channel }= useQuery({ 
 		queryKey: ['channels', channelName], 
@@ -75,6 +76,16 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
   // Le fontawesome est dans oneMessage, faudra juste rajouter le onClick!
   <FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} onClick={handleInvitation}/>
   */
+	// const handleMute = () => {
+	// 	setIsMuted(true);
+	// 	const muteDurationInMinutes = 1;
+	// 	const currentTime = Date.now();
+	// 	console.log("currentTime is: ", currentTime);
+		
+	// 	const expirationTime = currentTime + muteDurationInMinutes * 60 * 1000;
+	// 	setMuteExpiration(expirationTime);
+	// 	console.log("Admin options, muteExpiration is : ", expirationTime, muteExpiration);
+	// };
 
 	const handleRole = (group: keyof IChannel) => {
 		if (channel) {
