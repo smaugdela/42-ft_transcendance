@@ -31,22 +31,39 @@ services:
     networks:
       # - backend
       - transcendance
-  # frontend:
-  #   container_name: frontend
-  #   depends_on:
-  #     - database
-  #     - backend
-  #   restart: unless-stopped
-  #   env_file:
-  #     - .env.docker
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 443:443
-  #     # - 3000:3000
-  #   networks:
-  #     - transcendance
+    # frontend:
+    #   container_name: frontend
+    #   depends_on:
+    #     - database
+    #     - backend
+    #   restart: unless-stopped
+    #   env_file:
+    #     - .env.docker
+    #   build:
+    #     context: ./frontend
+    #     dockerfile: Dockerfile
+    #   ports:
+    #     - 443:443
+    #     # - 3000:3000
+    #   networks:
+    #     - transcendance
+
+  frontend-vite:
+    container_name: frontend-vite
+    depends_on:
+      - database
+      - backend
+    restart: unless-stopped
+    env_file:
+      - .env.docker
+    build:
+      context: ./frontend-vite
+      dockerfile: Dockerfile
+    ports:
+      # - 443:443
+      - 3000:3000
+      # networks:
+      #     - transcendance
 
 networks:
   transcendance:
