@@ -9,6 +9,8 @@ export default function TabChannels({ joinedChannels }: { joinedChannels: IChann
 	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
 	const socket = useContext(SocketContext);
 
+	console.log('joinedChannels:', joinedChannels);
+
 	const handleClick = (event: React.FormEvent<HTMLDivElement>, channel: IChannel) => {
 		event.preventDefault();
 		if (socket && channel.roomName) {

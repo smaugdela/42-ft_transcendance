@@ -62,11 +62,12 @@ async function bootstrap() {
 
 	app.use(cookieParser(process.env.COOKIE_SECRET));
 
-	let corsConfig;
-	if (process.env.DOCKER && process.env.DOCKER === "true")
-		corsConfig = { origin: "http://" + process.env.FRONTEND_HOST, credentials: true };
-	else
-		corsConfig = { origin: process.env.FRONTEND_URL, credentials: true };
+	// let corsConfig;
+	// if (process.env.DOCKER && process.env.DOCKER === "true")
+	// 	corsConfig = { origin: "http://" + process.env.FRONTEND_HOST, credentials: true };
+	// else
+	// 	corsConfig = { origin: process.env.FRONTEND_URL, credentials: true };
+	const corsConfig = { origin: process.env.FRONTEND_URL, credentials: true };
 
 	app.enableCors(corsConfig);
 
