@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Licorice&family=Share+Tech&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Yellowtail&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:900i');
+@import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap');
+
+.dark {
+	--font-type : 'Bruno Ace SC', cursive;
+	--font-color : rgb(255, 255, 255);
+	--bg-image: url("../public/assets/cyberpunk.jpg");
+	--sidebar-image: ;
+	--sides-color :rgba(24, 46, 65, 0.7);
+	--heading-color: rgba(24, 46, 65, 0.7);
+	
+}
+
+/* other theme  */
+.kawaii {
+	--font-type : 'Licorice', cursive;
+	--font-color: #6d6875;
+	--bg-color: #f7e7da;
+	--bg-image: url("../public/assets/cute.jpg");
+	
+	--sides-color : #edd1df;
+	--heading-color: #ffffff;
+	--home-image : url("../public/assets/cutie.png");
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: 'Lato', sans-serif;
+}
+
+
+body {
+	margin : 0;
+	padding: 0;
+	height: 100%;
+  	width: 100%;
+	margin: auto;
+	position: flex;
+	border-radius: 3px;
+	background-color: rgb(76, 77, 129);
+}
+
+.videobg{
+	position: fixed;
+    overflow: hidden;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: -10;
+}
+
+.music-bg{
+	position: fixed;
+	top: 100px;
+	z-index: -100;
+}
+
+#main-content {
+	width : 100%;
+}
+
+#chat {
+	background-color: var(--sides-color);
+	color: var(--font-color);
+	/* flex: 1 1 auto; */
+}
+
+footer {
+	width: 100%;
+	background-color: var(--heading-color);
+	font-family: var(--font-type);
+	font-size: 100%;
+	text-align: center;
+	color: var(--font-color);
+	line-height: 70px;
+	font-size: 150%;
+}
+
