@@ -60,7 +60,7 @@ export function ChannelTitle({ conv, initialName } : { conv: IChannel, initialNa
 			/>
 			) : (
 				<h1 id="convo__name" onClick={handleTitleClick}>
-					{newTitle}
+					{(newTitle)? newTitle : initialName}
 					{
 						conv.ownerId === user.id && 
 						<FontAwesomeIcon icon={faPencil} />
