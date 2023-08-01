@@ -107,6 +107,13 @@ export class SocialService {
 			data: {friendsList: {disconnect: {nickname: username}},},
 		});
 
+		// Supprimer l'ami de la pending liste
+		await prisma.user.update(
+			{
+				where: { id: userId },
+				data: {pendingList: {disconnect: {nickname: username}},},
+			});
+
 		// Supprimer l'ami bloqué de ses relations
 		await prisma.user.update(
 		{

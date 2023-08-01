@@ -1,12 +1,14 @@
 import "../styles/Social.css"
-// import { IUser, users } from "../data";
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus, faBan, faXmark, faUserXmark, faUserMinus} from '@fortawesome/free-solid-svg-icons';
-import { acceptFriendRequest,/* rejectFriendRequest ,*/fetchMe, postSearchQuery } from "../api/APIHandler";
-// import { removeFriend, friendRequest, blockUser ,removeFromBlock} from "../api/APIHandler";
+import { /* rejectFriendRequest ,*/fetchMe, postSearchQuery } from "../api/APIHandler";
+// import { removeFriend, friendRequest ,removeFromBlock} from "../api/APIHandler";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { IUser } from "../api/types";
+import {AllFriends} from "../components/Social/AllFriends";
+import { PendingList } from "../components/Social/PendingList";
+import {BlockedUser} from "../components/Social/BlockedUser";
 
 export function SearchBar() {
 
@@ -57,55 +59,63 @@ export function SearchBar() {
 	);
 }
 
-export function DisplayConnections( props: { profilesToDisplay : IUser[] }) {
-	// const [group, setGroup] = useState<IUser[]>(props.profilesToDisplay);
-	const queryClient = useQueryClient();
-	const acceptRequest = useMutation({ 
-		mutationFn: (id: number) => acceptFriendRequest(id),
-		onSuccess: () => {
-			queryClient.invalidateQueries(['user']);
-			console.log("test");
-			
-		}
-	});
+// export function DisplayConnections( props: { profilesToDisplay : IUser[], userIsSuccess: boolean }) {
+// 	const queryClient = useQueryClient();
+// 	const acceptRequest = useMutation({ 
+// 		mutationFn: (id: number) => acceptFriendRequest(id),
+// 		onSuccess: () => {
+// 			queryClient.invalidateQueries(['user']);	
+// 		}
+// 	});
+// 	useEffect(() => {
+// 		if (props.userIsSuccess) {
+// 		  queryClient.invalidateQueries(['user']); // Refetch the user data if the userIsSuccess prop changes
+// 		}
+// 	  }, [props.userIsSuccess]);
 
-	const handleacceptRequest = (id: number) => {
-		acceptRequest.mutate(id);
-	}
-	const displayProfiles = props.profilesToDisplay.map(profile => {
-		return <div key={profile.id} className="profile">
-					<div className="img-container">
-						<img 
-						src={profile.avatar}
-						alt={profile.nickname}
-						/>
-					</div>
-					<div className="profile_infos">
-						<h5>{profile.nickname}</h5>
-						<div><FontAwesomeIcon icon={faUserPlus} onClick={() =>handleacceptRequest(profile.id)}/></div>
-						<div><FontAwesomeIcon icon={faUserMinus} /></div>
-						<div><FontAwesomeIcon icon={faBan} /></div>
-					</div>
-		</div>
-	})
-	return (
-		<div className="all-current">
-			{displayProfiles}
-		</div>
-	);
-};
+// 	const handleacceptRequest = (id: number) => {
+// 		acceptRequest.mutate(id);
+// 	}
+// 	const displayProfiles = props.profilesToDisplay.map(profile => {
+// 		return <div key={profile.id} className="profile">
+// 					<div className="img-container">
+// 						<img 
+// 						src={profile.avatar}
+// 						alt={profile.nickname}
+// 						/>
+// 					</div>
+// 					<div className="profile_infos">
+// 						<h5>{profile.nickname}</h5>
+// 						<div><FontAwesomeIcon icon={faUserPlus} onClick={() =>handleacceptRequest(profile.id)}/></div>
+// 						<div><FontAwesomeIcon icon={faUserMinus} /></div>
+// 						<div><FontAwesomeIcon icon={faBan} /></div>
+// 					</div>
+// 		</div>
+// 	})
+// 	return (
+// 		<div className="all-current">
+// 			{displayProfiles}
+// 		</div>
+// 	);
+// };
  
 export function Social() {
 
-	const [groupToDisplay, setGroupToDisplay] = useState<IUser[]>([]);
+	const [activeList, setActiveList] = useState<string | null>(null);
+	const queryClient = useQueryClient();
+	// const [groupToDisplay, setGroupToDisplay] = useState<IUser[]>([]);
 	const { data: loggedUser, error, isLoading, isSuccess } = useQuery({ queryKey: ['user'], queryFn: fetchMe});
-		
-	const [buttonStates, setButtonStates] = useState({
-		allFriends: false,
-		activeFriends: false,
-		blocked: false,
-		pendingRequests: false,
-	  });
+	
+	const handleClick = (listType: string) => {
+		setActiveList(listType); // Update the active list when a button is clicked
+	  };
+
+	// const [buttonStates, setButtonStates] = useState({
+	// 	allFriends: false,
+	// 	activeFriends: false,
+	// 	blocked: false,
+	// 	pendingRequests: false,
+	//   });
 
 
 	// useEffect( () => {
@@ -138,31 +148,26 @@ export function Social() {
 	// 	}
 	// });
 
-	// if (error) {
-	// 	return <div>Error</div>;
-	// }
-	// if (isLoading || !isSuccess) {
-	// 	return <div>Loading...</div>;
-	// }
+	
 
-	const allFriends:		IUser[] = loggedUser?.friendsList || [];
-	const activeFriends:	IUser[] = allFriends?.filter(friend => friend.isActive === true) || [];
-	const blocked:			IUser[] = loggedUser?.blockList || [];
-	const pendingRequests:	IUser[] = loggedUser?.pendingList || [];
+	// const allFriends:		IUser[] = loggedUser?.friendsList || [];
+	// const activeFriends:	IUser[] = allFriends?.filter(friend => friend.isActive === true) || [];
+	// const blocked:			IUser[] = loggedUser?.blockList || [];
+	// const pendingRequests:	IUser[] = loggedUser?.pendingList || [];
 
 	
 
-	const handleClick = (group: IUser[] | undefined, id: string) => {
-		setGroupToDisplay(group || []);
-		console.log(loggedUser);
-		setButtonStates({
-			allFriends: false,
-			activeFriends: false,
-			blocked: false,
-			pendingRequests: false,
-			[id]: true,
-		});
-	}
+	// const handleClick = (group: IUser[] | undefined, id: string) => {
+	// 	setGroupToDisplay(group || []);
+	// 	console.log(loggedUser);
+	// 	setButtonStates({
+	// 		allFriends: false,
+	// 		activeFriends: false,
+	// 		blocked: false,
+	// 		pendingRequests: false,
+	// 		[id]: true,
+	// 	});
+	// }
 
 	if (error) {
 		return <div>Error</div>;
@@ -176,30 +181,40 @@ export function Social() {
 			<SearchBar />
 			<div className="social-btn">
 				<button 
-					onClick={ () => handleClick(allFriends, "allFriends")}
-					className={buttonStates.allFriends ? "clicked-btn" : "btn"}>
+					// onClick={ () => handleClick(allFriends, "allFriends")}
+					// className={buttonStates.allFriends ? "clicked-btn" : "btn"}>
+					onClick={() => handleClick('allFriends')} className={activeList === 'allFriends' ? 'clicked-btn' : 'btn'}>
 					All friends
 				</button>
 				<button 
-					onClick={ () => handleClick(activeFriends, "activeFriends")}
-					className={buttonStates.activeFriends ? "clicked-btn" : "btn"}>
+					// onClick={ () => handleClick(activeFriends, "activeFriends")}
+					// className={buttonStates.activeFriends ? "clicked-btn" : "btn"}>
+					onClick={() => handleClick('activeFriends')} className={activeList === 'activeFriends' ? 'clicked-btn' : 'btn'}>
 					Active friends
 				</button>
 				<button 
-					onClick={ () => handleClick(blocked, "blocked")}
-					className={buttonStates.blocked ? "clicked-btn" : "btn"}>
+					// onClick={ () => handleClick(blocked, "blocked")}
+					// className={buttonStates.blocked ? "clicked-btn" : "btn"}>
+					onClick={() => handleClick('blocked')} className={activeList === 'blocked' ? 'clicked-btn' : 'btn'}>
 					Blocked users
 				</button>
 				<button 
-					onClick={ () => handleClick(pendingRequests, "pendingRequests")}
-					className={buttonStates.pendingRequests ? "clicked-btn" : "btn"}>
+					// onClick={ () => handleClick(pendingRequests, "pendingRequests")}
+					// className={buttonStates.pendingRequests ? "clicked-btn" : "btn"}>
+					onClick={() => handleClick('pendingRequests')} className={activeList === 'pendingRequests' ? 'clicked-btn' : 'btn'}>
 					Pending requests
 				</button>
 			</div>
-			{
-				groupToDisplay.length > 0 && (<DisplayConnections profilesToDisplay={groupToDisplay}/>)
+				{activeList === 'allFriends' && <AllFriends profilesToDisplay={loggedUser.friendsList} userIsSuccess={isSuccess}/>}
+				{activeList === 'pendingRequests' && <PendingList profilesToDisplay={loggedUser.pendingList} userIsSuccess={isSuccess}/>}
+				{activeList === 'blocked' && <BlockedUser profilesToDisplay={loggedUser.blockList} userIsSuccess={isSuccess}/>
+				
+				// groupToDisplay.length > 0 && (<DisplayConnections profilesToDisplay={groupToDisplay}/>)
+				// isSuccess && <DisplayConnections profilesToDisplay={groupToDisplay} userIsSuccess={isSuccess} />
+				// {activeList === 'activeFriends' && <DisplayConnections profilesToDisplay={loggedUser.friendsList.filter((friend) => friend.isActive === true)} />}
 			}
-		</div>
-	);
+    </div>
+  );
+
 };
 
