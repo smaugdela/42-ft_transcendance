@@ -31,6 +31,7 @@ export default function TabChannels() {
 	
 	return (
 	<div className='channels_page' >
+		<h3 id='channels_page_title'>Your channels</h3>
 	  <>
 	  {
 		joinedChannels && (

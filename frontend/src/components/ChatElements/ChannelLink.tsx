@@ -32,7 +32,6 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 	const { data: messages, status: msgStatus } = useQuery({
 		queryKey: ['messages', channel.id],
 		queryFn: () => getAllMsgsofChannel(channel.id),
-		// refetchInterval: 100,
 	});
 
 	useEffect(() => {
@@ -50,13 +49,30 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 
 	return (
 		<div  className="channel-link-card" >
-			<span className='channel-link-name'>{convName} </span><span className="channel-link-span">{channel.type}</span>
+			<div className="channel-link-header">
+				<span className='channel-link-name'>{convName} </span>
+				<span className="channel-link-span">{channel.type}</span>
+			</div>
 			{
 				messages.length > 0 &&
 				<>
-					<p>{messages[messages?.length - 1].from.nickname} : {(messages[messages?.length - 1].content.length <= 50)? messages[messages?.length - 1].content : messages[messages?.length - 1].content.substring(0,45) + '...'}</p>
-					<p>{getTimeSinceLastMsg(messages[messages?.length - 1].date)}</p>
+					<div className='channel-link-preview'>
+						<p > 
+							<span className="channel-link-messenger">{messages[messages.length - 1].from.nickname} : </span> 
+							<span className='channel-link-lastmsg'>{
+								(messages[messages?.length - 1].content.length <= 40)? 
+									messages[messages?.length - 1].content 
+									: messages[messages?.length - 1].content.substring(0,37) + '...'
+							}
+							</span>
+						</p>
+						<p className='channel-link-date'>{getTimeSinceLastMsg(messages[messages?.length - 1].date)}</p>
+					</div>
 				</>
+			}
+			{
+				messages.length === 0 &&
+				<div className="channel-link-messenger">Click to write down your first message!</div> 
 			}
 		</div>
 	);
