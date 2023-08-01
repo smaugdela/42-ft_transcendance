@@ -25,11 +25,12 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 	useEffect(() => {
 		if (channel) {
 			const isAdmin = channel.admin.filter((admin) => admin.nickname === userQuery.data?.nickname);
-			if (isAdmin.length > 0) {
+			const isTargetStillInChan = channel.joinedUsers.some((member) => member.nickname === userTalking.nickname);
+			if (isAdmin.length > 0 && isTargetStillInChan === true) {
 				setEnableOptions(true);
 			}
 		}
-	}, [channel, channel?.admin, userQuery.data, channel?.bannedUsers, channel?.kickedUsers, channel?.mutedUsers, channel?.joinedUsers]);
+	}, [channel, channel?.admin, userQuery.data, channel?.bannedUsers, channel?.kickedUsers, channel?.mutedUsers, channel?.joinedUsers, userTalking.nickname]);
 	
 	const addToGroup = useMutation({
 		mutationFn: ([group, action, channelId]: string[]) => updateUserInChannel(userTalking.id, Number(channelId), group, action),

@@ -18,9 +18,10 @@ interface Tab {
 const Chat = () => {
 	const {data: userMe, status: statusMe } = useQuery({queryKey: ['user'], queryFn: fetchMe});
 
-	const { data, status } = useQuery({
+	const { data, status, isSuccess } = useQuery({
 		queryKey: ['channels'], 
-		queryFn: getAllUserChannels
+		queryFn: () =>getAllUserChannels(),
+		// refetchInterval: 1500,
 	});
 	const { activeTab, setActiveTab, activeConv, isExpanded, setIsExpanded } = useContext(ChatStatusContext);
 
@@ -35,7 +36,7 @@ const Chat = () => {
 	if (status === "error" || statusMe === "error"){
 		return <div>Error</div>
 	}
-	if (status === "loading" || statusMe === "loading" ){
+	if (status === "loading" || !isSuccess || statusMe === "loading" ){
 		return <div>Loading...</div>
 	}
 	
