@@ -68,6 +68,10 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 			if (loggedUser && channel?.mutedUsers.some((member) => member.id === loggedUser.id)) {
 				setIsMuted(true);
 			}
+			else
+			{
+				setIsMuted(false);
+			}
 		}
 	}, [channel, loggedUser]);
 

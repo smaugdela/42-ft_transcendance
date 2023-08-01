@@ -50,9 +50,9 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 		onError: () => toast.error('Message not sent: retry'),
 	});
 
-	const sendInfo = (group: string) => {
+	const sendInfo = (group: string, action: string) => {
 		if (socket) {
-			const msg: string = handleRequestFromUser(socket, group, channelName, userTalking.nickname);
+			const msg: string = handleRequestFromUser(socket, group, action, channelName, userTalking.nickname);
 			if (channel)
 				createInfoMessage.mutate([channel, msg]);
 		}
@@ -98,7 +98,7 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 				// Si c'est pas le cas, on l'ajoute
 				addToGroup.mutate([group, "connect", String(channel?.id)]);
 				toast.success(`${userTalking.nickname}'s role has been added!`);
-				sendInfo(group);
+				sendInfo(group, "connect");
 				console.log("jai send l'info");
 				
 			} else {
@@ -106,6 +106,7 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 				if (userTalking.id !== channel.ownerId) {
 					addToGroup.mutate([group, "disconnect", String(channel?.id)]);
 					toast.success(`${userTalking.nickname} has been removed from this role.`);
+					sendInfo(group, "disconnect");
 				} else {
 					toast.error(`Can't do that to ${userTalking.nickname}, as the owner of this channel!`)
 				}

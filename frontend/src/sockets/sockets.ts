@@ -27,31 +27,39 @@ export function sendNotificationToServer(socket: Socket, event: string, payload:
  * @param socket connexion du client avec notre serveur
  * @param payload <Action <Concerned user's nickname>. Ex: '/mute  Joe'
  */
-export function handleRequestFromUser(socket: Socket, group: string, channelName: string, userTalking: string) {
-	var action: string;
+export function handleRequestFromUser(socket: Socket, group: string, action: string, channelName: string, userTalking: string) {
+	var role: string;
 	var info: string;
 		switch (group) {
 			case "bannedUsers":
-				action = "/ban";
-				info = `#INFO# ${userTalking} has been banned from this channel.`
+				role = "/ban";
+				info = (action === "connect") ? 
+					`#INFO# ${userTalking} has been banned from this channel.`
+					: `#INFO# ${userTalking} is unbanned from this channel.`
 				break;
 			case "kickedUsers":
-				action = "/kick";
-				info = `#INFO# ${userTalking} has been kicked from this channel.`
+				role = "/kick";
+				info = (action === "connect") ? 
+				`#INFO# ${userTalking} has been kicked from this channel.`
+					: `#INFO# ${userTalking} is not kicked anymore from this channel.`
 				break;
 			case "mutedUsers":
-				action = "/mute";
-				info = `#INFO# ${userTalking} has been muted in this channel.`
+				role = "/mute";
+				info = (action === "connect") ? 
+					`#INFO# ${userTalking} has been muted from this channel.`
+					: `#INFO# ${userTalking} is not muted anymore in this channel.`
 				break;
 			case "admin":
-				action = "/admin";
-				info = `#INFO# ${userTalking} was made Admin of this channel!`
+				role = "/admin";
+				info = (action === "connect") ? 
+					`#INFO# ${userTalking} was made Admin of this channel.`
+					: `#INFO# ${userTalking} is not an Admin anymore.`
 				break;
 			default:
-				action = "/msg";
+				role = "/msg";
 				info = `#INFO# ${userTalking} is quoted in this channel.`
 		}
-	const payload: string = action + "  " + channelName + "  " + userTalking;
+	const payload: string = role + "  " + channelName + "  " + userTalking;
 	console.log("Info payload ", payload);
 	
 	sendNotificationToServer(socket, 'Chat', payload);
