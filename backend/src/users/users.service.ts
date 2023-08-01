@@ -5,6 +5,12 @@ import { Response } from 'express';
 import * as argon from 'argon2';
 import { MailService } from 'src/mail/mail.service';
 
+// add but pas sur 
+
+import { NotFoundException } from '@nestjs/common';
+import { PrismaService } from './prisma.service';
+import { User, Achievement } from '@prisma/client';
+
 const hashingConfig = {
 	parallelism: 1,
 	memoryCost: 64000, // 64 mb
@@ -121,7 +127,10 @@ export class UsersService {
 	}
 
 	async findOne(username: string) {
-		return await prisma.user.findUnique({
+//		prisma.user.update(achievement), // pas comme ca mais faut le faire
+
+
+			return await prisma.user.findUnique({
 			where: { nickname: username },
 			include: {
 				achievements: true,
@@ -129,6 +138,25 @@ export class UsersService {
 				matchAsP2: true,
 			},
 		});
+	
+	}
+
+	async isAchievementCompleted(userId: number, achievement: Achievement): Promise<boolean> {
+		// Return a boolean value indicating if the achievement is completed or not.
+		if (achievement.title === 'Baby steps') {
+		const match = await this.prisma.match.findFirst({
+			where: { OR: [{ matchAsP1: { userId } }, { matchAsP2: { userId } }] },
+		})
+		if (!match)
+		  return false; 
+		}
+		 else if (achievement.title === 'Veteran') {
+		  // Example specific check for the 'Veteran' achievement
+		  return false; // Replace this with your actual implementation
+		} else {
+		  // Handle other achievements
+		  return false; // Replace this with your actual implementation
+		}
 	}
 
 	async findOneById(id: number) {
