@@ -47,6 +47,9 @@ export class UsersService {
 				achievements: true,
 				matchAsP1: true,
 				matchAsP2: true,
+				friendsList: true,
+				blockList: true,
+				pendingList: true,
 			},
 		});
 	}

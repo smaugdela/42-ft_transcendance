@@ -259,7 +259,7 @@ export async function getMyFriends(): Promise<IUser> {
 	}
 }
 
-export async function getBlockerFriends(): Promise<IUser> {
+export async function getBlockedFriends(): Promise<IUser> {
 	try{
 		const response = await api.get(`/social/blocked-list`);
 		return response.data;
@@ -279,7 +279,7 @@ export async function getPendingList(): Promise<IUser> {
 	}
 }
 
-export async function RemoveFromBlock(id : number): Promise<IUser> {
+export async function removeFromBlock(id : number): Promise<IUser> {
 
 	try {
 		const response = await api.delete(`/social/block/${id}`);
@@ -291,7 +291,7 @@ export async function RemoveFromBlock(id : number): Promise<IUser> {
 	}
 }
 
-export async function RejectFriendRequest(id : number): Promise<IUser> {
+export async function rejectFriendRequest(id : number): Promise<IUser> {
 
 	try {
 		const response = await api.delete(`/social/friend-request/${id}/reject`);
@@ -303,7 +303,7 @@ export async function RejectFriendRequest(id : number): Promise<IUser> {
 	}
 }
 
-export async function RemoveFriend(id : number): Promise<IUser> {
+export async function removeFriend(id : number): Promise<IUser> {
 
 	try {
 		const response = await api.delete(`/social/friends/${id}`);
@@ -315,7 +315,7 @@ export async function RemoveFriend(id : number): Promise<IUser> {
 	}
 }
 
-export async function AcceptFriendRequest(id : number): Promise<IUser> {
+export async function acceptFriendRequest(id : number): Promise<IUser> {
 
 	try {
 		const response = await api.post(`/social/friend-request/${id}/accept`);
@@ -327,7 +327,7 @@ export async function AcceptFriendRequest(id : number): Promise<IUser> {
 	}
 }
 
-export async function FriendRequest(username: string): Promise<IUser> {
+export async function friendRequest(username: string): Promise<IUser> {
 
 	try {
 		const response = await api.post(`/social/friend-request/${username}`);
@@ -339,7 +339,7 @@ export async function FriendRequest(username: string): Promise<IUser> {
 	}
 }
 
-export async function BlockUser(username: string): Promise<IUser> {
+export async function blockUser(username: string): Promise<IUser> {
 
 	try {
 		const response = await api.post(`/social/block/${username}`);
