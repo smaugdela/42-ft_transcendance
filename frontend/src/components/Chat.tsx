@@ -6,9 +6,8 @@ import { faAnglesLeft, faAnglesRight} from "@fortawesome/free-solid-svg-icons";
 import TabChannels from './ChatElements/TabChannels';
 import TabChat from './ChatElements/TabChat';
 import TabMore from './ChatElements/TabMore';
-import { Socket } from 'socket.io-client';
 import { useQuery } from "@tanstack/react-query";
-import { getAllUserChannels } from '../api/APIHandler';
+import { getAllUserChannels, fetchMe } from '../api/APIHandler';
 import { ChatStatusContext } from '../context/contexts';
 
 interface Tab {
@@ -16,7 +15,8 @@ interface Tab {
   content: JSX.Element;
 }
 
-const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<Socket | null>> }) => {
+const Chat = () => {
+	const {data: userMe, status: statusMe } = useQuery({queryKey: ['user'], queryFn: fetchMe});
 
 	const { data, status } = useQuery({
 		queryKey: ['channels'], 
@@ -32,16 +32,16 @@ const Chat = ({ setSocket }: { setSocket: React.Dispatch<React.SetStateAction<So
 		setActiveTab(index);
 	};
 	
-	if (status === "error"){
+	if (status === "error" || statusMe === "error"){
 		return <div>Error</div>
 	}
-	if (status === "loading" ){
+	if (status === "loading" || statusMe === "loading" ){
 		return <div>Loading...</div>
 	}
 	
 	var tabs: Tab[] = [
 				 { label: 'Convs', content: <div><TabChannels joinedChannels={data}/></div> },
-	activeConv ? { label: 'Chat', content: <div><TabChat conv={activeConv}/></div> } : { label: 'Chat', content: <div>Join convos to see the chat!</div> },
+	activeConv ? { label: 'Chat', content: <div><TabChat conv={activeConv} loggedUser={userMe}/></div> } : { label: 'Chat', content: <div>Join convos to see the chat!</div> },
 				 { label: 'More', content: <div><TabMore /></div> },
 	];
 
