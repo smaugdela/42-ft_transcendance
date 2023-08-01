@@ -13,6 +13,7 @@
 	font-family: 'Open Sans', sans-serif;
 	margin: 0;
 	padding: 0;
+	max-height: 80vh;
 }
 
 .convo__header {
@@ -30,11 +31,12 @@
 }
 
 .convo__bottom {
-	position: fixed;
+	position: absolute;
 	width: 100%;
-	bottom: 28%;
+	/* bottom: 0; */
 	background-color: rgb(63, 89, 118);
 	padding: 1em;
+	height: 15vh;
 }
 
 #convo__form {
@@ -44,12 +46,11 @@
 }
 
 #convo__messages {
+	position: relative;
 	overflow: scroll;
 	overflow-x:hidden;
 	overflow-anchor: none;
-	height: auto;
-	max-height: 630px;
-	/* min-height: 645px; */
+	height: 65vh;
 }
 
 #convo__messages * {
@@ -123,4 +124,28 @@
 	color: rgb(118, 167, 197);
 	height: 28px;
 	width: auto;
+}
+
+/* Variante OneMessage pour infos sur rôle */
+.one__msg_role {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+	margin: 15px 0;
+}
+
+.one__msg_header_info {
+	font-size: 1.2rem;
+	color: rgb(105, 105, 105);
+}
+
+.one_msg_announcement {
+	font-style: italic;
+	background-color: rgb(53, 61, 131);
+	color: white;
+	padding: 10px;
+	border-radius: 10px;
+	margin-top: 1px;
 }
