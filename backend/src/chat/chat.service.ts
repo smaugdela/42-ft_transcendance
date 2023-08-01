@@ -102,13 +102,13 @@ export class ChatService {
 				},
 			},
 			include: { 
+				messages: true,
 				admin: true,
 				owner: true,
 				joinedUsers: true,
 				bannedUsers: true, 
 				kickedUsers: true,
 				mutedUsers: true,
-				messages: true,
 			},
 			orderBy: [ { lastUpdated: 'desc' } ],
 		});

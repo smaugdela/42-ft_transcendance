@@ -18,30 +18,25 @@ interface Tab {
 const Chat = () => {
 	const {data: userMe, status: statusMe } = useQuery({queryKey: ['user'], queryFn: fetchMe});
 
-	const { data, status, isSuccess } = useQuery({
-		queryKey: ['channels'], 
-		queryFn: () =>getAllUserChannels(),
-		// refetchInterval: 1500,
-	});
 	const { activeTab, setActiveTab, activeConv, isExpanded, setIsExpanded } = useContext(ChatStatusContext);
 
 	const toggleExpand = () => {
 		setIsExpanded(!isExpanded);
 	};
-	
+		
 	const handleTabClick = (index: number) => {
 		setActiveTab(index);
 	};
 	
-	if (status === "error" || statusMe === "error"){
+	if (statusMe === "error"){
 		return <div>Error</div>
 	}
-	if (status === "loading" || !isSuccess || statusMe === "loading" ){
+	if (statusMe === "loading" ){
 		return <div>Loading...</div>
 	}
 	
 	var tabs: Tab[] = [
-				 { label: 'Convs', content: <div><TabChannels joinedChannels={data}/></div> },
+				 { label: 'Convs', content: <div><TabChannels/></div> },
 	activeConv ? { label: 'Chat', content: <div><TabChat conv={activeConv} loggedUser={userMe}/></div> } : { label: 'Chat', content: <div>Join convos to see the chat!</div> },
 				 { label: 'More', content: <div><TabMore /></div> },
 	];

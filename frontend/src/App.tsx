@@ -25,7 +25,6 @@ import * as PIXI from 'pixi.js';
 import { IsLoggedInContext, SocketContext, ChatStatusContext } from './context/contexts';
 import { IChannel } from './api/types';
 
-
 function App() {
 
 	// On initialise nos contexts (= nos variables globales)
