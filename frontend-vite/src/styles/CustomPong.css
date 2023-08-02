@@ -1,7 +1,0 @@
-.pong-terrain {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-	/* Set the height to 100vh to make sure the game is vertically centered too */
-}

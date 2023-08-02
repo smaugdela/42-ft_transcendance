@@ -42,7 +42,7 @@ export function SearchBar() {
 						<div className="search_user_infos">
 							<img id="search_user_avatar" src={searchedUser.avatar} alt={searchedUser.nickname} />
 							<h5 id="title" dangerouslySetInnerHTML={{__html: searchedUser.nickname}}></h5>
-							<a href= {process.env.REACT_APP_BACKEND_URL + "/social"}>
+							<a href= {import.meta.env.VITE_BACKEND_URL + "/social"}>
 								<FontAwesomeIcon icon={faUserPlus} />
 							</a>
 						</div>

@@ -48,6 +48,7 @@ export function ChannelType({ channelId, loggedUser } : { channelId: number, log
 	};
 
 	const handleInputKeyPress = (event: React.FormEvent<HTMLButtonElement>) => {
+		void event;
 		setIsEditing(false);
 		updateChannel.mutate(["type", chanType]);
 		if (chanType === 'PROTECTED') {

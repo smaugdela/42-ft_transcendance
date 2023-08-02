@@ -28,8 +28,8 @@ services:
     networks:
       - transcendance
 
-  frontend-vite:
-    container_name: frontend-vite
+  frontend:
+    container_name: frontend
     depends_on:
       - database
       - backend
@@ -37,7 +37,7 @@ services:
     env_file:
       - .env
     build:
-      context: ./frontend-vite
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - 443:443
