@@ -184,13 +184,9 @@ function isAchievementCompleted (user: IUser, title: string): boolean
 		{
 			if (!user.bio)
 				return false;
-			const UserBio = user.bio; 
-			if (user.bio)
-			{
-				achievementNumber++;
-				return true;
-			}
-			return false; 
+
+			achievementNumber++;
+			return true; 
 		}
 		default:
 			return false;

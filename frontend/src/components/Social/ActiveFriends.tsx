@@ -1,11 +1,10 @@
 import "../../styles/Social.css";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { IUser } from "../../api/types";
 import MessageUserBtn from '../Profile/MessageUserBtn';
 import { fetchMe } from "../../api/APIHandler";
 
 export function ActiveFriends( props: { profilesToDisplay : IUser[]}) {
-        const queryClient = useQueryClient();
         const { data: loggedUser, error, isLoading, isSuccess } = useQuery({ queryKey: ['user'], queryFn: fetchMe});
         
         if (error) {
