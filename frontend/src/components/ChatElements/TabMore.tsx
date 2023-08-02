@@ -1,34 +1,15 @@
-import React from 'react';
 import { useQuery} from "@tanstack/react-query";
-import toast from 'react-hot-toast';
 import '../../styles/Tab_channels.css';
 import { getNonJoinedChannels } from '../../api/APIHandler';
 import ChanCreationForm from './ChanCreationForm';
 import { IChannel } from '../../api/types';
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import '../../styles/Tab_channels.css'
-import { updateMeInChannel } from '../../api/APIHandler';
-import ChannelLink from './ChannelLink';
+import ChannelMore from './ChannelMore';
 
 export default function TabMore() {
 
 	const { data: nonJoinedChannels, error, isLoading, isSuccess } = useQuery({queryKey: ['channels'], queryFn: getNonJoinedChannels});
-	const queryClient = useQueryClient();
 	
-	const joinChannelRequest = useMutation({
-		mutationFn: (channel: IChannel) => updateMeInChannel(channel.id, "joinedUsers", "connect"),
-		onSuccess: () => { 
-			queryClient.invalidateQueries(['channels']);
-			toast.success(`You joined the channel!`) 
-		},
-		onError: () => { toast.error('Error : cannot join channel') }
-	})
-
-	const handleClick = (event: React.FormEvent<HTMLDivElement>, channel: IChannel) => {
-		event.preventDefault();
-		joinChannelRequest.mutate(channel);
-	};
-
 	if (error){
 		return <div>Error</div>
 	}
@@ -37,7 +18,7 @@ export default function TabMore() {
 	}
 
 	const publicAndPrivateChans: IChannel[] = nonJoinedChannels;
-	
+
 	return (
 	<div className='channels_page'>
 		<h2>Want more? Create your own channel or join others!</h2>
@@ -48,14 +29,12 @@ export default function TabMore() {
 			publicAndPrivateChans && Array.isArray(publicAndPrivateChans) && (
 				publicAndPrivateChans.map((chan) => {
 					return (
-						<div key={(chan.id + 1).toString()} onClick={(event) => handleClick(event, chan)}>
-							<ChannelLink key={chan.id.toString()} channel={chan} />
-						</div>
+						<ChannelMore key={chan.id.toString()} channel={chan} />	
 					);
-			})
+				})
 			)
 		}
-	  </>
+		</>
 	</div>
   )
 }

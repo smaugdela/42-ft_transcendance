@@ -230,6 +230,20 @@ export async function getNonJoinedChannels(): Promise<IChannel[]> {
 	return response.data;
 }
 
+export async function verifyPasswords(channelId: number, userInput: string): Promise<boolean> {
+	try {
+		const response = await api.get<boolean>(`/chat/channel/${channelId}/pwdcheck`,
+		{
+			params: {
+				userInput: userInput,
+			  },
+		});
+		return response.data;
+	} catch (error) {
+		throw new Error('Error joining protected channel: Incorrect Password');
+	}
+}
+
 export async function createChannel(roomName: string, password: string, type: string)
 	: Promise<IChannel> {
 	try {

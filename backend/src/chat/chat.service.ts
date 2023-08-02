@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
 import { PrismaClient, Prisma,  Channel } from '@prisma/client';
@@ -252,6 +252,17 @@ export class ChatService {
 				password: createChannelDto.password
 			},
 		});
+	}
+
+	async compareChannelPassword(id: number, userInput: string) {
+		const channel = await this.getOneChannel(id);
+		if (!channel) {
+			throw new Error("Channel doest not exist!");
+		}
+		const passwordMatch = await argon.verify(channel.password, userInput, hashingConfig);
+		if (passwordMatch === false)
+			throw new ForbiddenException('Password incorrect');
+		return (true);
 	}
 
 	// RoomName: string, Type: ChanMode ('PUBLIC' 'PRIVATE' 'PROTECTED' 'DM')
