@@ -29,11 +29,11 @@ api.interceptors.response.use(
 			window.location.href = '/Login';
 			// Navigate('/Login');
 		}
-		else if (error.response) {
-			// Redirect to the according error pages
-			window.location.href = '/Error/' + error.response.status;
-			// Navigate('/Error/' + error.response.status);
-		}
+		// else if (error.response) {
+		// 	// Redirect to the according error pages
+		// 	window.location.href = '/Error/' + error.response.status;
+		// 	// Navigate('/Error/' + error.response.status);
+		// }
 		return Promise.reject(error);
 	},
 );

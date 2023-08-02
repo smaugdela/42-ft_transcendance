@@ -376,7 +376,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		}
 
 		const delta = (Date.now() - match.lastUpdate) / 1000; // in seconds
-
+	
 		// If payload is not empty, actuate user state
 		if (payload) {
 			switch (userId) {
@@ -453,6 +453,32 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		match.ballX += match.ballSpeedX * delta;
 		match.ballY += match.ballSpeedY * delta;
 
+		// Check if powerup is recovered
+		if (match.powerUp)
+		{
+			const distance = Math.sqrt(Math.pow(match.powerUpX - match.ballX, 2) + Math.pow(match.powerUpY - match.ballY, 2));
+			if (distance < this.socketsService.gameConstants.ballRadius + this.socketsService.gameConstants.powerUpRadius)
+			{
+				match.powerUp = false;
+				match.powerUpOn = true;
+				match.powerUpDate = Date.now();
+				
+				// switch (match.ballSpeedX < 0)
+				// {
+				// 	case true:
+				// 		match.powerUpOn = true;
+				// 		match.powerUpDate = Date.now();
+				// 		// Player2 gets a powerup
+				// 		break;
+				// 	case false:
+				// 		match.powerUpOn = true;
+				// 		match.powerUpDate = Date.now();
+				// 		break;
+				// 	default:
+				// 		break;
+				// }
+			}
+		}
 		match.lastUpdate = Date.now();
 
 		// Send match state to both players
@@ -501,7 +527,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		match.ballX = this.socketsService.gameConstants.width / 2;
 		match.ballY = this.socketsService.gameConstants.height / 2;
 
-		// horizontal ball speed is non null
+		// Horizontal ball speed is non null
 		match.ballSpeedX = 90;
 		// Random vertical ball speed between 10 and 100
 		match.ballSpeedY = Math.random() * 90 + 10;
@@ -511,6 +537,16 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		}
 		if (Math.random() > 0.5) {
 			match.ballSpeedY *= -1;
+		}
+		match.powerUpOn = false;
+
+		// Regenerate powerup
+		const scoreTotal = match.player1.score + match.player2.score;
+		if (match.powerUp === false && scoreTotal % 3 === 0)
+		{
+			match.powerUpX = Math.random() * (this.socketsService.gameConstants.width / 2) + (this.socketsService.gameConstants.width / 4);
+			match.powerUpY = Math.random() * this.socketsService.gameConstants.height;	
+			match.powerUp = true;
 		}
 
 		match.lastUpdate = Date.now();
