@@ -13,7 +13,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 // 	const prisma = new PrismaClient();
 // 	const jsonString = fs.readFileSync(path, 'utf-8');
 // 	const Data = JSON.parse(jsonString);
-
 // 	Data.forEach(async element => {
 // 		await prisma.user.create({
 // 			data: {
@@ -28,6 +27,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 // }
 
 async function bootstrap() {
+
+	// console.log("Backend Port: " + process.env.BACKEND_PORT);
 
 	const port = Number(process.env.BACKEND_PORT);
 	if (isNaN(port)) {
@@ -61,10 +62,13 @@ async function bootstrap() {
 
 	app.use(cookieParser(process.env.COOKIE_SECRET));
 
-	app.enableCors({
-		credentials: true,
-		origin: process.env.FRONTEND_URL,
-	});
+	let corsConfig;
+	if (process.env.DOCKER && process.env.DOCKER === "true")
+		corsConfig = { origin: "http://" + process.env.FRONTEND_HOST, credentials: true };
+	else
+		corsConfig = { origin: process.env.FRONTEND_URL, credentials: true };
+
+	app.enableCors(corsConfig);
 
 	await app.listen(port);
 
