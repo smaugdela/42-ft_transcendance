@@ -1,5 +1,5 @@
 import { fetch2FA } from "../api/APIHandler";
-import React, { useState, useEffect } from 'react';
+import /*React,*/ { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 
 const VerificationPage = () => {
@@ -20,9 +20,9 @@ const VerificationPage = () => {
         try {
           const response = await fetch2FA(code, userId);
 
-		  console.log("response.status: " + response.status);
+		//   console.log("response.status: " + response.status);
 
-          if (response.status === 200) {
+          if (response && response.status === 200) {
 			setIsSuccess(true);
 			setIsLoading(false);
             setTimeout(() => {

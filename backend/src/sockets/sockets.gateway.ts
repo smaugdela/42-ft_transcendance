@@ -8,8 +8,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const corsConfig = {
-	// origin: process.env.DOCKER && process.env.DOCKER === "true" ? "http://" + process.env.FRONTEND_HOST : process.env.FRONTEND_URL,
-	origin: process.env.FRONTEND_URL,
+	origin: (process.env.DOCKER && process.env.DOCKER) === "true" ? "https://" + process.env.FRONTEND_HOST : process.env.FRONTEND_URL,
 	credentials: true,
 };
 
@@ -24,6 +23,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	/* Attribue le nickname au socket ouvert à partir de son jwt */
 	afterInit(server: Server) {
 		server.use(usernameMiddleware(this.jwtService));
+		console.log("Cors config: ", corsConfig);
 		console.log('WS Initialized');
 	}
 

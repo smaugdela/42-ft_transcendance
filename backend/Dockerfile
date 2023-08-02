@@ -19,14 +19,8 @@ RUN npx prisma generate
 # Run the build command which creates the production bundle
 RUN npm run build
 
-# # Install the dependencies to generate the ad-hoc package-lock.json file.
-RUN npm ci --omit=dev
-
 # Set NODE_ENV environment variable
 ENV NODE_ENV production
-
-# Running `npm ci` removes the existing node_modules directory and passing in --only=production ensures that only the production dependencies are installed. This ensures that the node_modules directory is as optimized as possible
-# RUN npm ci --only=production && npm cache clean --force
 
 # Copy the startup script
 COPY --chown=node:node ./startup.sh ./startup.sh
@@ -35,5 +29,4 @@ COPY --chown=node:node ./startup.sh ./startup.sh
 USER node
 
 # Start the server
-# CMD [ "node", "dist/main.js" ]
 CMD [ "sh", "startup.sh"]

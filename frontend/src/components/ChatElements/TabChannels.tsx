@@ -9,8 +9,6 @@ export default function TabChannels({ joinedChannels }: { joinedChannels: IChann
 	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
 	const socket = useContext(SocketContext);
 
-	console.log('joinedChannels:', joinedChannels);
-
 	const handleClick = (event: React.FormEvent<HTMLDivElement>, channel: IChannel) => {
 		event.preventDefault();
 		if (socket && channel.roomName) {
@@ -22,21 +20,23 @@ export default function TabChannels({ joinedChannels }: { joinedChannels: IChann
 
 	return (
 	<div className='channels_page' >
-	  <>
-	  {
-		joinedChannels && (
+	<>
+	{
+		joinedChannels && 
+		Array.isArray(joinedChannels) &&
+		(
 			joinedChannels.map((chan) => {
 				
 				return (
 					<div key={(chan.id + 1).toString()} onClick={(event) => handleClick(event, chan)}>
 						<ChannelLink key={chan.id.toString()} 
-									 channel={chan}/>
+									channel={chan}/>
 					</div>
 				);
 		})
 		)
-	  }
-	  </>
+	}
+	</>
 	</div>
   )
 }

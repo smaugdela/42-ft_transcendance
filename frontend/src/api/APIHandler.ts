@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IMatch, IUser, IChannel, IMessage } from "./types";
 
-const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 axios.defaults.withCredentials = true;
 
@@ -19,7 +19,6 @@ const api = axios.create({
 
 api.interceptors.response.use(
 	(response) => {
-
 		return response;
 	},
 	(error) => {
@@ -29,11 +28,11 @@ api.interceptors.response.use(
 			window.location.href = '/Login';
 			// Navigate('/Login');
 		}
-		else if (error.response) {
-			// Redirect to the according error pages
-			window.location.href = '/Error/' + error.response.status;
-			// Navigate('/Error/' + error.response.status);
-		}
+		// else if (error.response) {
+		// 	// Redirect to the according error pages
+		// 	window.location.href = '/Error/' + error.response.status;
+		// 	// Navigate('/Error/' + error.response.status);
+		// }
 		return Promise.reject(error);
 	},
 );
@@ -42,7 +41,7 @@ api.interceptors.response.use(
 /* ######   AUTH   ######*/
 /* ######################*/
 
-export async function signUp(newNickname: string, password: string): Promise<any> {
+export async function signUp(newNickname: string, password: string) {
 
 	try {
 		const response = await api.post(`${BASE_URL}/auth/signup`,
@@ -64,7 +63,7 @@ export async function signUp(newNickname: string, password: string): Promise<any
 	}
 }
 
-export async function logIn(newNickname: string, password: string): Promise<any> {
+export async function logIn(newNickname: string, password: string) {
 
 	try {
 		const response = await axios.post(`${BASE_URL}/auth/login`,
@@ -95,7 +94,7 @@ export async function logIn(newNickname: string, password: string): Promise<any>
 	}
 }
 
-export async function logOut(): Promise<any> {
+export async function logOut() {
 
 	try {
 		const response = await axios.delete(`${BASE_URL}/auth/logout`);
@@ -106,7 +105,7 @@ export async function logOut(): Promise<any> {
 	}
 }
 
-export async function fetch2FA(code: string, userId: string): Promise<any> {
+export async function fetch2FA(code: string, userId: string) {
 
 	try {
 		const response = await axios.get(`${BASE_URL}/auth/2fa?code=${code}&userId=${userId}`);
@@ -122,6 +121,7 @@ export async function fetch2FA(code: string, userId: string): Promise<any> {
 /* ######################*/
 
 export async function checkIfLogged(): Promise<boolean> {
+
 	const response = await axios.get<boolean>(`${BASE_URL}/users/check`);
 	return response.data;
 }
@@ -262,7 +262,7 @@ export async function updateChannelProperties(channelId: number, property: keyof
 	try {
 		const response = await api.patch(`/chat/channel/${channelId}/update`,
 			{
-				[ property ] : newValue
+				[property]: newValue
 			},
 			{
 				headers: {
