@@ -48,3 +48,30 @@ export interface IMatch {
 	loserId: number;
 	scoreLoser: number;
 }
+
+export interface IChannel {
+	id: number;
+	date: Date;
+	lastUpdated: Date;
+	type: string;
+	password: string;
+	roomName: string;
+	owner: IUser;
+	ownerId: number;
+	admin: IUser[];
+	joinedUsers : IUser[]; 
+	bannedUsers : IUser[]; 
+	kickedUsers : IUser[]; 
+	mutedUsers  : IUser[]; 
+}
+
+export interface IMessage {
+	id: number;
+	date: Date;
+	from: IUser;
+	fromId: number;
+	to: number;
+	content: string;
+	channel: IChannel;
+	channelId: number;
+}

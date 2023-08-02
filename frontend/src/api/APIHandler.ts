@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IMatch, IUser } from "./types";
+import { IMatch, IUser, IChannel, IMessage } from "./types";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -11,18 +11,28 @@ axios.defaults.withCredentials = true;
 
 const api = axios.create({
 	baseURL: BASE_URL,
+	withCredentials: true,
+	headers: {
+		'Access-Control-Allow-Origin': BASE_URL,
+	},
 });
 
 api.interceptors.response.use(
-	(response) => response,
+	(response) => {
+
+		return response;
+	},
 	(error) => {
+		// const Navigate = useNavigate();
 		if (error.response && error.response.status === 401) {
 			// Redirect to the "Login" page
 			window.location.href = '/Login';
+			// Navigate('/Login');
 		}
 		else if (error.response) {
 			// Redirect to the according error pages
-			window.location.href = '/Error' + error.response.status;
+			window.location.href = '/Error/' + error.response.status;
+			// Navigate('/Error/' + error.response.status);
 		}
 		return Promise.reject(error);
 	},
@@ -53,7 +63,6 @@ export async function signUp(newNickname: string, password: string): Promise<any
 		throw new Error('A user with this nickname already exists');
 	}
 }
-
 
 export async function logIn(newNickname: string, password: string): Promise<any> {
 
@@ -125,7 +134,7 @@ export async function getUserMatches(id: number): Promise<IMatch[]> {
 	const matches: IMatch[] = response.data.map((match) => ({
 		...match,
 		date: new Date(match.date),
-	  }));
+	}));
 
 	return (matches);
 }
@@ -194,7 +203,211 @@ export async function updateUserBooleanProperty(property: keyof IUser, newProper
 }
 
 export async function deleteMe(): Promise<IUser> {
-	return api.delete(`/users/me`);
+	return await api.delete(`/users/me`);
+}
+
+/* ######################*/
+/* ###      CHAT      ###*/
+/* ######################*/
+
+export async function getOneChannelById(id: number): Promise<IChannel> {
+	const response = await api.get<IChannel>(`/chat/channel/${id}`);
+	return response.data;
+}
+
+export async function getOneChannelByName(roomName: string): Promise<IChannel> {
+	const response = await api.get<IChannel>(`/chat/channel/find/${roomName}`);
+	return response.data;
+}
+
+export async function getAllUserChannels(): Promise<IChannel[]> {
+	const user = await fetchMe();
+	const response = await api.get<IChannel[]>(`/chat/channels/all/${user.id}`);
+	return response.data;
+}
+
+export async function getNonJoinedChannels(): Promise<IChannel[]> {
+	const user = await fetchMe();
+	const response = await api.get<IChannel[]>(`/chat/channels/more/${user.id}`);
+	return response.data;
+}
+
+export async function createChannel(roomName: string, password: string, type: string)
+	: Promise<IChannel> {
+	try {
+		const user = await fetchMe();
+		const userId = user.id;
+		const response = await api.post(`/chat/channel`,
+			{
+				roomName: roomName,
+				ownerId: userId,
+				password: password,
+				type: type,
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+
+	} catch (error) {
+		throw new Error('A channel with this name already exists');
+	}
+}
+
+export async function updateChannelProperties(channelId: number, property: keyof IChannel, newValue: string) {
+	try {
+		const response = await api.patch(`/chat/channel/${channelId}/update`,
+			{
+				[ property ] : newValue
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error('An error occured during the update of this channel.');
+	}
+}
+
+export async function updateMeInChannel(channelId: number, groupToInsert: string, action: string) {
+	try {
+		const user = await fetchMe();
+		const response = await api.post(`/chat/channel/${channelId}`,
+			{
+				groupToInsert,
+				action,
+				userId: user.id,
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error(`Error: cannot ${action} to ${groupToInsert} in channel ${channelId}`);
+	}
+}
+
+export async function updateUserInChannel(userId: number, channelId: number, groupToInsert: string, action: string) {
+	try {
+		const response = await api.post(`/chat/channel/${channelId}`,
+			{
+				groupToInsert,
+				action,
+				userId: userId,
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error('Error: cannot join this channel');
+	}
+}
+
+export async function leaveChannel(userId: number, channelId: number) {
+	try {
+		const response = await api.delete(`/chat/channel/leave/${channelId}`,
+			{
+				data: { userId },
+			});
+		return response.data;
+	} catch (error) {
+		throw new Error("Error: An error occured while you were leaving this channel.")
+	}
+}
+
+
+
+
+/**
+ * @description Find the convo, and if it doesn't exist, create it and join both users to it
+ * @param roomName Name of the conversation (Syntax: senderNickname + ' ' + receiverNickname)
+ * @param contactedUserId Id of the person you're trying to message
+ * @returns the channel of the conversation (DM)
+ */
+export async function manageDirectMessages(roomName: string, contactedUserId: number): Promise<IChannel> {
+
+	try {
+		let conv: IChannel = await getOneChannelByName(roomName);
+		if (!conv) {
+			conv = await createChannel(roomName, "", 'DM'); // Using '' for password for DM type
+		}
+		await updateUserInChannel(contactedUserId, conv.id, 'joinedUsers', 'connect');
+		return conv;
+	} catch (error) {
+		throw new Error('Error: cannot establish this personal convo');
+	}
+}
+
+/**
+ * 
+ * @param from The sender id
+ * @param to The recipient, aka roomName of a Channel
+ * @param content The sender's message
+ * @param channelId Number id of the conversation
+ * @returns the newly-created message
+ */
+export async function createMessage(channel: IChannel, content: string): Promise<IMessage> {
+
+	try {
+		const { roomName, id } = channel;
+		const user = await fetchMe();
+		const response = await api.post(`/chat/message`,
+			{
+				fromId: user.id,
+				to: roomName,
+				content: content,
+				channelId: id
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error("API: Could not store message");
+	}
+}
+
+export async function getAllMsgsofChannel(channelId: number): Promise<IMessage[]> {
+	try {
+		const response = await api.get(`/chat/messages/${channelId}`);
+		const messages: IMessage[] = response.data.map((message: IMessage) => ({
+			...message,
+			date: new Date(message.date),
+		}));
+
+		return messages;
+	} catch (error) {
+		throw new Error("API: Could not retrieve messages");
+	}
+}
+
+export async function deleteAllMsgsofChannel(channelId: number) {
+	try {
+		return api.delete(`/chat/messages/${channelId}`);
+	} catch (error) {
+		throw new Error("API: Error during deletion of messages");
+	}
 }
 
 /* ######################*/
@@ -242,6 +455,12 @@ export async function uploadImage(file: File) {
 		throw new Error('Error uploading image');
 	}
 }
+
+
+
+/* #######################*/
+/* ######   GAME   #######*/
+/* #######################*/
 
 
 

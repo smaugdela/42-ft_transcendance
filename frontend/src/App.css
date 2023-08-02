@@ -8,20 +8,17 @@
 
 .dark {
 	--font-type : 'Bruno Ace SC', cursive;
-	/* --font-type: 'Monoton', cursive; */
 	--font-color : rgb(255, 255, 255);
 	--bg-image: url("../public/assets/cyberpunk.jpg");
 	--sidebar-image: ;
 	--sides-color :rgba(24, 46, 65, 0.7);
 	--heading-color: rgba(24, 46, 65, 0.7);
-	/* --header-image: url("../public/assets/neonhead.jpg"); */
-	/* --home-image : url("https://media1.ledevoir.com/images_galerie/nwd_132675_102056/image.jpg"); */
-
+	
 }
 
 /* other theme  */
 .kawaii {
-	--font-type : 'Licorice', cursive;;
+	--font-type : 'Licorice', cursive;
 	--font-color: #6d6875;
 	--bg-color: #f7e7da;
 	--bg-image: url("../public/assets/cute.jpg");
@@ -51,9 +48,6 @@ body {
 }
 
 .videobg{
-	/* position: absolute;
-	display: flex;
-	z-index : -200; */
 	position: fixed;
     overflow: hidden;
     top: 50%;
@@ -66,11 +60,11 @@ body {
     z-index: -10;
 }
 
-/* .music-bg{
+.music-bg{
 	position: fixed;
 	top: 100px;
 	z-index: -100;
-} */
+}
 
 #main-content {
 	width : 100%;
@@ -83,15 +77,12 @@ body {
 }
 
 footer {
-	/* position: fixed; */
-	/* bottom:0; */
 	width: 100%;
 	background-color: var(--heading-color);
 	font-family: var(--font-type);
 	font-size: 100%;
 	text-align: center;
 	color: var(--font-color);
-	/* height: 8lvh; */
 	line-height: 70px;
 	font-size: 150%;
 }

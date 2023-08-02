@@ -27,12 +27,13 @@ const VerificationPage = () => {
 			setIsLoading(false);
             setTimeout(() => {
               navigate('/');
+			  window.location.reload();
             }, 2000); // Delay before redirecting to the home page (2 seconds)
           } else {
             // Handle the case when the code is not valid
-            console.log('Code verification failed');
 			setIsSuccess(false);
 			setIsLoading(false);
+            console.log('Code verification failed');
           }
         } catch (error) {
           console.log('Error occurred during code verification', error);
@@ -53,7 +54,7 @@ const VerificationPage = () => {
   return (
     <div className="DoubleFA">
 		<div className="background"/>
-		<form className="connection-form">
+		<form className="little-form">
 			{isLoading && <p>Loading...</p>}
 			{!isLoading && isSuccess && <p>Verification successful! You will be redirected shortly to homepage.</p>}
 			{!isLoading && !isSuccess && <p>Verification failed, please try again.</p>}

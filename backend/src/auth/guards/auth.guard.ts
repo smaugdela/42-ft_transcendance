@@ -54,11 +54,7 @@ export class AuthGuard implements CanActivate {
 			if (!user) {
 				throw new UnauthorizedException('Bad token.');
 			}
-
-			// console.log("Access token is valid.");
 		} catch (error) {
-			console.log("Path: ", request);
-			
 			console.log("Access token is invalid or expired.");
 			throw new UnauthorizedException('Bad token.');
 		}

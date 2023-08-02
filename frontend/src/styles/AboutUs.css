@@ -36,8 +36,6 @@
 .div_staff{
   background-color: rgba(255,255,255,0.13);
     backdrop-filter: blur(10px);
-
-
 	
 	border: 2px solid rgb(35, 71, 103);
 	box-shadow:
@@ -75,7 +73,7 @@
 
 .image{
   border-radius: 10px;
-  /* width: 60%;  */
+  width: 30%;  
     /* height: auto; */
 }
 
