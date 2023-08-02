@@ -6,7 +6,7 @@ import { createMessage2, fetchMe, getAllMsgsofChannel, manageDirectMessages } fr
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-import { SocketContext, ChatStatusContext } from '../../context/contexts';
+import { SocketContext } from '../../context/contexts';
 import { sendInviteToUser, sendNotificationToServer } from "../../sockets/sockets";
 import { toast } from 'react-hot-toast';
 
@@ -34,7 +34,6 @@ function getTimeSinceLastMsg(lastMessageDate: Date) {
 export default function ChannelLink({ channel }: { channel: IChannel }) {
 
 	const [convName, setConvName] = useState<string>(channel.roomName);
-	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
 	const [openInvitePrompt, setOpenInvitePrompt] = useState<boolean>(false);
 	const [inviteName, setInviteName] = useState<string>("");
 	const socket = useContext(SocketContext);
@@ -75,15 +74,6 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 		return <div>Loading...</div>
 	}
 
-	const handleClick = (event: React.FormEvent<HTMLDivElement>, channel: IChannel) => {
-		event.preventDefault();
-		if (socket && channel.roomName) {
-			sendNotificationToServer(socket, 'Create Lobby', channel.roomName);
-		}
-		setActiveConv(channel);
-		setActiveTab(1);
-	};
-
 	const handleInviteClick = (event: React.FormEvent) => {
 		event.stopPropagation();
 		setOpenInvitePrompt(!openInvitePrompt);
@@ -104,7 +94,7 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 
 	return (
 		<div>
-			<div  className="channel-link-card" onClick={(event) => handleClick(event, channel)}>
+			<div  className="channel-link-card" >
 				<div className="channel-link-header">
 					<div>
 						<span className='channel-link-name'>{convName} </span>
@@ -144,7 +134,7 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 			</div>
 			{
 				openInvitePrompt === true &&
-				<div className='channel-link-invite-card'>
+				<div className='channel-link-invite-card' onClick={(event) => event.stopPropagation()}>
 					Invite someone:
 					<input	type="text" 
 							placeholder="User's nickname"
