@@ -67,6 +67,7 @@ export class UsersService {
 				},
 				friendsList: true,
 				blockList: true,
+				pendingList :true,
 			},
 		});
 	}

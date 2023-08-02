@@ -1,10 +1,9 @@
 import "../styles/Social.css"
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPlus, faBan, faXmark, faUserXmark, faUserMinus} from '@fortawesome/free-solid-svg-icons';
-import { /* rejectFriendRequest ,*/fetchMe, postSearchQuery } from "../api/APIHandler";
-// import { removeFriend, friendRequest ,removeFromBlock} from "../api/APIHandler";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { faUserPlus} from '@fortawesome/free-solid-svg-icons';
+import { fetchMe, postSearchQuery } from "../api/APIHandler";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { IUser } from "../api/types";
 import {AllFriends} from "../components/Social/AllFriends";
 import { PendingList } from "../components/Social/PendingList";
@@ -112,12 +111,12 @@ export function Social() {
 		setActiveList(listType); // Update the active list when a button is clicked
 	  };
 
-	// const [buttonStates, setButtonStates] = useState({
-	// 	allFriends: false,
-	// 	activeFriends: false,
+	const [buttonStates, setButtonStates] = useState({
+		allFriends: false,
+		activeFriends: false,
 	// 	blocked: false,
 	// 	pendingRequests: false,
-	//   });
+	  });
 
 
 	// useEffect( () => {
@@ -159,17 +158,17 @@ export function Social() {
 
 	
 
-	// const handleClick = (group: IUser[] | undefined, id: string) => {
-	// 	setGroupToDisplay(group || []);
-	// 	console.log(loggedUser);
-	// 	setButtonStates({
-			// allFriends: false,
-			// activeFriends: false,
+	const handleClick = (group: IUser[] | undefined, id: string) => {
+		setGroupToDisplay(group || []);
+		console.log(loggedUser);
+		setButtonStates({
+			allFriends: false,
+			activeFriends: false,
 			// blocked: false,
 			// pendingRequests: false,
-	// 		[id]: true,
-	// 	});
-	// }
+			[id]: true,
+		});
+	}
 
 	if (error) {
 		return <div>Error</div>;
@@ -207,19 +206,11 @@ export function Social() {
 					Pending requests
 				</button>
 			</div>
-				{activeList === 'allFriends' && <AllFriends profilesToDisplay={loggedUser.friendsList} userIsSuccess={isSuccess}/>}
-				{activeList === 'pendingRequests' && <PendingList profilesToDisplay={loggedUser.pendingList} userIsSuccess={isSuccess}/>}
-				{activeList === 'blocked' && <BlockedUser profilesToDisplay={loggedUser.blockList} userIsSuccess={isSuccess}/>}
-				{activeList === 'activeFriends' && <ActiveFriends profilesToDisplay={activeFriends}/>} 
-				
-				{/* const activeFriends:	IUser[] = allFriends?.filter(friend => friend.isActive === true) || []; */}
-				
-				 {/* groupToDisplay.length > 0 && (<DisplayConnections profilesToDisplay={groupToDisplay}/>)
-				 isSuccess && <DisplayConnections profilesToDisplay={groupToDisplay} userIsSuccess={isSuccess} /> */}
-				
-	
-    </div>
+				{activeList === 'allFriends' && loggedUser.friendsList ? (<AllFriends profilesToDisplay={loggedUser.friendsList} userIsSuccess={isSuccess} />) : null}
+				{activeList === 'pendingRequests' && loggedUser.pendingList ? (<PendingList profilesToDisplay={loggedUser.pendingList} userIsSuccess={isSuccess} />) : null}
+      			{activeList === 'blocked' && loggedUser.blockList ? (<BlockedUser profilesToDisplay={loggedUser.blockList} userIsSuccess={isSuccess} />) : null}
+      			{activeList === 'activeFriends' && activeFriends ? (<ActiveFriends profilesToDisplay={activeFriends} />) : null}
+			</div>
   );
-
 };
 

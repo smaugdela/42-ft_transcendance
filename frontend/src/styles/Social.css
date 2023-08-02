@@ -185,6 +185,7 @@
 	height: 15em;
 	width: 20%;
 	display: flex;
+	flex-direction: column; /* Set the flex direction to column */
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
@@ -219,6 +220,7 @@
 	justify-content: center;
 	align-items: first baseline;
 	gap: 1vw;
+	/* flex-direction: column; Set the flex direction to column */
 }
 
 .profile_infos > div:first-of-type {
