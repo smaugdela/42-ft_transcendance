@@ -122,13 +122,15 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			};
 			this.server.to(room).emit('receiveMessage', message);
 		}
-		if (action === '/mute' || action === '/kick' || action === '/ban' || action === '/admin') {
+		if (action === '/mute' || action === '/kick' || action === '/ban' || action === '/admin' || action === '/invite') {
 			const message = {
 				date: new Date(),
 				from: client.data.username,
 				fromId: client.data.userId,
 				content: `${action}  ${msgToTransfer}`,
 			};
+			console.log("this message has been sent: ", message.content, "to room : ", room);
+			
 			this.server.to(room).emit('receiveMessage', message);
 		}
 	}

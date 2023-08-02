@@ -24,7 +24,7 @@ export default function MessageUserBtn( { loggedInUser, userToContact} : { logge
 	}, [loggedInUser, userToContact.nickname])
 	
 	const { mutate } = useMutation({
-		mutationFn: () => manageDirectMessages(roomName, userToContact.id),
+		mutationFn: () => manageDirectMessages(roomName, userToContact.nickname),
 		onSuccess: (data) => {
 			queryClient.invalidateQueries(['channels']);
 			if (socket && data) {

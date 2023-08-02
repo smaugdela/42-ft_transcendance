@@ -7,7 +7,7 @@ import TabChannels from './ChatElements/TabChannels';
 import TabChat from './ChatElements/TabChat';
 import TabMore from './ChatElements/TabMore';
 import { useQuery } from "@tanstack/react-query";
-import { getAllUserChannels, fetchMe } from '../api/APIHandler';
+import { fetchMe } from '../api/APIHandler';
 import { ChatStatusContext } from '../context/contexts';
 
 interface Tab {

@@ -35,17 +35,23 @@
 /* ********************************/
 
 .channel-link-card {
-    /* background-color: white; */
     border-bottom: solid 1px black;
-
     padding: 1.2em;
 
     display : flex;
     flex-direction: column;
+
+    scroll-behavior: auto;
+}
+
+.channel-link-card:hover {
+    background-color: rgb(79, 97, 110);
 }
 
 .channel-link-header {
     margin-bottom: 1vh;
+    display: flex;
+    justify-content: space-between;
 }
 
 .channel-link-name {
@@ -57,13 +63,32 @@
 }
 .channel-link-span {
     font-family: 'Open Sans', sans-serif;
+    font-size: small;
 
-    padding: 0.2rem;
+    padding: 0.3rem 1rem;
     margin: 0.5rem;
     border-radius: 10%;
 
-    background-color: rgb(105, 151, 192);
+    background-color: rgb(41, 55, 70);
     color: white;
+}
+
+.channel-link-invite {
+    color: white;
+}
+
+.channel-link-invite:hover {
+    color: rgb(23, 25, 27);
+}
+
+.channel-link-invite-card {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    padding: 0 1vw;
+    background-color: rgb(70, 85, 99);
+    width: 100%;
 }
 
 .channel-link-preview {

@@ -339,14 +339,18 @@ export async function leaveChannel(userId: number, channelId: number) {
  * @param contactedUserId Id of the person you're trying to message
  * @returns the channel of the conversation (DM)
  */
-export async function manageDirectMessages(roomName: string, contactedUserId: number): Promise<IChannel> {
+export async function manageDirectMessages(roomName: string, contactedUserName: string): Promise<IChannel> {
 
 	try {
+		let user: IUser = await fetchUserByNickname(contactedUserName);
+		if (!user) {
+			throw new Error('User doesnt exist');
+		}
 		let conv: IChannel = await getOneChannelByName(roomName);
 		if (!conv) {
 			conv = await createChannel(roomName, "", 'DM'); // Using '' for password for DM type
 		}
-		await updateUserInChannel(contactedUserId, conv.id, 'joinedUsers', 'connect');
+		await updateUserInChannel(user.id, conv.id, 'joinedUsers', 'connect');
 		return conv;
 	} catch (error) {
 		throw new Error('Error: cannot establish this personal convo');
@@ -365,6 +369,39 @@ export async function createMessage(channel: IChannel, content: string): Promise
 
 	try {
 		const { roomName, id } = channel;
+		const user = await fetchMe();
+		const response = await api.post(`/chat/message`,
+			{
+				fromId: user.id,
+				to: roomName,
+				content: content,
+				channelId: id
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error("API: Could not store message");
+	}
+}
+
+/**
+ * 
+ * @param from The sender id
+ * @param to The recipient, aka roomName of a Channel
+ * @param content The sender's message
+ * @param channelId Number id of the conversation
+ * @returns the newly-created message
+ */
+export async function createMessage2(channelName: string, content: string): Promise<IMessage> {
+
+	try {
+		const { roomName, id } = await getOneChannelByName(channelName);
 		const user = await fetchMe();
 		const response = await api.post(`/chat/message`,
 			{
