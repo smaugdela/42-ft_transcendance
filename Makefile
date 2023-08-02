@@ -1,5 +1,5 @@
 up: data
-	@if [ ! -f .env ]; then echo "No .env file, please add one" && exit; fi; ln .env frontend/.env; docker-compose -f docker-compose.yml up
+	@if [ ! -f .env ]; then echo "No .env file, please add one" && exit; fi; ln .env frontend/.env; docker-compose -f docker-compose.yml up --build
 
 data:
 	mkdir -p data

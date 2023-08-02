@@ -69,9 +69,9 @@ export function SearchBar() {
 // 	});
 // 	useEffect(() => {
 // 		if (props.userIsSuccess) {
-// 		  queryClient.invalidateQueries(['user']); // Refetch the user data if the userIsSuccess prop changes
+// 		 queryClient.invalidateQueries(['user']); // Refetch the user data if the userIsSuccess prop changes
 // 		}
-// 	  }, [props.userIsSuccess]);
+// 	 }, [props.userIsSuccess]);
 
 // 	const handleacceptRequest = (id: number) => {
 // 		acceptRequest.mutate(id);
@@ -109,7 +109,7 @@ export function Social() {
 	
 	const handleClickComponent = (listType: string) => {
 		setActiveList(listType); // Update the active list when a button is clicked
-	  };
+	};
 
 	// const [buttonStates, setButtonStates] = useState({
 	// 	allFriends: false,
@@ -152,7 +152,7 @@ export function Social() {
 	
 
 	const allFriends:		IUser[] = loggedUser?.friendsList || [];
-	const activeFriends:	IUser[] = allFriends?.filter(friend => friend.isActive === true) || [];
+	const activeFriends:	IUser[] = allFriends?.filter(friend => friend.isActive === 'ONLINE') || [];
 	// const blocked:			IUser[] = loggedUser?.blockList || [];
 	// const pendingRequests:	IUser[] = loggedUser?.pendingList || [];
 
@@ -190,7 +190,7 @@ export function Social() {
 				<button 
 					// onClick={ () => handleClick(activeFriends, "activeFriends")}
 					// className={buttonStates.activeFriends ? "clicked-btn" : "btn"}>
-					 onClick={() => handleClickComponent('activeFriends')} className={activeList === 'activeFriends' ? 'clicked-btn' : 'btn'}> 
+					onClick={() => handleClickComponent('activeFriends')} className={activeList === 'activeFriends' ? 'clicked-btn' : 'btn'}> 
 					Active friends
 				</button>
 				<button 
@@ -208,9 +208,8 @@ export function Social() {
 			</div>
 				{activeList === 'allFriends' && loggedUser.friendsList ? (<AllFriends profilesToDisplay={loggedUser.friendsList} userIsSuccess={isSuccess} />) : null}
 				{activeList === 'pendingRequests' && loggedUser.pendingList ? (<PendingList profilesToDisplay={loggedUser.pendingList} userIsSuccess={isSuccess} />) : null}
-      			{activeList === 'blocked' && loggedUser.blockList ? (<BlockedUser profilesToDisplay={loggedUser.blockList} userIsSuccess={isSuccess} />) : null}
-      			{activeList === 'activeFriends' && activeFriends ? (<ActiveFriends profilesToDisplay={activeFriends} />) : null}
+				{activeList === 'blocked' && loggedUser.blockList ? (<BlockedUser profilesToDisplay={loggedUser.blockList} userIsSuccess={isSuccess} />) : null}
+				{activeList === 'activeFriends' && activeFriends ? (<ActiveFriends profilesToDisplay={activeFriends} />) : null}
 			</div>
   );
-};
-
+}

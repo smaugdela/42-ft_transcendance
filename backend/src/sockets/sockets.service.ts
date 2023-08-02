@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Activity, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -33,7 +33,7 @@ export class MatchClass {
 	powerUpX: number;
 	powerUpY: number;
 	powerUpDate: number;
-	
+
 
 	lastUpdate: number;
 }
@@ -78,7 +78,7 @@ export class SocketsService {
 					id: userId,
 				},
 				data: {
-					isActive: true,
+					isActive: Activity.ONLINE,
 				},
 			});
 		} catch (error) {
@@ -94,7 +94,7 @@ export class SocketsService {
 					id: userId,
 				},
 				data: {
-					isActive: false,
+					isActive: Activity.OFFLINE,
 				},
 			});
 		} catch (error) {
@@ -134,7 +134,7 @@ export class SocketsService {
 		const match = new MatchClass;
 		match.matchId = this.matchId++;
 		match.mode = mode;
-		
+
 		if (player1 === undefined) {
 			match.player1 = this.queue.shift();
 		} else {
@@ -145,7 +145,7 @@ export class SocketsService {
 		} else {
 			match.player2 = player2;
 		}
-		
+
 		match.player1.ready = false;
 		match.player2.ready = false;
 		match.p1posY = (this.gameConstants.height / 2) - (this.gameConstants.paddleLength / 2);

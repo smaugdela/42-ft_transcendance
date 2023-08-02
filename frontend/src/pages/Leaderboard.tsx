@@ -20,7 +20,6 @@ export function TopThreeDetail(props: { user: IUser }) {
 			/>
 			<h3>{props.user.score}</h3>
 			<h1>{props.user.nickname}</h1>
-			<p>{props.user.coalition}</p>
 		</div>
 		);
 }
@@ -28,17 +27,16 @@ export function TopThreeDetail(props: { user: IUser }) {
 export function PerformanceDetail(props: {users: IUser[]}) {
 
 	const listRanks = props.users.sort((a, b) => a.rank > b.rank ? 1 : -1)
-						   .map(user => {
+						.map(user => {
 		if (user.rank < 4)
 			return (null);
-		return <div key={user.id} className="stats" id={user.isActive ? "myRank" : "other"}>
+		return <div key={user.id} className="stats" id={user.isActive === "ONLINE" ? "myRank" : "other"}>
 			<img 
 				src={user.avatar}
 				alt={user.nickname}
 			/>
 			<div className="user-ids">
 				<h2 >{user.nickname}</h2>
-				<p >{user.coalition}</p>
 			</div>
 			<div id="vertical-sep"></div>
 			<div className="one-stat">
@@ -61,7 +59,7 @@ export function PerformanceDetail(props: {users: IUser[]}) {
 			{listRanks}
 		</div>
 	);
-};
+}
 
 export function Leaderboard() {
 
@@ -94,4 +92,4 @@ export function Leaderboard() {
 			</div>
 		</div>
 	);
-};
+}

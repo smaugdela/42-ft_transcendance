@@ -2,7 +2,7 @@ import { UnauthorizedException } from '@nestjs/common';
 import { Socket } from 'socket.io';
 import * as cookieParser from 'cookie-parser';
 import { jwtConstants } from 'src/auth/constants';
-import { PrismaClient } from '@prisma/client';
+import { Activity, PrismaClient } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 
 const prisma = new PrismaClient();
@@ -44,13 +44,13 @@ export function usernameMiddleware(jwtService: JwtService) {
 				return next(new UnauthorizedException('No user associated with this token.'));
 
 			// We tell that the user is active
-			if (user.isActive === false) {
+			if (user.isActive === Activity.OFFLINE) {
 				await prisma.user.update({
 					where: {
 						id: userId,
 					},
 					data: {
-						isActive: true,
+						isActive: Activity.ONLINE,
 					},
 				});
 			}

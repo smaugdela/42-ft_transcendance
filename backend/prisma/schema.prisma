@@ -21,13 +21,12 @@ model User {
     id42           Int?     @unique
     token42        String?  @unique // Is the 42 oauth token for 42 students.
     password       String? // Is the password for non 42 students.
-    coalition      String?  @default("Invite")
 
     aces  Int? @default(0)
     score Int? @default(0)
     rank  Int? @default(0)
 
-    isActive Boolean? @default(false)
+    isActive Activity? @default(ONLINE)
 
     friendsList     User[] @relation("friends")
     friendsRelation User[] @relation("friends") // Used to store the many-to-many relation.
@@ -61,7 +60,7 @@ model Achievement {
     icon        String
     description String
     date        DateTime?
-    fullfilled   Boolean   @default(false)
+    fullfilled  Boolean   @default(false)
     user        User      @relation(fields: [userId], references: [id])
     userId      Int
 
@@ -84,23 +83,22 @@ model Match {
 }
 
 model Channel {
+    id          Int       @id @default(autoincrement())
+    date        DateTime  @default(now())
+    lastUpdated DateTime  @default(now())
+    type        ChanMode  @default(PUBLIC)
+    password    String?
+    roomName    String    @unique
+    owner       User      @relation(fields: [ownerId], references: [id], name: "owner")
+    ownerId     Int
+    admin       User[]    @relation("admins")
+    joinedUsers User[]    @relation("joined")
+    bannedUsers User[]    @relation("banned")
+    kickedUsers User[]    @relation("kicked")
+    mutedUsers  User[]    @relation("muted")
+    messages    Message[] @relation("messages")
 
-  id          Int       @id @default(autoincrement())
-  date        DateTime  @default(now())
-  lastUpdated DateTime  @default(now())
-  type        ChanMode  @default(PUBLIC)
-  password    String?
-  roomName    String    @unique
-  owner       User      @relation(fields: [ownerId], references: [id], name: "owner")
-  ownerId     Int
-  admin       User[]    @relation("admins")
-  joinedUsers User[]    @relation("joined")
-  bannedUsers User[]    @relation("banned")
-  kickedUsers User[]    @relation("kicked")
-  mutedUsers  User[]    @relation("muted")
-  messages    Message[] @relation("messages")
-
-  @@map("channels")
+    @@map("channels")
 }
 
 model Message {
@@ -119,6 +117,12 @@ model Message {
 enum AuthType {
     FORTYTWO
     LOGNPWD
+}
+
+enum Activity {
+    ONLINE
+    INGAME
+    OFFLINE
 }
 
 enum ChanMode {

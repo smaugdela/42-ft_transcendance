@@ -62,12 +62,10 @@ export class AuthService {
 				}
 
 				console.log("Creating 42 user.")
-				response = await axios.get('https://api.intra.42.fr/v2/users/' + user.id + '/coalitions', config);
 				userDb = await prisma.user.create({
 					data: {
 						nickname: name,
 						id42: user.id,
-						coalition: response.data[response.data.length - 1].name,
 						authtype: AuthType.FORTYTWO,
 						token42: accessToken,
 						avatar: user.image.link,
@@ -182,7 +180,6 @@ export class AuthService {
 					avatar: avatarpath,
 					password: hash,
 					authtype: AuthType.LOGNPWD,
-					coalition: "Invite",
 				},
 			});
 
