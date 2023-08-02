@@ -12,7 +12,7 @@ import ChannelLink from './ChannelLink';
 
 export default function TabMore() {
 
-	const channelsQuery = useQuery({queryKey: ['channels'], queryFn: getNonJoinedChannels});
+	const { data: nonJoinedChannels, error, isLoading, isSuccess } = useQuery({queryKey: ['channels'], queryFn: getNonJoinedChannels});
 	const queryClient = useQueryClient();
 	
 	const joinChannelRequest = useMutation({
@@ -26,18 +26,17 @@ export default function TabMore() {
 
 	const handleClick = (event: React.FormEvent<HTMLDivElement>, channel: IChannel) => {
 		event.preventDefault();
-		
 		joinChannelRequest.mutate(channel);
 	};
 
-	if (channelsQuery.error instanceof Error){
-		toast.error('Error fetching your convos');
+	if (error){
+		return <div>Error</div>
 	}
-	if (channelsQuery.isLoading || !channelsQuery.isSuccess){
-		<div>Loading...</div>
+	if (isLoading || !isSuccess){
+		return <div>Loading...</div>
 	}
 
-	const publicAndPrivateChans = channelsQuery.data;
+	const publicAndPrivateChans: IChannel[] = nonJoinedChannels;
 	
 	return (
 	<div className='channels_page'>
@@ -46,7 +45,7 @@ export default function TabMore() {
 		<h2>Channels that are waiting for you</h2>
 		<>
 		{
-			publicAndPrivateChans && (
+			publicAndPrivateChans && Array.isArray(publicAndPrivateChans) && (
 				publicAndPrivateChans.map((chan) => {
 					return (
 						<div key={(chan.id + 1).toString()} onClick={(event) => handleClick(event, chan)}>

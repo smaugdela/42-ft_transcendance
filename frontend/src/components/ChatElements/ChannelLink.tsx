@@ -100,7 +100,7 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 						<span className='channel-link-name'>{convName} </span>
 						<span className="channel-link-span">{channel.type}</span>
 						{
-							channel.type !== 'DM' &&
+							channel.type !== 'DM' && channel.joinedUsers &&
 							<span>{channel.joinedUsers.length} member(s)</span>
 						}
 					</div>

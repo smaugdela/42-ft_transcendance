@@ -42,8 +42,6 @@ export default function MessageUserBtn( { loggedInUser, userToContact} : { logge
 	const handleClick = (event: React.FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		if (roomName) {
-			console.log("je mutate");
-			
 			mutate();
 		}
 	};
