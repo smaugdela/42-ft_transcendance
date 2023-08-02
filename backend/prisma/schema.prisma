@@ -61,7 +61,7 @@ model Achievement {
     icon        String
     description String
     date        DateTime?
-    fulfilled   Boolean   @default(false)
+    fullfilled   Boolean   @default(false)
     user        User      @relation(fields: [userId], references: [id])
     userId      Int
 

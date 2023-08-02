@@ -207,13 +207,13 @@ export class AuthService {
 						userId: userId,
 						icon: "fa-solid fa-lemon",
 						title: "Easy peasy lemon squeezy",
-						description: "Won 3 games in a row",
+						description: "Won 3 games",
 					},
 					{
 						userId: userId,
 						icon: "fa-solid fa-user-slash",
 						title: "It's my lil bro playing",
-						description: "Lost 3 games in a row",
+						description: "Lost 3 games",
 					},
 					{
 						userId: userId,
@@ -235,12 +235,6 @@ export class AuthService {
 					},
 					{
 						userId: userId,
-						icon: "fa-solid fa-robot",
-						title: "Existential crisis",
-						description: "Changed their nickname",
-					},
-					{
-						userId: userId,
 						icon: "fa-solid fa-shield-dog",
 						title: "Safety first",
 						description: "Activated the 2FA authentification",
@@ -248,14 +242,14 @@ export class AuthService {
 					{
 						userId: userId,
 						icon: "fa-solid fa-hand-spock",
-						title: "My safe place",
-						description: "Created their first channel",
+						title: "Writer soul",
+						description: "Change your bio",
 					},
 					{
 						userId: userId,
-						icon: "fa-solid fa-hand-holding-dollar",
-						title: "Pay to Win",
-						description: "Donated to have an in-game advantage",
+						icon: "fa-solid fa-hand-spock",
+						title: "My safe place",
+						description: "Created their first channel",
 					},
 				]
 			});
