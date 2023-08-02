@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import "../../styles/Social.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faUserMinus} from '@fortawesome/free-solid-svg-icons';
 import { removeFriend, blockUser } from "../../api/APIHandler";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IUser } from "../../api/types";
 
 export function AllFriends( props: { profilesToDisplay : IUser[], userIsSuccess: boolean }) {

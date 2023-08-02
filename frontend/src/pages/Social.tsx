@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus} from '@fortawesome/free-solid-svg-icons';
 import { fetchMe, postSearchQuery } from "../api/APIHandler";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { IUser } from "../api/types";
 import {AllFriends} from "../components/Social/AllFriends";
 import { PendingList } from "../components/Social/PendingList";
@@ -101,22 +101,22 @@ export function SearchBar() {
  
 export function Social() {
 
-	const [groupToDisplay, setGroupToDisplay] = useState<IUser[]>([]);
+	// const [groupToDisplay, setGroupToDisplay] = useState<IUser[]>([]);
 
 	const [activeList, setActiveList] = useState<string | null>(null);
-	const queryClient = useQueryClient();
+	// const queryClient = useQueryClient();
 	const { data: loggedUser, error, isLoading, isSuccess } = useQuery({ queryKey: ['user'], queryFn: fetchMe});
 	
 	const handleClickComponent = (listType: string) => {
 		setActiveList(listType); // Update the active list when a button is clicked
 	  };
 
-	const [buttonStates, setButtonStates] = useState({
-		allFriends: false,
-		activeFriends: false,
-	// 	blocked: false,
-	// 	pendingRequests: false,
-	  });
+	// const [buttonStates, setButtonStates] = useState({
+	// 	allFriends: false,
+	// 	activeFriends: false,
+	// // 	blocked: false,
+	// // 	pendingRequests: false,
+	//   });
 
 
 	// useEffect( () => {
@@ -158,17 +158,17 @@ export function Social() {
 
 	
 
-	const handleClick = (group: IUser[] | undefined, id: string) => {
-		setGroupToDisplay(group || []);
-		console.log(loggedUser);
-		setButtonStates({
-			allFriends: false,
-			activeFriends: false,
-			// blocked: false,
-			// pendingRequests: false,
-			[id]: true,
-		});
-	}
+	// const handleClick = (group: IUser[] | undefined, id: string) => {
+	// 	// setGroupToDisplay(group || []);
+	// 	console.log(loggedUser);
+	// 	setButtonStates({
+	// 		allFriends: false,
+	// 		activeFriends: false,
+	// 		// blocked: false,
+	// 		// pendingRequests: false,
+	// 		[id]: true,
+	// 	});
+	// }
 
 	if (error) {
 		return <div>Error</div>;
