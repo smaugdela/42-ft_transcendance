@@ -222,10 +222,10 @@
 }
 
 .profile_infos > div:first-of-type {
-	color : rgb(243, 64, 64);
+	color : rgb(29, 123, 216);
 }
 
 .profile_infos > div:last-of-type {
-	color : rgb(29, 123, 216);
+	color : rgb(243, 64, 64);
 }
 

@@ -58,6 +58,8 @@ export class UsersService {
 						messages: true
 					}
 				},
+				friendsList: true,
+				blockList: true,
 			},
 		});
 	}
