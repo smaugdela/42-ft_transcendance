@@ -69,7 +69,7 @@ export function handleRequestFromUser(socket: Socket, group: string, action: str
 
 export function sendInviteToUser(socket: Socket, dmName: string, userInvited: string, channelToJoin: IChannel) {
 	const payload: string = "/invite  " + dmName + "  " + userInvited + " " + channelToJoin.roomName
-	const info: string = `#INFO# ${userInvited} been invited to the channel ${channelToJoin.roomName} ${channelToJoin.id}.`;
+	const info: string = `#INFO# ${userInvited} has been invited to the channel ${channelToJoin.roomName} ${channelToJoin.id}.`;
 
 	sendNotificationToServer(socket, 'Chat', payload);
 	return (info);

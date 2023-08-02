@@ -52,7 +52,7 @@ export function OneMessage({ conv, message, index } :
 			setdisplayInviteChoice(false);
 		}
 	}
-	
+
 	if (message.content.startsWith('#INFO# ') === true) {
 
 		const content = message.content.replace('#INFO# ', '');

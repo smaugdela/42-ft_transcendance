@@ -35,9 +35,9 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 
 	const [convName, setConvName] = useState<string>(channel.roomName);
 	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
-	const socket = useContext(SocketContext);
 	const [openInvitePrompt, setOpenInvitePrompt] = useState<boolean>(false);
 	const [inviteName, setInviteName] = useState<string>("");
+	const socket = useContext(SocketContext);
 	const queryClient = useQueryClient();
 
 	const {data, error, isLoading, isSuccess } = useQuery({queryKey: ['user'], queryFn: fetchMe});
@@ -51,7 +51,7 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 				sendNotificationToServer(socket, 'Create Lobby', data?.roomName);
 			}
 		},
-		onError: () => { toast.error('Error during creation: channel name already in use') }
+		onError: () => { toast.error('An error occured: could be an invalid nickname.') }
 	})
 
 	const createInfoMessage = useMutation({
@@ -88,7 +88,7 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 		event.stopPropagation();
 		setOpenInvitePrompt(!openInvitePrompt);
 	}
-	
+
 	const handleUpdate = (event: React.FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		// Voir s'il y a déjà une conv entre les deux users, sinon la créer
@@ -99,8 +99,11 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 			const msg:string = sendInviteToUser(socket, dmName, inviteName, channel);
 			createInfoMessage.mutate([dmName, msg]);
 		}
+	
 	}
 
+
+	
 	return (
 		<div>
 			<div  className="channel-link-card" onClick={(event) => handleClick(event, channel)}>

@@ -26,7 +26,7 @@ api.interceptors.response.use(
 			window.location.href = '/Login';
 			// Navigate('/Login');
 		}
-		else if (error.response) {
+		else if (error.response === 500) {
 			// Redirect to the according error pages
 			window.location.href = '/Error/' + error.response.status;
 			// Navigate('/Error/' + error.response.status);
@@ -348,8 +348,18 @@ export async function manageDirectMessages(roomName: string, contactedUserName: 
 		}
 		let conv: IChannel = await getOneChannelByName(roomName);
 		if (!conv) {
-			conv = await createChannel(roomName, "", 'DM'); // Using '' for password for DM type
+			const split = roomName.split(' ');
+			const roomNameReversed = split[1] + ' ' + split[0];
+			console.log('reversed is :');
+			
+			conv = await getOneChannelByName(roomNameReversed);
+			if (!conv) {
+				conv = await createChannel(roomName, "", 'DM'); // Using '' for password for DM type
+			}
+			console.log("id de conv ", conv.id);
+			
 		}
+		// Y A UN PB CAR CONV ID EXISTE PAS apres tout le schmilblick
 		await updateUserInChannel(user.id, conv.id, 'joinedUsers', 'connect');
 		return conv;
 	} catch (error) {
@@ -399,16 +409,20 @@ export async function createMessage(channel: IChannel, content: string): Promise
  * @returns the newly-created message
  */
 export async function createMessage2(channelName: string, content: string): Promise<IMessage> {
-
 	try {
-		const { roomName, id } = await getOneChannelByName(channelName);
+		let channel = await getOneChannelByName(channelName);
+		if (!channel) {
+			const split = channelName.split(' ');
+			const channelNameReversed = split[1] + ' ' + split[0];
+			channel = await getOneChannelByName(channelNameReversed);
+		}
 		const user = await fetchMe();
 		const response = await api.post(`/chat/message`,
 			{
 				fromId: user.id,
-				to: roomName,
+				to: channel.roomName,
 				content: content,
-				channelId: id
+				channelId: channel.id
 			},
 			{
 				headers: {
