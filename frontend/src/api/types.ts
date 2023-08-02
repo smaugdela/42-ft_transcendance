@@ -1,20 +1,21 @@
 export interface IUser {
 	id: number;
-	avatar: string;
+	createdAt: Date;
 	nickname: string;
-	email: string;
-	bio: string;
+	avatar: string;
 	password: string;
+	email: string;
 	enabled2FA: boolean;
-	coalition: string;
-	wins: number;
-	loses: number;
-	aces: number;
 	accessToken: number;
-
+	bio: string;
+	coalition: string;
+	
+	aces: number;
 	score: number;
 	rank: number;
 	isActive : boolean;
+
+	ownerChans: IUser[];
 
 	friendsList : IUser[];
 	blockList : IUser[];
@@ -29,7 +30,7 @@ export interface IUser {
 export interface IAchievement {
 	id: number;
 	title: string;
-	icon: string; // iconProp
+	icon: string;
 	description: string;
 	date: Date;
 	fullfilled: boolean;
@@ -48,4 +49,31 @@ export interface IMatch {
 	loser: IUser;
 	loserId: number;
 	scoreLoser: number;
+}
+
+export interface IChannel {
+	id: number;
+	date: Date;
+	lastUpdated: Date;
+	type: string;
+	password: string;
+	roomName: string;
+	owner: IUser;
+	ownerId: number;
+	admin: IUser[];
+	joinedUsers : IUser[]; 
+	bannedUsers : IUser[]; 
+	kickedUsers : IUser[]; 
+	mutedUsers  : IUser[]; 
+}
+
+export interface IMessage {
+	id: number;
+	date: Date;
+	from: IUser;
+	fromId: number;
+	to: number;
+	content: string;
+	channel: IChannel;
+	channelId: number;
 }

@@ -1,35 +1,112 @@
-.channels_page{
-    padding:30px;
+@import url('https://fonts.googleapis.com/css2?family=Licorice&family=Open+Sans&family=Share+Tech&display=swap');
+
+/* ********************************/
+/* ***       TabChat PAGE       ***/
+/* ********************************/
+
+.channels_page {
+	border: none;
     border-radius:10px;
-    width: 400px;
-    margin: 4px;
+    height: 85vh;
+
     background-color: rgba(255,255,255,0.13);
     backdrop-filter: blur(10px);
-	border: none;
     box-shadow:
 		0 0 7px #efefef,
 		0 0 10px #efefef,
 		0 0 20px rgb(60, 116, 166),
 		0 0 42px rgb(60, 116, 166),
 		0 0 50px rgb(60, 116, 166);
-    height: 1100px;
 }
 
-.channels_page > ul{
-    list-style-type: none;
+#channels_page_title {
+    font-family: 'Bruno Ace SC', cursive;
+    font-weight: 600;
+    font-size: larger;
+    text-shadow: 0 0 15px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+    color: rgb(10, 10, 10);
+    
+    padding: 1rem;
 }
 
-.channels_page > ul, h1,  li{
-    font-family: var(--font-type);
-    color: #e3eef1;
-    text-shadow:
-      0 0 7px #efefef,
-      0 0 10px #90d0f0,
-      0 0 42px rgb(60, 116, 166),
-      0 0 77px rgb(60, 116, 166),
-      0 0 100px rgb(24, 46, 65);
+
+/* ********************************/
+/* ***  ChannelLink COMPONENT   ***/
+/* ********************************/
+
+.channel-link-card {
+    border-bottom: solid 1px black;
+    padding: 1.2em;
+
+    display : flex;
+    flex-direction: column;
+
+    scroll-behavior: auto;
 }
 
-.channels_page > h1, li{
-    padding-left: 10px;
+.channel-link-card:hover {
+    background-color: rgb(79, 97, 110);
+}
+
+.channel-link-header {
+    margin-bottom: 1vh;
+    display: flex;
+    justify-content: space-between;
+}
+
+.channel-link-name {
+    font-family: 'Bruno Ace SC', cursive;
+    font-weight: 400;
+    font-size: large;
+    text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+    color: white;
+}
+.channel-link-span {
+    font-family: 'Open Sans', sans-serif;
+    font-size: small;
+
+    padding: 0.3rem 1rem;
+    margin: 0.5rem;
+    border-radius: 10%;
+
+    background-color: rgb(41, 55, 70);
+    color: white;
+}
+
+.channel-link-invite {
+    color: white;
+}
+
+.channel-link-invite:hover {
+    color: rgb(23, 25, 27);
+}
+
+.channel-link-invite-card {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    padding: 0 1vw;
+    background-color: rgb(70, 85, 99);
+    width: 100%;
+}
+
+.channel-link-preview {
+    font-family: 'Open Sans', sans-serif;
+    display: flex;
+    align-items: left;
+    justify-content: space-between;
+    color: white;
+}
+
+.channel-link-messenger {
+    font-weight: 600;
+}
+
+.channel-link-lastmsg {
+    font-style: italic;
+}
+
+.channel-link-date { 
+    font-size: small; 
 }

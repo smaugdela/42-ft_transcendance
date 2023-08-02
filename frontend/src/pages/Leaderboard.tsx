@@ -51,7 +51,7 @@ export function PerformanceDetail(props: {users: IUser[]}) {
 			</div>
 			<div className="one-stat">
 				<h4>Games Played</h4>
-				<p>{user.wins + user.loses}</p>
+				<p>{user.matchAsP1.length + user.matchAsP2.length}</p>
 			</div>
 		</div>
 		});

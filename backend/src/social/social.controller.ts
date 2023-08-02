@@ -3,10 +3,28 @@ import { SocialService } from './social.service';
 import { CreateSocialDto } from './dto/create-social.dto';
 import { UpdateSocialDto } from './dto/update-social.dto';
 import { Request } from 'express';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Social') // for swagger
 @Controller('social')
 export class SocialController {
+
   constructor(private readonly socialService: SocialService) {}
+
+  @Get('/friends')
+  myFriends(@Req() req: Request){
+    return this.socialService.myFriends(req.userId);
+  }
+
+  @Get('/blocked-list')
+  blockedList(@Req() req: Request){
+    return this.socialService.blockedList(req.userId);
+  }
+
+  @Get('/pending-list')
+  pendingList(@Req() req: Request){
+    return this.socialService.pendingList(req.userId);
+  }
 
   @Post('/friend-request/:username')
   friendRequest(@Req() req: Request, @Param('username') username: string) {
@@ -23,7 +41,7 @@ export class SocialController {
     return this.socialService.blockUser(req.userId, username);
   }
 
-  @Delete('/block/:username')
+  @Delete('/block/:id')
   removeFromBlock(@Req() req: Request, @Param('id') id: string){
     return this.socialService.removeFromBlock(req.userId, +id);
   }
@@ -33,9 +51,8 @@ export class SocialController {
     return this.socialService.rejectRequest(req.userId, +id);
   }
 
-  @Delete('friends/:username')
+  @Delete('friends/:id')
   removeFriend(@Req() req: Request, @Param('id') id: string){
     return this.socialService.removeFriend(req.userId, +id);
   }
-
 }

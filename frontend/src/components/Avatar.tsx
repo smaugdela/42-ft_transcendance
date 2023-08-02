@@ -1,14 +1,35 @@
 import "../styles/Avatar.css";
-import { fetchMe } from "../api/APIHandler";
+import { fetchMe,  checkIfLogged } from "../api/APIHandler";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from 'react-router-dom';
+import { useEffect } from "react";
+import { IsLoggedInContext } from "../context/contexts";
+import { useContext } from "react";
 
-export default function Avatar() {
-	const userQuery = useQuery({ queryKey: ['user'], queryFn: () => fetchMe()});
+export default function Avatar( {setLoggedIn }: {setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>}) {
 	
-	if (userQuery.error instanceof Error){
-		return <div>Error: {userQuery.error.message}</div>
+	const isLoggedIn = useContext(IsLoggedInContext);
+
+	useEffect( () => {
+		const fetchData = async () => {
+			const userStatus = await checkIfLogged();
+			setLoggedIn(userStatus);
+		};
+		
+		fetchData();
+		console.log('status', isLoggedIn);
+		
+	}, [setLoggedIn, isLoggedIn]);
+
+	const userQuery = useQuery({ 
+		queryKey: ['user'], 
+		queryFn: () => fetchMe(),
+	});
+	
+	if (userQuery.isError) {
+		return <div>Error</div>
 	}
+	
 	if (userQuery.isLoading || !userQuery.isSuccess){
 		return <div>Loading</div>
 	}

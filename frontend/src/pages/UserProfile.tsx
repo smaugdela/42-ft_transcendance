@@ -1,88 +1,43 @@
 import "../styles/UserProfile.css"
-import { IAchievement, achievements } from "../data";
-// import { IMatch, matches } from "../data";
-import { IUser, users } from "../data";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPlus, faBan, faComment, faDice, faHeart, faTrophy } from '@fortawesome/free-solid-svg-icons';
-// import { faBaby, faJetFighterUp, faLemon, faUserSlash, faViruses, faUserAstronaut, faFrog, faRobot, faShieldDog, faHandSpock, faHandHoldingDollar } from '@fortawesome/free-solid-svg-icons';
-import WinrateCircularBar from "../components/WinrateCircularBar";
-import StatDisplay from "../components/StatDisplay";
+import WinrateCircularBar from "../components/Profile/WinrateCircularBar";
+import StatDisplay from "../components/Profile/StatDisplay";
+import UserInfos from "../components/Profile/UserInfos";
+import OneMainStat from "../components/Profile/OneMainStat";
+import { Achievement } from "../components/Profile/Achievement";
+import { MatchHistory } from "../components/Profile/MatchHistory";
+import { faDice, faHeart, faTrophy } from '@fortawesome/free-solid-svg-icons';
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { fetchUserByNickname } from "../api/APIHandler";
+import { IUser } from "../api/types";
+import { useParams } from 'react-router-dom';
 
-
-export function Achievement( props: { userAchievements: IAchievement[] }) {
-	const completedAchievements: number = props.userAchievements.filter(elt => elt.wasAchieved === true).length;
-
-	const displayAchievements = props.userAchievements.map( achievement => {
-		return <div  className="one-achievement" id={achievement.wasAchieved === true ? "completed_achievement" : "one-achievement"}>
-			<FontAwesomeIcon icon={achievement.icon} className="fa-icon-achievements"/>
-			<h3>{achievement.title}</h3>
-			<h4>{achievement.description}</h4>
-		</div>
-	})
-	return (
-		<article id="achievements">
-			<h1>ACHIEVEMENTS ({completedAchievements}/{props.userAchievements.length})</h1>
-			<div className="all-achievements">
-				{displayAchievements}
-			</div>
-		</article>
-	);
-}
-
-export function MatchHistory(props: { user: IUser, users: IUser[]}) {
-	
-	
-	const displayMatchHistory = props.user.matchHistory.map(match => {
-
-		let banner: string = "ACE !";
-		let banner_style: string = "ace";
-		let outcome : number = match.score_p1 - match.score_p2;
-		if (outcome < 0) {
-			banner = "DEFEAT!";
-			banner_style = "defeat";
-		}
-		else if (outcome > 0 && match.score_p2 !== 0) {
-			banner = "VICTORY !";
-			banner_style = "victory";
-		}	
-		else if (outcome === 0) {
-			banner = "EQUALITY !";
-			banner_style = "equality";
-		}
-		
-		const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const;
-		const date = match.date.toLocaleDateString('en-US', options);
-		const opponent: IUser = props.users.filter(player => player.id === match.id_p2)[0];
-
-		return <div className="match-card">
-					<h5>{date}</h5>
-					<h4 className={`match-outcome ${banner_style}`}>{banner}</h4>
-					<div className="match-detail">
-						<div className="opponent">
-							<img src={props.user.avatar} alt={props.user.nickname} />
-							<h4>{props.user.nickname}</h4>
-						</div>
-						<div>
-							<h2>{match.score_p1} - {match.score_p2}</h2>
-						</div>
-						<div className="opponent">
-							<img src={opponent.avatar} alt={opponent.nickname} />
-							<h4>{opponent.nickname}</h4>
-						</div>
-					</div>
-				</div>
-	})
-	return (
-		<aside>
-			<h1>MATCH HISTORY</h1>
-			{displayMatchHistory}
-		</aside>
-	);
-}
 
 export function UserProfile() {
 
-	const loggedUser: IUser = users.filter( user => user.isLogged === true)[0];
+	const { nickname } = useParams<{ nickname?: string }>();
+	
+	/* On fait une requête au backend pour récupérer le user connecté */
+	const userQuery : UseQueryResult<IUser>= useQuery({ 
+		queryKey: ['user', nickname], 	 				// on relie notre requête au mot clé 'user'
+		queryFn: () => {
+			if (nickname) {
+				return fetchUserByNickname(nickname)}	// call API
+			}
+	});
+
+    if (userQuery.error instanceof Error){
+      return <div>Error: {userQuery.error.message}</div>
+    }
+    if (userQuery.isLoading || !userQuery.isSuccess){
+      return <div>Loading</div>
+    }
+
+	/* Pour pouvoir passer ses infos dans les components, on renomme pour + de lisbilité */
+	const user: IUser = userQuery.data as IUser;
+	const userTotalMatches: number = user.matchAsP1.length + user.matchAsP2.length;
+	const userWinrate: number = userTotalMatches !== 0 ? user.matchAsP1.length * 100 / userTotalMatches : 0;
+	const userFriendsCount: number = (user.friendsList && user.friendsList?.length >= 1) ? user.friendsList.length : 0;
+
 
 	return (
 		<div id="whole-profile">
@@ -90,83 +45,43 @@ export function UserProfile() {
 				<div id="top-dashboard">
 					<div>
 						<article id="bio">
-							<div id="hexagon-avatar"></div>
-							<div className="user-infos">
-								<div className="titles">
-									<h2>marinozaure</h2>
-									<h1 id="status">ONLINE</h1>
-								</div>
-								
-								<button><FontAwesomeIcon icon={faUserPlus} /></button>
-								<button><FontAwesomeIcon icon={faBan} /></button>
-								<button><FontAwesomeIcon icon={faComment} /></button>
-								<h5>Member since April 25, 2023</h5>
-							</div>
+							<div style={{ backgroundImage: `url(${user.avatar})` }} id="hexagon-avatar"></div>
+							<UserInfos user={user} />
 						</article>
 						<article className="user_bio">
 							<h1>BIO</h1> 
-							<span> Just a random bio</span>
+							<span>{user.bio}</span>
 						</article>
 						<hr />
 						<article id="main-stats">
-							<div className="one-stat">
-								<div>
-									<FontAwesomeIcon icon={faDice} className="fa-icon"/>
-								</div>
-								<div  className="one-stat_txt">
-									<h2>12</h2>
-									<h5>Total Matches</h5>
-								</div>
-								
-							</div>
-							<div className="one-stat">
-								<div>
-									<FontAwesomeIcon icon={faTrophy} className="fa-icon"/>
-								</div>
-								<div className="one-stat_txt">
-									<h2>9</h2>
-									<h5>Victories</h5>
-								</div>
-								
-							</div>
-							<div className="one-stat">
-								<div>
-									<FontAwesomeIcon icon={faHeart} className="fa-icon"/>
-								</div>
-								
-								<div  className="one-stat_txt">
-									<h2>3</h2>
-									<h5>Friends</h5>
-								</div>
-							</div>
-		
+							<OneMainStat title="Total Matches" stat={userTotalMatches} icon={faDice} />
+							<OneMainStat title="Victories" stat={user.matchAsP1.length} icon={faTrophy} />
+							<OneMainStat title="Friends" stat={userFriendsCount} icon={faHeart} />
 						</article>
 						<hr />
 					</div>
 					<div id="stats">
 						<h1>COMPETITIVE OVERVIEW</h1>
 						<div className="winratio_stats">
-							<WinrateCircularBar winRate={70} />
+							<WinrateCircularBar winRate={userWinrate} />
 							<div className="statdisplay">
-								<StatDisplay title={"Wins"} stat={21} />
-								<StatDisplay title={"Lose"} stat={7} />
+								<StatDisplay title={"Wins"} stat={user.matchAsP1.length} />
+								<StatDisplay title={"Lose"} stat={user.matchAsP2.length} />
 							</div>
 						</div>
 						<div className="statdisplay">
-							<StatDisplay title={"(Rank)"} stat={1} />
-							<StatDisplay title={"Aces"} stat={14} />
+							<StatDisplay title={"(Rank)"} stat={user.rank} />
+							<StatDisplay title={"Aces"} stat={user.aces} />
 						</div>
 						<button className="challenge-btn">Challenge</button>
 					</div>
-				
 				</div>
 				<Achievement 
-					userAchievements={achievements}
+					user={user}
 				/>
 			</section>
 			<MatchHistory
-				user={loggedUser} 
-				users={users}
+				user={user} 
 			/>
 		</div>
 	);

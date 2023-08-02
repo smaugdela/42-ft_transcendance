@@ -3,6 +3,7 @@ import { ApiTags } from "@nestjs/swagger";
 import { CloudinaryService } from "./cloudinary.service";
 import { UsersService } from "src/users/users.service";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { v2 as cloudinary } from 'cloudinary';
 
 @ApiTags('Cloudinary')
 @Controller('cloudinary')
@@ -20,8 +21,11 @@ export class CloudinaryController {
 			) {
 			try {
 				const uploadedImage =  await this.cloudinaryService.uploadImage(file);
-				await this.usersService.updateAvatar(+id, uploadedImage.url);
-				return uploadedImage.url;
+				console.log(uploadedImage.public_id);
+				
+				const secureUrl = cloudinary.url(uploadedImage.public_id, { secure: true });
+				await this.usersService.updateAvatar(+id, secureUrl);
+				return secureUrl;
 
 			} catch (error) {
 				throw new Error('Cloudinary image upload error');

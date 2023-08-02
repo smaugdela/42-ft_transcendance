@@ -1,11 +1,12 @@
-import { ForbiddenException, Injectable, Query, Res } from '@nestjs/common';
+import { ForbiddenException, HttpException, Injectable, Query, Res } from '@nestjs/common';
 import axios from 'axios';
-import { PrismaClient, AuthType, Login2FAStatus } from '@prisma/client';
+import { PrismaClient, AuthType } from '@prisma/client';
 import * as argon from 'argon2';
 import AuthDto from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { MailService } from 'src/mail/mail.service';
+import { SocketsService } from 'src/sockets/sockets.service';
 
 const hashingConfig = {
 	parallelism: 1,
@@ -16,7 +17,7 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class AuthService {
-	constructor(private readonly jwtService: JwtService, private mailService: MailService) { }
+	constructor(private readonly jwtService: JwtService, private mailService: MailService, private socketsService: SocketsService) { }
 
 	async redirect42(@Query() query, @Res({ passthrough: true }) res: Response) {
 
@@ -75,29 +76,26 @@ export class AuthService {
 				});
 			}
 
-			console.log("User 42 logged in: ", userDb);
+			// Handle 2FA login
+			if (userDb.enabled2FA === true) {
+				this.mailService.send2FALoginCode(userDb.id);
+				await prisma.user.update({
+					where: { id: userDb.id },
+					data: { login2FAstatus: true }
+				});
+				return res.redirect(process.env.FRONTEND_URL + '/2fa/pending');
+			}
+
+			console.log("User 42 logged in: ", userDb.nickname);
 
 			await this.generateToken(userDb.id, res);
 
 			// this.webSocketGateway.server.emit('activity', userDb.nickname);
 
-			return "Successfully logged with 42.";
+			return res.redirect(process.env.FRONTEND_URL + '/settings');
 
 		} catch (error) {
-			// if (error.response) {
-			// 	// The client was given an error response (5xx, 4xx)
-			// 	console.log(error.response.data);
-			// 	console.log(error.response.status);
-			// 	console.log(error.response.headers);
-			// } else if (error.request) {
-			// 	// The client never received a response, and the request was never left
-			// 	console.log(error.request);
-			// } else {
-			// 	// Anything else
-			// 	console.log("error: ", error.message);
-			// }
-
-			throw new ForbiddenException('Invalid resolution from 42 API.');
+			throw new HttpException('Invalid resolution from 42 API.', 502);
 		}
 	}
 
@@ -120,9 +118,9 @@ export class AuthService {
 				this.mailService.send2FALoginCode(activeUser.id);
 				await prisma.user.update({
 					where: { id: activeUser.id },
-					data: { login2FAstatus: Login2FAStatus.PENDING }
+					data: { login2FAstatus: true }
 				});
-				return "Mail sent to login using 2FA."
+				return { doubleFA: true };
 			}
 
 			console.log("User", body.nickname, "logged in.");
@@ -131,7 +129,7 @@ export class AuthService {
 
 			// this.webSocketGateway.server.emit('activity', activeUser.nickname);
 
-			return "Successfully logged!";
+			return { doubleFA: false };
 
 		} catch (error) {
 			if (error.code === 'P2025') {
@@ -148,17 +146,20 @@ export class AuthService {
 	async login2FA(@Query() query, @Res({ passthrough: true }) res: Response) {
 		const code = query.code;
 		const id: number = +query.userId;
-
-		if (this.mailService.Confirmation2FA(id, code)) {
-			const user = await prisma.user.update({
-				where: { id: id },
-				data: { login2FAstatus: Login2FAStatus.CONFIRMED }
-			});
-			await this.generateToken(id, res);
-			console.log("User", user.nickname, "logged in.");
-			return "Successfully logged!";
+		try {
+			if (await this.mailService.Confirmation2FA(id, code)) {
+				const user = await prisma.user.update({
+					where: { id: id },
+					data: { login2FAstatus: false }
+				});
+				await this.generateToken(id, res);
+				console.log("User", user.nickname, "logged in.");
+				return "Successfully logged!";
+			}
+		} catch (error) {
+			throw new ForbiddenException('Invalid Link.');
 		}
-		throw new ForbiddenException('Invalid code.');
+		throw new ForbiddenException('Invalid Link.');
 	}
 
 	async signup(body: AuthDto, @Res({ passthrough: true }) res: Response) {
@@ -172,20 +173,91 @@ export class AuthService {
 				salt: buf
 			});
 
+			const avatarpath = "/assets/avatar" + Math.floor((Math.random() * 2.99) + 1) + ".png";
+			console.log(avatarpath);
 			// save the new user in the db
 			const newUser = await prisma.user.create({
 				data: {
 					nickname: body.nickname,
+					avatar: avatarpath,
 					password: hash,
 					authtype: AuthType.LOGNPWD,
 					coalition: "Invite",
 				},
 			});
 
+			// create the achievements and add it to the user created
+			const userId = newUser.id;
+
+			await prisma.achievement.createMany({
+				data: [
+					{
+						userId: userId,
+						icon: "fa-solid fa-baby",
+						title: "Baby steps",
+						description: "Played the game for the first time",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-jet-fighter-up",
+						title: "Veteran",
+						description: "Played 10 games",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-lemon",
+						title: "Easy peasy lemon squeezy",
+						description: "Won 3 games",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-user-slash",
+						title: "It's my lil bro playing",
+						description: "Lost 3 games",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-viruses",
+						title: "Social butterfly",
+						description: "Added 3 friends",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-user-astronaut",
+						title: "Influencer",
+						description: "Added 10 friends",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-frog",
+						title: "Cosmetic change",
+						description: "Updated their profile picture once",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-shield-dog",
+						title: "Safety first",
+						description: "Activated the 2FA authentification",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-hand-spock",
+						title: "Writer soul",
+						description: "Change your bio",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-hand-spock",
+						title: "My safe place",
+						description: "Created their first channel",
+					},
+				]
+			});
+
 			// delete newUser.password;	// Temporary solution, should not be used permanently.
 
 			// log the created user
-			console.log('New standard user created: ', newUser);
+			console.log('New standard user created: ', newUser.nickname);
 
 			await this.generateToken(newUser.id, res);
 
@@ -209,13 +281,9 @@ export class AuthService {
 		// Delete jwt from cookies.
 		res.clearCookie('jwt');
 
-		// We inform everyone that the user is now inactive via websockets.
-		// const userDb = await prisma.user.findUnique({
-		// 	where: {
-		// 		id: userId,
-		// 	}
-		// });
-		// this.webSocketGateway.server.emit('inactivity', userDb.nickname);
+		// Close socket connection.
+		const socket = this.socketsService.currentActiveUsers.get(userId);
+		socket?.disconnect(true);
 
 		return "Successfully logged out.";
 	}
