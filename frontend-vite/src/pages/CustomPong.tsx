@@ -80,8 +80,6 @@ export function CustomPong() {
 		window.addEventListener("keydown", handleKeyDown);
 		window.addEventListener("keyup", handleKeyUp);
 
-		console.log("event listeners added");
-
 		// Clean up event listeners on component unmount
 		return () => {
 			window.removeEventListener("keydown", handleKeyDown);

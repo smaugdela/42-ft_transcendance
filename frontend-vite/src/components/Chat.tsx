@@ -23,6 +23,7 @@ const Chat = () => {
 		queryFn: () =>getAllUserChannels(),
 		// refetchInterval: 1500,
 	});
+	
 	const { activeTab, setActiveTab, activeConv, isExpanded, setIsExpanded } = useContext(ChatStatusContext);
 
 	const toggleExpand = () => {
@@ -39,11 +40,11 @@ const Chat = () => {
 	if (status === "loading" || !isSuccess || statusMe === "loading" ){
 		return <div>Loading...</div>
 	}
-	
-	var tabs: Tab[] = [
-				 { label: 'Convs', content: <div><TabChannels joinedChannels={data}/></div> },
+
+	const tabs: Tab[] = [
+				{ label: 'Convs', content: <div><TabChannels joinedChannels={data}/></div> },
 	activeConv ? { label: 'Chat', content: <div><TabChat conv={activeConv} loggedUser={userMe}/></div> } : { label: 'Chat', content: <div>Join convos to see the chat!</div> },
-				 { label: 'More', content: <div><TabMore /></div> },
+				{ label: 'More', content: <div><TabMore /></div> },
 	];
 
 	return (

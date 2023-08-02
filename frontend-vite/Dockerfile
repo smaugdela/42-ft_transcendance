@@ -13,14 +13,26 @@ RUN npm ci
 # Copy the rest of the files
 COPY --chown=node:node . .
 
-# Run the build command which creates the production bundle
-# RUN npm run build
+COPY .env .env
 
-# Optimise the node_modules directory
-# RUN npm ci --legacy-peer-deps --only=production && npm cache clean --force
-# RUN npm ci --omit=dev
+# Run the build command which creates the production bundle
+RUN npm run build
+
+# Use nginx as server
+FROM nginx:1.24.0-alpine
+
+# Copy assets from the builder
+COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
+
+# Setting up SSL/TLS
+RUN apk update && apk add openssl && \
+	mkdir -p /etc/nginx/ssl && \
+	openssl req -x509 -days 365 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=FR/ST=IDF/L=Paris/O=42/CN=daftpong.com"
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Set NODE_ENV environment variable
 ENV NODE_ENV production
 
-CMD [ "npm", "run", "dev" ]
+CMD ["nginx", "-g", "daemon off;"]

@@ -122,6 +122,7 @@ export async function fetch2FA(code: string, userId: string) {
 /* ######################*/
 
 export async function checkIfLogged(): Promise<boolean> {
+
 	const response = await axios.get<boolean>(`${BASE_URL}/users/check`);
 	return response.data;
 }
