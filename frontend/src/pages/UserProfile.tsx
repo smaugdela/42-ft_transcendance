@@ -11,7 +11,6 @@ import { fetchUserByNickname } from "../api/APIHandler";
 import { IUser } from "../api/types";
 import { useParams } from 'react-router-dom';
 
-
 export function UserProfile() {
 
 	const { nickname } = useParams<{ nickname?: string }>();
@@ -34,10 +33,9 @@ export function UserProfile() {
 
 	/* Pour pouvoir passer ses infos dans les components, on renomme pour + de lisbilité */
 	const user: IUser = userQuery.data as IUser;
-	const userTotalMatches: number = user.matchAsP1.length + user.matchAsP2.length;
+	const userTotalMatches: number = (user.matchAsP1 && user.matchAsP2) ? user.matchAsP1.length + user.matchAsP2.length : 0;
 	const userWinrate: number = userTotalMatches !== 0 ? user.matchAsP1.length * 100 / userTotalMatches : 0;
 	const userFriendsCount: number = (user.friendsList && user.friendsList?.length >= 1) ? user.friendsList.length : 0;
-
 
 	return (
 		<div id="whole-profile">
@@ -55,7 +53,7 @@ export function UserProfile() {
 						<hr />
 						<article id="main-stats">
 							<OneMainStat title="Total Matches" stat={userTotalMatches} icon={faDice} />
-							<OneMainStat title="Victories" stat={user.matchAsP1.length} icon={faTrophy} />
+							<OneMainStat title="Victories" stat={user.matchAsP1 ? user.matchAsP1.length : 0} icon={faTrophy} />
 							<OneMainStat title="Friends" stat={userFriendsCount} icon={faHeart} />
 						</article>
 						<hr />
@@ -65,8 +63,8 @@ export function UserProfile() {
 						<div className="winratio_stats">
 							<WinrateCircularBar winRate={userWinrate} />
 							<div className="statdisplay">
-								<StatDisplay title={"Wins"} stat={user.matchAsP1.length} />
-								<StatDisplay title={"Lose"} stat={user.matchAsP2.length} />
+								<StatDisplay title={"Wins"} stat={user.matchAsP1 ? user.matchAsP1.length : 0} />
+								<StatDisplay title={"Lose"} stat={user.matchAsP2 ? user.matchAsP2.length : 0} />
 							</div>
 						</div>
 						<div className="statdisplay">

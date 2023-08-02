@@ -5,7 +5,7 @@ import { Stage, Graphics, AppConsumer, useApp, Text, Container } from "@pixi/rea
 import toast from "react-hot-toast";
 import { Ticker } from "pixi.js";
 import * as PIXI from "pixi.js";
-import { BlurFilter } from "@pixi/filter-blur"
+// import { BlurFilter } from "@pixi/filter-blur"
 import "../styles/Pong.css"
 import { GlowFilter } from "@pixi/filter-glow";
 
@@ -73,8 +73,6 @@ export function Pong() {
 		// Add event listeners for keydown and keyup
 		window.addEventListener("keydown", handleKeyDown);
 		window.addEventListener("keyup", handleKeyUp);
-
-		console.log("event listeners added");
 
 		// Clean up event listeners on component unmount
 		return () => {
@@ -290,7 +288,7 @@ export function Pong() {
 
 	return (
 		<AppConsumer>
-			{(app) => (
+			{() => (
 				<div className="pong-terrain">
 				<Stage
 					width={width}

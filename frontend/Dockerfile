@@ -8,23 +8,21 @@ WORKDIR /usr/src/app
 COPY --chown=node:node package*.json ./
 
 # Install the dependencies to generate the ad-hoc package-lock.json file.
-RUN npm ci --legacy-peer-deps
+RUN npm ci
 
 # Copy the rest of the files
 COPY --chown=node:node . .
 
+COPY .env .env
+
 # Run the build command which creates the production bundle
 RUN npm run build
-
-# Optimise the node_modules directory
-# RUN npm ci --legacy-peer-deps --only=production && npm cache clean --force
-RUN npm ci --legacy-peer-deps --omit=dev
 
 # Use nginx as server
 FROM nginx:1.24.0-alpine
 
 # Copy assets from the builder
-COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 
 # Setting up SSL/TLS
 RUN apk update && apk add openssl && \
@@ -37,8 +35,4 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Set NODE_ENV environment variable
 ENV NODE_ENV production
 
-# Set the correct user
-# USER www-data
-
-# CMD [ "npx", "serve", "build" ]
 CMD ["nginx", "-g", "daemon off;"]

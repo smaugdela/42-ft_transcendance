@@ -40,13 +40,13 @@ export default function TabChannels() {
 				return (
 					<div key={(chan.id + 1).toString()} onClick={(event) => handleClick(event, chan)} >
 						<ChannelLink key={chan.id.toString()} 
-									 channel={chan}/>
+									channel={chan}/>
 					</div>
 				);
 		})
 		)
-	  }
-	  </>
+	}
+	</>
 	</div>
   )
 }

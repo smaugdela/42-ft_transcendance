@@ -2,11 +2,11 @@ import io from 'socket.io-client';
 import { Socket } from 'socket.io-client';
 import { IChannel } from '../api/types';
 
-export function createSocketConnexion(){
-	const base_url: string = process.env.REACT_APP_BACKEND_URL || "https://localhost:3001";
+export function createSocketConnexion() {
+	const base_url: string = import.meta.env.VITE_BACKEND_URL || "https://localhost:3001";
 
 	const newSocket = io(base_url, {
-	  withCredentials: true,
+		withCredentials: true,
 	});
 	return (newSocket);
 }
@@ -20,7 +20,7 @@ export function createSocketConnexion(){
 export function sendNotificationToServer(socket: Socket, event: string, payload: string) {
 	if (socket) {
 		socket.emit(event, payload);
-  }
+	}
 };
 
 /**
@@ -31,38 +31,38 @@ export function sendNotificationToServer(socket: Socket, event: string, payload:
 export function handleRequestFromUser(socket: Socket, group: string, action: string, channelName: string, userTalking: string) {
 	var role: string;
 	var info: string;
-		switch (group) {
-			case "bannedUsers":
-				role = "/ban";
-				info = (action === "connect") ? 
-					`#INFO# ${userTalking} has been banned from this channel.`
-					: `#INFO# ${userTalking} is unbanned from this channel.`
-				break;
-			case "kickedUsers":
-				role = "/kick";
-				info = (action === "connect") ? 
+	switch (group) {
+		case "bannedUsers":
+			role = "/ban";
+			info = (action === "connect") ?
+				`#INFO# ${userTalking} has been banned from this channel.`
+				: `#INFO# ${userTalking} is unbanned from this channel.`
+			break;
+		case "kickedUsers":
+			role = "/kick";
+			info = (action === "connect") ?
 				`#INFO# ${userTalking} has been kicked from this channel.`
-					: `#INFO# ${userTalking} is not kicked anymore from this channel.`
-				break;
-			case "mutedUsers":
-				role = "/mute";
-				info = (action === "connect") ? 
-					`#INFO# ${userTalking} has been muted from this channel.`
-					: `#INFO# ${userTalking} is not muted anymore in this channel.`
-				break;
-			case "admin":
-				role = "/admin";
-				info = (action === "connect") ? 
-					`#INFO# ${userTalking} was made Admin of this channel.`
-					: `#INFO# ${userTalking} is not an Admin anymore.`
-				break;
-			default:
-				role = "/msg";
-				info = `#INFO# ${userTalking} is quoted in this channel.`
-		}
+				: `#INFO# ${userTalking} is not kicked anymore from this channel.`
+			break;
+		case "mutedUsers":
+			role = "/mute";
+			info = (action === "connect") ?
+				`#INFO# ${userTalking} has been muted from this channel.`
+				: `#INFO# ${userTalking} is not muted anymore in this channel.`
+			break;
+		case "admin":
+			role = "/admin";
+			info = (action === "connect") ?
+				`#INFO# ${userTalking} was made Admin of this channel.`
+				: `#INFO# ${userTalking} is not an Admin anymore.`
+			break;
+		default:
+			role = "/msg";
+			info = `#INFO# ${userTalking} is quoted in this channel.`
+	}
 	const payload: string = role + "  " + channelName + "  " + userTalking;
 	console.log("Info payload ", payload);
-	
+
 	sendNotificationToServer(socket, 'Chat', payload);
 	return (info);
 }

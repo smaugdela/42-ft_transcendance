@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+// import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Social } from './pages/Social';
@@ -41,9 +41,9 @@ function App() {
 	useEffect(() => {
 		const storedTheme = localStorage.getItem('theme');
 		if (storedTheme) {
-	  		setTheme(storedTheme);
+			setTheme(storedTheme);
 		}
- 	 }, []);
+	}, []);
 
 	// Fonction pour changer de thème et le garder dans le LocalStorage
 	const toggleTheme = () => {
@@ -108,7 +108,7 @@ function App() {
 			</IsLoggedInContext.Provider>
 			</SocketContext.Provider>
 			</ChatStatusContext.Provider>
-	  </section>
+	</section>
 	</div>
   );
 }

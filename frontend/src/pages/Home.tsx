@@ -11,12 +11,12 @@ const [fadeIn, setFadein] = useState(false);
 	setFadein(true);
 	}
 	void(fadeIn); // pour faire taire unused warning
-	
+
 	return (
         <div id="play-screen">
-          <button className='glitch' data-text="PRESS TO PLAY" onClick={handleClick} >
-		  <Link className='link-login2' to="/gamepage"> PRESS TO PLAY  </Link>
-		  </button>
-	    </div>
+			<button className='glitch' data-text="PRESS TO PLAY" onClick={handleClick} >
+				<Link className='link-login2' to="/gamepage"> PRESS TO PLAY  </Link>
+			</button>
+		</div>
 	);
 }

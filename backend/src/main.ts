@@ -28,8 +28,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
 
-	// console.log("Backend Port: " + process.env.BACKEND_PORT);
-
 	const port = Number(process.env.BACKEND_PORT);
 	if (isNaN(port)) {
 		console.log("Error: backend port undefined in .env file.")
@@ -62,11 +60,10 @@ async function bootstrap() {
 
 	app.use(cookieParser(process.env.COOKIE_SECRET));
 
-	let corsConfig;
-	if (process.env.DOCKER && process.env.DOCKER === "true")
-		corsConfig = { origin: "http://" + process.env.FRONTEND_HOST, credentials: true };
-	else
-		corsConfig = { origin: process.env.FRONTEND_URL, credentials: true };
+	const corsConfig = {
+		origin: (process.env.DOCKER && process.env.DOCKER) === "true" ? "https://" + process.env.FRONTEND_HOST : process.env.FRONTEND_URL,
+		credentials: true
+	};
 
 	app.enableCors(corsConfig);
 
