@@ -12,7 +12,9 @@ export default function WinrateCircularBar(props : { winRate : number}) {
 	{
 
 		let progress = setInterval(() => {
-			progressStartValue++;
+			if (progressStartValue !== 100) {
+				progressStartValue++;
+			}
 			
 			if (progressValue)
 				progressValue.innerHTML = `${progressStartValue}%`;

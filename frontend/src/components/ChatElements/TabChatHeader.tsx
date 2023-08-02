@@ -5,6 +5,16 @@ import '../../styles/Tab_Chat.css';
 import { fetchMe, leaveChannel } from "../../api/APIHandler";
 import toast from 'react-hot-toast';
 import { ChatStatusContext } from "../../context/contexts";
+import { ChannelTitle } from "./ChannelTitle";
+import { ChannelType } from "./ChannelType";
+
+const getDate = (channel : IChannel) => {
+	const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'numeric', day: 'numeric'} as const;
+	const date = (typeof channel.date === 'string') ? new Date(channel.date) : channel.date;
+	const formattedDate = date.toLocaleDateString('en-US', options);
+	return formattedDate;
+}
+
 
 export function TabChatHeader({ conv }: { conv: IChannel}) {
 
@@ -33,8 +43,6 @@ export function TabChatHeader({ conv }: { conv: IChannel}) {
 	const handleClick = (event: React.FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		if (user) {
-			console.log("id du user chat: ", user.id);
-			
 			leaveChannelRequest.mutate(user);
 			setActiveTab(0);
 			setActiveConv(null);
@@ -44,10 +52,12 @@ export function TabChatHeader({ conv }: { conv: IChannel}) {
 	return (
 	<div className='convo__header'>
 		<div className='convo__header_title'>
-			<h1 id="convo__name">{convName}</h1>
+			<ChannelTitle conv={conv} initialName={convName} />
 			<button onClick={handleClick}>Leave Conversation</button>
 		</div>
+		<p>Channel created by <b>{conv?.owner.nickname}</b> on {getDate(conv)}</p>
 		<p>{conv?.joinedUsers.length} member(s), {conv?.admin.length} admin(s) </p>
-	</div>
+		<ChannelType channelId={conv?.id} loggedUser={user}/>
+		</div>
 	);
 }

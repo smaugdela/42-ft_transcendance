@@ -16,12 +16,24 @@ export interface ChatStatusType {
 	setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const ChatStatusContext = createContext<ChatStatusType>({
+export const ChatStatusContext: React.Context<ChatStatusType> = createContext<ChatStatusType>({
 	activeTab: 0,
 	setActiveTab: () => {},
 	activeConv: null,
 	setActiveConv: () => {},
 	isExpanded: true,
 	setIsExpanded: () => {}
-  });
+});
 
+// export interface MuteType {
+// 	isMuted: boolean;
+// 	setIsMuted: React.Dispatch<React.SetStateAction<boolean>>;
+// 	muteExpiration: number | null;
+// 	setMuteExpiration: React.Dispatch<React.SetStateAction<number | null>>,
+// }
+// export const MuteContext : React.Context<MuteType>= createContext<MuteType>({
+// 	isMuted: false,
+// 	setIsMuted: () => {},
+// 	muteExpiration: null,
+// 	setMuteExpiration: () => {},
+// })

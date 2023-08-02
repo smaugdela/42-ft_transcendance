@@ -87,8 +87,6 @@
 }
 
 #status {
-	background-color: rgb(27, 102, 27);
-	color: rgb(84, 187, 84);
 	border-radius: 20px;
 
 	font-size: 0.7rem;
@@ -97,6 +95,16 @@
 	padding: 0.5rem 0.67rem;
 	width: 5rem;
 	margin-bottom: 1vh;
+}
+
+.ONLINE {
+	background-color: rgb(27, 102, 27);
+	color: rgb(84, 187, 84);
+}
+
+.OFFLINE {
+	background-color: rgb(168, 21, 16);
+	color: rgb(49, 6, 6);
 }
 
 .user_bio {

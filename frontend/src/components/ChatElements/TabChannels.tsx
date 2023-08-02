@@ -5,7 +5,7 @@ import '../../styles/Tab_channels.css'
 import { SocketContext, ChatStatusContext } from '../../context/contexts';
 import { sendNotificationToServer } from "../../sockets/sockets";
 
-export default function TabChannels({ joinedChannels }: { joinedChannels: IChannel[] | undefined }) {
+export default function TabChannels({ joinedChannels }: { joinedChannels: IChannel[] }) {
 	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
 	const socket = useContext(SocketContext);
 

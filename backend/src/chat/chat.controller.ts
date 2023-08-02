@@ -4,6 +4,7 @@ import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { ApiTags } from "@nestjs/swagger";
+import { Prisma } from '@prisma/client';
 
 @ApiTags('Chat')
 @Controller('chat')
@@ -63,6 +64,12 @@ export class ChatController {
 
 	/* ### UPDATE ### */	
 	
+	// Update chan's roomName or Type
+	@Patch('channel/:id/update')
+	updateProperty(@Param('id') id: string, @Body() body: Prisma.ChannelUpdateInput ) {
+		return this.chatService.updateChannelProperties(+id, body);
+	}
+
 	// Update protected chan's password
 	@Patch('channel/:id')
 	updatePassword(@Param('id') id: string, @Body() body: CreateChannelDto) {
