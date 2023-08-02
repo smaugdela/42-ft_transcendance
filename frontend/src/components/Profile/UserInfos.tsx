@@ -48,7 +48,10 @@ export default function UserInfos( { user } : {user: IUser}) {
 				<>
 					<button><FontAwesomeIcon icon={faUserPlus} /></button>
 					<button><FontAwesomeIcon icon={faBan} /></button>
-					<MessageUserBtn loggedInUser={userQuery.data?.nickname} userToContact={user} />
+					{
+						userQuery.data?.nickname !== undefined &&
+						<MessageUserBtn loggedInUser={userQuery.data.nickname} userToContact={user} />
+					}
 				</>
 			}
 			<h5>Member since {creationDate}</h5>

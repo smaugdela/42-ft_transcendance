@@ -25,7 +25,6 @@ import * as PIXI from 'pixi.js';
 import { IsLoggedInContext, SocketContext, ChatStatusContext } from './context/contexts';
 import { IChannel } from './api/types';
 
-
 function App() {
 
 	// On initialise nos contexts (= nos variables globales)
@@ -59,6 +58,14 @@ function App() {
 		backgroundColor: 0x1099bb,
 		//   resizeTo: window,
 	});
+
+
+	function closeChat(event: Event) {
+		event.stopPropagation();
+		setIsExpanded(!isExpanded);
+	  }
+
+	document.body.ondblclick = closeChat;
 
   return (
 	<div id='app' className={`App ${theme}`}>

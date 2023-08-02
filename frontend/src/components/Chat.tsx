@@ -7,7 +7,7 @@ import TabChannels from './ChatElements/TabChannels';
 import TabChat from './ChatElements/TabChat';
 import TabMore from './ChatElements/TabMore';
 import { useQuery } from "@tanstack/react-query";
-import { getAllUserChannels, fetchMe } from '../api/APIHandler';
+import { fetchMe } from '../api/APIHandler';
 import { ChatStatusContext } from '../context/contexts';
 
 interface Tab {
@@ -18,31 +18,25 @@ interface Tab {
 const Chat = () => {
 	const {data: userMe, status: statusMe } = useQuery({queryKey: ['user'], queryFn: fetchMe});
 
-	const { data, status, isSuccess } = useQuery({
-		queryKey: ['channels'], 
-		queryFn: () =>getAllUserChannels(),
-		// refetchInterval: 1500,
-	});
-	
 	const { activeTab, setActiveTab, activeConv, isExpanded, setIsExpanded } = useContext(ChatStatusContext);
 
 	const toggleExpand = () => {
 		setIsExpanded(!isExpanded);
 	};
-	
+		
 	const handleTabClick = (index: number) => {
 		setActiveTab(index);
 	};
 	
-	if (status === "error" || statusMe === "error"){
+	if (statusMe === "error"){
 		return <div>Error</div>
 	}
-	if (status === "loading" || !isSuccess || statusMe === "loading" ){
+	if (statusMe === "loading" ){
 		return <div>Loading...</div>
 	}
-
-	const tabs: Tab[] = [
-				{ label: 'Convs', content: <div><TabChannels joinedChannels={data}/></div> },
+	
+	var tabs: Tab[] = [
+				 { label: 'Convs', content: <div><TabChannels/></div> },
 	activeConv ? { label: 'Chat', content: <div><TabChat conv={activeConv} loggedUser={userMe}/></div> } : { label: 'Chat', content: <div>Join convos to see the chat!</div> },
 				{ label: 'More', content: <div><TabMore /></div> },
 	];

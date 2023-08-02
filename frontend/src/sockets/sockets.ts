@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import { Socket } from 'socket.io-client';
+import { IChannel } from '../api/types';
 
 export function createSocketConnexion() {
 	const base_url: string = import.meta.env.VITE_BACKEND_URL || "https://localhost:3001";
@@ -61,6 +62,14 @@ export function handleRequestFromUser(socket: Socket, group: string, action: str
 	}
 	const payload: string = role + "  " + channelName + "  " + userTalking;
 	console.log("Info payload ", payload);
+
+	sendNotificationToServer(socket, 'Chat', payload);
+	return (info);
+}
+
+export function sendInviteToUser(socket: Socket, dmName: string, userInvited: string, channelToJoin: IChannel) {
+	const payload: string = "/invite  " + dmName + "  " + userInvited + " " + channelToJoin.roomName
+	const info: string = `#INFO# ${userInvited} has been invited to the channel ${channelToJoin.roomName} ${channelToJoin.id}.`;
 
 	sendNotificationToServer(socket, 'Chat', payload);
 	return (info);

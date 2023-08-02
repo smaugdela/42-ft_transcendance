@@ -15,6 +15,8 @@ export interface IUser {
 	rank: number;
 	isActive : boolean;
 
+	ownerChans: IUser[];
+
 	friendsList : IUser[];
 	blockList : IUser[];
 	pendingList : IUser[];

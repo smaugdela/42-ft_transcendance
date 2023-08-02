@@ -1,9 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SocketContext } from '../context/contexts'; 
-import { Stage, Graphics, AppConsumer, useApp, Text, Container } from "@pixi/react";
+import { Stage, Graphics, AppConsumer, useApp, Text, Container, Sprite } from "@pixi/react";
 import toast from "react-hot-toast";
-import { Ticker } from "pixi.js";
+import { Ticker, Texture } from "pixi.js";
 import * as PIXI from "pixi.js";
 // import { BlurFilter } from "@pixi/filter-blur"
 import "../styles/CustomPong.css"
@@ -27,7 +27,9 @@ export function CustomPong() {
 	const paddleLength = 100;
 	const paddleWidth = 10;
 	const ballRadius = 5;
+	const powerUpRadius = 20;
 	const maxBallSpeed = 1000;
+	const TextureReverse = Texture.from('./assets/reverse.png');
 	let lastTime = useRef(Date.now());
 	let lastCall = useRef(Date.now());
 
@@ -44,6 +46,10 @@ export function CustomPong() {
 		p2Score: 0,
 		p1Username: "",
 		p2Username: "",
+		powerUp: true,
+		powerUpX: width / 2,
+		powerUpY: height / 2,
+		powerUpOn: false,
 	});
 
 	const [downKeyPressed, setDownKeyPressed] = useState(false);
@@ -86,7 +92,7 @@ export function CustomPong() {
 			window.removeEventListener("keyup", handleKeyUp);
 		};
 
-	}, [upKeyPressed, downKeyPressed] );
+	}, [] );
 
 	useEffect(() => {
 		// Game update loop with PixiJS ticker
@@ -100,27 +106,34 @@ export function CustomPong() {
 			switch (leftUser) {
 				case true:
 				{
-					if (upKeyPressed && gameState.leftPaddleY > 0) {
-						// setLeftPaddle(leftPaddle - (paddleSpeed * delta));
-						gameState.leftPaddleY -= (paddleSpeed * delta);
+					if (upKeyPressed /*&& gameState.leftPaddleY > 0*/) {
+						if (gameState.powerUpOn)
+							gameState.leftPaddleY += (paddleSpeed * delta);
+						else
+							gameState.leftPaddleY -= (paddleSpeed * delta);
 					}
 
-					if (downKeyPressed && gameState.leftPaddleY < height - paddleLength) {
-						// setLeftPaddle(leftPaddle + (paddleSpeed * delta));
-						gameState.leftPaddleY += (paddleSpeed * delta);
+					if (downKeyPressed /*&& gameState.leftPaddleY < height - paddleLength*/) {
+						if (gameState.powerUpOn)
+							gameState.leftPaddleY -= (paddleSpeed * delta);
+						else
+							gameState.leftPaddleY += (paddleSpeed * delta);
 					}
 					break;
 				}
 				case false:
 				{
-					if (upKeyPressed && gameState.rightPaddleY > 0) {
-						// setRightPaddle(rightPaddle - (paddleSpeed * delta));
-						gameState.rightPaddleY -= (paddleSpeed * delta);
+					if (upKeyPressed /*&& gameState.rightPaddleY > 0*/) {
+						if (gameState.powerUpOn)
+							gameState.rightPaddleY += (paddleSpeed * delta);
+						else
+							gameState.rightPaddleY -= (paddleSpeed * delta);
 					}
-
-					if (downKeyPressed && gameState.rightPaddleY < height - paddleLength) {
-						// setRightPaddle(rightPaddle + (paddleSpeed * delta));
-						gameState.rightPaddleY += (paddleSpeed * delta);
+					if (downKeyPressed /*&& gameState.rightPaddleY < height - paddleLength*/) {
+						if (gameState.powerUpOn)
+							gameState.rightPaddleY -= (paddleSpeed * delta);
+						else
+							gameState.rightPaddleY += (paddleSpeed * delta);
 					}
 					break;
 				}
@@ -227,6 +240,10 @@ export function CustomPong() {
 				p2Score: matchClass.player2.score,
 				p1Username: matchClass.player1.username,
 				p2Username: matchClass.player2.username,
+				powerUp: matchClass.powerUp,
+				powerUpX: matchClass.powerUpX,
+				powerUpY: matchClass.powerUpY,
+				powerUpOn: matchClass.powerUpOn,
 			});
 		});
 
@@ -301,7 +318,7 @@ export function CustomPong() {
 				<Stage
 					width={width}
 					height={height}
-					options={{ backgroundColor: 0xef9dfa , backgroundAlpha: 0.5 }}
+					options={{ backgroundColor: 0x3d2f4d , backgroundAlpha: 0.5 }}
 				>
 					<Container>
 					{/* Render a dashed line in the middle of the terrain */}
@@ -353,6 +370,14 @@ export function CustomPong() {
 									  })]}
 						/>
 
+					{gameState.powerUp && <Sprite texture={TextureReverse}
+						x={gameState.powerUpX}
+						y={gameState.powerUpY}
+						width={powerUpRadius * 2}
+						height={powerUpRadius * 2}
+						rotation={(Date.now() / 1000)}
+						anchor={0.5}
+					/>}
 
 					{/* Write the usernames on the terrain */}
 					<Text
@@ -384,7 +409,7 @@ export function CustomPong() {
 							distance: 5, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 							outerStrength: 2, // Force du glow à l'extérieur du texte
 							innerStrength: 0, // Force du glow à l'intérieur du texte (0 signifie aucun glow intérieur)
-							color: 0xffffff, // Couleur du glow (choisissez une couleur néon appropriée)
+							color: 0x18141c,
 						  })]}
 					/>
 					<Text
@@ -415,7 +440,7 @@ export function CustomPong() {
 							distance: 5, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 							outerStrength: 2, // Force du glow à l'extérieur du texte
 							innerStrength: 0, // Force du glow à l'intérieur du texte (0 signifie aucun glow intérieur)
-							color: 0xffffff, // Couleur du glow (choisissez une couleur néon appropriée)
+							color: 0x18141c,
 						  })]}
 					/>
 
@@ -431,7 +456,7 @@ export function CustomPong() {
 							// graphics.endFill();
 							const ballRadiusWithGlow = ballRadius + 2; // Ajoutons un rayon supplémentaire pour le glow
 							graphics.clear();
-							graphics.beginFill(0x51eff5); // bleu pour la balle
+							graphics.beginFill(0xfad9ff); // rose pour la balle
 							graphics.drawCircle(gameState.ballX, gameState.ballY, ballRadiusWithGlow); // Dessiner un cercle avec le glow
 							graphics.endFill();
 						  }}

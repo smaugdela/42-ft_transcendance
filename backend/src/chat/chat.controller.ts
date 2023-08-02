@@ -1,4 +1,4 @@
-import { Controller, Body, Get, Post, Patch, Delete, Param } from '@nestjs/common';
+import { Controller, Body, Get, Post, Patch, Delete, Param, Query } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
@@ -62,6 +62,10 @@ export class ChatController {
 		return this.chatService.getAllDirectMessages(+id);
 	}
 
+	@Get('channel/:id/pwdcheck')
+	comparePasswords(@Param('id') id: string, @Query('userInput') userInput: string) {
+		return this.chatService.compareChannelPassword(+id, userInput);
+	}
 	/* ### UPDATE ### */	
 	
 	// Update chan's roomName or Type

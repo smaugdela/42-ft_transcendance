@@ -75,7 +75,7 @@ export function UserProfile() {
 					</div>
 				</div>
 				<Achievement 
-					userAchievements={user.achievements}
+					user={user}
 				/>
 			</section>
 			<MatchHistory

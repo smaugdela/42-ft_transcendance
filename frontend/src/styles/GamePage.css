@@ -84,3 +84,44 @@
 		transform: translate(-20px, -10px);
 	}
 } */
+
+#play-screen2 > .button1::after{
+  content: attr(title); 
+  display: none;
+  position: absolute;
+  bottom: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  transform: translateX(-50%);
+  border: 3px solid rgb(35, 71, 103);
+  background-color:  rgba(4, 8, 10, 0.641);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: normal;
+}
+
+#play-screen2 > .button1:hover::after {
+	display: block;
+  }
+
+  #play-screen2 > .button2::after {
+	content: attr(title); 
+	display: none;
+	position: absolute;
+	bottom: -135px;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 3px solid rgb(35, 71, 103);
+	background-color:  rgba(4, 8, 10, 0.641);
+	color: #fff;
+	padding: 5px 10px;
+	border-radius: 4px;
+	font-size: 12px;
+	white-space: normal;
+  }
+  
+  #play-screen2 > .button2:hover::after {
+	display: block;
+  }

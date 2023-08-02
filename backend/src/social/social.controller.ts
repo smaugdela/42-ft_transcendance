@@ -21,6 +21,11 @@ export class SocialController {
     return this.socialService.blockedList(req.userId);
   }
 
+  @Get('/pending-list')
+  pendingList(@Req() req: Request){
+    return this.socialService.pendingList(req.userId);
+  }
+
   @Post('/friend-request/:username')
   friendRequest(@Req() req: Request, @Param('username') username: string) {
     return this.socialService.friendRequest(req.userId, username);
@@ -36,7 +41,7 @@ export class SocialController {
     return this.socialService.blockUser(req.userId, username);
   }
 
-  @Delete('/block/:username')
+  @Delete('/block/:id')
   removeFromBlock(@Req() req: Request, @Param('id') id: string){
     return this.socialService.removeFromBlock(req.userId, +id);
   }
@@ -46,10 +51,8 @@ export class SocialController {
     return this.socialService.rejectRequest(req.userId, +id);
   }
 
-  @Delete('friends/:username')
+  @Delete('friends/:id')
   removeFriend(@Req() req: Request, @Param('id') id: string){
     return this.socialService.removeFriend(req.userId, +id);
   }
-
-
 }

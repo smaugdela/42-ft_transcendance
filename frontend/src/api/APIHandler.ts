@@ -28,11 +28,11 @@ api.interceptors.response.use(
 			window.location.href = '/Login';
 			// Navigate('/Login');
 		}
-		// else if (error.response) {
-		// 	// Redirect to the according error pages
-		// 	window.location.href = '/Error/' + error.response.status;
-		// 	// Navigate('/Error/' + error.response.status);
-		// }
+		else if (error.response === 500) {
+			// Redirect to the according error pages
+			window.location.href = '/Error/' + error.response.status;
+			// Navigate('/Error/' + error.response.status);
+		}
 		return Promise.reject(error);
 	},
 );
@@ -232,6 +232,20 @@ export async function getNonJoinedChannels(): Promise<IChannel[]> {
 	return response.data;
 }
 
+export async function verifyPasswords(channelId: number, userInput: string): Promise<boolean> {
+	try {
+		const response = await api.get<boolean>(`/chat/channel/${channelId}/pwdcheck`,
+		{
+			params: {
+				userInput: userInput,
+			  },
+		});
+		return response.data;
+	} catch (error) {
+		throw new Error('Error joining protected channel: Incorrect Password');
+	}
+}
+
 export async function createChannel(roomName: string, password: string, type: string)
 	: Promise<IChannel> {
 	try {
@@ -341,14 +355,28 @@ export async function leaveChannel(userId: number, channelId: number) {
  * @param contactedUserId Id of the person you're trying to message
  * @returns the channel of the conversation (DM)
  */
-export async function manageDirectMessages(roomName: string, contactedUserId: number): Promise<IChannel> {
+export async function manageDirectMessages(roomName: string, contactedUserName: string): Promise<IChannel> {
 
 	try {
+		let user: IUser = await fetchUserByNickname(contactedUserName);
+		if (!user) {
+			throw new Error('User doesnt exist');
+		}
 		let conv: IChannel = await getOneChannelByName(roomName);
 		if (!conv) {
-			conv = await createChannel(roomName, "", 'DM'); // Using '' for password for DM type
+			const split = roomName.split(' ');
+			const roomNameReversed = split[1] + ' ' + split[0];
+			console.log('reversed is :');
+			
+			conv = await getOneChannelByName(roomNameReversed);
+			if (!conv) {
+				conv = await createChannel(roomName, "", 'DM'); // Using '' for password for DM type
+			}
+			console.log("id de conv ", conv.id);
+			
 		}
-		await updateUserInChannel(contactedUserId, conv.id, 'joinedUsers', 'connect');
+		// Y A UN PB CAR CONV ID EXISTE PAS apres tout le schmilblick
+		await updateUserInChannel(user.id, conv.id, 'joinedUsers', 'connect');
 		return conv;
 	} catch (error) {
 		throw new Error('Error: cannot establish this personal convo');
@@ -374,6 +402,43 @@ export async function createMessage(channel: IChannel, content: string): Promise
 				to: roomName,
 				content: content,
 				channelId: id
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': BASE_URL,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		throw new Error("API: Could not store message");
+	}
+}
+
+/**
+ * 
+ * @param from The sender id
+ * @param to The recipient, aka roomName of a Channel
+ * @param content The sender's message
+ * @param channelId Number id of the conversation
+ * @returns the newly-created message
+ */
+export async function createMessage2(channelName: string, content: string): Promise<IMessage> {
+	try {
+		let channel = await getOneChannelByName(channelName);
+		if (!channel) {
+			const split = channelName.split(' ');
+			const channelNameReversed = split[1] + ' ' + split[0];
+			channel = await getOneChannelByName(channelNameReversed);
+		}
+		const user = await fetchMe();
+		const response = await api.post(`/chat/message`,
+			{
+				fromId: user.id,
+				to: channel.roomName,
+				content: content,
+				channelId: channel.id
 			},
 			{
 				headers: {
@@ -457,8 +522,115 @@ export async function uploadImage(file: File) {
 }
 
 
+
 /* #######################*/
 /* ######   GAME   #######*/
 /* #######################*/
 
 
+
+/* ######################*/
+/* ###     SOCIAL     ###*/
+/* ######################*/
+
+export async function getMyFriends(): Promise<IUser> {
+	try{
+		const response = await api.get(`/social/friends`);
+		return response.data;
+	} catch (error) {
+		console.log("Error getMyFriends: ", error);
+		throw error; // Rejette la promesse avec l'erreur d'origine pour la gestion des erreurs par l'appelant
+	}
+}
+
+export async function getBlockedFriends(): Promise<IUser> {
+	try{
+		const response = await api.get(`/social/blocked-list`);
+		return response.data;
+	} catch (error) {
+		console.log("Error getBlockerFriends: ", error);
+		throw error; 
+	}
+}
+
+export async function getPendingList(): Promise<IUser> {
+	try{
+		const response = await api.get(`/social/pending-list`);
+		return response.data;
+	} catch (error) {
+		console.log("Error getPendingList: ", error);
+		throw error; 
+	}
+}
+
+export async function removeFromBlock(id : number): Promise<IUser> {
+
+	try {
+		const response = await api.delete(`/social/block/${id}`);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error RemoveFromBlock: ", error);
+		throw error; 
+	}
+}
+
+export async function rejectFriendRequest(id : number): Promise<IUser> {
+
+	try {
+		const response = await api.delete(`/social/friend-request/${id}/reject`);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error RejectFriendRequest: ", error);
+		throw error; 
+	}
+}
+
+export async function removeFriend(id : number): Promise<IUser> {
+
+	try {
+		const response = await api.delete(`/social/friends/${id}`);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error RemoveFriend: ", error);
+		throw error; 
+	}
+}
+
+export async function acceptFriendRequest(id : number): Promise<IUser> {
+
+	try {
+		const response = await api.post(`/social/friend-request/${id}/accept`);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error AcceptFriendRequest: ", error);
+		throw error; 
+	}
+}
+
+export async function friendRequest(username: string): Promise<IUser> {
+
+	try {
+		const response = await api.post(`/social/friend-request/${username}`);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error FriendRequest: ", error);
+		throw error; 
+	}
+}
+
+export async function blockUser(username: string): Promise<IUser> {
+
+	try {
+		const response = await api.post(`/social/block/${username}`);
+		return response.data;
+
+	} catch (error) {
+		console.log("Error BlockUser: ", error);
+		throw error; 
+	}
+}

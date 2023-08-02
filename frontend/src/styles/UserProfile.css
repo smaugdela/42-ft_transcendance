@@ -64,6 +64,7 @@
 #bio {
 	display: flex;
 	align-items: center;
+	color: white;
 }
 
 .titles {
@@ -111,8 +112,17 @@
 }
 
 .user_bio > span:first-of-type {
-	background-color: rgb(60, 7, 60);
+	/* background-color: rgb(60, 7, 60); */
 	border-radius: 10px;
+	font-family: var(--font-type);
+	font-size: small;
+	color: #e3eef1;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
 	
 }
 
@@ -196,8 +206,10 @@
 	border-radius: 20px;
 	padding-top: 1rem;
 	text-align: center;
-	background-color: #e8f5fca6;
-	border : solid 1px rgb(251, 251, 251);
+	/* background-color: #e8f5fca6;
+	border : solid 1px rgb(251, 251, 251); */
+	background-color: rgb(97, 98, 104);
+	border : solid 1px rgb(29, 27, 27);
 }
 
 .one-achievement:hover {
@@ -232,7 +244,20 @@
 }
 
 #completed_achievement > h3 {
-	color: var(--heading-color);
+	/* color: var(--heading-color); */
+	color: rgb(24, 46, 65);
+}
+
+#completed_achievement {
+	background-color: #f8f8f8a6;
+	border : solid 1px rgb(251, 251, 251); 
+	color : rgb(35, 71, 103);
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 100px rgb(24, 46, 65);
 }
 
 /* ********************************/
