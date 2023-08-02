@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 import { SocketContext, ChatStatusContext } from "../../context/contexts";
 import { sendNotificationToServer } from '../../sockets/sockets';
 
-export default function MessageUserBtn( { loggedInUser, userToContact} : { loggedInUser: string, userToContact : IUser}) {
+export default function MessageUserBtn( { loggedInUser, userToContact} : { loggedInUser: string , userToContact : IUser}) {
 	
 	const { setActiveTab, setActiveConv, setIsExpanded } = useContext(ChatStatusContext);
 	const [roomName, setRoomName] = useState<string>('');

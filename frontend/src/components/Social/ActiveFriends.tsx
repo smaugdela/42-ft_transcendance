@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import "../../styles/Social.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope} from '@fortawesome/free-solid-svg-icons';
-// import { removeFriend, blockUser } from "../../api/APIHandler";
-// import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { faComment} from '@fortawesome/free-solid-svg-icons';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { IUser } from "../../api/types";
+import MessageUserBtn from '../Profile/MessageUserBtn';
+import { fetchMe } from "../../api/APIHandler";
 
 export function ActiveFriends( props: { profilesToDisplay : IUser[]}) {
         // const queryClient = useQueryClient();
@@ -32,6 +33,21 @@ export function ActiveFriends( props: { profilesToDisplay : IUser[]}) {
         // const handleblockuser = (nickname: string) => {
         //     blockuser.mutate(nickname);
         // }
+
+        const queryClient = useQueryClient();
+        const { data: loggedUser, error, isLoading, isSuccess } = useQuery({ queryKey: ['user'], queryFn: fetchMe});
+        
+        if (error) {
+            return <div>Error</div>
+        }
+        if (isLoading || !isSuccess) {
+            return <div>Loading...</div>
+        }
+        
+        const loggedInUser: string = loggedUser.nickname;;
+	
+	
+        
         const displayProfiles = props.profilesToDisplay.map(profile => {
             return <div key={profile.id} className="profile">
                         <div className="img-container">
@@ -42,7 +58,9 @@ export function ActiveFriends( props: { profilesToDisplay : IUser[]}) {
                         </div>
                         <div className="profile_infos">
                             <h5>{profile.nickname}</h5>
-                            <div><FontAwesomeIcon icon={faEnvelope} /></div>
+                            {/* <div><FontAwesomeIcon icon={faComment} /></div> */}
+                            <MessageUserBtn loggedInUser={loggedInUser} userToContact={profile} />
+
                             {/* <div><FontAwesomeIcon icon={faBan} onClick={() =>handleblockuser(profile.nickname)}/></div>			 */}
                         </div>
             </div>
