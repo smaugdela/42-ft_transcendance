@@ -149,3 +149,23 @@
 	border-radius: 10px;
 	margin-top: 1px;
 }
+
+.one_msg_invitation {
+	display: flex;
+	gap: 2.5vw;
+	font-size: 1.5em;
+	font-weight: 800;
+}
+.one_msg_check {
+	color: green;
+}
+
+.one_msg_xmark {
+	color: rgb(128, 0, 0);
+
+}
+
+.one_msg_check:hover, .one_msg_xmark:hover {
+	font-size: 1.55em;
+	cursor: pointer;
+}

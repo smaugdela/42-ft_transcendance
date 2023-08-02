@@ -160,7 +160,7 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 		  scroll.scrollTop = scroll.scrollHeight;
 	  }
 	};
-	
+
 	return (
 		<div className='convo__card'>
 			<TabChatHeader conv={conv} />
