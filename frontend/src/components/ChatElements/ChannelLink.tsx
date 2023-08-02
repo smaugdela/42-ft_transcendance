@@ -102,8 +102,6 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 	
 	}
 
-
-	
 	return (
 		<div>
 			<div  className="channel-link-card" onClick={(event) => handleClick(event, channel)}>
@@ -111,10 +109,15 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 					<div>
 						<span className='channel-link-name'>{convName} </span>
 						<span className="channel-link-span">{channel.type}</span>
+						{
+							channel.type !== 'DM' &&
+							<span>{channel.joinedUsers.length} member(s)</span>
+						}
 					</div>
 					{
 						channel.type !== 'DM' &&
 						<FontAwesomeIcon className='channel-link-invite' title="invite" icon={faUserPlus} onClick={handleInviteClick}/>
+						
 					}
 				</div>
 				{
