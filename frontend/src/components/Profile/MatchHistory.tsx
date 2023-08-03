@@ -18,9 +18,10 @@ export function MatchHistory(props: { user: IUser }) {
 		return <div>Loading</div>
 	}
 
-	const matches: IMatch[] = matchesQuery.data;	
+	const matches: IMatch[] = matchesQuery.data;
+	const matchesSortedByDate: IMatch[] = matches.sort((a, b) => b.date.getTime() - a.date.getTime());	
 
-	const displayMatchHistory = matches.map(match => {
+	const displayMatchHistory = matchesSortedByDate.map(match => {
 
 		let banner: string = "ACE !";
 		let banner_style: string = "ace";

@@ -30,7 +30,7 @@
 
 #social-dashboard {
 	flex: 2 auto;
-	height : 100%;
+	height : 92vh;
 	/* margin-top : 8vh; */
 	background-color: var(--bg-color); /* vient de App.css */
 	color: var(--font-color); /* vient de App.css */
