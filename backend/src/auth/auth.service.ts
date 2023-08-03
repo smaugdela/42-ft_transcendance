@@ -193,7 +193,7 @@ export class AuthService {
 				data: [
 					{
 						userId: userId,
-						icon: "fa-solid fa-baby",
+						icon: "/assets/baby_icon.png", //peu fructueux
 						title: "Baby steps",
 						description: "Played the game for the first time",
 					},

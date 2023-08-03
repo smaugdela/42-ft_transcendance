@@ -45,7 +45,10 @@ body {
 	position: flex;
 	/* border-radius: 3px; */
 	background-color: rgb(76, 77, 129);
-
+	background-image: url("../public/assets/lapinbg.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 }
 
 .videobg{

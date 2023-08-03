@@ -12,6 +12,7 @@ export function Achievement( props: { user: IUser }) {
 		return 	<div key={achievement.id} 
 					className="one-achievement"
 					id={isAchievementCompleted(props.user, achievement.title) === true ? "completed_achievement" : "one-achievement"}>
+					{/* <img src="../public/assets/baby-icon.png"/> */}
 					<h3>{achievement.title}</h3>
 					<h4>{achievement.description}</h4>
 				</div>
