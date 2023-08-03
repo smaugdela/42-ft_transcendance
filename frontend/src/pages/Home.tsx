@@ -41,7 +41,6 @@ const [fadeIn, setFadein] = useState(false);
 			</div>,
 			{
 				id: 'match invitation',
-				position: 'bottom-center',
 				duration: 10000,
 				icon: '🎾',
 			}
@@ -49,11 +48,7 @@ const [fadeIn, setFadein] = useState(false);
 	});
 
 	socket?.on('match invitation declined', (decliner: string) => {
-		toast.error(`${decliner} declined your invitation.`, {
-			id: 'match invitation',
-			position: 'bottom-center',
-			duration: 3000,
-		});
+		toast.error(`${decliner} declined your invitation`);
 	});
 
 	return (

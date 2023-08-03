@@ -42,29 +42,29 @@ services:
     ports:
       - 443:443
 
-  meilisearch:
-    container_name: meilisearch
-    image: getmeili/meilisearch:v1.3.0
-    depends_on:
-      - database
-    restart: unless-stopped
-    env_file:
-      - .env
-    # environment:
-    #   - http_proxy
-    #   - https_proxy
-    #   - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-masterKey}
-    #   - MEILI_NO_ANALYTICS=${MEILI_NO_ANALYTICS:-true}
-    #   - MEILI_ENV=${MEILI_ENV:-development}
-    #   - MEILI_LOG_LEVEL
-    #   - MEILI_DB_PATH=${MEILI_DB_PATH:-/data.ms}
-    ports:
-      - 7700:7700
-    networks:
-      - transcendance
-    volumes:
-      # - ./data.ms:/data.ms
-      - postgres:/data.ms
+  # meilisearch:
+  #   container_name: meilisearch
+  #   image: getmeili/meilisearch:v1.3.0
+  #   depends_on:
+  #     - database
+  #   restart: unless-stopped
+  #   env_file:
+  #     - .env
+  #   # environment:
+  #   #   - http_proxy
+  #   #   - https_proxy
+  #   #   - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-masterKey}
+  #   #   - MEILI_NO_ANALYTICS=${MEILI_NO_ANALYTICS:-true}
+  #   #   - MEILI_ENV=${MEILI_ENV:-development}
+  #   #   - MEILI_LOG_LEVEL
+  #   #   - MEILI_DB_PATH=${MEILI_DB_PATH:-/data.ms}
+  #   ports:
+  #     - 7700:7700
+  #   networks:
+  #     - transcendance
+  #   volumes:
+  #     # - ./data.ms:/data.ms
+  #     - postgres:/data.ms
 
   adminer:
     container_name: adminer

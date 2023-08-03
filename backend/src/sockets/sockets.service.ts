@@ -34,7 +34,6 @@ export class MatchClass {
 	powerUpY: number;
 	powerUpDate: number;
 
-
 	lastUpdate: number;
 }
 
@@ -79,6 +78,22 @@ export class SocketsService {
 				},
 				data: {
 					isActive: Activity.ONLINE,
+				},
+			});
+		} catch (error) {
+			console.log(error);
+			throw new HttpException("No such user", 400);
+		}
+	}
+
+	async playingUser(userId: number) {
+		try {
+			await prisma.user.update({
+				where: {
+					id: userId,
+				},
+				data: {
+					isActive: Activity.INGAME,
 				},
 			});
 		} catch (error) {
