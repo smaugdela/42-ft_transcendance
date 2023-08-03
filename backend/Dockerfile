@@ -8,8 +8,7 @@ WORKDIR /usr/src/app
 COPY --chown=node:node package*.json ./
 
 # Install the dependencies to generate the ad-hoc package-lock.json file.
-RUN npm ci && \
-	chown node:node ./node_modules/.prisma/client/schema.prisma
+RUN npm ci
 
 # Copy the rest of the files
 COPY --chown=node:node . .
@@ -24,6 +23,10 @@ RUN npm run build
 RUN apk update && apk add openssl && \
 	cd security && \
 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout cert.key -out cert.pem -config req.cnf -sha256
+
+# Make prisma schema available to node user
+RUN	chown -R node:node node_modules/.prisma && \
+	chown node:node ./security/*
 
 # Copy the startup script
 COPY --chown=node:node ./startup.sh ./startup.sh
