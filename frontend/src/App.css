@@ -68,12 +68,14 @@ body {
 
 #main-content {
 	width : 100%;
+	height: 92vh;
 }
 
 #chat {
 	background-color: var(--sides-color);
 	color: var(--font-color);
-	/* flex: 1 1 auto; */
+	height: 92vh;
+	z-index: 250;
 }
 
 footer {
