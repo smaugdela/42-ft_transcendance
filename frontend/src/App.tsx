@@ -1,6 +1,6 @@
 import './App.css';
 // import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useBeforeUnload } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Social } from './pages/Social';
 import { Leaderboard } from './pages/Leaderboard';
@@ -67,6 +67,32 @@ function App() {
 
 	document.body.ondblclick = closeChat;
 
+	// const videoPlayer = document.getElementById('videobg');
+
+	// window.addEventListener('beforeunload', () => {
+	// 	if(videoPlayer instanceof HTMLVideoElement){
+	// 	videoPlayer.pause();
+	// }
+	// })
+
+	// function lazyLoadVideo(){
+	// 	const videoContainer = document.getElementById('videoContainer');
+	// 	const videobg = document.getElementById('videobg');
+		
+	// 	if ('IntersectionObserver' in window){
+	// 		const observer = new IntersectionObserver((entries) => {
+	// 			entries.forEach((entry) => {
+	// 				if(entry.isIntersecting){
+	// 					if(videobg instanceof HTMLVideoElement){
+	// 					videobg.src = videobg.dataset.src;
+	// 					observer>unobserve(videoContainer);
+	// 				}
+	// 				}
+	// 			});
+	// 		});
+	// 	}
+	// }
+
   return (
 	<div id='app' className={`App ${theme}`}>
 		<section id="main-content">
@@ -75,13 +101,12 @@ function App() {
 			<IsLoggedInContext.Provider value={isLoggedIn}>
 			{/* <MuteContext.Provider value={ {isMuted, setIsMuted, muteExpiration, setMuteExpiration}}> */}
 				<Navbar theme={theme} toggleTheme={toggleTheme} setLoggedIn={setLoggedIn} setSocket={setSocket} />
-				<video className='videobg' autoPlay loop muted content="width=device-width, initial-scale=1.0">
-					<source src="./assets/bg-video.mp4" type='video/mp4' />
-				</video>
-				<audio className="music-bg" autoPlay loop >
-					<source src="./assets/derezzed.mp3" type="audio/mpeg"/>
-				</audio>
-				<Toaster/>
+				<div id="videoContainer">
+					<video className='videobg' autoPlay loop muted preload="auto" content="width=device-width, initial-scale=1.0">
+						<source src="./assets/bg-video.mp4" type='video/mp4' />
+					</video>
+				</div>
+				<Toaster/> 
 				<AppProvider value = {app}>
 					<Routes>
 						<Route path="/" element={<Home />} />

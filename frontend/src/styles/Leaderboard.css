@@ -39,11 +39,11 @@
 #body-leaderboard::-webkit-scrollbar {
 	width: 1em;
 }
-   
+
 #body-leaderboard::-webkit-scrollbar-track {
 	box-shadow: inset 0 0 6px var(--main-shadow-color);
 }
-   
+
 #body-leaderboard::-webkit-scrollbar-thumb {
 	background-color: var(--main-element-bg-color);
 	outline: 1px solid var(--main-element-bg-color);

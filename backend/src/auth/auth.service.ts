@@ -251,6 +251,18 @@ export class AuthService {
 						title: "My safe place",
 						description: "Created their first channel",
 					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-user-astronaut",
+						title: "Roland Garros",
+						description: "Make 3 aces !",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-user-astronaut",
+						title: "WINNER WINNER CHICKEN DINER",
+						description: "TOP 1 of the leaderboard",
+					},
 				]
 			});
 

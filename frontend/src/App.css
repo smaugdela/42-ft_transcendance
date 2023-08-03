@@ -43,8 +43,9 @@ body {
   	width: 100%;
 	margin: auto;
 	position: flex;
-	border-radius: 3px;
+	/* border-radius: 3px; */
 	background-color: rgb(76, 77, 129);
+
 }
 
 .videobg{

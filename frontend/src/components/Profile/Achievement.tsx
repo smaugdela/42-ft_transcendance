@@ -188,6 +188,30 @@ function isAchievementCompleted (user: IUser, title: string): boolean
 			achievementNumber++;
 			return true; 
 		}
+		case "Roland Garros":
+		{
+			if (!user.aces)
+				return false
+			const userHasAce = user.aces;
+			if (userHasAce >= 3)
+			{
+				achievementNumber++;
+				return true
+			}
+				return false 
+		}
+		case "WINNER WINNER CHICKEN DINER":
+		{
+			if (!user.rank)
+				return false
+			const userRank = user.rank;
+			if (userRank === 1)
+			{
+				achievementNumber++;
+				return true
+			}
+				return false 
+			}
 		default:
 			return false;
 	}
