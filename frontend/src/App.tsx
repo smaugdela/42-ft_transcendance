@@ -30,7 +30,7 @@ function App() {
 	// On initialise nos contexts (= nos variables globales)
 	const [activeTab, setActiveTab] = useState<number>(0);
 	const [activeConv, setActiveConv] = useState<IChannel | null>(null);
-	const [isExpanded, setIsExpanded] = useState(true);
+	const [isExpanded, setIsExpanded] = useState(false);
 	const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 	// const [isMuted, setIsMuted] = useState<boolean>(false);
 	// const [muteExpiration, setMuteExpiration] = useState<number | null>(null);

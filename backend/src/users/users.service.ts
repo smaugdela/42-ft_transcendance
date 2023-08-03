@@ -137,7 +137,22 @@ export class UsersService {
 			include: {
 				achievements: true,
 				matchAsP1: true,
-				matchAsP2: true,
+				matchAsP2: true, 
+				ownerChans:true,
+				joinedChans: {
+					include: {
+						admin: true,
+						owner: true,
+						joinedUsers: true,
+						bannedUsers: true, 
+						kickedUsers: true,
+						mutedUsers: true,
+						messages: true
+					}
+				},
+				friendsList: true,
+				blockList: true,
+				pendingList :true,
 			},
 		});
 	

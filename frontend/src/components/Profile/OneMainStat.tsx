@@ -10,8 +10,8 @@ export default function OneMainStat({ title, stat, icon } : {title: string, stat
 				<FontAwesomeIcon icon={icon} className="fa-icon"/>
 			</div>
 			<div  className="one-stat_txt">
-				<h2>{stat}</h2>
-				<h5>{title}</h5>
+				<h2 className="one-stat-stat">{stat}</h2>
+				<h5 className="one-stat-title">{title}</h5>
 			</div>
 		</div>
 	);

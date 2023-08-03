@@ -3,7 +3,7 @@ import { IUser } from "../api/types";
 import { fetchUsers } from "../api/APIHandler";
 import { useQuery } from "@tanstack/react-query";
 
-export function TopThreeDetail(props: { user: IUser }) {
+export function TopThreeDetail(props: { user: IUser}) {
 	let podium;
 	if (props.user.rank === 1)
 		podium = "first";
@@ -20,7 +20,7 @@ export function TopThreeDetail(props: { user: IUser }) {
 			/>
 			<h3>{props.user.score}</h3>
 			<h1>{props.user.nickname}</h1>
-			<p>{props.user.coalition}</p>
+			<p>Rank {props.user.rank}</p>
 		</div>
 		);
 }
@@ -77,19 +77,32 @@ export function Leaderboard() {
 	const rank1 = usersQuery.data.filter( user => user.rank === 1);
 	const rank2 = usersQuery.data.filter( user => user.rank === 2);
 	const rank3 = usersQuery.data.filter( user => user.rank === 3);
+	const otherUsers: IUser[] = usersQuery.data.filter( user => user.rank > 3);
 	
 	return (
 		<div id="body-leaderboard">
 			<div id="gradient-bg"></div>
 			<div className="leaderboard">
+				<h1>Leaderboard</h1>
 				<section id="top-three"> 
+				{
+					rank2 && rank2.length > 0 &&
 					<TopThreeDetail user={rank2[0]}/>
+				}
 					<TopThreeDetail user={rank1[0]}/>
+				{
+					rank3 && rank3.length > 0 &&
 					<TopThreeDetail user={rank3[0]}/>
+				}
 				</section>
 				<h1>Other performances</h1>
-				<section> 
-					<PerformanceDetail users={usersQuery.data}/>
+				<section>
+				{
+					
+					(otherUsers && otherUsers.length > 0) ?
+					<PerformanceDetail users={otherUsers}/>
+					: <h1 id="leaderboard_perf_none">There's no one else for now, come back later!</h1>
+				}
 				</section>
 			</div>
 		</div>
