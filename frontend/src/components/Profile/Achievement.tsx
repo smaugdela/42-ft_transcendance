@@ -170,7 +170,8 @@ function isAchievementCompleted (user: IUser, title: string): boolean
 		}
 		case "My safe place":
 		{
-			if (user.ownerChans) {
+			if (user.ownerChans && user.ownerChans.length >= 1) {
+				achievementNumber++;
 				return true;
 			}
 			else
