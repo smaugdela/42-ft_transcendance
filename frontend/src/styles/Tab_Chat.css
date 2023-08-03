@@ -3,8 +3,8 @@
 /* ********************************/
 /* ***       TabChat PAGE       ***/
 /* ********************************/
-
-/* .convo__card {
+/* 
+.convo__card {
 	background-color: white;
 } */
 
@@ -36,7 +36,7 @@
 	/* bottom: 0; */
 	background-color: rgb(63, 89, 118);
 	padding: 1em;
-	height: 15vh;
+	height: 10vh;
 }
 
 #convo__form {
@@ -50,7 +50,7 @@
 	overflow: scroll;
 	overflow-x:hidden;
 	overflow-anchor: none;
-	height: 65vh;
+	height: 55vh;
 }
 
 #convo__messages * {

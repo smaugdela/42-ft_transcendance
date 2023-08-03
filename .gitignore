@@ -7,3 +7,5 @@ meilisearch
 /data
 # React Component Preview
 previewConfig.json
+data.ms/
+dumps
