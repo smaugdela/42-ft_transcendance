@@ -23,7 +23,7 @@ function getTimeSinceLastMsg(lastMessageDate: Date) {
 		seconds: 1
 	};
 	const secondsElapsed = (date.getTime() - Date.now()) / 1000;
-	for (let key in ranges) {
+	for (const key in ranges) {
 		if (ranges[key as keyof typeof ranges] < Math.abs(secondsElapsed)) {
 			const delta = secondsElapsed / ranges[key as keyof typeof ranges];
 			return formatter.format(Math.round(delta), key as keyof typeof ranges);
@@ -95,12 +95,17 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 		findOrCreateConv();
 	}
 
-	let msgPreview : string = (data.blockList && data.blockList.some((user) => user.nickname === messages[messages?.length - 1].from.nickname))? 
-								'Message hidden (from blocked user)' 
-								: messages[messages?.length - 1].content;
-	let truncMsgPreview : string = (msgPreview.length <= 30)? msgPreview : msgPreview.substring(0,27) + '...';
-	if (data.blockList && data.blockList.some((user) => user.nickname === channel.joinedUsers[0].nickname)) {
-		msgPreview = 'Message hidden (from blocked user)';
+	let msgPreview : string = 'Click to see conv';
+	if (messages && messages.length > 0) {
+		if (data.blockList && data.blockList.some((user) => user.nickname === messages[messages?.length - 1].from.nickname)) {
+			msgPreview = 'Message hidden (from blocked user)';
+		} else  {
+			msgPreview = messages[messages?.length - 1].content;
+		}
+		msgPreview = (msgPreview.length <= 30)? msgPreview : msgPreview.substring(0,27) + '...';
+		if (data.blockList && data.blockList.some((user) => user.nickname === channel.joinedUsers[0].nickname)) {
+			msgPreview = 'Message hidden (from blocked user)';
+		}
 	}
 	return (
 		<div>
@@ -125,7 +130,7 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 						<div className='channel-link-preview'>
 							<p > 
 								<span className="channel-link-messenger">{messages[messages.length - 1].from.nickname} : </span> 
-								<span className='channel-link-lastmsg'>{truncMsgPreview}</span>
+								<span className='channel-link-lastmsg'>{msgPreview}</span>
 							</p>
 							<p className='channel-link-date'>{getTimeSinceLastMsg(messages[messages?.length - 1].date)}</p>
 						</div>

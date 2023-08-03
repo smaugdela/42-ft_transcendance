@@ -109,14 +109,14 @@ export function OneMessage({ conv, message, index, myNickname } :
 				<h4>{message.from.nickname}</h4>
 				<h6>{getDate(message)}</h6>
 			</div>
-			<p className={`${isMe === true ? 'one__msg_content' : 'one__msg_content_me'}`} key={index}>{message.content}</p>
+			<p className={`${isMe === true ? 'one__msg_content_me' : 'one__msg_content'}`} key={index}>{message.content}</p>
 		</div>
 		{
-			isMe === true &&
+			isMe === false &&
 			<FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} />
 		}
 		{
-			conv.type !== 'DM' && isMe === true && 
+			conv.type !== 'DM' && isMe === false && 
 			conv.admin.filter((admin) => admin.nickname === userMe?.nickname).length === 1 && 
 			<AdminOptions channelName={conv.roomName}  userTalking={message.from}/>
 		}

@@ -48,7 +48,7 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 
 	// A l'arrivée sur le chat, faire défiler les messages jusqu'aux plus récents (bas de la fenêtre)
 	useEffect(() => {
-		var scroll = document.getElementById("convo__messages");
+		const scroll = document.getElementById("convo__messages");
 		if (scroll) {
 			scroll.scrollTop = scroll.scrollHeight;
 		}
@@ -73,7 +73,7 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 			// 	// setIsMuted(true);
 			// 	console.log("TabChat mute expiration : ", muteExpiration);
 			// 	const isMutedExpired = muteExpiration !== null && Date.now() > muteExpiration;
-  			// 	if (isMuted === true && isMutedExpired) {
+			// 	if (isMuted === true && isMutedExpired) {
 			// 		console.log("la fin arrive");
 					
 			// 		changeRole.mutate(["mutedUsers", "disconnect", String(channel?.id)]);
@@ -88,7 +88,7 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 				leaveChannelRequest.mutate([loggedUser, channel.id]);
 				toast(`You have been kicked from this channel (${channel.roomName})!`, {
 					icon: '👏',
-				  }); 
+				}); 
 				setActiveTab(0);
 				setActiveConv(null);
 			}
@@ -96,7 +96,7 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 				leaveChannelRequest.mutate([loggedUser, channel.id]);
 				toast(`You have been banned from this channel (${channel.roomName})!`, {
 					icon: '👏',
-				  }); 
+				}); 
 				setActiveTab(0);
 				setActiveConv(null);
 			}
@@ -118,7 +118,7 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 		if (socket) {
 			socket.emit('Chat', payload);
 			setInputValue('');
-	  }
+	}
 	};
 
 	// Si la connexion est assurée, récupère tous les messages qui nous sont envoyés
@@ -141,16 +141,16 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 
 	// Quand on appuie sur entrée, créé un IMessage avec nos données et l'envoie
 	const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>, message:string) => {
-	  event.preventDefault();
-	  mutate(message);
-	  if (inputValue.trim() !== '') {
+		event.preventDefault();
+		mutate(message);
+		if (inputValue.trim() !== '') {
 		sendMessage(inputValue);
-	  }
-	  var scroll = document.getElementById("convo__messages");
-	  if (scroll) {
+		}
+		const scroll = document.getElementById("convo__messages");
+		if (scroll) {
 		// console.log("scrooool: ", scroll);
-		  scroll.scrollTop = scroll.scrollHeight;
-	  }
+			scroll.scrollTop = scroll.scrollHeight;
+		}
 	};
 
 	return (
@@ -182,7 +182,7 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 				<div className="convo__bottom">You're not allowed to speak here! (muted)</div>
 			}
 	</div>
-	  );
+	);
 }
 
 export default TabChat

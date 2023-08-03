@@ -9,7 +9,7 @@ import { getAllUserChannels } from '../../api/APIHandler';
 
 function isBlockedInDM(channel: IChannel): boolean {
 	if (channel.type !== 'DM') {
-	  return false;
+		return false;
 	}
 	const [userA, userB] = channel.joinedUsers;
 
@@ -48,8 +48,8 @@ export default function TabChannels() {
 	return (
 	<div className='channels_page' >
 		<h3 id='channels_page_title'>Your channels</h3>
-	  <>
-	  {
+		<>
+		{
 		joinedChannels && (
 			joinedChannels.map((chan) => {
 				return (
