@@ -27,6 +27,7 @@ export function TopThreeDetail(props: { user: IUser}) {
 
 export function OnePerf( {user} : {user: IUser} ) {
 	let nbGames = 0;
+
 	if (user.matchAsP1) {
 		nbGames += user.matchAsP1.length;
 	}
@@ -34,7 +35,7 @@ export function OnePerf( {user} : {user: IUser} ) {
 		nbGames += user.matchAsP2.length;
 	}
 	return (
-	<div key={user.id} className="stats" id={user.isActive ? "myRank" : "other"}>
+	<div key={user.id} className="stats" id="other">
 			<img 
 				src={user.avatar}
 				alt={user.nickname}
@@ -63,7 +64,7 @@ export function OnePerf( {user} : {user: IUser} ) {
 export function PerformanceDetail(props: {users: IUser[]}) {
 
 	const listRanks = props.users.sort((a, b) => a.rank > b.rank ? 1 : -1)
-						   .map(user => {
+							.map(user => {
 		return <OnePerf user={user} key={user.id}/>
 		});
 	return (
@@ -71,7 +72,7 @@ export function PerformanceDetail(props: {users: IUser[]}) {
 			{listRanks}
 		</div>
 	);
-};
+}
 
 export function Leaderboard() {
 
@@ -88,7 +89,6 @@ export function Leaderboard() {
 	const rank2 = usersQuery.data.filter( user => user.rank === 2);
 	const rank3 = usersQuery.data.filter( user => user.rank === 3);
 	const otherUsers: IUser[] = usersQuery.data.filter( user => user.rank > 3);
-	console.log(otherUsers[0]);
 	
 	return (
 		<div id="body-leaderboard">
@@ -108,18 +108,20 @@ export function Leaderboard() {
 				</section>
 				<h1>Other performances</h1>
 				<section>
-				{/* // {
-					
-				// 	(otherUsers && otherUsers.length > 0) ?
-				// 	<PerformanceDetail users={otherUsers}/>
-				// 	: <h1 id="leaderboard_perf_none">There's no one else for now, come back later!</h1>
-				// } */}
 				{
-					otherUsers  &&
+					!otherUsers ||  otherUsers.length === 0 &&
+					<h1 id="leaderboard_perf_none">There's no one else for now, come back later!</h1>
+				}
+				{
+					(otherUsers && otherUsers.length > 1) &&
+					<PerformanceDetail users={otherUsers}/>
+				}
+				{
+					otherUsers && otherUsers.length === 1 &&
 					<OnePerf user={otherUsers[0]}/>
 				}
 				</section>
 			</div>
 		</div>
 	);
-};
+}
