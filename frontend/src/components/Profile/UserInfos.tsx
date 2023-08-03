@@ -69,9 +69,7 @@ export default function UserInfos( { user } : {user: IUser}) {
 				<>
 					<button><FontAwesomeIcon icon={faUserPlus} onClick={() =>handlefriendRequest(user.nickname)} /></button>
 					<button><FontAwesomeIcon icon={faBan} onClick={() =>handleblockuser(user.nickname)}/></button>
-						userQuery.data?.nickname !== undefined &&
-						<MessageUserBtn loggedInUser={userQuery.data.nickname} userToContact={user} />
-					}
+					<MessageUserBtn loggedInUser={userQuery.data.nickname} userToContact={user} />
 				</>
 			}
 			<h5>Member since {creationDate}</h5>

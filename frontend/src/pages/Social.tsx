@@ -2,7 +2,7 @@ import "../styles/Social.css"
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus} from '@fortawesome/free-solid-svg-icons';
-import { fetchMe, postSearchQuery } from "../api/APIHandler";
+import { fetchMe, postSearchQuery, friendRequest } from "../api/APIHandler";
 import { useQuery } from "@tanstack/react-query";
 import { IUser } from "../api/types";
 import {AllFriends} from "../components/Social/AllFriends";
@@ -15,7 +15,6 @@ export function SearchBar() {
 
 	const [userInput, setUserInput] = useState("");
 	const [searchedUser, setSearchResults] = useState<IUser>();
-
 	useEffect( () => {
 		if (userInput.length > 2){
 			postSearchQuery(userInput)
@@ -71,10 +70,7 @@ export function SearchBar() {
  
 export function Social() {
 
-	// const [groupToDisplay, setGroupToDisplay] = useState<IUser[]>([]);
-
 	const [activeList, setActiveList] = useState<string | null>(null);
-	// const queryClient = useQueryClient();
 	const { data: loggedUser, error, isLoading, isSuccess } = useQuery({ queryKey: ['user'], queryFn: fetchMe});
 	
 	const handleClickComponent = (listType: string) => {
