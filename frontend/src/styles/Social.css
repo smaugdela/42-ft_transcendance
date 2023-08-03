@@ -9,7 +9,7 @@
 	--social-primary-font-color: black;
 	--social-secondary-color : rgb(4, 30, 136);
 
-	/* Buttons to filter groups in social page */ 
+	/* Buttons to filter groups in social page */
 	--filter-btn-main-color : var(--sides-color); /* vient de App.css */
 	--filter-btn-secondary-color : rgba(255, 255, 255, 0.678);
 
@@ -74,7 +74,7 @@
 }
 
 .social-btn > button {
-	padding: 1vw 4vw; 
+	padding: 1vw 4vw;
 	border-radius: 20px;
 	font-weight: 800;
 }
@@ -278,4 +278,26 @@
 
 .profile_infos_allfriends > div:last-of-type {
 	color : rgb(243, 64, 64);
+}
+
+/* .profile_infos_activeFriends > div{
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+	font-size: 3em;
+} */
+
+.msgUserBtn {
+	/* background-color: purple; */
+	all: unset;
+	cursor: pointer;
+}
+
+.msgUserBtn-icon {
+	color: white;
+	/* font-size: large; */
 }

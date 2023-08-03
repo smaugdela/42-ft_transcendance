@@ -48,7 +48,7 @@ export default function MessageUserBtn( { loggedInUser, userToContact} : { logge
 
 	return (
 		<>
-			<button onClick={(event) => handleClick(event)} ><FontAwesomeIcon icon={faComment} /></button>
+			<button className="msgUserBtn" onClick={(event) => handleClick(event)} ><FontAwesomeIcon icon={faComment} className="msgUserBtn-icon"/></button>
 		</>
 	);
 }

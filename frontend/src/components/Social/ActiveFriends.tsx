@@ -1,4 +1,5 @@
 import "../../styles/Social.css";
+import "../../styles/UserProfile.css"
 import { useQuery } from "@tanstack/react-query";
 import { IUser } from "../../api/types";
 import MessageUserBtn from '../Profile/MessageUserBtn';
@@ -25,8 +26,8 @@ export function ActiveFriends( props: { profilesToDisplay : IUser[]}) {
                             />
                         </div>
                         <div className="profile_infos_activeFriends">
-                            <h5>{profile.nickname}</h5>
-                            <MessageUserBtn loggedInUser={loggedInUser} userToContact={profile} />
+                            <h5 >{profile.nickname}</h5>
+                            <div><MessageUserBtn loggedInUser={loggedInUser} userToContact={profile} /></div>
                         </div>
             </div>
         })
