@@ -78,12 +78,15 @@ body {
 
 footer {
 	width: 100%;
+	height: 8vh;
+
+	padding-top: 3vh;
+	text-align: center;
+
 	background-color: var(--heading-color);
+	color: var(--font-color);
 	font-family: var(--font-type);
 	font-size: 100%;
-	text-align: center;
-	color: var(--font-color);
-	line-height: 70px;
 	font-size: 150%;
 }
 
