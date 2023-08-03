@@ -8,7 +8,8 @@ WORKDIR /usr/src/app
 COPY --chown=node:node package*.json ./
 
 # Install the dependencies to generate the ad-hoc package-lock.json file.
-RUN npm ci
+RUN npm ci && \
+	chown node:node ./node_modules/.prisma/client/schema.prisma
 
 # Copy the rest of the files
 COPY --chown=node:node . .
