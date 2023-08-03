@@ -19,7 +19,7 @@ export function MatchHistory(props: { user: IUser }) {
 	}
 
 	const matches: IMatch[] = matchesQuery.data;
-	const matchesSortedByDate: IMatch[] = matches.sort((a, b) => b.date.getTime() - a.date.getTime());	
+	const matchesSortedByDate: IMatch[] = matches.sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 3);	
 
 	const displayMatchHistory = matchesSortedByDate.map(match => {
 

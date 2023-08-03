@@ -3,7 +3,7 @@
 
 .navbar {
     background-color:var(--heading-color);
-    height: 8vh;
+    height: 10%;
 	width: 100%;
 	position : fixed;
     display: flex;
@@ -18,11 +18,11 @@
 .nav-menu {
   background-color: var(--sides-color);
   width: 250px;
-  height: 84.2vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   position: fixed;
-  top: 74px;
+  top: 10%;
   left: -100%;
   transition: 850ms;
   z-index: 100;

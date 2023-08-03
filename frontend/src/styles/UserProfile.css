@@ -1,6 +1,10 @@
 @import "../App.css";
 
 
+/* .hide-footer{
+	display:none;
+} */
+
 /* ********************************/
 /* ***      VARIABLES CSS       ***/
 /* ********************************/
@@ -214,8 +218,8 @@
 }
 
 .one-achievement {
-	width: 17%;
-	height: 10vh;
+	width: 18%; /* change le 17 en 18 */ 
+	height: 9rem; /* change 10vh en 9rem*/
 	border-radius: 20px;
 	padding-top: 1rem;
 	text-align: center;
@@ -276,7 +280,7 @@
 	border-radius : 20px;
 	padding: 1vw;
 	width: 50%;
-	margin-top: 2rem;
+	margin-top: 6rem; /* j'ai mis 6 pour bien aligner mais si ca casse tout de base Marine avait mis 2 */
 }
 
 

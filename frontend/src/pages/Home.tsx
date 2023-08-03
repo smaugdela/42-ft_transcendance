@@ -1,14 +1,20 @@
 import '../App.css';
+import { IsLoggedInContext } from '../context/contexts';
 import'../styles/Home.css';
-import { useState } from "react";
-import {Link} from 'react-router-dom';
+import { useContext, useState } from "react";
+import {Link, useNavigate} from 'react-router-dom';
 
 export default function Home() {
-const [open, setOpen] = useState(false);
-const [fadeIn, setFadein] = useState(false);
+	const [open, setOpen] = useState(false);
+	const [fadeIn, setFadein] = useState(false);
+	const navigate = useNavigate();
+	const isLogin = useContext(IsLoggedInContext);
+
 	function handleClick() {
-	setOpen(!open);
-	setFadein(true);
+		if (!isLogin)
+			navigate('/Login');
+		setOpen(!open);
+		setFadein(true);
 	}
 	void(fadeIn); // pour faire taire unused warning
 

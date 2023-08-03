@@ -14,7 +14,7 @@ const faqs: FaqItem[] = [
   },
   {
     question: 'How to play Pong?',
-    answer: 'The goal of this game is to defeat your opponent by being the first one to gain 10 point. A player gets a point once the opponent misses a ball. The game can be played with two human players, or one player against a computer controlled paddle.',
+    answer: 'The goal of this game is to defeat your opponent by being the first one to gain 10 point. A player gets a point once the opponent misses a ball. You can play the classic mode or the custom which add a powerup that can change the paddles directions arrows !',
   },
   {
 
