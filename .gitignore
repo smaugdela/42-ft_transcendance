@@ -2,6 +2,7 @@
 .vscode/
 *.pem
 .DS_Store
+*.key
 
 # React Component Preview
 previewConfig.json
