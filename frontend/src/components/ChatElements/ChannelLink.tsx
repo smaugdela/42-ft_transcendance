@@ -36,6 +36,7 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 	const [convName, setConvName] = useState<string>(channel.roomName);
 	const [openInvitePrompt, setOpenInvitePrompt] = useState<boolean>(false);
 	const [inviteName, setInviteName] = useState<string>("");
+
 	const socket = useContext(SocketContext);
 	const queryClient = useQueryClient();
 
@@ -43,14 +44,19 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 	const { data: messages, status: msgStatus } = useQuery({queryKey: ['messages', channel.id], queryFn: () => getAllMsgsofChannel(channel.id),});
 
 	const { mutate: findOrCreateConv } = useMutation({
-		mutationFn: () => manageDirectMessages((data?.nickname + ' ' + inviteName), inviteName),
+		mutationFn: () => manageDirectMessages((data?.nickname + ' ' + inviteName), inviteName, data?.nickname),
 		onSuccess: (data) => {
 			queryClient.invalidateQueries(['channels']);
 			if (socket && data) {
 				sendNotificationToServer(socket, 'Create Lobby', data?.roomName);
 			}
+			if (socket && data && inviteName !== '') {
+				// const dmName: string = data?.nickname + ' ' + inviteName;
+				const msg:string = sendInviteToUser(socket, data?.roomName, inviteName, channel);
+				createInfoMessage.mutate([data?.roomName, msg]);
+			}
 		},
-		onError: () => { toast.error('An error occured: could be an invalid nickname.') }
+		onError: () => { toast.error("An error occured: could be an invalid nickname (or you're blocked).") }
 	})
 
 	const createInfoMessage = useMutation({
@@ -79,19 +85,23 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 		setOpenInvitePrompt(!openInvitePrompt);
 	}
 
+	const handleOnChangeInvite = (event: React.ChangeEvent<HTMLInputElement>) => {
+		event.preventDefault();
+		setInviteName(event.target.value);
+		
+	}
 	const handleUpdate = (event: React.FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		// Voir s'il y a déjà une conv entre les deux users, sinon la créer
 		findOrCreateConv();
-		// Envoyer à cette conv le message d'invit
-		if (socket && data && inviteName !== '') {
-			const dmName: string = data?.nickname + ' ' + inviteName;
-			const msg:string = sendInviteToUser(socket, dmName, inviteName, channel);
-			createInfoMessage.mutate([dmName, msg]);
-		}
-	
 	}
 
+	let msgPreview : string = (data.blockList && data.blockList.some((user) => user.nickname === messages[messages?.length - 1].from.nickname))? 
+								'Message hidden (from blocked user)' 
+								: messages[messages?.length - 1].content;
+	let truncMsgPreview : string = (msgPreview.length <= 30)? msgPreview : msgPreview.substring(0,27) + '...';
+	if (data.blockList && data.blockList.some((user) => user.nickname === channel.joinedUsers[0].nickname)) {
+		msgPreview = 'Message hidden (from blocked user)';
+	}
 	return (
 		<div>
 			<div  className="channel-link-card" >
@@ -105,9 +115,8 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 						}
 					</div>
 					{
-						channel.type !== 'DM' &&
+						channel.type !== 'DM' && 
 						<FontAwesomeIcon className='channel-link-invite' title="invite" icon={faUserPlus} onClick={handleInviteClick}/>
-						
 					}
 				</div>
 				{
@@ -116,12 +125,7 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 						<div className='channel-link-preview'>
 							<p > 
 								<span className="channel-link-messenger">{messages[messages.length - 1].from.nickname} : </span> 
-								<span className='channel-link-lastmsg'>{
-									(messages[messages?.length - 1].content.length <= 40)? 
-										messages[messages?.length - 1].content 
-										: messages[messages?.length - 1].content.substring(0,37) + '...'
-								}
-								</span>
+								<span className='channel-link-lastmsg'>{truncMsgPreview}</span>
 							</p>
 							<p className='channel-link-date'>{getTimeSinceLastMsg(messages[messages?.length - 1].date)}</p>
 						</div>
@@ -138,7 +142,7 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 					Invite someone:
 					<input	type="text" 
 							placeholder="User's nickname"
-							onChange={(event) => setInviteName(event.target.value)}
+							onChange={handleOnChangeInvite}
 							className="text_input"
 					/>
 					<button className="text_settings_btn" onClick={handleUpdate}>

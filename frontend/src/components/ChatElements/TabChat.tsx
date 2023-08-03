@@ -12,8 +12,8 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 
 	const [messages, setMessages] = useState<IMessage[]>([]);
 	const [inputValue, setInputValue] = useState<string>('');
-	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
 	const [isMuted, setIsMuted] = useState<boolean>(false);
+	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
 	// const { isMuted, setIsMuted, muteExpiration, setMuteExpiration } = useContext(MuteContext);
 	const socket = useContext(SocketContext);
 	const queryClient = useQueryClient();
@@ -45,14 +45,6 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 		},
 		onError: () => { toast.error(`Error : someone tried to make you quit the channel but cannot`) }
 	});
-
-	// const changeRole = useMutation({
-	// 	mutationFn: ([group, action, channelId]: string[]) => updateUserInChannel(loggedUser.id, Number(channelId), group, action),
-	// 	onSuccess: () => { 
-	// 		queryClient.invalidateQueries(['channels']);
-	// 	},
-	// 	onError: () => { toast.error(`Error : cannot switch back your role.`) }
-	// });
 
 	// A l'arrivée sur le chat, faire défiler les messages jusqu'aux plus récents (bas de la fenêtre)
 	useEffect(() => {
@@ -167,7 +159,7 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 			<div id='convo__messages'>
 			{
 				messages.map((message, index) => (
-					<OneMessage conv={conv} message={message} index={index} key={index}/>
+					<OneMessage conv={conv} message={message} myNickname={loggedUser.nickname} index={index} key={index}/>
 				))
 			}
 			</div>
