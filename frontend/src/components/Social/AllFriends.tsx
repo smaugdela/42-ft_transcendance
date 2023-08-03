@@ -40,7 +40,7 @@ export function AllFriends( props: { profilesToDisplay : IUser[], userIsSuccess:
                             alt={profile.nickname}
                             />
                         </div>
-                        <div className="profile_infos">
+                        <div className="profile_infos_allfriends">
                             <h5>{profile.nickname}</h5>
                             <div><FontAwesomeIcon icon={faUserMinus} onClick={() =>handleremoveFriend(profile.id)}/></div>
                             <div><FontAwesomeIcon icon={faBan} onClick={() =>handleblockuser(profile.nickname)}/></div>			

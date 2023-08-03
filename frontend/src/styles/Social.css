@@ -187,7 +187,13 @@
 	background-color: var(--social-primary-bg-color);
 	border-radius: 20px;
 	margin : 2vw;
-	color: grey;
+	color:  white;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 80px rgb(24, 46, 65);
 	height: 15em;
 	width: 20%;
 	display: flex;
@@ -201,7 +207,7 @@
 }
 
 .profile:hover {
-	color : var(--social-primary-font-color);
+	/* color : var(--social-primary-font-color); */
 	font-size: large;
 }
 
@@ -229,11 +235,47 @@
 	/* flex-direction: column; Set the flex direction to column */
 }
 
+.profile_infos > div:hover {
+	cursor: pointer;
+}
+
+.profile_infos_allfriends > div:hover {
+	cursor: pointer;
+}
+
+.profile_infos_allfriends {
+	display: flex;
+	justify-content: center;
+	align-items: first baseline;
+	gap: 1vw;
+	/* flex-direction: column; Set the flex direction to column */
+}
+
+.profile_infos_activeFriends {
+	display: flex;
+	justify-content: center;
+	align-items: first baseline;
+	gap: 1vw;
+	/* flex-direction: column; Set the flex direction to column */
+}
+
 .profile_infos > div:first-of-type {
 	color : rgb(29, 123, 216);
+}
+
+.profile_infos > div:nth-child(3) {
+	color : gray;
 }
 
 .profile_infos > div:last-of-type {
 	color : rgb(243, 64, 64);
 }
 
+
+.profile_infos_allfriends > div:nth-child(2) {
+	color : gray;
+}
+
+.profile_infos_allfriends > div:last-of-type {
+	color : rgb(243, 64, 64);
+}

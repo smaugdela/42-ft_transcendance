@@ -24,7 +24,7 @@ export function ActiveFriends( props: { profilesToDisplay : IUser[]}) {
                             alt={profile.nickname}
                             />
                         </div>
-                        <div className="profile_infos">
+                        <div className="profile_infos_activeFriends">
                             <h5>{profile.nickname}</h5>
                             <MessageUserBtn loggedInUser={loggedInUser} userToContact={profile} />
                         </div>
