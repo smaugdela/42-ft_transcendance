@@ -170,15 +170,11 @@ function isAchievementCompleted (user: IUser, title: string): boolean
 		}
 		case "My safe place":
 		{
-			if (!user.ownerChans)
-				return false;
-			const UserIsChanOwner = user.ownerChans.length; 
-			if (UserIsChanOwner > 0)
-			{
-				achievementNumber++;
+			if (user.ownerChans) {
 				return true;
 			}
-			return false; 
+			else
+				return false;
 		}
 		case "Writer soul":
 		{
