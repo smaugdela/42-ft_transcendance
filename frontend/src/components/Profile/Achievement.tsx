@@ -12,6 +12,7 @@ export function Achievement( props: { user: IUser }) {
 		return 	<div key={achievement.id} 
 					className="one-achievement"
 					id={isAchievementCompleted(props.user, achievement.title) === true ? "completed_achievement" : "one-achievement"}>
+					{/* <img src="../public/assets/baby-icon.png"/> */}
 					<h3>{achievement.title}</h3>
 					<h4>{achievement.description}</h4>
 				</div>
@@ -185,6 +186,30 @@ function isAchievementCompleted (user: IUser, title: string): boolean
 			achievementNumber++;
 			return true; 
 		}
+		case "Roland Garros":
+		{
+			if (!user.aces)
+				return false
+			const userHasAce = user.aces;
+			if (userHasAce >= 3)
+			{
+				achievementNumber++;
+				return true
+			}
+				return false 
+		}
+		case "WINNER WINNER CHICKEN DINER":
+		{
+			if (!user.rank)
+				return false
+			const userRank = user.rank;
+			if (userRank === 1)
+			{
+				achievementNumber++;
+				return true
+			}
+				return false 
+			}
 		default:
 			return false;
 	}

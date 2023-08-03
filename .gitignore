@@ -1,6 +1,7 @@
 .env*
 .vscode/
 *.pem
+*.key
 .DS_Store
 *.key
 meilisearch
