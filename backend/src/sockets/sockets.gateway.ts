@@ -8,7 +8,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const corsConfig = {
-	origin: process.env.DOCKER && process.env.DOCKER === "true" ? "http://" + process.env.FRONTEND_HOST : process.env.FRONTEND_URL,
+	origin: (process.env.DOCKER && process.env.DOCKER) === "true" ? "https://" + process.env.FRONTEND_HOST : process.env.FRONTEND_URL,
 	credentials: true,
 };
 
@@ -31,7 +31,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		void (args);
 
 		await this.socketsService.activeUser(client.data.userId);
-		console.log('Client connected:', client.data.username);
 
 		/* Stocker tous les sockets des users actuellement connectés dans un map */
 		this.socketsService.registerActiveSockets(client.data.userId, client.id);
@@ -51,7 +50,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				default:
 					break;
 			}
-			console.log("Client reconnected to match: ", match.matchId);
 		}
 	}
 
@@ -79,27 +77,24 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		for (let i = 0; i < this.socketsService.queue.length; i++) {
 			if (this.socketsService.queue[i].userId === client.data.userId) {
 				this.socketsService.queue.splice(i, 1);
-				console.log("User removed from queue.");
 				break;
 			}
 		}
 
-		console.log('Client disconnected:', client.data.username);
 		client.disconnect(true);
 	}
 
-	
+
 	/* ######################### */
 	/* ######### CHAT ########## */
 	/* ######################### */
-	
+
 	@SubscribeMessage('Create Lobby')
 	async handleLobbyCreation(client: Socket, payload: string): Promise<void> {
 		const room = payload;
 		client.join(room);
-		console.log(client.data.username, ` has joined the room ${payload}!`);
 	}
-	
+
 	/**
 	 * @description Message à envoyer aux listeners de l'event "receiveMessage"
 	 * @param client Socket de la personne qui a envoyé un message dans le Chat
@@ -107,7 +102,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	 */
 	@SubscribeMessage('Chat')
 	async handleSendMessage(client: Socket, payload: string): Promise<void> {
-		console.log(client.data.username, ':', payload);
 		const splitStr: string[] = payload.split('  ');
 
 		const action = splitStr[0];
@@ -130,8 +124,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				fromId: client.data.userId,
 				content: `${action}  ${msgToTransfer}`,
 			};
-			console.log("this message has been sent: ", message.content, "to room : ", room);
-			
+
 			this.server.to(room).emit('receiveMessage', message);
 		}
 	}
@@ -167,15 +160,12 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				const socket2: Socket = this.getSocketByUserId(match.player2.userId);
 
 				if (socket1 === undefined || socket2 === undefined) {
-					console.log("Error: socket undefined");
 					return;
 				}
 
 				socket1.join(match.matchId.toString());
 				socket2.join(match.matchId.toString());
 				this.server.to(match.matchId.toString()).emit('match ready', match.mode);
-
-				console.log("Match ready, waiting for players to accept...");
 
 			} else {
 				i++;
@@ -189,11 +179,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		const userId = client.data.userId;
 
-		console.log(client.data.username, "accepted the match");
-
 		const match = this.getMatchByUserId(userId);
 		if (match === undefined) {
-			console.log("Error: match undefined");
 			return;
 		} else if (match.player1.userId === userId) {
 			match.player1.ready = true;
@@ -202,7 +189,10 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		}
 
 		if (match.player1.ready && match.player2.ready) {
-			// this.server.to(match.matchId.toString()).emit('match started');
+
+			this.socketsService.playingUser(match.player1.userId);
+			this.socketsService.playingUser(match.player2.userId);
+
 			const socket1: Socket = this.getSocketByUserId(match.player1.userId);
 			const socket2: Socket = this.getSocketByUserId(match.player2.userId);
 			socket1.emit('match started', true);
@@ -210,7 +200,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			match.lastUpdate = Date.now();
 			match.player1.lastUpdate = Date.now();
 			match.player2.lastUpdate = Date.now();
-			console.log("Match started");
 		}
 	}
 
@@ -224,7 +213,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		for (let i = 0; i < this.socketsService.queue.length; i++) {
 			if (this.socketsService.queue[i].userId === userId) {
 				this.socketsService.queue.splice(i, 1);
-				console.log("User removed from queue.");
 				break;
 			}
 		}
@@ -241,14 +229,12 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		});
 
 		if (!user) {
-			console.log("Error: user not found");
 			return;
 		}
 
 		const userId = user.id;
 		const socket = this.getSocketByUserId(userId);
 		if (socket === undefined) {
-			console.log("Error: socket undefined");
 			return;
 		}
 
@@ -263,9 +249,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			const userId1 = client.data.userId;
 			const username1 = client.data.username;
 
-			const socket = this.getSocketByUserId(userId1);
-			if (socket === undefined) {
-				console.log("Error: socket undefined");
+			const socket1 = this.getSocketByUserId(userId1);
+			if (socket1 === undefined) {
 				return;
 			}
 
@@ -275,14 +260,12 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				}
 			});
 			if (!user2) {
-				console.log("Error: user not found");
 				return;
 			}
 
 			const userId2 = user2.id;
 			const socket2 = this.getSocketByUserId(userId2);
 			if (socket2 === undefined) {
-				console.log("Error: socket undefined");
 				return;
 			}
 
@@ -291,11 +274,10 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			const player2 = this.socketsService.createPlayer(userId2, username2, "Classic");
 
 			const match = this.socketsService.addMatch("Classic", player1, player2);
-			socket.join(match.matchId.toString());
+			socket1.join(match.matchId.toString());
 			socket2.join(match.matchId.toString());
-			this.server.to(match.matchId.toString()).emit('match ready', match);
+			this.server.to(match.matchId.toString()).emit('match ready', match.mode);
 
-			console.log("Match ready, waiting for players to accept...");
 		} catch (error) {
 			console.log(error);
 		}
@@ -310,7 +292,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 			const socket = this.getSocketByUserId(userId1);
 			if (socket === undefined) {
-				console.log("Error: socket undefined");
 				return;
 			}
 
@@ -320,14 +301,12 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				}
 			});
 			if (!user2) {
-				console.log("Error: user not found");
 				return;
 			}
 
 			const userId2 = user2.id;
 			const socket2 = this.getSocketByUserId(userId2);
 			if (socket2 === undefined) {
-				console.log("Error: socket undefined");
 				return;
 			}
 
@@ -354,12 +333,29 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		// Check if one of the players has disconnected for more than 3 seconds
 		if (Date.now() - match.player1.lastUpdate > 3000) {
+			
 			this.server.to(match.matchId.toString()).emit('match canceled');
+			
+			if (this.getSocketByUserId(match.player1.userId) !== undefined)
+				this.socketsService.activeUser(match.player1.userId);
+			else
+				this.socketsService.inactiveUser(match.player1.userId);
+			
 			this.socketsService.deleteMatch(match.matchId);
 			return;
 		}
 		if (Date.now() - match.player2.lastUpdate > 3000) {
-			match.player2.ready = false;
+
+			this.server.to(match.matchId.toString()).emit('match canceled');
+
+			if (this.getSocketByUserId(match.player2.userId) !== undefined)
+				this.socketsService.activeUser(match.player2.userId);
+			else
+				this.socketsService.inactiveUser(match.player2.userId);
+
+			this.socketsService.deleteMatch(match.matchId);
+
+			return;
 		}
 
 		// If one of the players is not ready, do not actuate game state (Pause)
@@ -367,7 +363,19 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 			// If the match has been paused for more than 10 seconds (unresponsive player), cancel it.
 			if (Date.now() - match.lastUpdate > 10000) {
+
 				this.server.to(match.matchId.toString()).emit('match canceled');
+
+				if (this.getSocketByUserId(match.player1.userId) !== undefined)
+					this.socketsService.activeUser(match.player1.userId);
+				else
+					this.socketsService.inactiveUser(match.player1.userId);
+
+				if (this.getSocketByUserId(match.player2.userId) !== undefined)
+					this.socketsService.activeUser(match.player2.userId);
+				else
+					this.socketsService.inactiveUser(match.player2.userId);
+
 				this.socketsService.deleteMatch(match.matchId);
 				return;
 			}
@@ -378,7 +386,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		}
 
 		const delta = (Date.now() - match.lastUpdate) / 1000; // in seconds
-	
+
 		// If payload is not empty, actuate user state
 		if (payload) {
 			switch (userId) {
@@ -456,29 +464,12 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		match.ballY += match.ballSpeedY * delta;
 
 		// Check if powerup is recovered
-		if (match.powerUp)
-		{
+		if (match.powerUp) {
 			const distance = Math.sqrt(Math.pow(match.powerUpX - match.ballX, 2) + Math.pow(match.powerUpY - match.ballY, 2));
-			if (distance < this.socketsService.gameConstants.ballRadius + this.socketsService.gameConstants.powerUpRadius)
-			{
+			if (distance < this.socketsService.gameConstants.ballRadius + this.socketsService.gameConstants.powerUpRadius) {
 				match.powerUp = false;
 				match.powerUpOn = true;
 				match.powerUpDate = Date.now();
-				
-				// switch (match.ballSpeedX < 0)
-				// {
-				// 	case true:
-				// 		match.powerUpOn = true;
-				// 		match.powerUpDate = Date.now();
-				// 		// Player2 gets a powerup
-				// 		break;
-				// 	case false:
-				// 		match.powerUpOn = true;
-				// 		match.powerUpDate = Date.now();
-				// 		break;
-				// 	default:
-				// 		break;
-				// }
 			}
 		}
 		match.lastUpdate = Date.now();
@@ -544,10 +535,9 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		// Regenerate powerup
 		const scoreTotal = match.player1.score + match.player2.score;
-		if (match.powerUp === false && scoreTotal % 3 === 0)
-		{
+		if (match.powerUp === false && scoreTotal % 3 === 0) {
 			match.powerUpX = Math.random() * (this.socketsService.gameConstants.width / 2) + (this.socketsService.gameConstants.width / 4);
-			match.powerUpY = Math.random() * this.socketsService.gameConstants.height;	
+			match.powerUpY = Math.random() * this.socketsService.gameConstants.height;
 			match.powerUp = true;
 		}
 
@@ -561,8 +551,16 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			const socket1: Socket = this.getSocketByUserId(match.player1.userId);
 			const socket2: Socket = this.getSocketByUserId(match.player2.userId);
 
+			if (socket1)
+				this.socketsService.activeUser(match.player1.userId);
+			else
+				this.socketsService.inactiveUser(match.player1.userId);
+			if (socket2)
+				this.socketsService.activeUser(match.player2.userId);
+			else
+				this.socketsService.inactiveUser(match.player2.userId);
+
 			if (socket1 === undefined || socket2 === undefined) {
-				console.log("Error: socket undefined");
 				this.server.to(match.matchId.toString()).emit('match canceled');
 				this.socketsService.deleteMatch(match.matchId);
 				return;
@@ -660,4 +658,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		return;
 	}
+
+	
+
 }

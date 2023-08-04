@@ -27,7 +27,6 @@ export default function GamePage() {
 				{
 					id: "matchmaking",
 					icon: "🎉",
-					position: "bottom-center",
 					duration: duration,
 				}
 			);
@@ -41,7 +40,6 @@ export default function GamePage() {
 				socket?.emit("Leave Queue");
 				toast.success("Left queue.", {
 					id: "matchmaking",
-					position: "bottom-center",
 					duration: 3000,
 				});
 			}}>
@@ -55,7 +53,7 @@ export default function GamePage() {
 			toast.loading(<span>Looking for a custom match... {leaveQueueButton} </span>, {
 				id: "matchmaking",
 				icon: "🔍",
-				position: "bottom-center",
+			
 			});
 		} else {
 			console.log("Socket is null");
@@ -68,7 +66,6 @@ export default function GamePage() {
 			toast.loading(<span>Looking for a classic match... {leaveQueueButton} </span>, {
 				id: "matchmaking",
 				icon: "🔍",
-				position: "bottom-center",
 			});
 		} else {
 			console.log("Socket is null");
@@ -77,14 +74,14 @@ export default function GamePage() {
 
 	return (
 		<div id="play-screen2">
-			<button className="button1" onClick={handleClassic} data-text="MODE CLASSIC"
-			title="Use the up and down arrows of your keyboard to play !">
-				CLASSIC MODE
-			</button>
-			<button className="button2" onClick={handleCustom} data-text="MODE CUSTOM"
-			title="Use the powerup to change de direction of the arrows !">
-				CUSTOM MODE
-			</button>
+				<div className="button1" onClick={handleClassic} data-text="MODE CLASSIC"
+				title="Use the up and down arrows of your keyboard to play !">
+					CLASSIC MODE
+				</div>
+				<div className="button2" onClick={handleCustom} data-text="MODE CUSTOM"
+				title="Use the powerup to change de direction of the arrows !">
+					CUSTOM MODE
+				</div>
 		</div>
 	);
 }

@@ -43,11 +43,16 @@ export class UsersService {
 	}
 
 	async findAll() {
-		return await prisma.user.findMany();
+		const allUsers = await prisma.user.findMany();
+		allUsers.map((user) => {
+			delete user.token42;
+			delete user.password;
+		});
+		return allUsers;
 	}
 
 	async findMe(id: number) {
-		return await prisma.user.findUnique({
+		const user =  await prisma.user.findUnique({
 			where: { id },
 			include: {
 				achievements: true,
@@ -70,6 +75,12 @@ export class UsersService {
 				pendingList :true,
 			},
 		});
+
+		delete user.password;
+		delete user.token42;
+
+		return user;
+
 	}
 
 	async updateMe(id: number, updateUserDto: UpdateUserDto) {
@@ -132,40 +143,46 @@ export class UsersService {
 
 	async findOne(username: string) {
 //		prisma.user.update(achievement), // pas comme ca mais faut le faire
-			return await prisma.user.findUnique({
+		const user =  await prisma.user.findUnique({
 			where: { nickname: username },
 			include: {
 				achievements: true,
 				matchAsP1: true,
-				matchAsP2: true,
+				matchAsP2: true, 
+				ownerChans:true,
+				joinedChans: {
+					include: {
+						admin: true,
+						owner: true,
+						joinedUsers: true,
+						bannedUsers: true, 
+						kickedUsers: true,
+						mutedUsers: true,
+						messages: true
+					}
+				},
+				friendsList: true,
+				blockList: true,
+				pendingList :true,
 			},
 		});
-	
+
+		delete user.password;
+		delete user.token42;
+
+		return user;
 	}
 
-	// async isAchievementCompleted(userId: number, achievement: Achievement): Promise<boolean> {
-	// 	// Return a boolean value indicating if the achievement is completed or not.
-	// 	if (achievement.title === 'Baby steps') {
-	// 	const match = await this.prisma.match.findFirst({
-	// 		where: { OR: [{ matchAsP1: { userId } }, { matchAsP2: { userId } }] },
-	// 	})
-	// 	if (!match)
-	// 	  return false; 
-	// 	}
-	// 	 else if (achievement.title === 'Veteran') {
-	// 	  // Example specific check for the 'Veteran' achievement
-	// 	  return false; // Replace this with your actual implementation
-	// 	} else {
-	// 	  // Handle other achievements
-	// 	  return false; // Replace this with your actual implementation
-	// 	}
-	// }
-
 	async findOneById(id: number) {
-		return await prisma.user.findUnique({
+		const user =  await prisma.user.findUnique({
 			where: { id: id },
 			include: { achievements: true },
 		});
+
+		delete user.password;
+		delete user.token42;
+
+		return user;
 	}
 
 	async getHistoryMatch(id: number) {

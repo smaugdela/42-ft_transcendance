@@ -61,21 +61,88 @@ export class AuthService {
 					i++;
 				}
 
-				console.log("Creating 42 user.")
-				response = await axios.get('https://api.intra.42.fr/v2/users/' + user.id + '/coalitions', config);
 				userDb = await prisma.user.create({
 					data: {
 						nickname: name,
 						id42: user.id,
-						coalition: response.data[response.data.length - 1].name,
 						authtype: AuthType.FORTYTWO,
 						token42: accessToken,
 						avatar: user.image.link,
 						email: user.email,
 					}
 				});
+				await prisma.achievement.createMany({
+					data: [
+						{
+							userId: userDb.id,
+							icon: "/assets/baby_icon.png", //peu fructueux
+							title: "Baby steps",
+							description: "Played the game for the first time",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-jet-fighter-up",
+							title: "Veteran",
+							description: "Played 10 games",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-lemon",
+							title: "Easy peasy lemon squeezy",
+							description: "Won 3 games",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-user-slash",
+							title: "It's my lil bro playing",
+							description: "Lost 3 games",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-viruses",
+							title: "Social butterfly",
+							description: "Added 3 friends",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-user-astronaut",
+							title: "Influencer",
+							description: "Added 10 friends",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-shield-dog",
+							title: "Safety first",
+							description: "Activated the 2FA authentification",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-hand-spock",
+							title: "Writer soul",
+							description: "Change your bio",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-hand-spock",
+							title: "My safe place",
+							description: "Created their first channel",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-user-astronaut",
+							title: "Roland Garros",
+							description: "Make 3 aces !",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-user-astronaut",
+							title: "WINNER WINNER CHICKEN DINER",
+							description: "TOP 1 of the leaderboard",
+						},
+					]
+				});
 			}
-
+			
 			// Handle 2FA login
 			if (userDb.enabled2FA === true) {
 				this.mailService.send2FALoginCode(userDb.id);
@@ -85,8 +152,6 @@ export class AuthService {
 				});
 				return res.redirect(process.env.FRONTEND_URL + '/2fa/pending');
 			}
-
-			console.log("User 42 logged in: ", userDb.nickname);
 
 			await this.generateToken(userDb.id, res);
 
@@ -123,8 +188,6 @@ export class AuthService {
 				return { doubleFA: true };
 			}
 
-			console.log("User", body.nickname, "logged in.");
-
 			await this.generateToken(activeUser.id, res);
 
 			// this.webSocketGateway.server.emit('activity', activeUser.nickname);
@@ -153,7 +216,6 @@ export class AuthService {
 					data: { login2FAstatus: false }
 				});
 				await this.generateToken(id, res);
-				console.log("User", user.nickname, "logged in.");
 				return "Successfully logged!";
 			}
 		} catch (error) {
@@ -174,7 +236,6 @@ export class AuthService {
 			});
 
 			const avatarpath = "/assets/avatar" + Math.floor((Math.random() * 2.99) + 1) + ".png";
-			console.log(avatarpath);
 			// save the new user in the db
 			const newUser = await prisma.user.create({
 				data: {
@@ -182,7 +243,6 @@ export class AuthService {
 					avatar: avatarpath,
 					password: hash,
 					authtype: AuthType.LOGNPWD,
-					coalition: "Invite",
 				},
 			});
 
@@ -193,7 +253,7 @@ export class AuthService {
 				data: [
 					{
 						userId: userId,
-						icon: "fa-solid fa-baby",
+						icon: "/assets/baby_icon.png", //peu fructueux
 						title: "Baby steps",
 						description: "Played the game for the first time",
 					},
@@ -229,12 +289,6 @@ export class AuthService {
 					},
 					{
 						userId: userId,
-						icon: "fa-solid fa-frog",
-						title: "Cosmetic change",
-						description: "Updated their profile picture once",
-					},
-					{
-						userId: userId,
 						icon: "fa-solid fa-shield-dog",
 						title: "Safety first",
 						description: "Activated the 2FA authentification",
@@ -251,19 +305,23 @@ export class AuthService {
 						title: "My safe place",
 						description: "Created their first channel",
 					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-user-astronaut",
+						title: "Roland Garros",
+						description: "Make 3 aces !",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-user-astronaut",
+						title: "WINNER WINNER CHICKEN DINER",
+						description: "TOP 1 of the leaderboard",
+					},
 				]
 			});
 
-			// delete newUser.password;	// Temporary solution, should not be used permanently.
-
-			// log the created user
-			console.log('New standard user created: ', newUser.nickname);
-
 			await this.generateToken(newUser.id, res);
 
-			// this.webSocketGateway.server.emit('activity', newUser.nickname);
-
-			// res.send("Successfully signed up!");
 			return "Successfully signed up!";
 
 		} catch (error) {
@@ -276,7 +334,6 @@ export class AuthService {
 	}
 
 	async logout(userId: number, @Res({ passthrough: true }) res: Response) {
-		console.log("Logging out user", userId);
 
 		// Delete jwt from cookies.
 		res.clearCookie('jwt');

@@ -1,5 +1,11 @@
+#play-screen2 {
+	height: 92vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
-#play-screen2 > .button1 {
+.button1 {
 	display: flex;
 	justify-content: left;
 	background-color: transparent;
@@ -26,7 +32,7 @@
 	transition: .5s;
 } 
 
-#play-screen2 > .button2 {
+.button2 {
 	display: flex;
 	margin-left: 100px;
 	background-color: transparent;
@@ -52,14 +58,7 @@
 	transition: .5s;
 } 
 
-#play-screen2 {
-	padding-top: 500px;
-	padding-bottom: 500px;
-	display: flex;
-	justify-content: center;
-}
-
-#play-screen2 > .button1:hover {
+.button1:hover {
 	color: rgb(243, 249, 255);
 	filter: drop-shadow(0 0 20px #90d0f09e) contrast(2) brightness(1);
 	background: linear-gradient(rgba(5, 5, 5, 0.6), rgba(0, 0, 0, 0)), repeating-linear-gradient(0, transparent, transparent 2px, black 3px, black 3px);
@@ -73,19 +72,14 @@
 	animation-timing-function: steps(2, end); */
 }
 
-#play-screen2 > .button2:hover {
+.button2:hover {
 	color: rgb(243, 249, 255);
 	filter: drop-shadow(0 0 20px #90d0f09e) contrast(2) brightness(1);
 	background: linear-gradient(rgba(5, 5, 5, 0.6), rgba(0, 0, 0, 0)), repeating-linear-gradient(0, transparent, transparent 2px, black 3px, black 3px);
 }
-/* @keyframes glitch2 {
-	0%{
-		clip-path: var(--slice-1);
-		transform: translate(-20px, -10px);
-	}
-} */
 
-#play-screen2 > .button1::after{
+
+.button1::after{
   content: attr(title); 
   display: none;
   position: absolute;
@@ -102,26 +96,26 @@
   white-space: normal;
 }
 
-#play-screen2 > .button1:hover::after {
+.button1:hover::after {
 	display: block;
   }
 
-  #play-screen2 > .button2::after {
-	content: attr(title); 
-	display: none;
-	position: absolute;
-	bottom: -135px;
-	left: 50%;
-	transform: translateX(-50%);
-	border: 3px solid rgb(35, 71, 103);
-	background-color:  rgba(4, 8, 10, 0.641);
-	color: #fff;
-	padding: 5px 10px;
-	border-radius: 4px;
-	font-size: 12px;
-	white-space: normal;
-  }
-  
-  #play-screen2 > .button2:hover::after {
+.button2::after {
+content: attr(title); 
+display: none;
+position: absolute;
+bottom: -135px;
+left: 50%;
+transform: translateX(-50%);
+border: 3px solid rgb(35, 71, 103);
+background-color:  rgba(4, 8, 10, 0.641);
+color: #fff;
+padding: 5px 10px;
+border-radius: 4px;
+font-size: 12px;
+white-space: normal;
+}
+
+.button2:hover::after {
 	display: block;
-  }
+}

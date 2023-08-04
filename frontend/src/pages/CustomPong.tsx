@@ -5,7 +5,7 @@ import { Stage, Graphics, AppConsumer, useApp, Text, Container, Sprite } from "@
 import toast from "react-hot-toast";
 import { Ticker, Texture } from "pixi.js";
 import * as PIXI from "pixi.js";
-import { BlurFilter } from "@pixi/filter-blur"
+// import { BlurFilter } from "@pixi/filter-blur"
 import "../styles/CustomPong.css"
 import { GlowFilter } from "@pixi/filter-glow";
 
@@ -33,6 +33,15 @@ export function CustomPong() {
 	let lastTime = useRef(Date.now());
 	let lastCall = useRef(Date.now());
 
+	// const app = new PIXI.Application({
+	// 	width: 800,
+	// 	height: 600,
+	// 	backgroundColor: 0x1099bb,
+	// 	//   resizeTo: window,
+	// });
+	const app = useApp();
+	void app;
+
 	const [leftUser, setLeftUser] = useState(true);
 
 	const [gameState, setGameState] = useState({
@@ -54,9 +63,6 @@ export function CustomPong() {
 
 	const [downKeyPressed, setDownKeyPressed] = useState(false);
 	const [upKeyPressed, setUpKeyPressed] = useState(false);
-
-	const app = useApp();
-	void app;
 
 	useEffect(() => {
 		socket?.emit("accept match");
@@ -85,8 +91,6 @@ export function CustomPong() {
 		// Add event listeners for keydown and keyup
 		window.addEventListener("keydown", handleKeyDown);
 		window.addEventListener("keyup", handleKeyUp);
-
-		console.log("event listeners added");
 
 		// Clean up event listeners on component unmount
 		return () => {
@@ -257,20 +261,17 @@ export function CustomPong() {
 			toast.success("FIGHT ON!", {
 				id: "matchmaking",
 				icon: "🎉",
-				position: "bottom-center",
 				duration: 3000,
 			});
 		});
 
 		// Handle match cancellation
 		socket?.on("match canceled", () => {
-			console.log("Match canceled");
 			// setRunning(false);
 
 			toast.error("Player disconnected.", {
 				id: "matchmaking",
 				icon: "❌",
-				position: "bottom-center",
 				duration: 2000,
 			});
 
@@ -286,7 +287,6 @@ export function CustomPong() {
 			toast.success("You win!", {
 				id: "matchmaking",
 				icon: "🎉",
-				position: "bottom-center",
 				duration: 3000,
 			});
 
@@ -301,7 +301,6 @@ export function CustomPong() {
 			toast.error("You lose.", {
 				id: "matchmaking",
 				icon: "❌",
-				position: "bottom-center",
 				duration: 3000,
 			});
 
@@ -315,9 +314,9 @@ export function CustomPong() {
 
 	return (
 		<AppConsumer>
-			{(app) => (
-				<div className="pong-terrain">
+			{() => (
 				<Stage
+					className="pong-terrain"
 					width={width}
 					height={height}
 					options={{ backgroundColor: 0x3d2f4d , backgroundAlpha: 0.5 }}
@@ -358,7 +357,7 @@ export function CustomPong() {
 					} */}
 					 <Graphics // sides lines
 								draw={(graphics) => {
-									graphics.lineStyle(paddleWidth, 0xfad9ff, 0.8, 0.5); // pink color
+									graphics.lineStyle(paddleWidth, 0xde45b2, 0.8, 0.5); // pink color
 									graphics.moveTo(0, 0); // Start at the top left corner
 									graphics.lineTo(0, height); // Draw a line to the top right corner
 									graphics.moveTo(width, 0); // Start at the top left corner
@@ -368,7 +367,7 @@ export function CustomPong() {
 										distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 										outerStrength: 4, // Force du glow à l'extérieur de la forme
 										innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
-										color: 0xfad9ff, // Couleur du glow (même que la couleur de la balle)
+										color: 0xde45b2, // Couleur du glow (même que la couleur de la balle)
 									  })]}
 						/>
 
@@ -476,10 +475,10 @@ export function CustomPong() {
 						y={gameState.leftPaddleY} // Y position for the left paddle
 						draw={(graphics) => {
 							graphics.clear();
-							graphics.beginFill(0xffffff); // White color
+							graphics.beginFill(0xfad9ff); // rose pale color
 							graphics.drawRect(0, 0, paddleWidth, paddleLength); // Paddle dimensions
 							graphics.filters = [new GlowFilter({
-								color: 0xffffff, // Couleur du glow (même que la bordure)
+								color: 0xfad9ff, // Couleur du glow (même que la bordure)
 								distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 								outerStrength: 2, // Force du glow à l'extérieur de la forme
 								innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
@@ -492,10 +491,10 @@ export function CustomPong() {
 						y={gameState.rightPaddleY} // Y position for the right paddle
 						draw={(graphics) => {
 							graphics.clear();
-							graphics.beginFill(0xffffff); // White color
+							graphics.beginFill(0xfad9ff); // rose pale color
 							graphics.drawRect(0, 0, paddleWidth, paddleLength); // Paddle dimensions
 							graphics.filters = [new GlowFilter({
-								color: 0xffffff, // Couleur du glow (même que la bordure)
+								color: 0xfad9ff, // Couleur du glow (même que la bordure)
 								distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 								outerStrength: 2, // Force du glow à l'extérieur de la forme
 								innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
@@ -523,7 +522,6 @@ export function CustomPong() {
 
 					</Container>
 				</Stage>
-			</div>
 			)}
 		</AppConsumer>
 	);

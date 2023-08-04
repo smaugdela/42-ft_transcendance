@@ -1,5 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Activity, PrismaClient } from '@prisma/client';
+import { Socket } from 'socket.io';
 
 const prisma = new PrismaClient();
 
@@ -33,7 +34,6 @@ export class MatchClass {
 	powerUpX: number;
 	powerUpY: number;
 	powerUpDate: number;
-	
 
 	lastUpdate: number;
 }
@@ -63,12 +63,10 @@ export class SocketsService {
 
 	public registerActiveSockets(userId: number, socketId: string) {
 		this.currentActiveUsers.set(userId, socketId);
-		console.log("Map: users connected: ", this.currentActiveUsers);
 	}
 
 	public deleteDisconnectedSockets(client: number) {
 		this.currentActiveUsers.delete(client);
-		// console.log("Apres déco, nb de users en ligne: ", this.currentActiveUsers.size);
 	}
 
 	async activeUser(userId: number) {
@@ -78,11 +76,25 @@ export class SocketsService {
 					id: userId,
 				},
 				data: {
-					isActive: true,
+					isActive: Activity.ONLINE,
 				},
 			});
 		} catch (error) {
-			console.log(error);
+			throw new HttpException("No such user", 400);
+		}
+	}
+
+	async playingUser(userId: number) {
+		try {
+			await prisma.user.update({
+				where: {
+					id: userId,
+				},
+				data: {
+					isActive: Activity.INGAME,
+				},
+			});
+		} catch (error) {
 			throw new HttpException("No such user", 400);
 		}
 	}
@@ -94,11 +106,10 @@ export class SocketsService {
 					id: userId,
 				},
 				data: {
-					isActive: false,
+					isActive: Activity.OFFLINE,
 				},
 			});
 		} catch (error) {
-			console.log(error);
 			throw new HttpException("No such user", 400);
 		}
 	}
@@ -116,15 +127,12 @@ export class SocketsService {
 
 		for (let i = 0; i < this.queue.length; i++) {
 			if (this.queue[i].userId === userId) {
-				console.log("User already in queue.");
 				return i;
 			}
 		}
 
 		const player = this.createPlayer(userId, username, mode);
 		this.queue.push(player);
-
-		console.log(username, " joined the queue");
 
 		return this.queue.length - 1;
 	}
@@ -134,7 +142,7 @@ export class SocketsService {
 		const match = new MatchClass;
 		match.matchId = this.matchId++;
 		match.mode = mode;
-		
+
 		if (player1 === undefined) {
 			match.player1 = this.queue.shift();
 		} else {
@@ -145,7 +153,7 @@ export class SocketsService {
 		} else {
 			match.player2 = player2;
 		}
-		
+
 		match.player1.ready = false;
 		match.player2.ready = false;
 		match.p1posY = (this.gameConstants.height / 2) - (this.gameConstants.paddleLength / 2);
@@ -183,14 +191,12 @@ export class SocketsService {
 		for (let i = 0; i < this.matches.length; i++) {
 			if (this.matches[i].matchId === matchId) {
 				this.matches.splice(i, 1);
-				console.log("Match #", matchId, " deleted.");
 				return;
 			}
 		}
 	}
 
 	cleanupMatches() {
-		console.log("Matches Cleanup.")
 		for (let i = 0; i < this.matches.length;) {
 			const match = this.matches[i];
 			if ((match.player1.ready === false || match.player2.ready === false) && (Date.now() - match.started > 10000)) {
@@ -202,5 +208,13 @@ export class SocketsService {
 			}
 		}
 	}
+
+	// notifyFriendRequest(userId: number)
+	// {
+	// 	const socket = this.currentActiveUsers.get(userId);
+	// 	if (!socket || socket === undefined)
+	// 		return;
+	// 	socket.emit("new friend request");
+	// }
 
 }

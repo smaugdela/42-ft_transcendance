@@ -15,10 +15,7 @@ export default function Avatar( {setLoggedIn }: {setLoggedIn: React.Dispatch<Rea
 			const userStatus = await checkIfLogged();
 			setLoggedIn(userStatus);
 		};
-		
-		fetchData();
-		console.log('status', isLoggedIn);
-		
+		fetchData();		
 	}, [setLoggedIn, isLoggedIn]);
 
 	const userQuery = useQuery({ 
@@ -42,6 +39,6 @@ export default function Avatar( {setLoggedIn }: {setLoggedIn: React.Dispatch<Rea
 			<div id="active-dot"></div>
 		</div>
 	);
-};
+}
  
   

@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Licorice&family=Open+Sans&family=Share+Tech&display=swap');
+
+/* ********************************/
+/* ***       TabMore PAGE       ***/
+/* ********************************/
+
+#tabmore_page {
+	height: 78vh;
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	color: white;
+}
+
+.tabmore_page_title {
+    font-family: 'Bruno Ace SC', cursive;
+    font-weight: 600;
+    font-size: larger;
+    text-shadow: 0 0 15px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+    color: rgb(10, 10, 10);
+    
+	text-align: center;
+    padding: 1rem;
+	margin-top: 1vh;
+
+}
+
+.tabmore_page-noconv {
+	color: white;
+	text-align: center;
+	padding: 1em;
+}
+
+.tabmore_page-noconv > h3 {
+	font-family: 'Bruno Ace SC', cursive;
+    font-size: large;
+    text-shadow: 0 0 15px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+
+}
+
+.tabmore_page-noconv > h6 {
+    font-size: large;
+}
+
+#tabmore-chanwaiting {
+	overflow: auto;
+	overflow-x:hidden;
+}
+
+#create-chan-form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.8em;
+	padding: 0 2em;
+	text-align: center;
+}
+#create-chan-input {
+	width: 95%;
+	font-size: xx-small;
+}
+
+#create-chan-password-input[type=password] {
+	padding:10px;
+	border:0;
+	border-radius:5px;
+	margin: 10px 5px;
+	margin-right: 10px;
+	box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+	font-family: 'Bruno Ace SC', cursive;
+	color: white;
+	resize: vertical;
+}
+
+#create-chan-password-input[type=password]:hover {
+	border:0;
+	border-bottom:0.5px solid #eee;
+}
+
+#select-chan-type{
+	cursor: pointer;
+	background: none;
+	text-align: center;
+	color: rgb(39, 38, 38);
+	text-shadow: 0 0 15px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+	border: solid  1px rgba(30, 30, 58, 0.383);
+}
+
+#tabmore-btn {
+	margin-top: 1vh;
+	display: inline-block;
+	cursor: pointer;
+	
+	padding: 10px 20px;
+	border: solid white 2px;
+	margin-bottom: 1em;
+	border-radius: 50px;
+
+	font-family: 'Bruno Ace SC', cursive;
+	font-size: 14px;
+	font-weight: 0;
+	color: #fff;
+
+	background-color: transparent;
+	box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+	transition : 1000ms;
+	transform: translateY(0);
+}
+
+#tabmore-btn:hover {
+	transition : 600ms;
+	padding: 10px 25px;
+	transform : translateY(-0px);
+	background-color: #fff;
+	color: var(--heading-color);
+}

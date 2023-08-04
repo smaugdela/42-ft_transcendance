@@ -9,7 +9,7 @@
 	--social-primary-font-color: black;
 	--social-secondary-color : rgb(4, 30, 136);
 
-	/* Buttons to filter groups in social page */ 
+	/* Buttons to filter groups in social page */
 	--filter-btn-main-color : var(--sides-color); /* vient de App.css */
 	--filter-btn-secondary-color : rgba(255, 255, 255, 0.678);
 
@@ -30,7 +30,7 @@
 
 #social-dashboard {
 	flex: 2 auto;
-	height : 100%;
+	height : 92vh;
 	/* margin-top : 8vh; */
 	background-color: var(--bg-color); /* vient de App.css */
 	color: var(--font-color); /* vient de App.css */
@@ -70,11 +70,11 @@
 	justify-content: space-around;
 	align-items: center;
 	flex-wrap: wrap;
-	margin : 3vh 10vw;
+	margin : 15vh 10vw;
 }
 
 .social-btn > button {
-	padding: 1vw 4vw; 
+	padding: 1vw 4vw;
 	border-radius: 20px;
 	font-weight: 800;
 }
@@ -115,7 +115,7 @@
   }
 
 .searched_user {
-	background-color: var(--search-bar-main-bg-element);
+	background-color: var(--filter-btn-main-color);
 	margin: 0 2vw;
 	padding: 0 1vw;
 	border-radius: 20px;
@@ -137,7 +137,7 @@
 	text-decoration: none;
 	color: var(--search-bar-add-btn);
 	padding: 0.5em 0.5em;
-	background-color: rgb(44, 35, 35);
+	/* background-color: rgb(44, 35, 35); */
 	border-radius: 50%;
 	margin-left :0.5vw;
 }
@@ -156,11 +156,17 @@
 #title {
 	text-shadow: none;
 	color:  rgb(24, 46, 65);
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 80px rgb(24, 46, 65);
 	font-size: 1em;
 }
 
 #title > em {
-	color:rgb(170, 168, 19);
+	color:rgb(26, 60, 155);
 	font-family: var(--font-type);
 }
 
@@ -181,7 +187,13 @@
 	background-color: var(--social-primary-bg-color);
 	border-radius: 20px;
 	margin : 2vw;
-	color: grey;
+	color:  white;
+	text-shadow:
+	0 0 7px #efefef,
+	0 0 10px #90d0f0,
+	0 0 42px rgb(60, 116, 166),
+	0 0 77px rgb(60, 116, 166),
+	0 0 80px rgb(24, 46, 65);
 	height: 15em;
 	width: 20%;
 	display: flex;
@@ -195,7 +207,7 @@
 }
 
 .profile:hover {
-	color : var(--social-primary-font-color);
+	/* color : var(--social-primary-font-color); */
 	font-size: large;
 }
 
@@ -223,11 +235,69 @@
 	/* flex-direction: column; Set the flex direction to column */
 }
 
+.profile_infos > div:hover {
+	cursor: pointer;
+}
+
+.profile_infos_allfriends > div:hover {
+	cursor: pointer;
+}
+
+.profile_infos_allfriends {
+	display: flex;
+	justify-content: center;
+	align-items: first baseline;
+	gap: 1vw;
+	/* flex-direction: column; Set the flex direction to column */
+}
+
+.profile_infos_activeFriends {
+	display: flex;
+	justify-content: center;
+	align-items: first baseline;
+	gap: 1vw;
+	/* flex-direction: column; Set the flex direction to column */
+}
+
 .profile_infos > div:first-of-type {
 	color : rgb(29, 123, 216);
+}
+
+.profile_infos > div:nth-child(3) {
+	color : gray;
 }
 
 .profile_infos > div:last-of-type {
 	color : rgb(243, 64, 64);
 }
 
+
+.profile_infos_allfriends > div:nth-child(2) {
+	color : gray;
+}
+
+.profile_infos_allfriends > div:last-of-type {
+	color : rgb(243, 64, 64);
+}
+
+/* .profile_infos_activeFriends > div{
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+	font-size: 3em;
+} */
+
+.msgUserBtn {
+	/* background-color: purple; */
+	all: unset;
+	cursor: pointer;
+}
+
+.msgUserBtn-icon {
+	color: white;
+	/* font-size: large; */
+}

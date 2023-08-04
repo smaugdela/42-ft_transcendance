@@ -5,7 +5,7 @@ import { Stage, Graphics, AppConsumer, useApp, Text, Container } from "@pixi/rea
 import toast from "react-hot-toast";
 import { Ticker } from "pixi.js";
 import * as PIXI from "pixi.js";
-import { BlurFilter } from "@pixi/filter-blur"
+// import { BlurFilter } from "@pixi/filter-blur"
 import "../styles/Pong.css"
 import { GlowFilter } from "@pixi/filter-glow";
 
@@ -73,8 +73,6 @@ export function Pong() {
 		// Add event listeners for keydown and keyup
 		window.addEventListener("keydown", handleKeyDown);
 		window.addEventListener("keyup", handleKeyUp);
-
-		console.log("event listeners added");
 
 		// Clean up event listeners on component unmount
 		return () => {
@@ -232,20 +230,17 @@ export function Pong() {
 			toast.success("FIGHT ON!", {
 				id: "matchmaking",
 				icon: "🎉",
-				position: "bottom-center",
 				duration: 3000,
 			});
 		});
 
 		// Handle match cancellation
 		socket?.on("match canceled", () => {
-			console.log("Match canceled");
 			// setRunning(false);
 
 			toast.error("Player disconnected.", {
 				id: "matchmaking",
 				icon: "❌",
-				position: "bottom-center",
 				duration: 2000,
 			});
 
@@ -261,7 +256,6 @@ export function Pong() {
 			toast.success("You win!", {
 				id: "matchmaking",
 				icon: "🎉",
-				position: "bottom-center",
 				duration: 3000,
 			});
 
@@ -276,7 +270,6 @@ export function Pong() {
 			toast.error("You lose.", {
 				id: "matchmaking",
 				icon: "❌",
-				position: "bottom-center",
 				duration: 3000,
 			});
 
@@ -290,7 +283,7 @@ export function Pong() {
 
 	return (
 		<AppConsumer>
-			{(app) => (
+			{() => (
 				<div className="pong-terrain">
 				<Stage
 					width={width}
@@ -319,17 +312,7 @@ export function Pong() {
 									graphics.moveTo(0, 0); // Start at the top left corner
 									graphics.lineTo(0, height); // Draw a line to the top right corner
 									graphics.filters = [new BlurFilter(8, 1)]; // Le premier paramètre (8) contrôle le flou (plus la valeur est grande, plus le glow est étendu)
-									}}
-							/>
-							<Graphics
-								draw={(graphics) => {
-									graphics.lineStyle(paddleWidth, 0x00ff00, 0.8, 0.5); // White color
-									graphics.moveTo(width, 0); // Start at the top left corner
-									graphics.lineTo(width, height); // Draw a line to the top right corner
-								 	graphics.filters = [new BlurFilter(8, 1)]; // Le premier paramètre (8) contrôle le flou (plus la valeur est grande, plus le glow est étendu)
-									
-									}}
-						/></>
+							>
 					} */}
 					 <Graphics // sides lines
 								draw={(graphics) => {
@@ -409,7 +392,7 @@ export function Pong() {
 							distance: 5, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 							outerStrength: 2, // Force du glow à l'extérieur du texte
 							innerStrength: 0, // Force du glow à l'intérieur du texte (0 signifie aucun glow intérieur)
-							color: 0xffffff, // Couleur du glow (choisissez une couleur néon appropriée)
+							color: 0x18141c, // Couleur du glow (choisissez une couleur néon appropriée)
 						  })]}
 					/>
 
@@ -432,7 +415,7 @@ export function Pong() {
 							distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 							outerStrength: 4, // Force du glow à l'extérieur de la forme
 							innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
-							color: 0x18141c,
+							color: 0xffffff,
 						  })]}
 					/>
 

@@ -1,5 +1,5 @@
 import { fetch2FA } from "../api/APIHandler";
-import React, { useState, useEffect } from 'react';
+import /*React,*/ { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 
 const VerificationPage = () => {
@@ -20,9 +20,7 @@ const VerificationPage = () => {
         try {
           const response = await fetch2FA(code, userId);
 
-		  console.log("response.status: " + response.status);
-
-          if (response.status === 200) {
+          if (response && response.status === 200) {
 			setIsSuccess(true);
 			setIsLoading(false);
             setTimeout(() => {
@@ -33,10 +31,8 @@ const VerificationPage = () => {
             // Handle the case when the code is not valid
 			setIsSuccess(false);
 			setIsLoading(false);
-            console.log('Code verification failed');
           }
         } catch (error) {
-          console.log('Error occurred during code verification', error);
 		  setIsSuccess(false);
           setIsLoading(false);
 		//   navigate('/error/');
@@ -46,7 +42,6 @@ const VerificationPage = () => {
       verifyCode();
     } else {
       // Handle the case when the code is missing from the query parameters
-      console.log('Code not found in the query parameters');
       setIsLoading(false);
     }
   }, [location.search, navigate]);

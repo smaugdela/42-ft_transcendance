@@ -1,4 +1,4 @@
-import React,  { useContext }  from 'react';
+import /*React,*/  { useContext }  from 'react';
 import '../styles/Chat.css';
 import '../styles/Tab_channels.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -35,10 +35,10 @@ const Chat = () => {
 		return <div>Loading...</div>
 	}
 	
-	var tabs: Tab[] = [
-				 { label: 'Convs', content: <div><TabChannels/></div> },
-	activeConv ? { label: 'Chat', content: <div><TabChat conv={activeConv} loggedUser={userMe}/></div> } : { label: 'Chat', content: <div>Join convos to see the chat!</div> },
-				 { label: 'More', content: <div><TabMore /></div> },
+	const tabs: Tab[] = [
+				{ label: 'Convs', content: <div><TabChannels/></div> },
+	activeConv ? { label: 'Chat', content: <div><TabChat conv={activeConv} loggedUser={userMe}/></div> } : { label: 'Chat', content: <div id='chat_no-chat'>Join convos to see the chat!</div> },
+				{ label: 'More', content: <div><TabMore /></div> },
 	];
 
 	return (

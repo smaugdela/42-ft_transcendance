@@ -7,11 +7,8 @@ services:
     container_name: postgres
     restart: unless-stopped
     env_file:
-      - .env.docker
-    # ports:
-    #   - 5432:5432
+      - .env
     networks:
-      # - backend
       - transcendance
     volumes:
       - postgres:/var/lib/postgresql/data
@@ -22,14 +19,13 @@ services:
       - database
     restart: unless-stopped
     env_file:
-      - .env.docker
+      - .env
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
       - 3001:3001
     networks:
-      # - backend
       - transcendance
 
   frontend:
@@ -39,28 +35,56 @@ services:
       - backend
     restart: unless-stopped
     env_file:
-      - .env.docker
+      - .env
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
       - 443:443
-      # - 3000:3000
+
+  # meilisearch:
+  #   container_name: meilisearch
+  #   image: getmeili/meilisearch:v1.3.0
+  #   depends_on:
+  #     - database
+  #   restart: unless-stopped
+  #   env_file:
+  #     - .env
+  #   # environment:
+  #   #   - http_proxy
+  #   #   - https_proxy
+  #   #   - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-masterKey}
+  #   #   - MEILI_NO_ANALYTICS=${MEILI_NO_ANALYTICS:-true}
+  #   #   - MEILI_ENV=${MEILI_ENV:-development}
+  #   #   - MEILI_LOG_LEVEL
+  #   #   - MEILI_DB_PATH=${MEILI_DB_PATH:-/data.ms}
+  #   ports:
+  #     - 7700:7700
+  #   networks:
+  #     - transcendance
+  #   volumes:
+  #     # - ./data.ms:/data.ms
+  #     - postgres:/data.ms
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    depends_on:
+      - database
+    restart: unless-stopped
+    ports:
+      - 8080:8080
     networks:
       - transcendance
 
 networks:
   transcendance:
     driver: bridge
-  # backend:
-  #   driver: bridge
 
 volumes:
   postgres:
     driver: local
     driver_opts:
       type: none
-      device: '${PWD}/data'
+      device: './data'
       o: bind
-
-# ADD MEILISEARCH

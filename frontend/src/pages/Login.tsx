@@ -42,7 +42,6 @@ export default function Login({ setLoggedIn, setSocket }: {
 		
 		try {
 			const response = await logIn(nickname, password);
-			console.log("Login Response.data.doubleFA: " + response.data.doubleFA);
 			if (response.data.doubleFA === true) {
 				navigate('/2fa/pending');
 				return;
@@ -94,7 +93,7 @@ export default function Login({ setLoggedIn, setSocket }: {
 			<button onClick={handleLogIn} id="login-btn">Log In</button>
 			<div className="social">
 				<div className="go">
-					<a className="title-logs" href={process.env.REACT_APP_URL_42}>Log with 42</a>
+					<a className="title-logs" href={import.meta.env.VITE_URL_42}>Log with 42</a>
 				</div>
 				<div className="fb">
 					<button  onClick={handleSignUp} id="signup_btn">Sign up</button>

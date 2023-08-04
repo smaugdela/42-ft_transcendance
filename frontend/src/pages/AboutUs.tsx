@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import "../styles/AboutUs.css";
 
 interface Member {
@@ -41,11 +41,11 @@ function AboutUs() {
        {teamMembers.map((member, index) => (
         <div className='container_staff' key={index}>
           <img className='image' src={member.image} alt={member.name} />
-        <div className='text'>
-          <h2>{member.name}</h2>
-          <p><a href={member.github} >{member.github}</a></p>
+          <div className='text'>
+            <h2>{member.name}</h2>
+            <p><a href={member.github} >{member.github}</a></p>
+          </div>
         </div>
-      </div>
     ))}
   </div>
   </div>

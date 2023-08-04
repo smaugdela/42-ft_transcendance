@@ -24,18 +24,19 @@ export default function MessageUserBtn( { loggedInUser, userToContact} : { logge
 	}, [loggedInUser, userToContact.nickname])
 	
 	const { mutate } = useMutation({
-		mutationFn: () => manageDirectMessages(roomName, userToContact.nickname),
+		mutationFn: () => manageDirectMessages(roomName, userToContact.nickname, loggedInUser),
 		onSuccess: (data) => {
 			queryClient.invalidateQueries(['channels']);
 			if (socket && data) {
 				sendNotificationToServer(socket, 'Create Lobby', data?.roomName);
-				setActiveConv(data);
-				setActiveTab(1);
-				setIsExpanded(true);
+				setActiveConv(null);
+				// setActiveConv(data);
+				setActiveTab(0);
+				// setIsExpanded(true);
 				toast.success("You can now talk to the other person!");
 			}
 		},
-		onError: () => { toast.error('Error during creation: channel name already in use') }
+		onError: () => { toast.error('Error : you may have been blocked !') }
 	})
 	
 	// Creates conv if not existant, join both users and displays chat with conv on right tab
@@ -48,7 +49,7 @@ export default function MessageUserBtn( { loggedInUser, userToContact} : { logge
 
 	return (
 		<>
-			<button onClick={(event) => handleClick(event)} ><FontAwesomeIcon icon={faComment} /></button>
+			<button className="msgUserBtn" onClick={(event) => handleClick(event)} ><FontAwesomeIcon icon={faComment} className="msgUserBtn-icon"/></button>
 		</>
 	);
 }

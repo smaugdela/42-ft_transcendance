@@ -8,18 +8,17 @@ export interface IUser {
 	enabled2FA: boolean;
 	accessToken: number;
 	bio: string;
-	coalition: string;
-	
+
 	aces: number;
 	score: number;
 	rank: number;
-	isActive : boolean;
+	isActive: string;
 
 	ownerChans: IUser[];
 
-	friendsList : IUser[];
-	blockList : IUser[];
-	pendingList : IUser[];
+	friendsList: IUser[];
+	blockList: IUser[];
+	pendingList: IUser[];
 
 	achievements: IAchievement[];
 
@@ -61,10 +60,10 @@ export interface IChannel {
 	owner: IUser;
 	ownerId: number;
 	admin: IUser[];
-	joinedUsers : IUser[]; 
-	bannedUsers : IUser[]; 
-	kickedUsers : IUser[]; 
-	mutedUsers  : IUser[]; 
+	joinedUsers: IUser[];
+	bannedUsers: IUser[];
+	kickedUsers: IUser[];
+	mutedUsers: IUser[];
 }
 
 export interface IMessage {

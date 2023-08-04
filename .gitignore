@@ -1,7 +1,12 @@
 .env*
 .vscode/
 *.pem
+*.key
 .DS_Store
-
+*.key
+meilisearch
+/data
 # React Component Preview
 previewConfig.json
+data.ms/
+dumps
