@@ -69,21 +69,6 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 
 	useEffect(() => {
 		if (channel) {
-			// if (loggedUser && channel?.mutedUsers.some((member) => member.id === loggedUser.id)) {
-			// 	// setIsMuted(true);
-			// 	console.log("TabChat mute expiration : ", muteExpiration);
-			// 	const isMutedExpired = muteExpiration !== null && Date.now() > muteExpiration;
-			// 	if (isMuted === true && isMutedExpired) {
-			// 		console.log("la fin arrive");
-					
-			// 		changeRole.mutate(["mutedUsers", "disconnect", String(channel?.id)]);
-			// 		setIsMuted(false);
-			// 		setMuteExpiration(null);
-			// 		console.log("not muted anymore for ", loggedUser.nickname);
-					
-			// 		toast.success("You're not muted anymore!");
-			// 	}
-			// }
 			if (loggedUser && channel.kickedUsers.some((member) => member.id === loggedUser.id)) {
 				leaveChannelRequest.mutate([loggedUser, channel.id]);
 				toast(`You have been kicked from this channel (${channel.roomName})!`, {
@@ -113,7 +98,6 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 	// Fonction pour envoyer son msg au serveur, pour être transféré aux destinataires
 	const sendMessage = (message: string) => {
 		const payload: string = "/msg  " + conv?.roomName + "  " + message;
-		console.log("payload ", payload);
 		
 		if (socket) {
 			socket.emit('Chat', payload);
@@ -127,7 +111,6 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 			/* Listen tous les messages de l'event receiveMessage */
 			socket.on('receiveMessage', (message: IMessage) => {
 				if (data) {
-					console.log('je suis la data receive message');
 					
 					setMessages([...data, message]);
 				}
@@ -148,7 +131,6 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 		}
 		const scroll = document.getElementById("convo__messages");
 		if (scroll) {
-		// console.log("scrooool: ", scroll);
 			scroll.scrollTop = scroll.scrollHeight;
 		}
 	};

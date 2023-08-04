@@ -5,30 +5,37 @@ import { faUserPlus, faBan, faUserXmark} from '@fortawesome/free-solid-svg-icons
 import { acceptFriendRequest, rejectFriendRequest, blockUser } from "../../api/APIHandler";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IUser } from "../../api/types";
+import { toast } from 'react-hot-toast';
 
 export function PendingList( props: { profilesToDisplay : IUser[], userIsSuccess: boolean }) {
 	const queryClient = useQueryClient();
     const blockuser = useMutation({ 
 		mutationFn: (nickname: string) => blockUser(nickname),
-		onSuccess: () => {queryClient.invalidateQueries(['user']);}
+		onSuccess: () => {
+			queryClient.invalidateQueries(['user']);
+			toast.success("It's done!");
+	}
 	});
 	const acceptRequest = useMutation({ 
 		mutationFn: (id: number) => acceptFriendRequest(id),
 		onSuccess: () => {
-			queryClient.invalidateQueries(['user']);	
+			queryClient.invalidateQueries(['user']);
+			toast.success("It's done!");	
 		}
 	});
     const rejectRequest = useMutation({ 
 		mutationFn: (id: number) => rejectFriendRequest(id),
 		onSuccess: () => {
-			queryClient.invalidateQueries(['user']);	
+			queryClient.invalidateQueries(['user']);
+			toast.success("It's done!");	
 		}
 	});
 	useEffect(() => {
 		if (props.userIsSuccess) {
-		  queryClient.invalidateQueries(['user']); // Refetch the user data if the userIsSuccess prop changes
+			queryClient.invalidateQueries(['user']); // Refetch the user data if the userIsSuccess prop changes
+		//   toast.success("It's done!");
 		}
-	  }, [props.userIsSuccess]);
+	}, [props.userIsSuccess]);
 
 	const handleacceptRequest = (id: number) => {
 		acceptRequest.mutate(id);

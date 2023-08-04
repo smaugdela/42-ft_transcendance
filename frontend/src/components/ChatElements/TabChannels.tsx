@@ -12,7 +12,9 @@ function isBlockedInDM(channel: IChannel): boolean {
 		return false;
 	}
 	const [userA, userB] = channel.joinedUsers;
-
+	if (!userA || !userB) {
+		return false;
+	}
 	if (isBlockedByUser(userA, userB) === false && isBlockedByUser(userB, userA) === false)
 		return false;
 	else

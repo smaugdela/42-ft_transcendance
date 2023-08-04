@@ -61,7 +61,6 @@ export function handleRequestFromUser(socket: Socket, group: string, action: str
 			info = `#INFO# ${userTalking} is quoted in this channel.`
 	}
 	const payload: string = role + "  " + channelName + "  " + userTalking;
-	console.log("Info payload ", payload);
 
 	sendNotificationToServer(socket, 'Chat', payload);
 	return (info);

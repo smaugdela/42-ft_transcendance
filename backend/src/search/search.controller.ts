@@ -16,7 +16,6 @@ export class SearchController {
 	public async getSearch(): Promise<void> {
 		const users = await this.usersService.findAll();
 		const response = await this.searchService.addDocuments(users);
-		console.log('Meilisearch populated w/ our users ', response);
 	}
 
 	@Post('/')

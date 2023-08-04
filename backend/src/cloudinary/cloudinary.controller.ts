@@ -21,7 +21,6 @@ export class CloudinaryController {
 			) {
 			try {
 				const uploadedImage =  await this.cloudinaryService.uploadImage(file);
-				console.log(uploadedImage.public_id);
 				
 				const secureUrl = cloudinary.url(uploadedImage.public_id, { secure: true });
 				await this.usersService.updateAvatar(+id, secureUrl);

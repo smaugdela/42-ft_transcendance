@@ -175,8 +175,6 @@ export async function updateUserStringProperty(property: keyof IUser, newPropert
 		);
 		return response.data;
 	} catch (error) {
-		// console.log("Error updating user string property: ", error);
-		// Handle possible exceptions from the backend accordingly! Recover the error code and eventually display the according page...
 		throw new Error('Nickname is already taken');
 	}
 }
@@ -373,16 +371,12 @@ export async function manageDirectMessages(roomName: string, contactedUserName: 
 		if (!conv) {
 			const split = roomName.split(' ');
 			const roomNameReversed = split[1] + ' ' + split[0];
-			console.log('reversed is :');
 			
 			conv = await getOneChannelByName(roomNameReversed);
 			if (!conv) {
 				conv = await createChannel(roomName, "", 'DM'); // Using '' for password for DM type
-			}
-			console.log("id de conv ", conv.id);
-			
+			}			
 		}
-		// Y A UN PB CAR CONV ID EXISTE PAS apres tout le schmilblick
 		await updateUserInChannel(user.id, conv.id, 'joinedUsers', 'connect');
 		return conv;
 	} catch (error) {

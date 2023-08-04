@@ -1,70 +1,70 @@
 import "../styles/Social.css"
-import { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPlus} from '@fortawesome/free-solid-svg-icons';
-import { fetchMe, postSearchQuery, friendRequest } from "../api/APIHandler";
+import { useState } from 'react';
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faUserPlus} from '@fortawesome/free-solid-svg-icons';
+import { fetchMe } from "../api/APIHandler";
 import { useQuery } from "@tanstack/react-query";
 import { IUser } from "../api/types";
 import {AllFriends} from "../components/Social/AllFriends";
 import { PendingList } from "../components/Social/PendingList";
 import {BlockedUser} from "../components/Social/BlockedUser";
 import {ActiveFriends} from "../components/Social/ActiveFriends";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function SearchBar() {
+// export function SearchBar() {
 
-	const [userInput, setUserInput] = useState("");
-	const [searchedUser, setSearchResults] = useState<IUser>();
-	useEffect( () => {
-		if (userInput.length > 2){
-			postSearchQuery(userInput)
-			.then( (response) => {
-				const copy = {...response};
-				setSearchResults(copy.data.hits[0]._formatted);
-			})
-			.catch(() => {
-				setSearchResults(undefined);
-			});
-		}
-		if (userInput === "") {
-			setSearchResults(undefined);
-		}
-	}, [userInput]);
+// 	const [userInput, setUserInput] = useState("");
+// 	const [searchedUser, setSearchResults] = useState<IUser>();
+// 	useEffect( () => {
+// 		if (userInput.length > 2){
+// 			postSearchQuery(userInput)
+// 			.then( (response) => {
+// 				const copy = {...response};
+// 				setSearchResults(copy.data.hits[0]._formatted);
+// 			})
+// 			.catch(() => {
+// 				setSearchResults(undefined);
+// 			});
+// 		}
+// 		if (userInput === "") {
+// 			setSearchResults(undefined);
+// 		}
+// 	}, [userInput]);
 
-	const queryClient = useQueryClient();
-	const friendrequest = useMutation({ 
-		mutationFn: (nickname : string) => friendRequest(nickname),
-		onSuccess: () => {queryClient.invalidateQueries(['user']);}
-	});
-	const handlefriendRequest = (nickname : string) => {
-		friendrequest.mutate(nickname);
-	}
+// 	const queryClient = useQueryClient();
+// 	const friendrequest = useMutation({ 
+// 		mutationFn: (nickname : string) => friendRequest(nickname),
+// 		onSuccess: () => {queryClient.invalidateQueries(['user']);}
+// 	});
+// 	const handlefriendRequest = (nickname : string) => {
+// 		friendrequest.mutate(nickname);
+// 	}
 	
-	return (
-		<div>
-			<p className="text_serachBar">Looking for someone to add ? Try this search bar!</p>
-			<div className="search_bar">
-				<input 
-					type="text" 
-					id="search_input"
-					name="search"
-					onChange={(event) => setUserInput(event.target.value)}
-					placeholder="Type the nickname of the person you want to find..."
-				/>
-				<>
-					{ searchedUser && (<div key={searchedUser.id} className="searched_user">
-						<div className="search_user_infos">
-							<img id="search_user_avatar" src={searchedUser.avatar} alt={searchedUser.nickname} />
-							<h5 id="title" dangerouslySetInnerHTML={{__html: searchedUser.nickname}}></h5>
-							<a><FontAwesomeIcon icon={faUserPlus} onClick={() =>handlefriendRequest(searchedUser.nickname)}/></a>
-						</div>
-					</div>)
-					}
-				</>
-			</div>
-		</div>
-	);
-}
+// 	return (
+// 		<div>
+// 			<p className="text_serachBar">Looking for someone to add ? Try this search bar!</p>
+// 			<div className="search_bar">
+// 				<input 
+// 					type="text" 
+// 					id="search_input"
+// 					name="search"
+// 					onChange={(event) => setUserInput(event.target.value)}
+// 					placeholder="Type the nickname of the person you want to find..."
+// 				/>
+// 				<>
+// 					{ searchedUser && (<div key={searchedUser.id} className="searched_user">
+// 						<div className="search_user_infos">
+// 							<img id="search_user_avatar" src={searchedUser.avatar} alt={searchedUser.nickname} />
+// 							<h5 id="title" dangerouslySetInnerHTML={{__html: searchedUser.nickname}}></h5>
+// 							<a><FontAwesomeIcon icon={faUserPlus} onClick={() =>handlefriendRequest(searchedUser.nickname)}/></a>
+// 						</div>
+// 					</div>)
+// 					}
+// 				</>
+// 			</div>
+// 		</div>
+// 	);
+// }
 
 // export function DisplayConnections( props: { profilesToDisplay : IUser[], userIsSuccess: boolean }) {
 // 	const queryClient = useQueryClient();
@@ -105,7 +105,7 @@ export function Social() {
 
 	return (
 		<div  id="social-dashboard">
-			<SearchBar />
+			{/* <SearchBar /> */}
 			<div className="social-btn">
 				<button 
 					onClick={() => handleClickComponent('allFriends')} className={activeList === 'allFriends' ? 'clicked-btn' : 'btn'}>

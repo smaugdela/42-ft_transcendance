@@ -148,18 +148,6 @@ function isAchievementCompleted (user: IUser, title: string): boolean
 			}
 				return false 
 		}
-		case "Cosmetic change":
-		{
-			if (!user.avatar)
-				return false
-			const userChangedPp = user.avatar;
-			if (userChangedPp !== "/assets/avatar1.png" && userChangedPp !== "/assets/avatar2.png" && userChangedPp !== "/assets/avatar3.png")
-			{
-				achievementNumber++;
-				return true 
-			}
-			return false 
-		}
 		case "Safety first":
 		{
 			if (user.enabled2FA == true)

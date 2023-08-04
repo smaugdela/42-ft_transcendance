@@ -1,5 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { Activity, PrismaClient } from '@prisma/client';
+import { Socket } from 'socket.io';
 
 const prisma = new PrismaClient();
 
@@ -62,12 +63,10 @@ export class SocketsService {
 
 	public registerActiveSockets(userId: number, socketId: string) {
 		this.currentActiveUsers.set(userId, socketId);
-		console.log("Map: users connected: ", this.currentActiveUsers);
 	}
 
 	public deleteDisconnectedSockets(client: number) {
 		this.currentActiveUsers.delete(client);
-		// console.log("Apres déco, nb de users en ligne: ", this.currentActiveUsers.size);
 	}
 
 	async activeUser(userId: number) {
@@ -81,7 +80,6 @@ export class SocketsService {
 				},
 			});
 		} catch (error) {
-			console.log(error);
 			throw new HttpException("No such user", 400);
 		}
 	}
@@ -97,7 +95,6 @@ export class SocketsService {
 				},
 			});
 		} catch (error) {
-			console.log(error);
 			throw new HttpException("No such user", 400);
 		}
 	}
@@ -113,7 +110,6 @@ export class SocketsService {
 				},
 			});
 		} catch (error) {
-			console.log(error);
 			throw new HttpException("No such user", 400);
 		}
 	}
@@ -131,15 +127,12 @@ export class SocketsService {
 
 		for (let i = 0; i < this.queue.length; i++) {
 			if (this.queue[i].userId === userId) {
-				console.log("User already in queue.");
 				return i;
 			}
 		}
 
 		const player = this.createPlayer(userId, username, mode);
 		this.queue.push(player);
-
-		console.log(username, " joined the queue");
 
 		return this.queue.length - 1;
 	}
@@ -198,14 +191,12 @@ export class SocketsService {
 		for (let i = 0; i < this.matches.length; i++) {
 			if (this.matches[i].matchId === matchId) {
 				this.matches.splice(i, 1);
-				console.log("Match #", matchId, " deleted.");
 				return;
 			}
 		}
 	}
 
 	cleanupMatches() {
-		console.log("Matches Cleanup.")
 		for (let i = 0; i < this.matches.length;) {
 			const match = this.matches[i];
 			if ((match.player1.ready === false || match.player2.ready === false) && (Date.now() - match.started > 10000)) {
@@ -217,5 +208,13 @@ export class SocketsService {
 			}
 		}
 	}
+
+	// notifyFriendRequest(userId: number)
+	// {
+	// 	const socket = this.currentActiveUsers.get(userId);
+	// 	if (!socket || socket === undefined)
+	// 		return;
+	// 	socket.emit("new friend request");
+	// }
 
 }

@@ -15,7 +15,7 @@ export function ActiveFriends( props: { profilesToDisplay : IUser[]}) {
             return <div>Loading...</div>
         }
         
-        const loggedInUser: string = loggedUser.nickname;;
+        const loggedInUser: string = loggedUser.nickname;
 	
         const displayProfiles = props.profilesToDisplay.map(profile => {
             return <div key={profile.id} className="profile">

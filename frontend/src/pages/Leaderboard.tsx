@@ -2,6 +2,7 @@ import "../styles/Leaderboard.css"
 import { IUser } from "../api/types";
 import { fetchUsers } from "../api/APIHandler";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from 'react-router-dom';
 
 export function TopThreeDetail(props: { user: IUser}) {
 	let podium;
@@ -14,10 +15,12 @@ export function TopThreeDetail(props: { user: IUser}) {
 
 	return (
 		<div key={props.user.id} className="podium" id={podium}>
+			<Link to={`/user/${props.user.nickname}`} >
 			<img 
 				src={props.user.avatar}
 				alt={props.user.nickname}
 			/>
+			</Link>
 			<h3>{props.user.score}</h3>
 			<h1>{props.user.nickname}</h1>
 			<p>Rank {props.user.rank}</p>
@@ -36,10 +39,12 @@ export function OnePerf( {user} : {user: IUser} ) {
 	}
 	return (
 	<div key={user.id} className="stats" id="other">
-			<img 
-				src={user.avatar}
-				alt={user.nickname}
-			/>
+			<Link to={`/user/${user.nickname}`} >
+				<img 
+					src={user.avatar}
+					alt={user.nickname}
+				/>
+			</Link>
 			<div className="user-ids">
 				<h2 >{user.nickname}</h2>
 			</div>
@@ -91,7 +96,6 @@ export function Leaderboard() {
 	
 	return (
 		<div id="body-leaderboard">
-			<div id="gradient-bg"></div>
 			<div className="leaderboard">
 				<h1>Leaderboard</h1>
 				<section id="top-three"> 
