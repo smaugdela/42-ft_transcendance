@@ -52,6 +52,29 @@ export default function Home() {
 		);
 	});
 
+	socket?.on("match ready", (mode: string) => {
+		const duration = 2500; // 2.5 seconds
+
+		setTimeout(() => {
+			// Only send "match declined" if the match is still in the waiting state
+			// toast.dismiss("matchmaking");
+			socket.off("match ready");
+			if (mode === "Custom") {
+				navigate("/custompong");
+			} else {
+				navigate("/pong");
+			}
+		}, duration + 500);
+
+		toast.success("Match found! Redirecting to game...",
+			{
+				id: "matchmaking",
+				icon: "🎉",
+				duration: duration,
+			}
+		);
+	});
+
 	socket?.on('match invitation declined', (decliner: string) => {
 		toast.error(`${decliner} declined your invitation`);
 	});

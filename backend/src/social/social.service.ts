@@ -58,12 +58,17 @@ export class SocialService {
 		}
 		);
 		if (!friend) {throw new NotFoundException('Friend not found.');}
-		return prisma.user.update(
+		const user = await prisma.user.update(
 		{
 			where: { id: friend.id },
 			data: { pendingList: {connect: { id: userId },},},
 		}
 		);
+
+		delete user.password;
+		delete user.token42;
+
+		return user;
 	}
 
 	async acceptRequest(userId: number, id: number) 
@@ -73,7 +78,7 @@ export class SocialService {
 				where: { id: userId },
 				data: {pendingList: {disconnect: { id: id }}}
 			}
-		)
+		);
 		await prisma.user.update(
 			{
 				where: { id: id },
@@ -81,15 +86,20 @@ export class SocialService {
 				data: { friendsList: { connect: { id: userId }}}
 			}
 		);
-		return await prisma.user.update(
+		const user = await prisma.user.update(
 			{
 				where: { id: userId },
 				include: { friendsList : true },
 				data: { 
 					friendsList: { connect: { id: id }}
-			}
+				}
 			}
 		);
+
+		delete user.password;
+		delete user.token42;
+
+		return user;
 	}
 
 	async blockUser(userId: number, username: string) 
@@ -127,32 +137,47 @@ export class SocialService {
 		});
 
 		// Ajouter l'ami à la liste de blocage de l'utilisateur actuel
-		return prisma.user.update(
+		const user = await prisma.user.update(
 		{
 			where: { id: userId },
 			data: {blockList: {connect: {nickname: username,},},},
 		});
+
+		delete user.password;
+		delete user.token42;
+
+		return user;
 	}
 
 
 	async removeFromBlock(userId: number, id: number) 
 	{
-		return await prisma.user.update(
+		const user = await prisma.user.update(
 			{
 				where: { id: userId },
 				data: { blockList: {disconnect: { id: id }}}
 			}
 		);
+
+		delete user.password;
+		delete user.token42;
+
+		return user;
 	}
 
 	async rejectRequest(userId: number, id: number) 
 	{
-		return await prisma.user.update(
+		const user = await prisma.user.update(
 		{
 			where: { id: userId },
 			data: {pendingList: {disconnect: { id: id }}}
 		}
 		);
+
+		delete user.password;
+		delete user.token42;
+
+		return user;
 	}
 
 	async removeFriend(userId: number, id: number) 
@@ -164,11 +189,16 @@ export class SocialService {
 			data: { friendsList: { disconnect: { id: userId }}}
 		}
 		);
-		return await prisma.user.update(
+		const user = await prisma.user.update(
 		{
 			where: { id: userId },
 			data: {friendsList: {disconnect: { id: id }}},
 		}
 		);
+
+		delete user.password;
+		delete user.token42;
+
+		return user;
 	}
 }

@@ -49,7 +49,6 @@ export function OneMessage({ conv, message, index, myNickname } :
 
 	// Invite to a game of Pong!
 	const handleInvitation = () => {
-		console.log(`Invite ${message.from.nickname} to game`);
 		socket?.emit('invite match', message.from.nickname);
 		toast.success('Invitation sent', {id: 'invite'});
 	}

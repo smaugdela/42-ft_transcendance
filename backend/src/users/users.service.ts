@@ -43,11 +43,16 @@ export class UsersService {
 	}
 
 	async findAll() {
-		return await prisma.user.findMany();
+		const allUsers = await prisma.user.findMany();
+		allUsers.map((user) => {
+			delete user.token42;
+			delete user.password;
+		});
+		return allUsers;
 	}
 
 	async findMe(id: number) {
-		return await prisma.user.findUnique({
+		const user =  await prisma.user.findUnique({
 			where: { id },
 			include: {
 				achievements: true,
@@ -70,6 +75,12 @@ export class UsersService {
 				pendingList :true,
 			},
 		});
+
+		delete user.password;
+		delete user.token42;
+
+		return user;
+
 	}
 
 	async updateMe(id: number, updateUserDto: UpdateUserDto) {
@@ -132,7 +143,7 @@ export class UsersService {
 
 	async findOne(username: string) {
 //		prisma.user.update(achievement), // pas comme ca mais faut le faire
-			return await prisma.user.findUnique({
+		const user =  await prisma.user.findUnique({
 			where: { nickname: username },
 			include: {
 				achievements: true,
@@ -155,14 +166,23 @@ export class UsersService {
 				pendingList :true,
 			},
 		});
-	
+
+		delete user.password;
+		delete user.token42;
+
+		return user;
 	}
 
 	async findOneById(id: number) {
-		return await prisma.user.findUnique({
+		const user =  await prisma.user.findUnique({
 			where: { id: id },
 			include: { achievements: true },
 		});
+
+		delete user.password;
+		delete user.token42;
+
+		return user;
 	}
 
 	async getHistoryMatch(id: number) {

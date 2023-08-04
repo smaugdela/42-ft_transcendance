@@ -339,16 +339,11 @@ export class AuthService {
 				]
 			});
 
-			// delete newUser.password;	// Temporary solution, should not be used permanently.
-
 			// log the created user
 			console.log('New standard user created: ', newUser.nickname);
 
 			await this.generateToken(newUser.id, res);
 
-			// this.webSocketGateway.server.emit('activity', newUser.nickname);
-
-			// res.send("Successfully signed up!");
 			return "Successfully signed up!";
 
 		} catch (error) {
