@@ -10,10 +10,15 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { fetchUserByNickname } from "../api/APIHandler";
 import { IUser } from "../api/types";
 import { useParams } from 'react-router-dom';
+import { useContext } from "react";
+import { SocketContext } from "../context/contexts";
+import { Socket } from "socket.io-client";
+import { toast } from "react-hot-toast";
 
 export function UserProfile() {
 
 	const { nickname } = useParams<{ nickname?: string }>();
+	const socket : Socket | null = useContext(SocketContext);
 	
 	/* On fait une requête au backend pour récupérer le user connecté */
 	const userQuery : UseQueryResult<IUser>= useQuery({ 
@@ -36,7 +41,17 @@ export function UserProfile() {
 	const userTotalMatches: number = (user.matchAsP1 && user.matchAsP2) ? user.matchAsP1.length + user.matchAsP2.length : 0;
 	const userWinrate: number = userTotalMatches !== 0 ? user.matchAsP1.length * 100 / userTotalMatches : 0;
 	const userFriendsCount: number = (user.friendsList && user.friendsList?.length >= 1) ? user.friendsList.length : 0;
-
+	
+	// Invite to a game of Pong!
+	const handleInvitation = () => {
+		if (socket) {
+			socket?.emit('invite match', user.nickname);
+			toast.success('Invitation sent', {id: 'invite'});
+		}
+		socket?.on('match invitation declined', (nickname: string) => {
+			toast.error(`${nickname} declined your invitation.`, {id: 'invite'});
+		});
+		}
 	return (
 		<div id="whole-profile-container">
 			<div id="whole-profile">
@@ -75,7 +90,7 @@ export function UserProfile() {
 							<StatDisplay title={"(Rank)"} stat={user.rank} />
 							<StatDisplay title={"Aces"} stat={user.aces} />
 						</div>
-						<button className="challenge-btn">Challenge</button>
+						<button onClick={handleInvitation} className="challenge-btn">Challenge</button>
 					</div>
 				</div>
 				<Achievement 

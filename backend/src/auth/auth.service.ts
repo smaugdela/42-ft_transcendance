@@ -61,7 +61,6 @@ export class AuthService {
 					i++;
 				}
 
-				console.log("Creating 42 user.")
 				userDb = await prisma.user.create({
 					data: {
 						nickname: name,
@@ -112,12 +111,6 @@ export class AuthService {
 						},
 						{
 							userId: userDb.id,
-							icon: "fa-solid fa-frog",
-							title: "Cosmetic change",
-							description: "Updated their profile picture once",
-						},
-						{
-							userId: userDb.id,
 							icon: "fa-solid fa-shield-dog",
 							title: "Safety first",
 							description: "Activated the 2FA authentification",
@@ -160,8 +153,6 @@ export class AuthService {
 				return res.redirect(process.env.FRONTEND_URL + '/2fa/pending');
 			}
 
-			console.log("User 42 logged in: ", userDb.nickname);
-
 			await this.generateToken(userDb.id, res);
 
 			// this.webSocketGateway.server.emit('activity', userDb.nickname);
@@ -197,8 +188,6 @@ export class AuthService {
 				return { doubleFA: true };
 			}
 
-			console.log("User", body.nickname, "logged in.");
-
 			await this.generateToken(activeUser.id, res);
 
 			// this.webSocketGateway.server.emit('activity', activeUser.nickname);
@@ -227,7 +216,6 @@ export class AuthService {
 					data: { login2FAstatus: false }
 				});
 				await this.generateToken(id, res);
-				console.log("User", user.nickname, "logged in.");
 				return "Successfully logged!";
 			}
 		} catch (error) {
@@ -248,7 +236,6 @@ export class AuthService {
 			});
 
 			const avatarpath = "/assets/avatar" + Math.floor((Math.random() * 2.99) + 1) + ".png";
-			console.log(avatarpath);
 			// save the new user in the db
 			const newUser = await prisma.user.create({
 				data: {
@@ -302,12 +289,6 @@ export class AuthService {
 					},
 					{
 						userId: userId,
-						icon: "fa-solid fa-frog",
-						title: "Cosmetic change",
-						description: "Updated their profile picture once",
-					},
-					{
-						userId: userId,
 						icon: "fa-solid fa-shield-dog",
 						title: "Safety first",
 						description: "Activated the 2FA authentification",
@@ -339,9 +320,6 @@ export class AuthService {
 				]
 			});
 
-			// log the created user
-			console.log('New standard user created: ', newUser.nickname);
-
 			await this.generateToken(newUser.id, res);
 
 			return "Successfully signed up!";
@@ -356,7 +334,6 @@ export class AuthService {
 	}
 
 	async logout(userId: number, @Res({ passthrough: true }) res: Response) {
-		console.log("Logging out user", userId);
 
 		// Delete jwt from cookies.
 		res.clearCookie('jwt');

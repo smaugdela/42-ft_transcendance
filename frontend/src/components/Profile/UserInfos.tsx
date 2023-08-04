@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { fetchMe } from "../../api/APIHandler";
 import { IUser } from "../../api/types";
 import MessageUserBtn from "./MessageUserBtn";
-
+import { toast } from "react-hot-toast";
 import { friendRequest,  blockUser } from "../../api/APIHandler";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -37,12 +37,16 @@ export default function UserInfos( { user } : {user: IUser}) {
 
 	const blockuser = useMutation({ 
 		mutationFn: (nickname: string) => blockUser(nickname),
-		onSuccess: () => {queryClient.invalidateQueries(['user']);}
+		onSuccess: () => {
+			queryClient.invalidateQueries(['user']);
+			toast.success("It's done!");
+		}
 	});
 	const friendrequest = useMutation({ 
 		mutationFn: (nickname : string) => friendRequest(nickname),
 		onSuccess: () => {
-			queryClient.invalidateQueries(['user']);	
+			queryClient.invalidateQueries(['user']);
+			toast.success("It's done!");	
 		}
 	});
 	if (userQuery.isLoading || !userQuery.isSuccess){

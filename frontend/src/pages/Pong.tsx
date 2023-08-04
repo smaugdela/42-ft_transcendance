@@ -236,7 +236,6 @@ export function Pong() {
 
 		// Handle match cancellation
 		socket?.on("match canceled", () => {
-			console.log("Match canceled");
 			// setRunning(false);
 
 			toast.error("Player disconnected.", {

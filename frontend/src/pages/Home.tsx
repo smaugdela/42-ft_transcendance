@@ -79,6 +79,10 @@ export default function Home() {
 		toast.error(`${decliner} declined your invitation`);
 	});
 
+	// socket?.on('new friend request', () => {
+	// 	toast.success("You have a new friend request!");
+	// });
+
 	return (
         <div id="play-screen">
 			<button className='glitch' data-text="PRESS TO PLAY" onClick={handleClick} >

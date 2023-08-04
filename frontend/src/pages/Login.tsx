@@ -42,7 +42,6 @@ export default function Login({ setLoggedIn, setSocket }: {
 		
 		try {
 			const response = await logIn(nickname, password);
-			console.log("Login Response.data.doubleFA: " + response.data.doubleFA);
 			if (response.data.doubleFA === true) {
 				navigate('/2fa/pending');
 				return;

@@ -59,33 +59,6 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 		}
 	};
 
-	/* const handleInvitation = () => {
-
-		console.log('Invite to game');
-
-		socket?.emit('invite match', userTalking.nickname);
-
-		toast.success('Invitation sent');
-	}
-
-	socket?.on('match invitation declined', (nickname: string) => {
-		toast.error(`${nickname} declined your invitation.`);
-	});
-  
-  // Le fontawesome est dans oneMessage, faudra juste rajouter le onClick!
-  <FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} onClick={handleInvitation}/>
-  */
-	// const handleMute = () => {
-	// 	setIsMuted(true);
-	// 	const muteDurationInMinutes = 1;
-	// 	const currentTime = Date.now();
-	// 	console.log("currentTime is: ", currentTime);
-		
-	// 	const expirationTime = currentTime + muteDurationInMinutes * 60 * 1000;
-	// 	setMuteExpiration(expirationTime);
-	// 	console.log("Admin options, muteExpiration is : ", expirationTime, muteExpiration);
-	// };
-
 	const handleRole = (group: keyof IChannel) => {
 		if (channel) {
 			// Est-ce que le user est dans ce rôle?
@@ -97,9 +70,7 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 				// Si c'est pas le cas, on l'ajoute
 				addToGroup.mutate([group, "connect", String(channel?.id)]);
 				toast.success(`${userTalking.nickname}'s role has been added!`);
-				sendInfo(group, "connect");
-				console.log("jai send l'info");
-				
+				sendInfo(group, "connect");				
 			} else {
 				// Sinon, on l'enlève
 				if (userTalking.id !== channel.ownerId) {

@@ -31,7 +31,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		void (args);
 
 		await this.socketsService.activeUser(client.data.userId);
-		console.log('Client connected:', client.data.username);
 
 		/* Stocker tous les sockets des users actuellement connectés dans un map */
 		this.socketsService.registerActiveSockets(client.data.userId, client.id);
@@ -51,7 +50,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				default:
 					break;
 			}
-			console.log("Client reconnected to match: ", match.matchId);
 		}
 	}
 
@@ -79,12 +77,10 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		for (let i = 0; i < this.socketsService.queue.length; i++) {
 			if (this.socketsService.queue[i].userId === client.data.userId) {
 				this.socketsService.queue.splice(i, 1);
-				console.log("User removed from queue.");
 				break;
 			}
 		}
 
-		console.log('Client disconnected:', client.data.username);
 		client.disconnect(true);
 	}
 
@@ -97,7 +93,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	async handleLobbyCreation(client: Socket, payload: string): Promise<void> {
 		const room = payload;
 		client.join(room);
-		console.log(client.data.username, ` has joined the room ${payload}!`);
 	}
 
 	/**
@@ -107,7 +102,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	 */
 	@SubscribeMessage('Chat')
 	async handleSendMessage(client: Socket, payload: string): Promise<void> {
-		console.log(client.data.username, ':', payload);
 		const splitStr: string[] = payload.split('  ');
 
 		const action = splitStr[0];
@@ -130,7 +124,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				fromId: client.data.userId,
 				content: `${action}  ${msgToTransfer}`,
 			};
-			console.log("this message has been sent: ", message.content, "to room : ", room);
 
 			this.server.to(room).emit('receiveMessage', message);
 		}
@@ -167,7 +160,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				const socket2: Socket = this.getSocketByUserId(match.player2.userId);
 
 				if (socket1 === undefined || socket2 === undefined) {
-					console.log("Error: socket undefined");
 					return;
 				}
 
@@ -187,11 +179,8 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		const userId = client.data.userId;
 
-		console.log(client.data.username, "accepted the match");
-
 		const match = this.getMatchByUserId(userId);
 		if (match === undefined) {
-			console.log("Error: match undefined");
 			return;
 		} else if (match.player1.userId === userId) {
 			match.player1.ready = true;
@@ -211,7 +200,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			match.lastUpdate = Date.now();
 			match.player1.lastUpdate = Date.now();
 			match.player2.lastUpdate = Date.now();
-			console.log("Match started");
 		}
 	}
 
@@ -225,7 +213,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		for (let i = 0; i < this.socketsService.queue.length; i++) {
 			if (this.socketsService.queue[i].userId === userId) {
 				this.socketsService.queue.splice(i, 1);
-				console.log("User removed from queue.");
 				break;
 			}
 		}
@@ -242,14 +229,12 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		});
 
 		if (!user) {
-			console.log("Error: user not found");
 			return;
 		}
 
 		const userId = user.id;
 		const socket = this.getSocketByUserId(userId);
 		if (socket === undefined) {
-			console.log("Error: socket undefined");
 			return;
 		}
 
@@ -266,7 +251,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 			const socket1 = this.getSocketByUserId(userId1);
 			if (socket1 === undefined) {
-				console.log("Error: socket1 undefined");
 				return;
 			}
 
@@ -276,14 +260,12 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				}
 			});
 			if (!user2) {
-				console.log("Error: user not found");
 				return;
 			}
 
 			const userId2 = user2.id;
 			const socket2 = this.getSocketByUserId(userId2);
 			if (socket2 === undefined) {
-				console.log("Error: socket undefined");
 				return;
 			}
 
@@ -296,7 +278,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			socket2.join(match.matchId.toString());
 			this.server.to(match.matchId.toString()).emit('match ready', match.mode);
 
-			console.log("Match ready, waiting for players to accept...");
 		} catch (error) {
 			console.log(error);
 		}
@@ -311,7 +292,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 			const socket = this.getSocketByUserId(userId1);
 			if (socket === undefined) {
-				console.log("Error: socket undefined");
 				return;
 			}
 
@@ -321,14 +301,12 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				}
 			});
 			if (!user2) {
-				console.log("Error: user not found");
 				return;
 			}
 
 			const userId2 = user2.id;
 			const socket2 = this.getSocketByUserId(userId2);
 			if (socket2 === undefined) {
-				console.log("Error: socket undefined");
 				return;
 			}
 
@@ -492,21 +470,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				match.powerUp = false;
 				match.powerUpOn = true;
 				match.powerUpDate = Date.now();
-
-				// switch (match.ballSpeedX < 0)
-				// {
-				// 	case true:
-				// 		match.powerUpOn = true;
-				// 		match.powerUpDate = Date.now();
-				// 		// Player2 gets a powerup
-				// 		break;
-				// 	case false:
-				// 		match.powerUpOn = true;
-				// 		match.powerUpDate = Date.now();
-				// 		break;
-				// 	default:
-				// 		break;
-				// }
 			}
 		}
 		match.lastUpdate = Date.now();
@@ -598,7 +561,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				this.socketsService.inactiveUser(match.player2.userId);
 
 			if (socket1 === undefined || socket2 === undefined) {
-				console.log("Error: socket undefined");
 				this.server.to(match.matchId.toString()).emit('match canceled');
 				this.socketsService.deleteMatch(match.matchId);
 				return;
@@ -696,4 +658,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		return;
 	}
+
+	
+
 }

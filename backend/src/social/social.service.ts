@@ -3,11 +3,16 @@ import { CreateSocialDto } from './dto/create-social.dto';
 import { UpdateSocialDto } from './dto/update-social.dto';
 import { NotFoundException } from '@nestjs/common';
 import { PrismaClient, User } from '@prisma/client';
+import { SocketsGateway } from 'src/sockets/sockets.gateway';
+import { SocketsService } from 'src/sockets/sockets.service';
 
 const prisma = new PrismaClient();
 
 @Injectable()
 export class SocialService {
+
+	constructor(private socketsService: SocketsService) {}
+
 	async myFriends(userId: number)
 	{
 		const user   = await prisma.user.findUnique(
@@ -48,8 +53,7 @@ export class SocialService {
 		return null;
 	}
 
-
-	async friendRequest(userId: number, username: string) 
+	async friendRequest(userId: number, username: string)
 	{
 		const friend = await prisma.user.findUnique(
 		{

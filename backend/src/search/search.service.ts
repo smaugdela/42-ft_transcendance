@@ -23,7 +23,6 @@ export class SearchService {
 	
 	public async addDocuments(documents) {
 		const index = this.getUserIndex();
-		console.log('An index was created');
 		return await index.addDocuments(documents);
 	}
 
