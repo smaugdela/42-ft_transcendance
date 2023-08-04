@@ -27,11 +27,6 @@ COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 # Make sure assets are readable by nginx
 RUN chmod -R 755 /usr/share/nginx/html
 
-# Setting up SSL/TLS
-# RUN apk update && apk add openssl && \
-# 	mkdir -p /etc/nginx/ssl && \
-# 	openssl req -x509 -days 365 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=FR/ST=IDF/L=Paris/O=42/CN=daftpong.com"
-
 # COPY ./security/localhost.pem /etc/nginx/ssl/localhost.pem
 # COPY ./security/localhost-key.pem /etc/nginx/ssl/localhost-key.pem
 COPY security/cert.pem /etc/nginx/ssl/cert.pem
