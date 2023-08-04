@@ -29,9 +29,10 @@ export default function MessageUserBtn( { loggedInUser, userToContact} : { logge
 			queryClient.invalidateQueries(['channels']);
 			if (socket && data) {
 				sendNotificationToServer(socket, 'Create Lobby', data?.roomName);
-				setActiveConv(data);
-				setActiveTab(1);
-				setIsExpanded(true);
+				setActiveConv(null);
+				// setActiveConv(data);
+				setActiveTab(0);
+				// setIsExpanded(true);
 				toast.success("You can now talk to the other person!");
 			}
 		},

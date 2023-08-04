@@ -32,7 +32,7 @@ export function UserProfile() {
     }
 
 	/* Pour pouvoir passer ses infos dans les components, on renomme pour + de lisbilité */
-	const user: IUser = userQuery.data as IUser;
+	const user: IUser = userQuery.data;
 	const userTotalMatches: number = (user.matchAsP1 && user.matchAsP2) ? user.matchAsP1.length + user.matchAsP2.length : 0;
 	const userWinrate: number = userTotalMatches !== 0 ? user.matchAsP1.length * 100 / userTotalMatches : 0;
 	const userFriendsCount: number = (user.friendsList && user.friendsList?.length >= 1) ? user.friendsList.length : 0;
@@ -45,7 +45,10 @@ export function UserProfile() {
 					<div id="bio-container">
 						<article id="bio">
 							<div style={{ backgroundImage: `url(${user.avatar})` }} id="hexagon-avatar"></div>
-							<UserInfos user={user} />
+							{
+								user && user.nickname &&
+								<UserInfos user={user} />
+							}
 						</article>
 						<article className="user_bio">
 							<h1>BIO</h1> 

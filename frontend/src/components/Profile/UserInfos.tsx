@@ -17,14 +17,15 @@ export default function UserInfos( { user } : {user: IUser}) {
 	const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' } as const;
 	const creationDate = new Date(user.createdAt).toLocaleDateString('en-US', options);
 	const userQuery = useQuery({ queryKey: ['user'], queryFn: fetchMe });
+	const queryClient = useQueryClient();
 	
 	useEffect(() => {
-		if (userQuery.data && userQuery.data.nickname) {
+		if (userQuery.data && userQuery.data.nickname && user && user.nickname) {
 			(userQuery.data.nickname === user.nickname)
 			? setEnableSocials(false)
 			: setEnableSocials(true);
 		}
-	}, [userQuery.isSuccess, userQuery.data, user.nickname, setEnableSocials]);	
+	}, [userQuery.isSuccess, userQuery.data, user, user.nickname, setEnableSocials]);	
 	
 	useEffect(() => {
 		if (user && user.isActive === 'ONLINE') {
@@ -34,16 +35,7 @@ export default function UserInfos( { user } : {user: IUser}) {
 		}
 	}, [user]);
 
-	if (userQuery.isLoading || !userQuery.isSuccess){
-		return <div>Loading</div>
-	}
-	
-	if (userQuery.error){
-		return <div>Error</div>
-    }
-
-	const queryClient = useQueryClient();
-    const blockuser = useMutation({ 
+	const blockuser = useMutation({ 
 		mutationFn: (nickname: string) => blockUser(nickname),
 		onSuccess: () => {queryClient.invalidateQueries(['user']);}
 	});
@@ -53,6 +45,14 @@ export default function UserInfos( { user } : {user: IUser}) {
 			queryClient.invalidateQueries(['user']);	
 		}
 	});
+	if (userQuery.isLoading || !userQuery.isSuccess){
+		return <div>Loading</div>
+	}
+	
+	if (userQuery.error){
+		return <div>Error</div>
+    }
+
 	const handleblockuser = (nickname: string) => {
 		blockuser.mutate(nickname);
 	}

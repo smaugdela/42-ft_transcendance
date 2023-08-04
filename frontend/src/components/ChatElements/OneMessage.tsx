@@ -65,7 +65,7 @@ export function OneMessage({ conv, message, index, myNickname } :
 	}
 
 	if (userMe?.blockList && userMe.blockList.some((user) => user.nickname === message.from.nickname) === true) {
-		console.log("chat",userMe.blockList.some((user) => user.nickname === message.from.nickname) === true);
+		// console.log("chat",userMe.blockList.some((user) => user.nickname === message.from.nickname) === true);
 		
 		return (
 			<div key={index + 2} className='one__msg_role'>

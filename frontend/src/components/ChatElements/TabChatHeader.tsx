@@ -36,10 +36,10 @@ export function TabChatHeader({ conv }: { conv: IChannel}) {
 	if (error) {
 		return <div>Error</div>
 	}
-	if (isLoading || !isSuccess) {
+	if (isLoading || !isSuccess || conv === undefined || !conv) {
 		return <div>Is Loading...</div>
 	}
-	
+
 	const handleClick = (event: React.FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		if (user) {
@@ -57,7 +57,7 @@ export function TabChatHeader({ conv }: { conv: IChannel}) {
 		</div>
 		<p>Channel created on {getDate(conv)}</p>
 		<p>Owner is: {conv?.owner.nickname} </p>
-		<ChannelType channelId={conv?.id} loggedUser={user}/>
+		<ChannelType channelId={conv.id} loggedUser={user}/>
 		</div>
 	);
 }
