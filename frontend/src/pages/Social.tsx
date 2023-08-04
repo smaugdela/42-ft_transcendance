@@ -2,19 +2,19 @@ import "../styles/Social.css"
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus} from '@fortawesome/free-solid-svg-icons';
-import { fetchMe, postSearchQuery } from "../api/APIHandler";
+import { fetchMe, postSearchQuery, friendRequest } from "../api/APIHandler";
 import { useQuery } from "@tanstack/react-query";
 import { IUser } from "../api/types";
 import {AllFriends} from "../components/Social/AllFriends";
 import { PendingList } from "../components/Social/PendingList";
 import {BlockedUser} from "../components/Social/BlockedUser";
 import {ActiveFriends} from "../components/Social/ActiveFriends";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function SearchBar() {
 
 	const [userInput, setUserInput] = useState("");
 	const [searchedUser, setSearchResults] = useState<IUser>();
-
 	useEffect( () => {
 		if (userInput.length > 2){
 			postSearchQuery(userInput)
@@ -30,6 +30,15 @@ export function SearchBar() {
 			setSearchResults(undefined);
 		}
 	}, [userInput]);
+
+	const queryClient = useQueryClient();
+	const friendrequest = useMutation({ 
+		mutationFn: (nickname : string) => friendRequest(nickname),
+		onSuccess: () => {queryClient.invalidateQueries(['user']);}
+	});
+	const handlefriendRequest = (nickname : string) => {
+		friendrequest.mutate(nickname);
+	}
 	
 	return (
 		<div>
@@ -47,9 +56,7 @@ export function SearchBar() {
 						<div className="search_user_infos">
 							<img id="search_user_avatar" src={searchedUser.avatar} alt={searchedUser.nickname} />
 							<h5 id="title" dangerouslySetInnerHTML={{__html: searchedUser.nickname}}></h5>
-							<a href= {import.meta.env.VITE_BACKEND_URL + "/social"}>
-								<FontAwesomeIcon icon={faUserPlus} />
-							</a>
+							<a><FontAwesomeIcon icon={faUserPlus} onClick={() =>handlefriendRequest(searchedUser.nickname)}/></a>
 						</div>
 					</div>)
 					}
@@ -72,82 +79,15 @@ export function SearchBar() {
 // 		 queryClient.invalidateQueries(['user']); // Refetch the user data if the userIsSuccess prop changes
 // 		}
 // 	 }, [props.userIsSuccess]);
-
-// 	const handleacceptRequest = (id: number) => {
-// 		acceptRequest.mutate(id);
-// 	}
-// 	const displayProfiles = props.profilesToDisplay.map(profile => {
-// 		return <div key={profile.id} className="profile">
-// 					<div className="img-container">
-// 						<img 
-// 						src={profile.avatar}
-// 						alt={profile.nickname}
-// 						/>
-// 					</div>
-// 					<div className="profile_infos">
-// 						<h5>{profile.nickname}</h5>
-// 						<div><FontAwesomeIcon icon={faUserPlus} onClick={() =>handleacceptRequest(profile.id)}/></div>
-// 						<div><FontAwesomeIcon icon={faUserMinus} /></div>
-// 						<div><FontAwesomeIcon icon={faBan} /></div>
-// 					</div>
-// 		</div>
-// 	})
-// 	return (
-// 		<div className="all-current">
-// 			{displayProfiles}
-// 		</div>
-// 	);
-// };
  
 export function Social() {
 
-	// const [groupToDisplay, setGroupToDisplay] = useState<IUser[]>([]);
-
 	const [activeList, setActiveList] = useState<string | null>(null);
-	// const queryClient = useQueryClient();
 	const { data: loggedUser, error, isLoading, isSuccess } = useQuery({ queryKey: ['user'], queryFn: fetchMe});
 	
 	const handleClickComponent = (listType: string) => {
 		setActiveList(listType); // Update the active list when a button is clicked
 	};
-
-	// const [buttonStates, setButtonStates] = useState({
-	// 	allFriends: false,
-	// 	activeFriends: false,
-	// // 	blocked: false,
-	// // 	pendingRequests: false,
-	//   });
-
-
-	// useEffect( () => {
-	// 	if (activeFriends|| allFriends || blocked || pendingRequests) {
-
-	// 		switch (groupToDisplay) {
-	// 			case activeFriends:
-	// 				setGroupToDisplay(activeFriends);
-	// 				break;
-	// 			case allFriends:
-	// 				setGroupToDisplay(allFriends);
-	// 				break;
-	// 			case blocked:
-	// 				setGroupToDisplay(blocked);
-	// 				break;
-	// 			case pendingRequests:
-	// 				setGroupToDisplay(pendingRequests);
-	// 				break;
-	// 				default:
-	// 					break;
-	// 				}
-					
-	// 			}
-	// 		},[groupToDisplay]);
-			
-	// useEffect( () => {
-	// 	if (allFriends) {
-
-	// 		setGroupToDisplay(allFriends);
-	// 	}
-	// });
 
 	
 
@@ -155,20 +95,6 @@ export function Social() {
 	const activeFriends:	IUser[] = allFriends?.filter(friend => friend.isActive === 'ONLINE') || [];
 	// const blocked:			IUser[] = loggedUser?.blockList || [];
 	// const pendingRequests:	IUser[] = loggedUser?.pendingList || [];
-
-	
-
-	// const handleClick = (group: IUser[] | undefined, id: string) => {
-	// 	// setGroupToDisplay(group || []);
-	// 	console.log(loggedUser);
-	// 	setButtonStates({
-	// 		allFriends: false,
-	// 		activeFriends: false,
-	// 		// blocked: false,
-	// 		// pendingRequests: false,
-	// 		[id]: true,
-	// 	});
-	// }
 
 	if (error) {
 		return <div>Error</div>;
@@ -182,26 +108,18 @@ export function Social() {
 			<SearchBar />
 			<div className="social-btn">
 				<button 
-					// onClick={ () => handleClick(allFriends, "allFriends")}
-					// className={buttonStates.allFriends ? "clicked-btn" : "btn"}>
 					onClick={() => handleClickComponent('allFriends')} className={activeList === 'allFriends' ? 'clicked-btn' : 'btn'}>
 					All friends
 				</button>
 				<button 
-					// onClick={ () => handleClick(activeFriends, "activeFriends")}
-					// className={buttonStates.activeFriends ? "clicked-btn" : "btn"}>
-					onClick={() => handleClickComponent('activeFriends')} className={activeList === 'activeFriends' ? 'clicked-btn' : 'btn'}> 
+					 onClick={() => handleClickComponent('activeFriends')} className={activeList === 'activeFriends' ? 'clicked-btn' : 'btn'}> 
 					Active friends
 				</button>
 				<button 
-					// onClick={ () => handleClick(blocked, "blocked")}
-					// className={buttonStates.blocked ? "clicked-btn" : "btn"}>
 					onClick={() => handleClickComponent('blocked')} className={activeList === 'blocked' ? 'clicked-btn' : 'btn'}>
 					Blocked users
 				</button>
 				<button 
-					// onClick={ () => handleClick(pendingRequests, "pendingRequests")}
-					// className={buttonStates.pendingRequests ? "clicked-btn" : "btn"}>
 					onClick={() => handleClickComponent('pendingRequests')} className={activeList === 'pendingRequests' ? 'clicked-btn' : 'btn'}>
 					Pending requests
 				</button>
