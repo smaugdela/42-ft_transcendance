@@ -74,83 +74,83 @@ export class AuthService {
 						email: user.email,
 					}
 				});
+				await prisma.achievement.createMany({
+					data: [
+						{
+							userId: userDb.id,
+							icon: "/assets/baby_icon.png", //peu fructueux
+							title: "Baby steps",
+							description: "Played the game for the first time",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-jet-fighter-up",
+							title: "Veteran",
+							description: "Played 10 games",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-lemon",
+							title: "Easy peasy lemon squeezy",
+							description: "Won 3 games",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-user-slash",
+							title: "It's my lil bro playing",
+							description: "Lost 3 games",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-viruses",
+							title: "Social butterfly",
+							description: "Added 3 friends",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-user-astronaut",
+							title: "Influencer",
+							description: "Added 10 friends",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-frog",
+							title: "Cosmetic change",
+							description: "Updated their profile picture once",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-shield-dog",
+							title: "Safety first",
+							description: "Activated the 2FA authentification",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-hand-spock",
+							title: "Writer soul",
+							description: "Change your bio",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-hand-spock",
+							title: "My safe place",
+							description: "Created their first channel",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-user-astronaut",
+							title: "Roland Garros",
+							description: "Make 3 aces !",
+						},
+						{
+							userId: userDb.id,
+							icon: "fa-solid fa-user-astronaut",
+							title: "WINNER WINNER CHICKEN DINER",
+							description: "TOP 1 of the leaderboard",
+						},
+					]
+				});
 			}
-			await prisma.achievement.createMany({
-				data: [
-					{
-						userId: userDb.id,
-						icon: "/assets/baby_icon.png", //peu fructueux
-						title: "Baby steps",
-						description: "Played the game for the first time",
-					},
-					{
-						userId: userDb.id,
-						icon: "fa-solid fa-jet-fighter-up",
-						title: "Veteran",
-						description: "Played 10 games",
-					},
-					{
-						userId: userDb.id,
-						icon: "fa-solid fa-lemon",
-						title: "Easy peasy lemon squeezy",
-						description: "Won 3 games",
-					},
-					{
-						userId: userDb.id,
-						icon: "fa-solid fa-user-slash",
-						title: "It's my lil bro playing",
-						description: "Lost 3 games",
-					},
-					{
-						userId: userDb.id,
-						icon: "fa-solid fa-viruses",
-						title: "Social butterfly",
-						description: "Added 3 friends",
-					},
-					{
-						userId: userDb.id,
-						icon: "fa-solid fa-user-astronaut",
-						title: "Influencer",
-						description: "Added 10 friends",
-					},
-					{
-						userId: userDb.id,
-						icon: "fa-solid fa-frog",
-						title: "Cosmetic change",
-						description: "Updated their profile picture once",
-					},
-					{
-						userId: userDb.id,
-						icon: "fa-solid fa-shield-dog",
-						title: "Safety first",
-						description: "Activated the 2FA authentification",
-					},
-					{
-						userId: userDb.id,
-						icon: "fa-solid fa-hand-spock",
-						title: "Writer soul",
-						description: "Change your bio",
-					},
-					{
-						userId: userDb.id,
-						icon: "fa-solid fa-hand-spock",
-						title: "My safe place",
-						description: "Created their first channel",
-					},
-					{
-						userId: userDb.id,
-						icon: "fa-solid fa-user-astronaut",
-						title: "Roland Garros",
-						description: "Make 3 aces !",
-					},
-					{
-						userId: userDb.id,
-						icon: "fa-solid fa-user-astronaut",
-						title: "WINNER WINNER CHICKEN DINER",
-						description: "TOP 1 of the leaderboard",
-					},
-				]
-			});
 			
 			// Handle 2FA login
 			if (userDb.enabled2FA === true) {
