@@ -33,6 +33,15 @@ export function CustomPong() {
 	let lastTime = useRef(Date.now());
 	let lastCall = useRef(Date.now());
 
+	// const app = new PIXI.Application({
+	// 	width: 800,
+	// 	height: 600,
+	// 	backgroundColor: 0x1099bb,
+	// 	//   resizeTo: window,
+	// });
+	const app = useApp();
+	void app;
+
 	const [leftUser, setLeftUser] = useState(true);
 
 	const [gameState, setGameState] = useState({
@@ -54,9 +63,6 @@ export function CustomPong() {
 
 	const [downKeyPressed, setDownKeyPressed] = useState(false);
 	const [upKeyPressed, setUpKeyPressed] = useState(false);
-
-	const app = useApp();
-	void app;
 
 	useEffect(() => {
 		socket?.emit("accept match");
@@ -310,8 +316,8 @@ export function CustomPong() {
 	return (
 		<AppConsumer>
 			{() => (
-				<div className="pong-terrain">
 				<Stage
+					className="pong-terrain"
 					width={width}
 					height={height}
 					options={{ backgroundColor: 0x3d2f4d , backgroundAlpha: 0.5 }}
@@ -517,7 +523,6 @@ export function CustomPong() {
 
 					</Container>
 				</Stage>
-			</div>
 			)}
 		</AppConsumer>
 	);

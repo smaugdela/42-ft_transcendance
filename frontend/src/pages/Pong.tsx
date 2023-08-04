@@ -313,17 +313,7 @@ export function Pong() {
 									graphics.moveTo(0, 0); // Start at the top left corner
 									graphics.lineTo(0, height); // Draw a line to the top right corner
 									graphics.filters = [new BlurFilter(8, 1)]; // Le premier paramètre (8) contrôle le flou (plus la valeur est grande, plus le glow est étendu)
-									}}
-							/>
-							<Graphics
-								draw={(graphics) => {
-									graphics.lineStyle(paddleWidth, 0x00ff00, 0.8, 0.5); // White color
-									graphics.moveTo(width, 0); // Start at the top left corner
-									graphics.lineTo(width, height); // Draw a line to the top right corner
-								 	graphics.filters = [new BlurFilter(8, 1)]; // Le premier paramètre (8) contrôle le flou (plus la valeur est grande, plus le glow est étendu)
-									
-									}}
-						/></>
+							>
 					} */}
 					 <Graphics // sides lines
 								draw={(graphics) => {
