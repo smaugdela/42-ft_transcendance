@@ -23,7 +23,7 @@ const faqs: FaqItem[] = [
   },
   {
     question: 'How to create a chat channel ?',
-    answer: 'Go PM Marine.',
+    answer: 'To create a chat channel. You need to open the chat on the side by cliking on this button "<<" or double click anywhere on the screen. Then go on "more" and choose your channel name ! You can either create a public, a private (on invitation) or a protected (with a password) channel.',
   },
   {
     question: 'How to use the two-factor authentification ?',
