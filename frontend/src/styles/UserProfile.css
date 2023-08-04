@@ -178,12 +178,27 @@
 	padding-right: 1vw;
 }
 
-.user-infos > button:hover {
+.user-infos > button:first-of-type {
 	all: unset;
 	cursor: pointer;
-	color: rgb(21, 224, 163);
+	color: rgb(29, 123, 216);;
 	padding-right: 1vw;
 }
+
+.user-infos > button:nth-child(3) {
+	all: unset;
+	cursor: pointer;
+	color: red;
+	padding-right: 1vw;
+}
+
+/* .user-infos > button:hover {
+	all: unset;
+	cursor: pointer;
+	/* color: rgb(21, 224, 163); 
+	padding-right: 1vw;
+} */
+
 
 /* ********************************/
 /* ***  Achievement COMPONENT   ***/

@@ -7,6 +7,9 @@ import { fetchMe } from "../../api/APIHandler";
 import { IUser } from "../../api/types";
 import MessageUserBtn from "./MessageUserBtn";
 
+import { friendRequest,  blockUser } from "../../api/APIHandler";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 export default function UserInfos( { user } : {user: IUser}) {
 	
 	const [enableSocials, setEnableSocials] = useState<boolean>(true);
@@ -36,6 +39,24 @@ export default function UserInfos( { user } : {user: IUser}) {
 	if (userQuery.error){
 		return <div>Error</div>
     }
+
+	const queryClient = useQueryClient();
+    const blockuser = useMutation({ 
+		mutationFn: (nickname: string) => blockUser(nickname),
+		onSuccess: () => {queryClient.invalidateQueries(['user']);}
+	});
+	const friendrequest = useMutation({ 
+		mutationFn: (nickname : string) => friendRequest(nickname),
+		onSuccess: () => {
+			queryClient.invalidateQueries(['user']);	
+		}
+	});
+	const handleblockuser = (nickname: string) => {
+		blockuser.mutate(nickname);
+	}
+	const handlefriendRequest = (nickname : string) => {
+		friendrequest.mutate(nickname);
+	}
 	
 	return (
 		<div className="user-infos">
@@ -46,12 +67,9 @@ export default function UserInfos( { user } : {user: IUser}) {
 			{
 				enableSocials === true &&
 				<>
-					<button><FontAwesomeIcon icon={faUserPlus} /></button>
-					<button><FontAwesomeIcon icon={faBan} /></button>
-					{
-						userQuery.data?.nickname !== undefined &&
-						<MessageUserBtn loggedInUser={userQuery.data.nickname} userToContact={user} />
-					}
+					<button><FontAwesomeIcon icon={faUserPlus} onClick={() =>handlefriendRequest(user.nickname)} /></button>
+					<button><FontAwesomeIcon icon={faBan} onClick={() =>handleblockuser(user.nickname)}/></button>
+					<MessageUserBtn loggedInUser={userQuery.data.nickname} userToContact={user} />
 				</>
 			}
 			<h5>Member since {creationDate}</h5>

@@ -7,7 +7,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IUser } from "../../api/types";
 
 export function PendingList( props: { profilesToDisplay : IUser[], userIsSuccess: boolean }) {
-	console.log("where are you pending list");
 	const queryClient = useQueryClient();
     const blockuser = useMutation({ 
 		mutationFn: (nickname: string) => blockUser(nickname),
