@@ -315,8 +315,8 @@ export function CustomPong() {
 	return (
 		<AppConsumer>
 			{() => (
+				<div className="pong-terrain">
 				<Stage
-					className="pong-terrain"
 					width={width}
 					height={height}
 					options={{ backgroundColor: 0x3d2f4d , backgroundAlpha: 0.5 }}
@@ -522,6 +522,7 @@ export function CustomPong() {
 
 					</Container>
 				</Stage>
+			</div>
 			)}
 		</AppConsumer>
 	);

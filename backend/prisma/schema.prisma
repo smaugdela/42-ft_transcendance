@@ -61,7 +61,7 @@ model Achievement {
   description String
   date        DateTime?
   fullfilled  Boolean   @default(false)
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
 
   @@map("achievements")

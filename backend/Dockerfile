@@ -34,7 +34,7 @@ COPY --chown=node:node ./startup.sh ./startup.sh
 ENV NODE_ENV production
 
 # User should not be root for security reasons
-USER node
+# USER node
 
 # Start the server
 CMD [ "sh", "startup.sh"]

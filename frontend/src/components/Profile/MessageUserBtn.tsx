@@ -12,7 +12,7 @@ import { sendNotificationToServer } from '../../sockets/sockets';
 
 export default function MessageUserBtn( { loggedInUser, userToContact} : { loggedInUser: string , userToContact : IUser}) {
 	
-	const { setActiveTab, setActiveConv, setIsExpanded } = useContext(ChatStatusContext);
+	const { setActiveTab, setActiveConv } = useContext(ChatStatusContext);
 	const [roomName, setRoomName] = useState<string>('');
 	const socket = useContext(SocketContext);
 	const queryClient = useQueryClient();

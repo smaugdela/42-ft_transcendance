@@ -5,6 +5,7 @@ npm-debug.log
 dist
 meilisearch
 .env
+.env.dev
 .env_template
 Makefile
 .eslintrc.js

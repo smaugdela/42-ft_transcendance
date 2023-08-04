@@ -136,13 +136,36 @@ export class UsersService {
 
 	async removeMe(id: number, @Res({ passthrough: true }) res: Response) {
 		res.clearCookie('jwt');
+
+		const user = await prisma.user.findUnique({
+			where: {id: id}, 
+			include: {
+				achievements: true
+			}
+		});
+
+		const achievements: Achievement[] = user.achievements;
+
+		for (const achievement of achievements)
+		{
+			prisma.user.update({
+				where: {id: id},
+				data:{
+					achievements: { disconnect: { id: achievement.id } }
+				},
+			});
+			prisma.achievement.delete({
+				where: {id: achievement.id }
+			});
+		}
+
 		return await prisma.user.delete({
 			where: { id: id }
 		});
+
 	}
 
 	async findOne(username: string) {
-//		prisma.user.update(achievement), // pas comme ca mais faut le faire
 		const user =  await prisma.user.findUnique({
 			where: { nickname: username },
 			include: {
