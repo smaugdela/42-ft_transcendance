@@ -7,25 +7,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faTrashCanArrowUp, faEye, faEyeSlash, faFileArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
 import validator from 'validator';
+import { toast } from "react-hot-toast";
 
-export function TextCardSettings({ property } : {property: keyof IUser}) {
+export function TextCardSettings({ property }: { property: keyof IUser }) {
 	const [userInput, setUserInput] = useState<string>("");
 	const [errorMsg, setErrorMsg] = useState<string>("");
 	const [propertyChanged, setPropertyChange] = useState<boolean>(false);
 	const queryClient = useQueryClient();
 
 	// Récupérer l'input du user
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {setUserInput(event.target.value);}
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => { setUserInput(event.target.value); }
 
 	// Préparer les actions qui seront faites à la mutation du IUser
 	const updateProperty = useMutation({
 		mutationFn: () => updateUserStringProperty(property, userInput),
-		onSuccess: () => { 
+		onSuccess: () => {
 			queryClient.invalidateQueries(['user']);
-			setPropertyChange(true); },
+			setPropertyChange(true);
+		},
 		onError: (error: any) => {
 			setErrorMsg(error.message || 'An error occurred');
-		  },
+		},
 	});
 
 	// Actions qui seront prises lors du click du bouton
@@ -33,73 +35,75 @@ export function TextCardSettings({ property } : {property: keyof IUser}) {
 		event.preventDefault();
 		if (property !== 'email' ||
 			(property === 'email' && validator.isEmail(userInput) === true)) {
-				updateProperty.mutate();
-				setErrorMsg("");
+			updateProperty.mutate();
+			setErrorMsg("");
+			if (property === 'email')
+				toast.success("Please check your mails");
 		}
 		else {
 			setErrorMsg("Email must be formatted mail@mail.mail");
 		}
 	};
 
-	const userQuery = useQuery({ queryKey: ['user'], queryFn: () => fetchMe()});
-	
-	if (userQuery.error instanceof Error){
+	const userQuery = useQuery({ queryKey: ['user'], queryFn: () => fetchMe() });
+
+	if (userQuery.error instanceof Error) {
 		return <div>Error: {userQuery.error.message}</div>
 	}
-	if (userQuery.isLoading || !userQuery.isSuccess){
+	if (userQuery.isLoading || !userQuery.isSuccess) {
 		return <div>Loading</div>
 	}
 
 	const placeholderValue: string = (userQuery.data[property] === null) ?
-									"empty" : String(userQuery.data[property]);
-	
+		"empty" : String(userQuery.data[property]);
+
 	return (
 		<>
 			<div className="text_settings__card">
 				<div className="text_settings_property">{property}</div>
 				<div className="text_settings_input">
-					<input	type="text" 
-							name={property}
-							id={property} 
-							placeholder={placeholderValue}
-							onChange={handleChange}
-							className="text_input"
+					<input type="text"
+						name={property}
+						id={property}
+						placeholder={placeholderValue}
+						onChange={handleChange}
+						className="text_input"
 					/>
-				<button className="text_settings_btn" 
+					<button className="text_settings_btn"
 						onClick={handleUpdate}>
-						<FontAwesomeIcon icon={faCircleCheck} className="text_checkbox"/>
-				</button>
+						<FontAwesomeIcon icon={faCircleCheck} className="text_checkbox" />
+					</button>
 				</div>
 			</div>
 			<>
-			{
-				propertyChanged && 
-				<div className="settings__alert_ok">
-					<h6>Your modification was successful !</h6>
-				</div>
-			}
+				{
+					propertyChanged &&
+					<div className="settings__alert_ok">
+						<h6>Your modification was successful !</h6>
+					</div>
+				}
 			</>
 			<>
-			{
-				errorMsg && 
-				<div className="settings__alert_err">
-					<h6>{errorMsg}</h6>
-				</div>
-			}
+				{
+					errorMsg &&
+					<div className="settings__alert_err">
+						<h6>{errorMsg}</h6>
+					</div>
+				}
 			</>
 		</>
-  );
+	);
 }
 
-export function AvatarCardSettings( props: {user : IUser}) {
+export function AvatarCardSettings(props: { user: IUser }) {
 
 	const [errorMsg, setErrorMsg] = useState<string>("");
 	const [avatar, setAvatar] = useState<File>();
 	const [browseMsg, setBrowseMsg] = useState<string>("Choose a file");
 	const [avatarUrl, setAvatarUrl] = useState<string>(props.user.avatar);
-	
+
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event.target.files){
+		if (event.target.files) {
 			setAvatar(event.target.files[0]);
 			setBrowseMsg("File chosen!");
 		}
@@ -119,26 +123,26 @@ export function AvatarCardSettings( props: {user : IUser}) {
 	if (avatarUrl === undefined) {
 		setAvatarUrl(props.user.avatar);
 	}
-	
+
 	return (
 		<div id="avatar_settings">
 			<div>
-				<img src={avatarUrl} alt={props.user.nickname} id="user_avatar"/>
+				<img src={avatarUrl} alt={props.user.nickname} id="user_avatar" />
 			</div>
 			<div className="avatar_block">
 				<h5>Change your avatar :</h5>
-				<input onChange={handleChange} type="file" accept="image/png, image/jpeg, image/gif"  name="file" id="file" />
+				<input onChange={handleChange} type="file" accept="image/png, image/jpeg, image/gif" name="file" id="file" />
 				<label htmlFor="file" id="choose_file">
 					<FontAwesomeIcon icon={faFileArrowUp} />
 					<span>{browseMsg}</span>
 				</label>
 				<>
-				{
-					errorMsg && 
-					<div className="settings__alert_err">
-						<h6>{errorMsg}</h6>
-					</div>
-				}
+					{
+						errorMsg &&
+						<div className="settings__alert_err">
+							<h6>{errorMsg}</h6>
+						</div>
+					}
 				</>
 				<button id="avatar_upload_btn" onClick={handleSubmit}>Upload</button>
 			</div>
@@ -155,8 +159,9 @@ export function PasswordCardSettings() {
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUserInput(event.target.value);
-		if (validator.isStrongPassword(userInput, { 
-			minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1}) 
+		if (validator.isStrongPassword(userInput, {
+			minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1
+		})
 			=== false) {
 			setErrorMsg("Your password is not strong enough");
 		} else {
@@ -165,8 +170,8 @@ export function PasswordCardSettings() {
 	}
 
 	const handleConfirmation = (event: React.ChangeEvent<HTMLInputElement>) => {
-		(event.target.value !== userInput) ? 
-			setErrorMsg("Passwords don't match") 
+		(event.target.value !== userInput) ?
+			setErrorMsg("Passwords don't match")
 			: setErrorMsg("");
 	}
 
@@ -201,7 +206,7 @@ export function PasswordCardSettings() {
 			<h2>Change your password</h2>
 			<h4>New password</h4>
 			<div className="input_container">
-				<input 
+				<input
 					type={type}
 					name="password"
 					id="password"
@@ -216,21 +221,21 @@ export function PasswordCardSettings() {
 				<span onClick={handleClick}><FontAwesomeIcon icon={icon} /></span>
 			</div>
 			<>
-			{
-				errorMsg && 
-				<div className="settings__alert_err">
-					<h6>{errorMsg}</h6>
-				</div>
-			}
+				{
+					errorMsg &&
+					<div className="settings__alert_err">
+						<h6>{errorMsg}</h6>
+					</div>
+				}
 			</>
 			<button id="password__btn" onClick={handleUpdate}>Save password changes</button>
 			<>
-			{
-				passwordChanged &&
-				<div className="settings__alert_ok">
-					<h6>Your modification was successful !</h6>
-				</div>
-			}
+				{
+					passwordChanged &&
+					<div className="settings__alert_ok">
+						<h6>Your modification was successful !</h6>
+					</div>
+				}
 			</>
 		</div>
 	);
@@ -244,7 +249,7 @@ export function DeleteAccountCardSettings() {
 	// fonction qui va delete le User
 	const deleteUser = useMutation({
 		mutationFn: deleteMe,
-		retry : false,
+		retry: false,
 		onSuccess: () => {
 			queryClient.invalidateQueries(['users']); // dit au serveur d'updater sa data plus à jour : ici, la liste des users en comprend un en moins
 		},
@@ -269,24 +274,24 @@ export function DeleteAccountCardSettings() {
 	}, [isDeleted, navigate]);
 
 	return (
-			<div className="delete_settings">
-				<h2 className="delete_settings__title">Do you want to delete your account?</h2>
-				<h4 className="delete_settings__subtitle">Beware, this action is irreversible.</h4>
-				<button className="delete_settings__btn"
-						onClick={handleDelete}>
-					<FontAwesomeIcon icon={faTrashCanArrowUp} />
-					<span>Delete your account</span>
-				</button>
-				<>
+		<div className="delete_settings">
+			<h2 className="delete_settings__title">Do you want to delete your account?</h2>
+			<h4 className="delete_settings__subtitle">Beware, this action is irreversible.</h4>
+			<button className="delete_settings__btn"
+				onClick={handleDelete}>
+				<FontAwesomeIcon icon={faTrashCanArrowUp} />
+				<span>Delete your account</span>
+			</button>
+			<>
 				{
-					isDeleted && 
+					isDeleted &&
 					<div className="delete_settings__alert">
 						<h5>Your account was successfully deleted!</h5>
 						<h6>You will now be redirected to the home page in a few seconds...</h6>
 					</div>
 				}
-				</>
-			</div>
+			</>
+		</div>
 	);
 }
 
@@ -294,19 +299,19 @@ export function Activate2FA() {
 	const [errorMsg, setErrorMsg] = useState<string>("");
 	const [isEnabled, setIsEnabled] = useState<boolean>(false);
 	const queryClient = useQueryClient();
-	
+
 	const enable2FA = useMutation({
 		mutationFn: () => updateUserBooleanProperty("enabled2FA", isEnabled),
-		onSuccess: () => { 
+		onSuccess: () => {
 			queryClient.invalidateQueries(['user']);
 		},
 		onError: (error: any) => {
 			setErrorMsg(error.message || 'An error occurred');
 		},
 	});
-	
-	const userQuery = useQuery({ queryKey: ['user'], queryFn: () => fetchMe()});
-	
+
+	const userQuery = useQuery({ queryKey: ['user'], queryFn: () => fetchMe() });
+
 	useEffect(() => {
 		if (userQuery.data && !userQuery.data.email) {
 			setErrorMsg("You must provide your email above to use this feature.");
@@ -314,34 +319,34 @@ export function Activate2FA() {
 			setErrorMsg("");
 		}
 	}, [userQuery.data, userQuery.data?.email, isEnabled]);
-	
-	if (userQuery.error instanceof Error){
+
+	if (userQuery.error instanceof Error) {
 		return <div>Error: {userQuery.error.message}</div>
 	}
-	if (userQuery.isLoading || !userQuery.isSuccess){
+	if (userQuery.isLoading || !userQuery.isSuccess) {
 		return <div>Loading</div>
 	}
-	
-	const handleChange= () => {
-			const tmp = (isEnabled === true)? false : true;
-			setIsEnabled(tmp);
-			enable2FA.mutate();
+
+	const handleChange = () => {
+		const tmp = (isEnabled === true) ? false : true;
+		setIsEnabled(tmp);
+		enable2FA.mutate();
 	}
 
 	return (
 		<div id="fa_settings">
 			<h2>Two-factor authentication</h2>
 			<h4>Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in.</h4>
-			<input type="checkbox" id="switch" checked={userQuery.data.enabled2FA} onChange={handleChange}/>
+			<input type="checkbox" id="switch" checked={userQuery.data.enabled2FA} onChange={handleChange} />
 			<label htmlFor="switch" className="switch-label"></label>
 			<h4> Please note that you must confirm your email adress to enable 2FA. You will receive an email to do so if you change your email adress or if you activate this switch.</h4>
 			<>
-			{
-				errorMsg && 
-				<div className="settings__alert_err">
-					<h6>{errorMsg}</h6>
-				</div>
-			}
+				{
+					errorMsg &&
+					<div className="settings__alert_err">
+						<h6>{errorMsg}</h6>
+					</div>
+				}
 			</>
 		</div>
 	);
@@ -349,12 +354,12 @@ export function Activate2FA() {
 
 export default function Settings() {
 
-	const userQuery = useQuery({ queryKey: ['user'], queryFn: () => fetchMe()});
-	
-	if (userQuery.error instanceof Error){
+	const userQuery = useQuery({ queryKey: ['user'], queryFn: () => fetchMe() });
+
+	if (userQuery.error instanceof Error) {
 		return <div>Error: {userQuery.error.message}</div>
 	}
-	if (userQuery.isLoading || !userQuery.isSuccess){
+	if (userQuery.isLoading || !userQuery.isSuccess) {
 		return <div>Loading</div>
 	}
 
@@ -364,12 +369,12 @@ export default function Settings() {
 				<h1>Settings</h1>
 				<img src="" alt="" />
 				<div className="settings__container">
-					<AvatarCardSettings user={userQuery.data}/>
-					<TextCardSettings property={'nickname'}/>
-					<TextCardSettings property={'bio'}/>
-					<TextCardSettings property={'email'}/>
+					<AvatarCardSettings user={userQuery.data} />
+					<TextCardSettings property={'nickname'} />
+					<TextCardSettings property={'bio'} />
+					<TextCardSettings property={'email'} />
 					<PasswordCardSettings />
-					<Activate2FA/>
+					<Activate2FA />
 					<DeleteAccountCardSettings />
 				</div>
 			</div>

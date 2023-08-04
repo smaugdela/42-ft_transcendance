@@ -47,6 +47,7 @@
   letter-spacing: 0.5px;
   outline: none;
   border: none;
+  text-decoration: none;
 }
 .connection-form > * , .title-logs , #signup_btn {
   font-family: var(--font-type);

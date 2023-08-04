@@ -18,11 +18,11 @@
 .nav-menu {
   background-color: var(--sides-color);
   width: 250px;
-  height: 84.2vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   position: fixed;
-  top: 74px;
+  top: 8%;
   left: -100%;
   transition: 850ms;
   z-index: 100;
