@@ -148,7 +148,6 @@ export default function ChannelLink({ channel }: { channel: IChannel }) {
 					<input	type="text" 
 							placeholder="User's nickname"
 							onChange={handleOnChangeInvite}
-							className="text_input"
 					/>
 					<button className="text_settings_btn" onClick={handleUpdate}>
 						<FontAwesomeIcon icon={faCircleCheck} className="text_checkbox"/>

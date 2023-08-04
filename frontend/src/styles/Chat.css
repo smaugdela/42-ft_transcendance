@@ -44,28 +44,29 @@
   .content {
 	display: flex;
 	flex-wrap: wrap;
-	padding-bottom: 20px;
+	padding-bottom: 10px;
   }
 
-  .chat_button{
+.chat_button{
+	padding: 10px;
+	padding-left: 41px;
+	padding-right: 41px;
+	
+	font-family: var(--font-type);
 	border: 3px solid rgb(35, 71, 103);
+	background-color: transparent;
+	color: #e3eef1;
 	box-shadow:
 	  0 0 7px #efefef,
 	  0 0 10px #efefef,
 	  0 0 20px rgb(60, 116, 166),
 	  0 0 42px rgb(60, 116, 166),
 	  0 0 77px rgb(60, 116, 166);
-	padding: 10px;
-	padding-left: 32px;
-	padding-right: 32px;
-	font-family: var(--font-type);
-	color: #e3eef1;
 	text-shadow:
 	  0 0 7px #efefef,
 	  0 0 10px #90d0f0,
 	  0 0 42px rgb(60, 116, 166),
 	  0 0 77px rgb(60, 116, 166),
 	  0 0 100px rgb(24, 46, 65);
-	background-color: transparent;
   }
   

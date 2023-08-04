@@ -25,7 +25,7 @@ export default function TabMore() {
 			<h2 className="tabmore_page_title">Want more? Create your own channel or join others!</h2>
 			<ChanCreationForm />
 			<h2 className="tabmore_page_title">Channels that are waiting for you</h2>
-			<>
+			<div id="tabmore-chanwaiting">
 			{
 				publicAndPrivateChans && Array.isArray(publicAndPrivateChans) && (
 					publicAndPrivateChans.map((chan) => {
@@ -41,7 +41,7 @@ export default function TabMore() {
 					<h6>It's time to take charge and create your own!</h6>
 				</div>
 			}
-			</>
+			</div>
 		</div>
 	</div>
   )

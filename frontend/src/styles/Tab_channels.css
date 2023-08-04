@@ -53,6 +53,11 @@
     text-align: center;
 }
 
+#channels_page_joinedscroll {
+    overflow: auto;
+	overflow-x:hidden;
+}
+
 /* ********************************/
 /* ***  ChannelLink COMPONENT   ***/
 /* ********************************/

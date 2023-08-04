@@ -21,13 +21,45 @@
 	padding: 1em 0.4em;
 }
 
+.convo__header > p {
+	color: white;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.8em;
+}
+
 .convo__header_title {
 	display: flex;
 	justify-content: space-between;
 }
 
+#convo__header_leave-btn {
+	cursor: pointer;
+	font-family: var(--font-type);
+	font-size: 0.65em;
+	padding: 1em;
+	border: 2px solid rgb(35, 71, 103);
+	background-color: transparent;
+	color: #e3eef1;
+	box-shadow:
+	  0 0 7px #efefef,
+	  0 0 10px #efefef,
+	  0 0 20px rgb(60, 116, 166),
+	  0 0 42px rgb(60, 116, 166),
+	  0 0 77px rgb(60, 116, 166);
+	text-shadow:
+	  0 0 5px #efefef,
+	  0 0 10px #90d0f0,
+	  0 0 42px rgb(60, 116, 166),
+	  0 0 77px rgb(60, 116, 166),
+	  0 0 100px rgb(24, 46, 65);
+}
+
 #convo__name {
-	color: black;
+	font-family: 'Bruno Ace SC', cursive;
+    font-weight: 400;
+    font-size: 1.5em;
+    text-shadow: 0 0 7px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+    color: white;
 }
 
 .convo__bottom {
@@ -37,6 +69,25 @@
 	background-color: rgb(63, 89, 118);
 	padding: 1em;
 	height: 10vh;
+}
+
+#convo_send-btn {
+	cursor: pointer;
+
+	margin: 1.1vh 0;
+	font-family: var(--font-type);
+	font-size: 0.65em;
+
+	border: 2px solid rgb(35, 71, 103);
+
+	background-color: transparent;
+	color: #e3eef1;
+	box-shadow:
+	  0 0 7px #efefef,
+	  0 0 10px #efefef,
+	  0 0 20px rgb(60, 116, 166),
+	  0 0 42px rgb(60, 116, 166),
+	  0 0 77px rgb(60, 116, 166);
 }
 
 #convo__form {

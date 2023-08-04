@@ -170,10 +170,11 @@ function TabChat({ conv, loggedUser }: { conv: IChannel, loggedUser: IUser }) {
 						<input
 						type="text"
 						value={inputValue}
+						className='text_input'
 						onChange={(event) => setInputValue(event.target.value)}
 						placeholder="Type Here"
 						/>
-						<button type="submit">Send</button>
+						<button id="convo_send-btn" type="submit">Send</button>
 					</form>
 				</div>
 			}

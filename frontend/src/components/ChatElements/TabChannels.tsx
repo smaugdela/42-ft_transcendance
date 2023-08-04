@@ -48,7 +48,7 @@ export default function TabChannels() {
 	return (
 	<div className='channels_page' >
 		<h3 id='channels_page_title'>Your channels</h3>
-		<>
+		<div id="channels_page_joinedscroll">
 		{
 		joinedChannels && (
 			joinedChannels.map((chan) => {
@@ -68,7 +68,7 @@ export default function TabChannels() {
 				<h6>Don't be shy, start talking to someone or join a group conversation!</h6>
 			</div>
 		}
-	</>
+		</div>
 	</div>
   )
 }
