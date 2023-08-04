@@ -27,7 +27,7 @@ model User {
   score Int? @default(0)
   rank  Int? @default(autoincrement())
 
-  isActive Boolean? @default(false)
+  isActive Activity? @default(ONLINE)
 
   friendsList     User[] @relation("friends")
   friendsRelation User[] @relation("friends") // Used to store the many-to-many relation.
@@ -118,6 +118,12 @@ model Message {
 enum AuthType {
   FORTYTWO
   LOGNPWD
+}
+
+enum Activity {
+    ONLINE
+    INGAME
+    OFFLINE
 }
 
 enum ChanMode {

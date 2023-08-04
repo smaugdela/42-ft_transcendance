@@ -42,7 +42,6 @@ export function OnePerf( {user} : {user: IUser} ) {
 			/>
 			<div className="user-ids">
 				<h2 >{user.nickname}</h2>
-				<p >{user.coalition}</p>
 			</div>
 			<div id="vertical-sep"></div>
 			<div className="one-stat">

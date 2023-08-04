@@ -5,9 +5,10 @@ import { fetchMe, updateUserInChannel } from "../../api/APIHandler";
 import { IChannel, IMessage } from "../../api/types";
 import {AdminOptions} from './AdminOptions';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { SocketContext } from '../../context/contexts';
 
 const getDate = (message: IMessage) => {
 	const options: Intl.DateTimeFormatOptions = { weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit' } as const;
@@ -23,6 +24,7 @@ export function OneMessage({ conv, message, index, myNickname } :
 	const [displayInviteChoice, setdisplayInviteChoice] = useState<boolean>(true);
 	const {data: userMe, error, isLoading, isSuccess } = useQuery({queryKey: ['user'], queryFn: fetchMe});
 	const queryClient = useQueryClient();
+	const socket = useContext(SocketContext);
 
 	useEffect(() => {
 		if (userMe?.nickname === message.from.nickname) {
@@ -44,6 +46,16 @@ export function OneMessage({ conv, message, index, myNickname } :
 	if (isLoading || !isSuccess || userMe === undefined) {
 		return <div>Fetching your message...</div>
 	}
+
+	// Invite to a game of Pong!
+	const handleInvitation = () => {
+		console.log(`Invite ${message.from.nickname} to game`);
+		socket?.emit('invite match', message.from.nickname);
+		toast.success('Invitation sent', {id: 'invite'});
+	}
+	socket?.on('match invitation declined', (nickname: string) => {
+		toast.error(`${nickname} declined your invitation.`, {id: 'invite'});
+	});
 
 	const handleAcceptInvite = (event: React.FormEvent, channelId: string) => {
 		event.preventDefault();
@@ -113,7 +125,7 @@ export function OneMessage({ conv, message, index, myNickname } :
 		</div>
 		{
 			isMe === false &&
-			<FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} />
+			<FontAwesomeIcon className='options__icon' title="Invite to game" icon={faGamepad} onClick={handleInvitation}/>
 		}
 		{
 			conv.type !== 'DM' && isMe === false && 

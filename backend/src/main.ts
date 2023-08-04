@@ -19,7 +19,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 // 				avatar: element.avatar,
 // 				nickname: element.nickname,
 // 				mailAddress: element.mailAddress,
-// 				coalition: element.coalition,
 // 				accessToken: "default",
 // 				password: "default",
 // 		  },}).catch( (error) => console.log(error) );
