@@ -1,5 +1,5 @@
 import { IsBoolean, IsNumber, IsOptional, IsPositive, IsString, IsNotEmpty, IsEmail } from 'class-validator';
-// import { Achievement } from '@prisma/client';
+import { Activity } from '@prisma/client';
 
 export class UpdateUserDto {
 	@IsOptional()
@@ -15,12 +15,6 @@ export class UpdateUserDto {
 	@IsString()
 	@IsNotEmpty()
 	accessToken: string;
-
-	@IsOptional()
-	@IsString()
-	@IsNotEmpty()
-	coalition: string;
-
 
 	@IsOptional()
 	@IsString()
@@ -63,8 +57,8 @@ export class UpdateUserDto {
 	isLogged: boolean;
 
 	@IsOptional()
-	@IsBoolean()
-	isActive: boolean;
+	@IsString()
+	isActive: Activity;
 
 	// @IsOptional()
 	// achievements: Achievement[];

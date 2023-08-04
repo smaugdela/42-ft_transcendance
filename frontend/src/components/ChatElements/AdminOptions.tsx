@@ -59,8 +59,6 @@ export function AdminOptions({ channelName, userTalking }: { channelName: string
 		}
 	};
 
-	//const socket = useContext(SocketContext); // déjà déclaré ligne 19
-
 	/* const handleInvitation = () => {
 
 		console.log('Invite to game');

@@ -20,7 +20,7 @@ export class CreateMessageDto {
 
 	@IsNotEmpty()
 	@IsString()
-	@Length(2, 1000)
+	@Length(1, 1000)
 	content: string;
 
 }

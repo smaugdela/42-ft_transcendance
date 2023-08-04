@@ -18,17 +18,19 @@ export default function UserInfos( { user } : {user: IUser}) {
 	const creationDate = new Date(user.createdAt).toLocaleDateString('en-US', options);
 	const userQuery = useQuery({ queryKey: ['user'], queryFn: fetchMe });
 	
-	useEffect(() => {;
+	useEffect(() => {
 		if (userQuery.data && userQuery.data.nickname) {
 			(userQuery.data.nickname === user.nickname)
-			  ? setEnableSocials(false)
-			  : setEnableSocials(true);
+			? setEnableSocials(false)
+			: setEnableSocials(true);
 		}
-	  }, [userQuery.isSuccess, userQuery.data, user.nickname, setEnableSocials]);	
+	}, [userQuery.isSuccess, userQuery.data, user.nickname, setEnableSocials]);	
 	
 	useEffect(() => {
-		if (user && user.isActive) {
+		if (user && user.isActive === 'ONLINE') {
 			setCurrentStatus('ONLINE');
+		} else if (user && user.isActive === 'INGAME') {
+			setCurrentStatus('INGAME');
 		}
 	}, [user]);
 

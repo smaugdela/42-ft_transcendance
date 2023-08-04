@@ -19,11 +19,19 @@ RUN npx prisma generate
 # Run the build command which creates the production bundle
 RUN npm run build
 
-# Set NODE_ENV environment variable
-ENV NODE_ENV production
+# # Setting up SSL/TLS
+# RUN apk update && apk add openssl && \
+# 	cd security && \
+# 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout cert.key -out cert.pem -config req.cnf -sha256
+
+# Make prisma schema available to node user
+RUN	chown -R node:node node_modules/.prisma
 
 # Copy the startup script
 COPY --chown=node:node ./startup.sh ./startup.sh
+
+# Set NODE_ENV environment variable
+ENV NODE_ENV production
 
 # User should not be root for security reasons
 USER node

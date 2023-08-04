@@ -255,7 +255,6 @@ export function CustomPong() {
 			toast.success("FIGHT ON!", {
 				id: "matchmaking",
 				icon: "🎉",
-				position: "bottom-center",
 				duration: 3000,
 			});
 		});
@@ -268,7 +267,6 @@ export function CustomPong() {
 			toast.error("Player disconnected.", {
 				id: "matchmaking",
 				icon: "❌",
-				position: "bottom-center",
 				duration: 2000,
 			});
 
@@ -284,7 +282,6 @@ export function CustomPong() {
 			toast.success("You win!", {
 				id: "matchmaking",
 				icon: "🎉",
-				position: "bottom-center",
 				duration: 3000,
 			});
 
@@ -299,7 +296,6 @@ export function CustomPong() {
 			toast.error("You lose.", {
 				id: "matchmaking",
 				icon: "❌",
-				position: "bottom-center",
 				duration: 3000,
 			});
 

@@ -35,9 +35,9 @@ const Chat = () => {
 		return <div>Loading...</div>
 	}
 	
-	var tabs: Tab[] = [
-				 { label: 'Convs', content: <div><TabChannels/></div> },
-	activeConv ? { label: 'Chat', content: <div><TabChat conv={activeConv} loggedUser={userMe}/></div> } : { label: 'Chat', content: <div>Join convos to see the chat!</div> },
+	const tabs: Tab[] = [
+				{ label: 'Convs', content: <div><TabChannels/></div> },
+	activeConv ? { label: 'Chat', content: <div><TabChat conv={activeConv} loggedUser={userMe}/></div> } : { label: 'Chat', content: <div id='chat_no-chat'>Join convos to see the chat!</div> },
 				{ label: 'More', content: <div><TabMore /></div> },
 	];
 

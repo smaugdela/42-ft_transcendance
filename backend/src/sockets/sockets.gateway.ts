@@ -23,7 +23,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 	/* Attribue le nickname au socket ouvert à partir de son jwt */
 	afterInit(server: Server) {
 		server.use(usernameMiddleware(this.jwtService));
-		console.log("Cors config: ", corsConfig);
 		console.log('WS Initialized');
 	}
 
@@ -132,7 +131,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				content: `${action}  ${msgToTransfer}`,
 			};
 			console.log("this message has been sent: ", message.content, "to room : ", room);
-			
+
 			this.server.to(room).emit('receiveMessage', message);
 		}
 	}
@@ -176,8 +175,6 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 				socket2.join(match.matchId.toString());
 				this.server.to(match.matchId.toString()).emit('match ready', match.mode);
 
-				console.log("Match ready, waiting for players to accept...");
-
 			} else {
 				i++;
 			}
@@ -203,7 +200,10 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		}
 
 		if (match.player1.ready && match.player2.ready) {
-			// this.server.to(match.matchId.toString()).emit('match started');
+
+			this.socketsService.playingUser(match.player1.userId);
+			this.socketsService.playingUser(match.player2.userId);
+
 			const socket1: Socket = this.getSocketByUserId(match.player1.userId);
 			const socket2: Socket = this.getSocketByUserId(match.player2.userId);
 			socket1.emit('match started', true);
@@ -294,7 +294,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			const match = this.socketsService.addMatch("Classic", player1, player2);
 			socket.join(match.matchId.toString());
 			socket2.join(match.matchId.toString());
-			this.server.to(match.matchId.toString()).emit('match ready', match);
+			this.server.to(match.matchId.toString()).emit('match ready', match.mode);
 
 			console.log("Match ready, waiting for players to accept...");
 		} catch (error) {
@@ -368,7 +368,19 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 			// If the match has been paused for more than 10 seconds (unresponsive player), cancel it.
 			if (Date.now() - match.lastUpdate > 10000) {
+
 				this.server.to(match.matchId.toString()).emit('match canceled');
+
+				if (this.getSocketByUserId(match.player1.userId) !== undefined)
+					this.socketsService.activeUser(match.player1.userId);
+				else
+					this.socketsService.inactiveUser(match.player1.userId);
+
+				if (this.getSocketByUserId(match.player2.userId) !== undefined)
+					this.socketsService.activeUser(match.player2.userId);
+				else
+					this.socketsService.inactiveUser(match.player2.userId);
+
 				this.socketsService.deleteMatch(match.matchId);
 				return;
 			}
@@ -379,7 +391,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		}
 
 		const delta = (Date.now() - match.lastUpdate) / 1000; // in seconds
-	
+
 		// If payload is not empty, actuate user state
 		if (payload) {
 			switch (userId) {
@@ -457,15 +469,13 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 		match.ballY += match.ballSpeedY * delta;
 
 		// Check if powerup is recovered
-		if (match.powerUp)
-		{
+		if (match.powerUp) {
 			const distance = Math.sqrt(Math.pow(match.powerUpX - match.ballX, 2) + Math.pow(match.powerUpY - match.ballY, 2));
-			if (distance < this.socketsService.gameConstants.ballRadius + this.socketsService.gameConstants.powerUpRadius)
-			{
+			if (distance < this.socketsService.gameConstants.ballRadius + this.socketsService.gameConstants.powerUpRadius) {
 				match.powerUp = false;
 				match.powerUpOn = true;
 				match.powerUpDate = Date.now();
-				
+
 				// switch (match.ballSpeedX < 0)
 				// {
 				// 	case true:
@@ -545,10 +555,9 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		// Regenerate powerup
 		const scoreTotal = match.player1.score + match.player2.score;
-		if (match.powerUp === false && scoreTotal % 3 === 0)
-		{
+		if (match.powerUp === false && scoreTotal % 3 === 0) {
 			match.powerUpX = Math.random() * (this.socketsService.gameConstants.width / 2) + (this.socketsService.gameConstants.width / 4);
-			match.powerUpY = Math.random() * this.socketsService.gameConstants.height;	
+			match.powerUpY = Math.random() * this.socketsService.gameConstants.height;
 			match.powerUp = true;
 		}
 
@@ -561,6 +570,15 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 			const socket1: Socket = this.getSocketByUserId(match.player1.userId);
 			const socket2: Socket = this.getSocketByUserId(match.player2.userId);
+
+			if (socket1)
+				this.socketsService.activeUser(match.player1.userId);
+			else
+				this.socketsService.inactiveUser(match.player1.userId);
+			if (socket2)
+				this.socketsService.activeUser(match.player2.userId);
+			else
+				this.socketsService.inactiveUser(match.player2.userId);
 
 			if (socket1 === undefined || socket2 === undefined) {
 				console.log("Error: socket undefined");

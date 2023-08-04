@@ -25,20 +25,23 @@ export function TopThreeDetail(props: { user: IUser}) {
 		);
 }
 
-export function PerformanceDetail(props: {users: IUser[]}) {
+export function OnePerf( {user} : {user: IUser} ) {
+	let nbGames = 0;
 
-	const listRanks = props.users.sort((a, b) => a.rank > b.rank ? 1 : -1)
-						   .map(user => {
-		if (user.rank < 4)
-			return (null);
-		return <div key={user.id} className="stats" id={user.isActive ? "myRank" : "other"}>
+	if (user.matchAsP1) {
+		nbGames += user.matchAsP1.length;
+	}
+	if (user.matchAsP2) {
+		nbGames += user.matchAsP2.length;
+	}
+	return (
+	<div key={user.id} className="stats" id="other">
 			<img 
 				src={user.avatar}
 				alt={user.nickname}
 			/>
 			<div className="user-ids">
 				<h2 >{user.nickname}</h2>
-				<p >{user.coalition}</p>
 			</div>
 			<div id="vertical-sep"></div>
 			<div className="one-stat">
@@ -51,17 +54,24 @@ export function PerformanceDetail(props: {users: IUser[]}) {
 			</div>
 			<div className="one-stat">
 				<h4>Games Played</h4>
-				<p>{user.matchAsP1.length + user.matchAsP2.length}</p>
+				<p>{nbGames}</p>
 			</div>
 		</div>
-		});
+	);
+}
 
+export function PerformanceDetail(props: {users: IUser[]}) {
+
+	const listRanks = props.users.sort((a, b) => a.rank > b.rank ? 1 : -1)
+							.map(user => {
+		return <OnePerf user={user} key={user.id}/>
+		});
 	return (
 		<div>
 			{listRanks}
 		</div>
 	);
-};
+}
 
 export function Leaderboard() {
 
@@ -98,13 +108,19 @@ export function Leaderboard() {
 				<h1>Other performances</h1>
 				<section>
 				{
-					
-					(otherUsers && otherUsers.length > 0) ?
+					!otherUsers ||  otherUsers.length === 0 &&
+					<h1 id="leaderboard_perf_none">There's no one else for now, come back later!</h1>
+				}
+				{
+					(otherUsers && otherUsers.length > 1) &&
 					<PerformanceDetail users={otherUsers}/>
-					: <h1 id="leaderboard_perf_none">There's no one else for now, come back later!</h1>
+				}
+				{
+					otherUsers && otherUsers.length === 1 &&
+					<OnePerf user={otherUsers[0]}/>
 				}
 				</section>
 			</div>
 		</div>
 	);
-};
+}

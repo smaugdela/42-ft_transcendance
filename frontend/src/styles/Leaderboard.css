@@ -10,7 +10,7 @@
 #body-leaderboard {
 	--main-shadow-color : rgba(0, 0, 0, 0.3);
 	--main-element-bg-color : rgb(255, 255, 255);
-	--user-element-bg-color : rgb(206, 151, 216);
+	--user-element-bg-color : rgb(23, 22, 35);
 
 	--main-element-border-color : rgb(239, 242, 253);
 	--user-element-border-color : rgb(91, 73, 94);
@@ -211,7 +211,7 @@ section {
 }
 
 .stats:hover, #myRank:hover {
-	border: solid var(--user-element-border-color);
+	border: solid rgb(246, 246, 246);
 }
 
 .stats > img {
@@ -223,8 +223,8 @@ section {
 }
 
 #myRank {
-	background-color: var(--user-element-bg-color);
-	border: solid var(--user-element-bg-color);
+	background-color: var(--heading-color);
+	border: solid var(--heading-color);
 	color: var(--font-color);
 }
 

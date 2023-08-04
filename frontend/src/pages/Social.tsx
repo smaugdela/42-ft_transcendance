@@ -66,7 +66,19 @@ export function SearchBar() {
 	);
 }
 
-
+// export function DisplayConnections( props: { profilesToDisplay : IUser[], userIsSuccess: boolean }) {
+// 	const queryClient = useQueryClient();
+// 	const acceptRequest = useMutation({ 
+// 		mutationFn: (id: number) => acceptFriendRequest(id),
+// 		onSuccess: () => {
+// 			queryClient.invalidateQueries(['user']);	
+// 		}
+// 	});
+// 	useEffect(() => {
+// 		if (props.userIsSuccess) {
+// 		 queryClient.invalidateQueries(['user']); // Refetch the user data if the userIsSuccess prop changes
+// 		}
+// 	 }, [props.userIsSuccess]);
  
 export function Social() {
 
@@ -75,13 +87,14 @@ export function Social() {
 	
 	const handleClickComponent = (listType: string) => {
 		setActiveList(listType); // Update the active list when a button is clicked
-	  };
+	};
 
 	
 
 	const allFriends:		IUser[] = loggedUser?.friendsList || [];
-	const activeFriends:	IUser[] = allFriends?.filter(friend => friend.isActive === true) || [];
-	
+	const activeFriends:	IUser[] = allFriends?.filter(friend => friend.isActive === 'ONLINE') || [];
+	// const blocked:			IUser[] = loggedUser?.blockList || [];
+	// const pendingRequests:	IUser[] = loggedUser?.pendingList || [];
 
 	if (error) {
 		return <div>Error</div>;
@@ -113,9 +126,8 @@ export function Social() {
 			</div>
 				{activeList === 'allFriends' && loggedUser.friendsList ? (<AllFriends profilesToDisplay={loggedUser.friendsList} userIsSuccess={isSuccess} />) : null}
 				{activeList === 'pendingRequests' && loggedUser.pendingList ? (<PendingList profilesToDisplay={loggedUser.pendingList} userIsSuccess={isSuccess} />) : null}
-      			{activeList === 'blocked' && loggedUser.blockList ? (<BlockedUser profilesToDisplay={loggedUser.blockList} userIsSuccess={isSuccess} />) : null}
-      			{activeList === 'activeFriends' && activeFriends ? (<ActiveFriends profilesToDisplay={activeFriends} />) : null}
+				{activeList === 'blocked' && loggedUser.blockList ? (<BlockedUser profilesToDisplay={loggedUser.blockList} userIsSuccess={isSuccess} />) : null}
+				{activeList === 'activeFriends' && activeFriends ? (<ActiveFriends profilesToDisplay={activeFriends} />) : null}
 			</div>
   );
-};
-
+}

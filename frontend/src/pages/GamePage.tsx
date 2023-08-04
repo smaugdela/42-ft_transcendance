@@ -27,7 +27,6 @@ export default function GamePage() {
 				{
 					id: "matchmaking",
 					icon: "🎉",
-					position: "bottom-center",
 					duration: duration,
 				}
 			);
@@ -41,7 +40,6 @@ export default function GamePage() {
 				socket?.emit("Leave Queue");
 				toast.success("Left queue.", {
 					id: "matchmaking",
-					position: "bottom-center",
 					duration: 3000,
 				});
 			}}>
@@ -55,7 +53,7 @@ export default function GamePage() {
 			toast.loading(<span>Looking for a custom match... {leaveQueueButton} </span>, {
 				id: "matchmaking",
 				icon: "🔍",
-				position: "bottom-center",
+			
 			});
 		} else {
 			console.log("Socket is null");
@@ -68,7 +66,6 @@ export default function GamePage() {
 			toast.loading(<span>Looking for a classic match... {leaveQueueButton} </span>, {
 				id: "matchmaking",
 				icon: "🔍",
-				position: "bottom-center",
 			});
 		} else {
 			console.log("Socket is null");
