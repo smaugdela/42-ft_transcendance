@@ -264,9 +264,9 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			const userId1 = client.data.userId;
 			const username1 = client.data.username;
 
-			const socket = this.getSocketByUserId(userId1);
-			if (socket === undefined) {
-				console.log("Error: socket undefined");
+			const socket1 = this.getSocketByUserId(userId1);
+			if (socket1 === undefined) {
+				console.log("Error: socket1 undefined");
 				return;
 			}
 
@@ -292,7 +292,7 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 			const player2 = this.socketsService.createPlayer(userId2, username2, "Classic");
 
 			const match = this.socketsService.addMatch("Classic", player1, player2);
-			socket.join(match.matchId.toString());
+			socket1.join(match.matchId.toString());
 			socket2.join(match.matchId.toString());
 			this.server.to(match.matchId.toString()).emit('match ready', match.mode);
 
@@ -355,12 +355,29 @@ export class SocketsGateway implements OnGatewayConnection, OnGatewayInit, OnGat
 
 		// Check if one of the players has disconnected for more than 3 seconds
 		if (Date.now() - match.player1.lastUpdate > 3000) {
+			
 			this.server.to(match.matchId.toString()).emit('match canceled');
+			
+			if (this.getSocketByUserId(match.player1.userId) !== undefined)
+				this.socketsService.activeUser(match.player1.userId);
+			else
+				this.socketsService.inactiveUser(match.player1.userId);
+			
 			this.socketsService.deleteMatch(match.matchId);
 			return;
 		}
 		if (Date.now() - match.player2.lastUpdate > 3000) {
-			match.player2.ready = false;
+
+			this.server.to(match.matchId.toString()).emit('match canceled');
+
+			if (this.getSocketByUserId(match.player2.userId) !== undefined)
+				this.socketsService.activeUser(match.player2.userId);
+			else
+				this.socketsService.inactiveUser(match.player2.userId);
+
+			this.socketsService.deleteMatch(match.matchId);
+
+			return;
 		}
 
 		// If one of the players is not ready, do not actuate game state (Pause)

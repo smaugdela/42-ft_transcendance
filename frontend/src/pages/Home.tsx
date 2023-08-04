@@ -2,12 +2,14 @@ import '../App.css';
 import { SocketContext } from '../context/contexts';
 import'../styles/Home.css';
 import { useContext, useState } from "react";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
 export default function Home() {
-const [open, setOpen] = useState(false);
-const [fadeIn, setFadein] = useState(false);
+	const [open, setOpen] = useState(false);
+	const [fadeIn, setFadein] = useState(false);
+	const navigate = useNavigate();
+
 	function handleClick() {
 	setOpen(!open);
 	setFadein(true);
@@ -25,6 +27,7 @@ const [fadeIn, setFadein] = useState(false);
 				<button
 					className="button3"
 					onClick={() => {
+						console.log("Clicked on Accept");
 						socket?.emit('accept match invitation', inviter);
 						toast.dismiss('match invitation');
 					}}>
@@ -43,6 +46,29 @@ const [fadeIn, setFadein] = useState(false);
 				id: 'match invitation',
 				duration: 10000,
 				icon: '🎾',
+			}
+		);
+	});
+
+	socket?.on("match ready", (mode: string) => {
+		const duration = 2500; // 2.5 seconds
+
+		setTimeout(() => {
+			// Only send "match declined" if the match is still in the waiting state
+			// toast.dismiss("matchmaking");
+			socket.off("match ready");
+			if (mode === "Custom") {
+				navigate("/custompong");
+			} else {
+				navigate("/pong");
+			}
+		}, duration + 500);
+
+		toast.success("Match found! Redirecting to game...",
+			{
+				id: "matchmaking",
+				icon: "🎉",
+				duration: duration,
 			}
 		);
 	});
