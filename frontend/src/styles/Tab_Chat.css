@@ -240,3 +240,66 @@
 	font-size: 1.55em;
 	cursor: pointer;
 }
+
+/* ********************************/
+/* ***  ChannelType COMPONENT   ***/
+/* ********************************/
+
+.chantype {
+	display: flex;
+	gap: 0.5em;
+}
+
+#fa_see_more {
+	cursor: pointer;
+	color: white;
+}
+
+#chan_header_changetype {
+	color: white;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.8em;
+}
+
+#chantype_select {
+	cursor: pointer;
+	background: none;
+	text-align: center;
+	color: rgb(39, 38, 38);
+	text-shadow: 0 0 15px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+	border: solid  1px rgba(30, 30, 58, 0.383);
+}
+
+
+#chantype_addpwd[type=password] {
+	padding:10px;
+	border:0;
+	border-radius:5px;
+	box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+	font-family: 'Bruno Ace SC', cursive;
+	color: white;
+	resize: vertical;
+}
+
+#chantype_addpwd[type=password]:hover {
+	border:0;
+	border-bottom:0.5px solid #eee;
+}
+
+#chantype_confirmbtn {
+	cursor: pointer;
+
+	font-family: var(--font-type);
+	font-size: 0.65em;
+
+	border: 2px solid rgb(35, 71, 103);
+
+	background-color: transparent;
+	color: #e3eef1;
+	box-shadow:
+	  0 0 7px #efefef,
+	  0 0 10px #efefef,
+	  0 0 20px rgb(60, 116, 166),
+	  0 0 42px rgb(60, 116, 166),
+	  0 0 77px rgb(60, 116, 166);
+}
