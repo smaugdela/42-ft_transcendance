@@ -27,7 +27,6 @@ export default function Home() {
 				<button
 					className="button3"
 					onClick={() => {
-						console.log("Clicked on Accept");
 						socket?.emit('accept match invitation', inviter);
 						toast.dismiss('match invitation');
 					}}>
