@@ -355,12 +355,19 @@ export async function leaveChannel(userId: number, channelId: number) {
  * @param contactedUserId Id of the person you're trying to message
  * @returns the channel of the conversation (DM)
  */
-export async function manageDirectMessages(roomName: string, contactedUserName: string): Promise<IChannel> {
-
+export async function manageDirectMessages(roomName: string, contactedUserName: string, contactingName: string | undefined): Promise<IChannel> {
 	try {
 		let user: IUser = await fetchUserByNickname(contactedUserName);
-		if (!user) {
+		if (!contactingName) {
 			throw new Error('User doesnt exist');
+		}
+		let contactingUser = await fetchUserByNickname(contactingName);
+		if (!user || !contactingUser) {
+			throw new Error('User doesnt exist');
+		}
+		
+		if (user.blockList && user.blockList.some((blockedUser) => blockedUser.id === contactingUser.id)) {
+			throw new Error('You are blocked by this user');
 		}
 		let conv: IChannel = await getOneChannelByName(roomName);
 		if (!conv) {

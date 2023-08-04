@@ -105,7 +105,16 @@ export class ChatService {
 				messages: true,
 				admin: true,
 				owner: true,
-				joinedUsers: true,
+				joinedUsers: {
+				  select: {
+					id: true,
+					avatar: true,
+					nickname: true,
+					email: true,
+					isActive: true,
+					blockList: true
+				  }
+				},
 				bannedUsers: true, 
 				kickedUsers: true,
 				mutedUsers: true,
@@ -275,7 +284,6 @@ export class ChatService {
 
 	async updateUserinChannel(channelId: number, body: UpdateChannelDto) {
 		const {userId, groupToInsert, action } = body;
-		// TODO: si chan protected, vérifier que password donné match!!!
 		return await prisma.channel.update({
 			where: { id: channelId },
 			data:  {
@@ -395,7 +403,18 @@ export class ChatService {
 		return await prisma.message.findMany({
 			where: { channelId },
 			orderBy: { date: 'asc' },
-			include: { from: true }
+			include: { 
+				from: {
+					select: {
+					  id: true,
+					  avatar: true,
+					  nickname: true,
+					  email: true,
+					  isActive: true,
+					  blockList: true
+					}
+				}
+			}
 		});
 	}
 

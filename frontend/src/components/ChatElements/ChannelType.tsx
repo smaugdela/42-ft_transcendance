@@ -5,6 +5,7 @@ import { getOneChannelById, updateChannelProperties } from "../../api/APIHandler
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { IChannel, IUser } from "../../api/types";
 import { toast } from "react-hot-toast";
+import "../../styles/Tab_Chat.css";
 
 export function ChannelType({ channelId, loggedUser } : { channelId: number, loggedUser: IUser}) {
 	const [isEnabled, setIsEnabled] = useState<boolean>(false);
@@ -56,7 +57,7 @@ export function ChannelType({ channelId, loggedUser } : { channelId: number, log
 		}
 	};
 
-	return (<div>
+	return (<div className="chantype">
 		{
 			isEnabled === true &&
 			<>
@@ -64,6 +65,7 @@ export function ChannelType({ channelId, loggedUser } : { channelId: number, log
 				onClick={() => setToggleDisplay(!toggleDisplay)} 
 				icon={faCircleInfo} 
 				title="Click to see more"
+				id="fa_see_more"
 			/>
 			{
 				toggleDisplay === true &&
@@ -75,6 +77,7 @@ export function ChannelType({ channelId, loggedUser } : { channelId: number, log
 						value={chanType} 
 						onChange={(event) => setChanType(event.target.value)}
 						onBlur={handleInputBlur}
+						id="chantype_select"
 						>
 							<option value="PUBLIC">PUBLIC</option>
 							<option value="PRIVATE">PRIVATE</option>
@@ -84,15 +87,16 @@ export function ChannelType({ channelId, loggedUser } : { channelId: number, log
 							chanType === "PROTECTED" &&
 							<input 
 							type="password" 
-							placeholder="password to enter" 
+							placeholder="password to enter"
+							id="chantype_addpwd"
 							value={password} 
 							onChange={(event) => setPassword(event.target.value)} 
 							/>
 						}
-						<button onClick={handleInputKeyPress}>Confirm change</button>
+						<button id="chantype_confirmbtn" onClick={handleInputKeyPress}>Confirm change</button>
 						</>
 					) : (
-						<p  onClick={() => setIsEditing(true)}>Mode: {(chanType) ? chanType : channel.type} <FontAwesomeIcon icon={faPencil} /></p>
+						<p id="chan_header_changetype" >Mode: {(chanType) ? chanType : channel.type} <FontAwesomeIcon onClick={() => setIsEditing(true)} icon={faPencil} id="fa_see_more"/></p>
 					)
 				}
 					

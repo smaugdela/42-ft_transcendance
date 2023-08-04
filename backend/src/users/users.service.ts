@@ -158,24 +158,6 @@ export class UsersService {
 	
 	}
 
-	// async isAchievementCompleted(userId: number, achievement: Achievement): Promise<boolean> {
-	// 	// Return a boolean value indicating if the achievement is completed or not.
-	// 	if (achievement.title === 'Baby steps') {
-	// 	const match = await this.prisma.match.findFirst({
-	// 		where: { OR: [{ matchAsP1: { userId } }, { matchAsP2: { userId } }] },
-	// 	})
-	// 	if (!match)
-	// 	  return false; 
-	// 	}
-	// 	 else if (achievement.title === 'Veteran') {
-	// 	  // Example specific check for the 'Veteran' achievement
-	// 	  return false; // Replace this with your actual implementation
-	// 	} else {
-	// 	  // Handle other achievements
-	// 	  return false; // Replace this with your actual implementation
-	// 	}
-	// }
-
 	async findOneById(id: number) {
 		return await prisma.user.findUnique({
 			where: { id: id },
