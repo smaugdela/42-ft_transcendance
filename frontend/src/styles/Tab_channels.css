@@ -29,6 +29,29 @@
     padding: 1rem;
 }
 
+.channels_page-noconv {
+    height: 60vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    color: white;
+}
+
+.channels_page-noconv > h3{
+    font-family: 'Bruno Ace SC', cursive;
+    font-size: large;
+    text-shadow: 0 0 15px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+
+}
+
+.channels_page-noconv > h6{
+    font-size: medium;
+    text-align: center;
+}
 
 /* ********************************/
 /* ***  ChannelLink COMPONENT   ***/

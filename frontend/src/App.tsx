@@ -1,6 +1,6 @@
 import './App.css';
 // import React from 'react';
-import { Routes, Route, useBeforeUnload } from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Social } from './pages/Social';
 import { Leaderboard } from './pages/Leaderboard';
@@ -63,7 +63,7 @@ function App() {
 	function closeChat(event: Event) {
 		event.stopPropagation();
 		setIsExpanded(!isExpanded);
-	  }
+	}
 
 	document.body.ondblclick = closeChat;
 
@@ -116,7 +116,7 @@ function App() {
 						<Route path="/social" element={<Social />} />
 						<Route path='/settings' element={<Settings />} />
 						<Route path='/pong' element={<Pong />} />
-						<Route path='/custompong' element={<CustomPong />} />
+						{/* <Route path='/custompong' element={<CustomPong />} /> */}
 						<Route path='/login' element={<Login setLoggedIn={setLoggedIn} setSocket={setSocket} />} />
 						<Route path='/2fa' element={<DoubleFA/>} />
 						<Route path='/2fa/pending' element={<PendingPage/>} />

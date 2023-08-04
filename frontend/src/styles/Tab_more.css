@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Licorice&family=Open+Sans&family=Share+Tech&display=swap');
+
+/* ********************************/
+/* ***       TabMore PAGE       ***/
+/* ********************************/
+
+
+#tabmore_page {
+	height: 78vh;
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	color: white;
+}
+
+.tabmore_page_title {
+    font-family: 'Bruno Ace SC', cursive;
+    font-weight: 600;
+    font-size: larger;
+    text-shadow: 0 0 15px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+    color: rgb(10, 10, 10);
+    
+	text-align: center;
+    padding: 1rem;
+	margin-top: 1vh;
+
+}
+
+
+.tabmore_page-noconv {
+	color: white;
+	text-align: center;
+	padding: 1em;
+}
+
+.tabmore_page-noconv > h3 {
+	font-family: 'Bruno Ace SC', cursive;
+    font-size: large;
+    text-shadow: 0 0 15px #efefef, 0 0 10px #90d0f0, 0 0 42px rgb(60, 116, 166), 0 0 77px rgb(60, 116, 166), 0 0 100px rgb(24, 46, 65);
+
+}
+
+.tabmore_page-noconv > h6 {
+    font-size: large;
+}

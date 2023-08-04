@@ -62,6 +62,12 @@ export default function TabChannels() {
 			})
 			)
 		}
+		{ (!joinedChannels || (joinedChannels && joinedChannels.length === 0)) && 
+			<div className='channels_page-noconv'>
+				<h3>You have not joined any channels yet!</h3>
+				<h6>Don't be shy, start talking to someone or join a group conversation!</h6>
+			</div>
+		}
 	</>
 	</div>
   )
