@@ -223,7 +223,7 @@ export function PasswordCardSettings() {
 				</div>
 			}
 			</>
-			<button id="password__btn" onClick={handleUpdate}>Save changes</button>
+			<button id="password__btn" onClick={handleUpdate}>Save password changes</button>
 			<>
 			{
 				passwordChanged &&
@@ -290,20 +290,6 @@ export function DeleteAccountCardSettings() {
 	);
 }
 
-// Pour Simon quand tu feras le 2FA:
-/* 
-	Roadmap 2FA côté Front:
-	- FAIT/ useState<boolean> de la propriété prisma du User
-	- FAIT/ check si la personne a bien renseigné son adresse mail et message d'err
-	- FAIT/ utiliser UseMutation hook pour call la fonction API qui va Patch ce booléen
-	- FAIT/ utiliser React-Query pour get les infos du User et afficher le statut du 2FA
-	- FAIT/ un onClick pour récupérer l'état du slider et le lier au UseMutation
-	- FAIT/ par défaut, afficher le switch d'après le statut du user (si 2FA activé, afficher
-		 par défaut en vert quand le user retourne sur sa page)
-	
-	RESTE A FAIRE:
-	- utiliser le state du booléen pour afficher la popup du code à rentrer
-*/
 export function Activate2FA() {
 	const [errorMsg, setErrorMsg] = useState<string>("");
 	const [isEnabled, setIsEnabled] = useState<boolean>(false);

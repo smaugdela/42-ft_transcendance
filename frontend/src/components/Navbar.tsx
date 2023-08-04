@@ -65,7 +65,7 @@ export default function Navbar(props: {
 			</label>
 			<div className="navbar__center">
 				<Link to="/" className="navbar__title" >
-					CYBERPONG
+					 CYBERPONG
 				</Link>
 			</div>
 				<>

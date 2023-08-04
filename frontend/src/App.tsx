@@ -1,6 +1,6 @@
 import './App.css';
 // import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Social } from './pages/Social';
 import { Leaderboard } from './pages/Leaderboard';
@@ -30,7 +30,7 @@ function App() {
 	// On initialise nos contexts (= nos variables globales)
 	const [activeTab, setActiveTab] = useState<number>(0);
 	const [activeConv, setActiveConv] = useState<IChannel | null>(null);
-	const [isExpanded, setIsExpanded] = useState(true);
+	const [isExpanded, setIsExpanded] = useState(false);
 	const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 	// const [isMuted, setIsMuted] = useState<boolean>(false);
 	// const [muteExpiration, setMuteExpiration] = useState<number | null>(null);
@@ -63,9 +63,35 @@ function App() {
 	function closeChat(event: Event) {
 		event.stopPropagation();
 		setIsExpanded(!isExpanded);
-	  }
+	}
 
 	document.body.ondblclick = closeChat;
+
+	// const videoPlayer = document.getElementById('videobg');
+
+	// window.addEventListener('beforeunload', () => {
+	// 	if(videoPlayer instanceof HTMLVideoElement){
+	// 	videoPlayer.pause();
+	// }
+	// })
+
+	// function lazyLoadVideo(){
+	// 	const videoContainer = document.getElementById('videoContainer');
+	// 	const videobg = document.getElementById('videobg');
+		
+	// 	if ('IntersectionObserver' in window){
+	// 		const observer = new IntersectionObserver((entries) => {
+	// 			entries.forEach((entry) => {
+	// 				if(entry.isIntersecting){
+	// 					if(videobg instanceof HTMLVideoElement){
+	// 					videobg.src = videobg.dataset.src;
+	// 					observer>unobserve(videoContainer);
+	// 				}
+	// 				}
+	// 			});
+	// 		});
+	// 	}
+	// }
 
   return (
 	<div id='app' className={`App ${theme}`}>
@@ -75,13 +101,12 @@ function App() {
 			<IsLoggedInContext.Provider value={isLoggedIn}>
 			{/* <MuteContext.Provider value={ {isMuted, setIsMuted, muteExpiration, setMuteExpiration}}> */}
 				<Navbar theme={theme} toggleTheme={toggleTheme} setLoggedIn={setLoggedIn} setSocket={setSocket} />
-				<video className='videobg' autoPlay loop muted content="width=device-width, initial-scale=1.0">
-					<source src="./assets/bg-video.mp4" type='video/mp4' />
-				</video>
-				<audio className="music-bg" autoPlay loop >
-					<source src="./assets/derezzed.mp3" type="audio/mpeg"/>
-				</audio>
-				<Toaster/>
+				<div id="videoContainer">
+					<video className='videobg' autoPlay loop muted preload="auto" content="width=device-width, initial-scale=1.0">
+						<source src="./assets/bg-video.mp4" type='video/mp4' />
+					</video>
+				</div>
+				<Toaster/> 
 				<AppProvider value = {app}>
 					<Routes>
 						<Route path="/" element={<Home />} />
@@ -91,7 +116,7 @@ function App() {
 						<Route path="/social" element={<Social />} />
 						<Route path='/settings' element={<Settings />} />
 						<Route path='/pong' element={<Pong />} />
-						<Route path='/custompong' element={<CustomPong />} />
+						{/* <Route path='/custompong' element={<CustomPong />} /> */}
 						<Route path='/login' element={<Login setLoggedIn={setLoggedIn} setSocket={setSocket} />} />
 						<Route path='/2fa' element={<DoubleFA/>} />
 						<Route path='/2fa/pending' element={<PendingPage/>} />

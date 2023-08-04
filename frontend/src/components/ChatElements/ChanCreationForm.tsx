@@ -49,6 +49,7 @@ export default function ChanCreationForm() {
 	   <form id="create-chan-form" onSubmit={handleFormSubmit}>
 			<input
 			  id="create-chan-input"
+			  className="text_input"
 			  type="text"
 			  value={channelName}
 			  onChange={handleInputChange}
@@ -64,11 +65,13 @@ export default function ChanCreationForm() {
 			<input
 				type="password"
 				value={channelPassword}
+				id="create-chan-password-input"
+				// className="text_input"
 				onChange={(event) => setChannelPassword(event.target.value)}
 				placeholder="Enter channel password"
 			/>
 			)}
-			<button type="submit">Create a channel</button>
+			<button id='tabmore-btn' type="submit">Create a channel</button>
 		</form>
   )
 }

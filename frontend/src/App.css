@@ -43,8 +43,12 @@ body {
   	width: 100%;
 	margin: auto;
 	position: flex;
-	border-radius: 3px;
+	/* border-radius: 3px; */
 	background-color: rgb(76, 77, 129);
+	background-image: url("../public/assets/lapinbg.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 }
 
 .videobg{
@@ -68,22 +72,28 @@ body {
 
 #main-content {
 	width : 100%;
+	min-height: 81vh;
+	max-height: 92vh;
 }
 
 #chat {
 	background-color: var(--sides-color);
 	color: var(--font-color);
-	/* flex: 1 1 auto; */
+	height: 92vh;
+	z-index: 250;
 }
 
 footer {
 	width: 100%;
+	height: 8vh;
+
+	padding-top: 3vh;
+	text-align: center;
+
 	background-color: var(--heading-color);
+	color: var(--font-color);
 	font-family: var(--font-type);
 	font-size: 100%;
-	text-align: center;
-	color: var(--font-color);
-	line-height: 70px;
 	font-size: 150%;
 }
 

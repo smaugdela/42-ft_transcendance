@@ -403,7 +403,7 @@ export function Pong() {
 							distance: 5, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 							outerStrength: 2, // Force du glow à l'extérieur du texte
 							innerStrength: 0, // Force du glow à l'intérieur du texte (0 signifie aucun glow intérieur)
-							color: 0xffffff, // Couleur du glow (choisissez une couleur néon appropriée)
+							color: 0x18141c, // Couleur du glow (choisissez une couleur néon appropriée)
 						  })]}
 					/>
 
@@ -426,7 +426,7 @@ export function Pong() {
 							distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 							outerStrength: 4, // Force du glow à l'extérieur de la forme
 							innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
-							color: 0x18141c,
+							color: 0xffffff,
 						  })]}
 					/>
 

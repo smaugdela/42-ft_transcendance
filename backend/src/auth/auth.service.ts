@@ -190,7 +190,7 @@ export class AuthService {
 				data: [
 					{
 						userId: userId,
-						icon: "fa-solid fa-baby",
+						icon: "/assets/baby_icon.png", //peu fructueux
 						title: "Baby steps",
 						description: "Played the game for the first time",
 					},
@@ -247,6 +247,18 @@ export class AuthService {
 						icon: "fa-solid fa-hand-spock",
 						title: "My safe place",
 						description: "Created their first channel",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-user-astronaut",
+						title: "Roland Garros",
+						description: "Make 3 aces !",
+					},
+					{
+						userId: userId,
+						icon: "fa-solid fa-user-astronaut",
+						title: "WINNER WINNER CHICKEN DINER",
+						description: "TOP 1 of the leaderboard",
 					},
 				]
 			});

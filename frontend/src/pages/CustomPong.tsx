@@ -352,7 +352,7 @@ export function CustomPong() {
 					} */}
 					 <Graphics // sides lines
 								draw={(graphics) => {
-									graphics.lineStyle(paddleWidth, 0xfad9ff, 0.8, 0.5); // pink color
+									graphics.lineStyle(paddleWidth, 0xde45b2, 0.8, 0.5); // pink color
 									graphics.moveTo(0, 0); // Start at the top left corner
 									graphics.lineTo(0, height); // Draw a line to the top right corner
 									graphics.moveTo(width, 0); // Start at the top left corner
@@ -362,7 +362,7 @@ export function CustomPong() {
 										distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 										outerStrength: 4, // Force du glow à l'extérieur de la forme
 										innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
-										color: 0xfad9ff, // Couleur du glow (même que la couleur de la balle)
+										color: 0xde45b2, // Couleur du glow (même que la couleur de la balle)
 									  })]}
 						/>
 
@@ -470,10 +470,10 @@ export function CustomPong() {
 						y={gameState.leftPaddleY} // Y position for the left paddle
 						draw={(graphics) => {
 							graphics.clear();
-							graphics.beginFill(0xffffff); // White color
+							graphics.beginFill(0xfad9ff); // rose pale color
 							graphics.drawRect(0, 0, paddleWidth, paddleLength); // Paddle dimensions
 							graphics.filters = [new GlowFilter({
-								color: 0xffffff, // Couleur du glow (même que la bordure)
+								color: 0xfad9ff, // Couleur du glow (même que la bordure)
 								distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 								outerStrength: 2, // Force du glow à l'extérieur de la forme
 								innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)
@@ -486,10 +486,10 @@ export function CustomPong() {
 						y={gameState.rightPaddleY} // Y position for the right paddle
 						draw={(graphics) => {
 							graphics.clear();
-							graphics.beginFill(0xffffff); // White color
+							graphics.beginFill(0xfad9ff); // rose pale color
 							graphics.drawRect(0, 0, paddleWidth, paddleLength); // Paddle dimensions
 							graphics.filters = [new GlowFilter({
-								color: 0xffffff, // Couleur du glow (même que la bordure)
+								color: 0xfad9ff, // Couleur du glow (même que la bordure)
 								distance: 10, // Distance du glow (plus la valeur est grande, plus le glow est étendu)
 								outerStrength: 2, // Force du glow à l'extérieur de la forme
 								innerStrength: 0, // Force du glow à l'intérieur de la forme (0 signifie aucun glow intérieur)

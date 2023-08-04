@@ -38,10 +38,11 @@ export function UserProfile() {
 	const userFriendsCount: number = (user.friendsList && user.friendsList?.length >= 1) ? user.friendsList.length : 0;
 
 	return (
-		<div id="whole-profile">
+		<div id="whole-profile-container">
+			<div id="whole-profile">
 			<section id="main-dashboard">
 				<div id="top-dashboard">
-					<div>
+					<div id="bio-container">
 						<article id="bio">
 							<div style={{ backgroundImage: `url(${user.avatar})` }} id="hexagon-avatar"></div>
 							<UserInfos user={user} />
@@ -81,6 +82,7 @@ export function UserProfile() {
 			<MatchHistory
 				user={user} 
 			/>
+			</div>
 		</div>
 	);
 }
